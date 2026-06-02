@@ -99,7 +99,7 @@ a.link:hover { text-decoration:underline; }
     <a class="nav-item" onclick="showSection('scripts', event)">⚙️ 自動化腳本</a>
   </nav>
   <div class="sidebar-footer">
-    🟢 <span id="status-text">3 個自動化運行中</span><br>
+    ⚡ <span id="status-text">3 個自動化運行中</span><br>
     上次更新：<span id="last-update">--:--</span>
   </div>
 </div>
@@ -109,7 +109,7 @@ a.link:hover { text-decoration:underline; }
   <div class="header">
     <h2 id="page-title">📋 待確認項目</h2>
     <p id="page-desc">以下項目等待管理層確認後方可出街</p>
-    <div class="status-bar" id="status-bar">🟢 載入中...</div>
+    <div class="status-bar" id="status-bar">⚡ 載入中...</div>
   </div>
 
   <!-- 待確認項目 -->
@@ -170,14 +170,43 @@ a.link:hover { text-decoration:underline; }
 <script>
 // ========= 設定區：GAS Web App URL =========
 const GAS_URL = "https://script.google.com/macros/s/AKfycbz4nv68ss6kVKmUB2wDfvg0Y3FebvA_AXrq8lElcepz5UqxWnWKiUbcA-_S-h7hHF-U/exec";
-// ===============================================
+// ==============================================
 
 let allItems = [];
+let jsonpCounter = 0;
 
-function apiCall(params) {
+function apiCall(params, callback) {
+  jsonpCounter++;
+  const cbName = "gas_cb_" + jsonpCounter;
+  // Create global callback
+  window[cbName] = function(data) {
+    // Clean up
+    delete window[cbName];
+    const script = document.getElementById("jsonp_" + cbName);
+    if (script) script.remove();
+    callback(data);
+  };
+  
+  // Build URL
   const url = new URL(GAS_URL);
   Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
-  return fetch(url.toString()).then(r => r.json());
+  url.searchParams.append("callback", cbName);
+  
+  // Create script tag
+  const script = document.createElement("script");
+  script.id = "jsonp_" + cbName;
+  script.src = url.toString();
+  document.head.appendChild(script);
+  
+  // Timeout after 10s
+  setTimeout(() => {
+    if (window[cbName]) {
+      delete window[cbName];
+      const s = document.getElementById("jsonp_" + cbName);
+      if (s) s.remove();
+      callback({ success: false, error: "timeout" });
+    }
+  }, 10000);
 }
 
 function formatTime(iso) {
@@ -185,13 +214,12 @@ function formatTime(iso) {
   return iso.replace("T", " ").substring(0, 19);
 }
 
-async function loadPending() {
+function loadPending() {
   document.getElementById("pending-loading").style.display = "block";
   document.getElementById("pending-table").style.display = "none";
   document.getElementById("pending-empty").style.display = "none";
   
-  try {
-    const data = await apiCall({ action: "list_pending" });
+  apiCall({ action: "list_pending" }, function(data) {
     allItems = data.items || [];
     
     document.getElementById("pending-loading").style.display = "none";
@@ -220,41 +248,35 @@ async function loadPending() {
       });
     }
     
-    document.getElementById("status-bar").innerHTML = `🟢 ${allItems.length} 個項目待確認`;
+    document.getElementById("status-bar").innerHTML = `⚡ ${allItems.length} 個項目待確認`;
     document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
-  } catch(e) {
-    document.getElementById("pending-loading").innerHTML = "❌ 載入失敗：" + e.message;
-  }
+  });
 }
 
-async function confirmItem(id) {
+function confirmItem(id) {
   if (!confirm("確認此項目出街？確認後將推送到社群平台。")) return;
-  try {
-    const data = await apiCall({ action: "confirm", id: id });
+  
+  apiCall({ action: "confirm", id: id }, function(data) {
     if (data.success) {
       alert("✅ 已確認！項目將安排出街。");
       loadPending();
     } else {
       alert("❌ 確認失敗：" + (data.error || "未知錯誤"));
     }
-  } catch(e) {
-    alert("❌ 網絡錯誤：" + e.message);
-  }
+  });
 }
 
-async function deleteItem(id) {
+function deleteItem(id) {
   if (!confirm("確定刪除此項目？")) return;
-  try {
-    const data = await apiCall({ action: "delete", id: id });
+  
+  apiCall({ action: "delete", id: id }, function(data) {
     if (data.success) {
       alert("🗑️ 已刪除");
       loadPending();
     } else {
       alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
     }
-  } catch(e) {
-    alert("❌ 網絡錯誤：" + e.message);
-  }
+  });
 }
 
 function showSection(name, evt) {
