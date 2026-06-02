@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkBuddy 工作台</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --sidebar-w: 240px;
+  --sidebar-bg: #0f172a;
+  --sidebar-hover: #1e293b;
+  --sidebar-active: #1e3a5f;
+  --accent: #3b82f6;
+  --accent-light: #dbeafe;
+  --bg: #f1f5f9;
+  --card-bg: #fff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --green: #10b981; --green-bg: #d1fae5;
+  --amber: #f59e0b; --amber-bg: #fef3c7;
+  --red: #ef4444; --red-bg: #fee2e2;
+  --purple: #8b5cf6; --purple-bg: #ede9fe;
+}
+
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Noto Sans HK", sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar { width: var(--sidebar-w); background: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; transition: transform .3s; }
+.sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.sidebar-header h1 { font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+.sidebar-header span { font-size: 12px; color: #94a3b8; }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 12px 0; }
+.nav-section { padding: 16px 20px 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #475569; font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; color: #94a3b8; font-size: 14px; transition: all .15s; border-left: 3px solid transparent; }
+.nav-item:hover { background: var(--sidebar-hover); color: #e2e8f0; }
+.nav-item.active { background: var(--sidebar-active); color: #fff; border-left-color: var(--accent); }
+.nav-item .icon { font-size: 18px; width: 24px; text-align: center; }
+.nav-badge { margin-left: auto; background: var(--accent); color: #fff; font-size: 11px; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,.08); font-size: 12px; color: #475569; }
+
+/* ── Mobile Toggle ── */
+.mobile-toggle { display: none; position: fixed; top: 12px; left: 12px; z-index: 200; background: var(--sidebar-bg); color: #fff; border: none; width: 40px; height: 40px; border-radius: 8px; font-size: 20px; cursor: pointer; }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 90; }
+
+/* ── Main ── */
+.main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 32px; max-width: 1400px; }
+.page-header { margin-bottom: 24px; }
+.page-header h2 { font-size: 24px; font-weight: 700; }
+.page-header p { color: var(--text-muted); font-size: 14px; margin-top: 2px; }
+.breadcrumb { display: flex; gap: 6px; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+.breadcrumb a { color: var(--accent); text-decoration: none; }
+
+/* ── Stats Row ── */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--card-bg); border-radius: 12px; padding: 20px; border: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+.stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.stat-icon.blue { background: var(--accent-light); }
+.stat-icon.green { background: var(--green-bg); }
+.stat-icon.amber { background: var(--amber-bg); }
+.stat-icon.purple { background: var(--purple-bg); }
+.stat-info h3 { font-size: 26px; font-weight: 700; letter-spacing: -.5px; }
+.stat-info p { font-size: 13px; color: var(--text-muted); }
+
+/* ── Content Grid ── */
+.content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+.content-grid.full { grid-template-columns: 1fr; }
+
+/* ── Card ── */
+.card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-header h3 { font-size: 15px; font-weight: 600; }
+.card-body { padding: 20px; }
+.card-body.no-pad { padding: 0; }
+.badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+.badge.blue { background: var(--accent-light); color: #1d4ed8; }
+.badge.green { background: var(--green-bg); color: #065f46; }
+.badge.amber { background: var(--amber-bg); color: #92400e; }
+
+/* ── Table ── */
+.table-wrap { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 10px 20px; font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; background: #f8fafc; }
+td { padding: 12px 20px; font-size: 14px; border-top: 1px solid var(--border); }
+tr:hover { background: #f8fafc; }
+.file-link { color: var(--accent); text-decoration: none; font-weight: 500; }
+.file-link:hover { text-decoration: underline; }
+.file-meta { font-size: 12px; color: var(--text-muted); }
+
+/* ── Status dots ── */
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
+.status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+.status.ok::before { background: var(--green); }
+.status.warn::before { background: var(--amber); }
+.status.err::before { background: var(--red); }
+
+/* ── Chart Area ── */
+.chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding-top: 8px; }
+.chart-bar { flex: 1; border-radius: 6px 6px 0 0; position: relative; min-width: 20px; transition: height .4s; }
+.chart-bar .label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--text-muted); white-space: nowrap; }
+.chart-bar .val { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; }
+
+/* ── Automation Status ── */
+.auto-item { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.auto-item:last-child { border-bottom: none; }
+.auto-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.auto-info { flex: 1; }
+.auto-info h4 { font-size: 14px; font-weight: 600; }
+.auto-info p { font-size: 12px; color: var(--text-muted); }
+
+/* ── Empty State ── */
+.empty { text-align: center; padding: 48px 20px; color: var(--text-muted); }
+.empty .icon { font-size: 40px; margin-bottom: 12px; }
+.empty h4 { font-size: 15px; margin-bottom: 6px; color: var(--text); }
+.empty p { font-size: 13px; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .mobile-toggle, .overlay.open { display: block; }
+  .main { margin-left: 0; padding: 16px; }
+  .content-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .stat-card { padding: 14px; }
+  .stat-info h3 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h1>⚡ WorkBuddy 工作台</h1>
+    <span>自動化任務管理中心</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">📱 EventEasy.net</div>
+    <a class="nav-item active" onclick="showSection('easypost')" data-section="easypost">
+      <span class="icon">📮</span> 每日「易」Post<span class="nav-badge">1</span>
+    </a>
+    <a class="nav-item" onclick="showSection('easyanalytics')" data-section="easyanalytics">
+      <span class="icon">📊</span> 宣傳分析
+    </a>
+
+    <div class="nav-section">📈 美股傳真</div>
+    <a class="nav-item" onclick="showSection('usstock')" data-section="usstock">
+      <span class="icon">🏦</span> 每日美股報告<span class="nav-badge">2</span>
+    </a>
+
+    <div class="nav-section">📋 其他工具</div>
+    <a class="nav-item" onclick="showSection('news')" data-section="news">
+      <span class="icon">📰</span> 每日新聞撮要
+    </a>
+    <a class="nav-item" onclick="showSection('assets')" data-section="assets">
+      <span class="icon">🎨</span> 設計素材庫<span class="nav-badge">3</span>
+    </a>
+    <a class="nav-item" onclick="showSection('scripts')" data-section="scripts">
+      <span class="icon">⚙️</span> 自動化腳本<span class="nav-badge">6</span>
+    </a>
+    <a class="nav-item" onclick="showSection('guide')" data-section="guide">
+      <span class="icon">📘</span> 新人入門指南
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    🟢 3 個自動化運行中 · 上次更新 22:49
+  </div>
+</aside>
+
+<!-- ── Main Content ── -->
+<main class="main" id="mainContent">
+
+<!-- ========== 每日「易」Post ========== -->
+<section id="s-easypost" class="section active">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">EventEasy.net</a> / 每日「易」Post</div>
+    <h2>📮 每日「易」Post</h2>
+    <p>每日 10:00 自動生成宣傳圖及社群發文內容</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">📸</div>
+      <div class="stat-info"><h3>1</h3><p>今日已生成宣傳圖</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">📱</div>
+      <div class="stat-info"><h3>3</h3><p>社群平台已連接</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">⏰</div>
+      <div class="stat-info"><h3>10:00</h3><p>每日定時發佈</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">☁️</div>
+      <div class="stat-info"><h3>✓</h3><p>Google Drive 同步</p></div>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="card">
+      <div class="card-header"><h3>📋 宣傳圖檔案</h3><span class="badge blue">01_宣傳圖_每日生成</span></div>
+      <div class="card-body no-pad">
+        <table>
+          <thead><tr><th>檔案名稱</th><th>類型</th><th>大小</th><th>上載時間</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="file-link">EventEasy_宣傳圖_0602.png</span></td>
+              <td>🖼️ PNG</td>
+              <td>134 KB</td>
+              <td class="file-meta">2026-06-02 22:39</td>
+              <td><a href="https://drive.google.com/file/d/1iYxki3Pk_EIUC3a54Ga9AQE3mAmraivb/view" target="_blank" class="file-link">開啟 →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>🤖 自動化狀態</h3><span class="badge green">啟用中</span></div>
+      <div class="card-body">
+        <div class="auto-item">
+          <div class="auto-icon" style="background:var(--accent-light)">📮</div>
+          <div class="auto-info">
+            <h4>EventEasy 社群媒體宣傳圖生成</h4>
+            <p>每日 10:00 · ID: auto-1780353918149</p>
+          </div>
+          <span class="status ok">正常</span>
+        </div>
+        <div class="auto-item">
+          <div class="auto-icon" style="background:var(--green-bg)">🔄</div>
+          <div class="auto-info">
+            <h4>Buffer 排程發佈</h4>
+            <p>FB Page / Instagram / LinkedIn 已連接</p>
+          </div>
+          <span class="status ok">已連接</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 宣傳分析 ========== -->
+<section id="s-easyanalytics" class="section" style="display:none">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">EventEasy.net</a> / 宣傳分析</div>
+    <h2>📊 宣傳分析</h2>
+    <p>追蹤社群媒體貼文互動數據（即將推出）</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">👁️</div>
+      <div class="stat-info"><h3>--</h3><p>總觸及人數</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">🖱️</div>
+      <div class="stat-info"><h3>--</h3><p>連結點擊</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">❤️</div>
+      <div class="stat-info"><h3>--</h3><p>互動數</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">📈</div>
+      <div class="stat-info"><h3>--</h3><p>粉絲增長</p></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:0">
+    <div class="card-header"><h3>📊 每週互動趨勢</h3></div>
+    <div class="card-body">
+      <div style="display:flex;align-items:flex-end;gap:12px;height:160px;padding:8px 0;">
+        <div style="flex:1;background:linear-gradient(180deg,#93c5fd,#dbeafe);height:45%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">0</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">一</span></div>
+        <div style="flex:1;background:linear-gradient(180deg,#93c5fd,#dbeafe);height:60%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">0</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">二</span></div>
+        <div style="flex:1;background:linear-gradient(180deg,#93c5fd,#dbeafe);height:35%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">0</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">三</span></div>
+        <div style="flex:1;background:linear-gradient(180deg,#93c5fd,#dbeafe);height:50%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">0</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">四</span></div>
+        <div style="flex:1;background:linear-gradient(180deg,#bbf7d0,#d1fae5);height:70%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">1</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">五</span></div>
+        <div style="flex:1;background:linear-gradient(180deg,#93c5fd,#dbeafe);height:40%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">0</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">六</span></div>
+        <div style="flex:1;background:linear-gradient(180deg,#93c5fd,#dbeafe);height:30%;border-radius:6px 6px 0 0;position:relative"><span style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:11px">0</span><span style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:10px;color:#64748b">日</span></div>
+      </div>
+      <p style="text-align:center;margin-top:24px;color:var(--text-muted);font-size:13px">📡 連接 Buffer Analytics 後自動更新數據</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 每日美股報告 ========== -->
+<section id="s-usstock" class="section" style="display:none">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">美股傳真</a> / 每日美股報告</div>
+    <h2>🏦 每日美股報告</h2>
+    <p>每晚 21:00 自動生成深度分析報告（含百家撮要）</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">📄</div>
+      <div class="stat-info"><h3>2</h3><p>報告已生成</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">🏛️</div>
+      <div class="stat-info"><h3>1</h3><p>含百家撮要</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">⏰</div>
+      <div class="stat-info"><h3>21:00</h3><p>每日自動生成</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">📊</div>
+      <div class="stat-info"><h3>FUTU</h3><p>核心追蹤標的</p></div>
+    </div>
+  </div>
+
+  <div class="content-grid full">
+    <div class="card">
+      <div class="card-header"><h3>📋 報告列表</h3><span class="badge blue">02_美股報告_每日生成</span></div>
+      <div class="card-body no-pad">
+        <table>
+          <thead><tr><th>報告名稱</th><th>版本</th><th>核心議題</th><th>百家撮要</th><th>生成時間</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="file-link">美股資訊報告_20260602_v2</span></td>
+              <td><span class="badge green">v2 完整版</span></td>
+              <td>證監整治跨境券商</td>
+              <td><span class="status ok">✅ 已含</span></td>
+              <td class="file-meta">2026-06-02 22:17</td>
+              <td><a href="https://drive.google.com/file/d/1FnCZVaNuD83q9bZXedAwnRMXbzJ30ZSv/view" target="_blank" class="file-link">開啟 →</a></td>
+            </tr>
+            <tr>
+              <td><span class="file-link">美股資訊報告_20260602</span></td>
+              <td><span class="badge amber">v1 簡版</span></td>
+              <td>一般新聞摘要</td>
+              <td><span class="status warn">❌ 未含</span></td>
+              <td class="file-meta">2026-06-02 21:54</td>
+              <td><a href="https://drive.google.com/file/d/1qUQKPrteDPaU79PUiYPeua-Swtbd-VFI/view" target="_blank" class="file-link">開啟 →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h3>🏛️ 本期百家撮要摘要</h3><span class="badge amber">2026-06-02</span></div>
+      <div class="card-body">
+        <h4 style="margin-bottom:12px;">📌 核心議題：中國證監整治跨境券商平台</h4>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+          <div style="background:var(--green-bg);border-radius:8px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:700;color:#065f46">55%</div>
+            <div style="font-size:12px;color:#047857;margin-top:2px">🟢 看好</div>
+          </div>
+          <div style="background:var(--red-bg);border-radius:8px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:700;color:#991b1b">25%</div>
+            <div style="font-size:12px;color:#b91c1c;margin-top:2px">🔴 看淡</div>
+          </div>
+          <div style="background:var(--amber-bg);border-radius:8px;padding:14px;text-align:center">
+            <div style="font-size:24px;font-weight:700;color:#92400e">20%</div>
+            <div style="font-size:12px;color:#a16207;margin-top:2px">⚖️ 中立</div>
+          </div>
+        </div>
+        <div style="background:#f8fafc;border-radius:8px;padding:14px;margin-bottom:12px;">
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:6px;">🎯 最終總結</p>
+          <p style="font-size:13px;line-height:1.6;">
+            <strong>短期(1-3月)</strong>：觀望，等待Q2財報驗證 → 
+            <strong>中期(3-12月)</strong>：逢低吸納，海外增速是關鍵 → 
+            <strong>長期(1-3年)</strong>：取決於海外執行力及產品創新
+          </p>
+        </div>
+        <div class="auto-item" style="border:none;padding-bottom:0">
+          <div class="auto-icon" style="background:var(--accent-light)">🤖</div>
+          <div class="auto-info">
+            <h4>自動化狀態</h4>
+            <p>auto-1780253895980 · 每晚 21:00</p>
+          </div>
+          <span class="status ok">正常</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 每日新聞撮要 ========== -->
+<section id="s-news" class="section" style="display:none">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">其他工具</a> / 每日新聞撮要</div>
+    <h2>📰 每日新聞撮要</h2>
+    <p>每日 10:00 自動生成本港及國際新聞撮要</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">🗞️</div>
+      <div class="stat-info"><h3>0</h3><p>撮要已生成</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">⏰</div>
+      <div class="stat-info"><h3>10:00</h3><p>每日自動生成</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">🇭🇰</div>
+      <div class="stat-info"><h3>3-5</h3><p>本港新聞/日</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">🌍</div>
+      <div class="stat-info"><h3>3-5</h3><p>國際新聞/日</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h3>📋 撮要列表</h3><span class="badge blue">03_新聞撮要_每日生成</span></div>
+    <div class="card-body">
+      <div class="empty">
+        <div class="icon">📭</div>
+        <h4>暫無撮要</h4>
+        <p>等待每日 10:00 自動化任務產出第一份新聞撮要</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 設計素材庫 ========== -->
+<section id="s-assets" class="section" style="display:none">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">其他工具</a> / 設計素材庫</div>
+    <h2>🎨 設計素材庫</h2>
+    <p>EventEasy Logo、SVG 模板等設計資源</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">🖼️</div>
+      <div class="stat-info"><h3>3</h3><p>素材檔案</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">📐</div>
+      <div class="stat-info"><h3>1080×1080</h3><p>標準尺寸</p></div>
+    </div>
+  </div>
+
+  <div class="content-grid full">
+    <div class="card">
+      <div class="card-header"><h3>📋 素材列表</h3><span class="badge blue">04_設計素材_Logo_模板</span></div>
+      <div class="card-body no-pad">
+        <table>
+          <thead><tr><th>檔案名稱</th><th>類型</th><th>用途</th><th>上載時間</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="file-link">EventEasy_logo_border_shadow.png</span></td>
+              <td>🖼️ PNG</td>
+              <td><span class="badge green">主要使用</span> 深色 Header 專用</td>
+              <td class="file-meta">2026-06-02 22:32</td>
+              <td><a href="https://drive.google.com/file/d/1iPu3Rg6jRZJYT4X2HtBAPQvBh3Ndgdu5/view" target="_blank" class="file-link">開啟 →</a></td>
+            </tr>
+            <tr>
+              <td><span class="file-link">EventEasy_logo_whitebg.png</span></td>
+              <td>🖼️ PNG</td>
+              <td>白底備用</td>
+              <td class="file-meta">2026-06-02 22:32</td>
+              <td><a href="https://drive.google.com/file/d/1BNsV5m_8k1tQBiLDtA-svGjUY6ZHTq1C/view" target="_blank" class="file-link">開啟 →</a></td>
+            </tr>
+            <tr>
+              <td><span class="file-link">EventEasy_宣傳圖模板.svg</span></td>
+              <td>📐 SVG</td>
+              <td>可編輯宣傳圖模板</td>
+              <td class="file-meta">2026-06-02 22:32</td>
+              <td><a href="https://drive.google.com/file/d/1QbKB2FiZB6Y3g6R85bqxVFPwAC9ty7gv/view" target="_blank" class="file-link">開啟 →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 自動化腳本 ========== -->
+<section id="s-scripts" class="section" style="display:none">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">其他工具</a> / 自動化腳本</div>
+    <h2>⚙️ 自動化腳本與技術文件</h2>
+    <p>所有自動化任務的執行腳本及技術文件</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue">📜</div>
+      <div class="stat-info"><h3>6</h3><p>檔案總數</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">🐍</div>
+      <div class="stat-info"><h3>3</h3><p>技術腳本</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon amber">📄</div>
+      <div class="stat-info"><h3>1</h3><p>技術文件</p></div>
+    </div>
+  </div>
+
+  <div class="content-grid full">
+    <div class="card">
+      <div class="card-header"><h3>📋 檔案列表</h3><span class="badge blue">05_自動化腳本_技術文件</span></div>
+      <div class="card-body no-pad">
+        <table>
+          <thead><tr><th>檔案名稱</th><th>類型</th><th>版本</th><th>說明</th><th>操作</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="file-link">auto_promo.sh</span></td>
+              <td>🐚 Shell</td>
+              <td><span class="badge green">v2</span></td>
+              <td>全自動宣傳圖生成主腳本（call render_promo.js）</td>
+              <td><a href="#" class="file-link">開啟 →</a></td>
+            </tr>
+            <tr>
+              <td><span class="file-link">render_promo.js</span></td>
+              <td>🟢 Node.js</td>
+              <td><span class="badge green">v2</span></td>
+              <td>SVG→PNG 渲染引擎 + Logo 疊加（.py file 方案）</td>
+              <td><a href="#" class="file-link">開啟 →</a></td>
+            </tr>
+            <tr>
+              <td><span class="file-link">add_logo.py</span></td>
+              <td>🐍 Python</td>
+              <td>v1</td>
+              <td>Logo 疊加工具（Pillow）</td>
+              <td><a href="#" class="file-link">開啟 →</a></td>
+            </tr>
+            <tr>
+              <td><span class="file-link">FB廣告建議書_20260601.md</span></td>
+              <td>📝 Markdown</td>
+              <td>v1</td>
+              <td>Facebook 廣告投放策略建議</td>
+              <td><a href="#" class="file-link">開啟 →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 新人入門指南 ========== -->
+<section id="s-guide" class="section" style="display:none">
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">其他工具</a> / 新人入門指南</div>
+    <h2>📘 新人入門指南</h2>
+    <p>新同事快速上手 EventEasy 推廣工作流程</p>
+  </div>
+
+  <div class="content-grid full">
+    <div class="card">
+      <div class="card-header"><h3>📄 README_新同事入門指南.md</h3><span class="badge green">00_README</span></div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+          <div style="background:#f8fafc;border-radius:8px;padding:16px">
+            <div style="font-size:20px;margin-bottom:8px">📱</div>
+            <h4 style="font-size:14px;margin-bottom:4px">EventEasy 推廣流程</h4>
+            <p style="font-size:12px;color:var(--text-muted)">了解宣傳圖自動生成及 Buffer 發佈流程</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:16px">
+            <div style="font-size:20px;margin-bottom:8px">📁</div>
+            <h4 style="font-size:14px;margin-bottom:4px">Google Drive 架構</h4>
+            <p style="font-size:12px;color:var(--text-muted)">6 個子資料夾分類，一目了然</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:16px">
+            <div style="font-size:20px;margin-bottom:8px">🤖</div>
+            <h4 style="font-size:14px;margin-bottom:4px">自動化任務說明</h4>
+            <p style="font-size:12px;color:var(--text-muted)">3 個每日定時任務簡介</p>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:16px">
+            <div style="font-size:20px;margin-bottom:8px">🔧</div>
+            <h4 style="font-size:14px;margin-bottom:4px">技術架構</h4>
+            <p style="font-size:12px;color:var(--text-muted)">SVG+Resvg、Google Drive MCP、Buffer API</p>
+          </div>
+        </div>
+        <div style="margin-top:16px;text-align:center">
+          <a href="https://drive.google.com/file/d/1FXIN9qNBr2J02nf1KMF4bBfnk-SfFzCY/view" target="_blank" style="display:inline-block;background:var(--accent);color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:14px">📖 開啟完整指南 →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+
+function showSection(name) {
+  // Hide all sections
+  document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+  // Show target
+  document.getElementById('s-' + name).style.display = 'block';
+  // Update nav active
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelector(`[data-section="${name}"]`).classList.add('active');
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  // Scroll to top
+  document.getElementById('mainContent').scrollIntoView({behavior:'smooth'});
+}
+
+// Animate stat numbers on load
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.stat-info h3').forEach(el => {
+    const text = el.textContent;
+    if (text === '--' || text === '✓' || isNaN(parseInt(text))) return;
+    const target = parseInt(text);
+    let current = 0;
+    const step = Math.ceil(target / 20);
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = current;
+    }, 30);
+  });
+});
+</script>
+
+</body>
+</html>
