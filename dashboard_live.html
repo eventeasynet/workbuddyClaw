@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkBuddy 工作台</title>
+<style>
+* { margin:0; padding:0; box-sizing: border-box; }
+:root {
+  --sidebar-w: 240px;
+  --sidebar-bg: #0f172a;
+  --sidebar-hover: #1e293b;
+  --sidebar-active: #1e3a5f;
+  --accent: #3b82f6;
+  --accent-light: #dbeafe;
+  --bg: #f1f5f9;
+  --card-bg: #fff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #eab308;
+}
+body { font-family: 'Sarasa Gothic SC', 'Noto Sans TC', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
+
+/* Sidebar */
+.sidebar { width:var(--sidebar-w); background:var(--sidebar-bg); color:#fff; display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; }
+.sidebar-header { padding:24px 20px 16px; border-bottom:1px solid #1e293b; }
+.sidebar-header h1 { font-size:20px; font-weight:700; }
+.sidebar-header p { font-size:12px; color:#94a3b8; margin-top:4px; }
+.sidebar-nav { flex:1; padding:12px 0; overflow-y:auto; }
+.nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; cursor:pointer; font-size:14px; color:#cbd5e1; text-decoration:none; transition:background 0.15s; }
+.nav-item:hover { background:var(--sidebar-hover); color:#fff; }
+.nav-item.active { background:var(--sidebar-active); color:#fff; border-left:3px solid var(--accent); }
+.nav-item span { font-size:18px; }
+.sidebar-footer { padding:16px 20px; border-top:1px solid #1e293b; font-size:12px; color:#64748b; }
+
+/* Main */
+.main { margin-left:var(--sidebar-w); flex:1; padding:32px; max-width:1200px; }
+.header { margin-bottom:32px; }
+.header h2 { font-size:24px; font-weight:700; }
+.header p { color:var(--text-muted); margin-top:4px; font-size:14px; }
+.status-bar { display:inline-flex; align-items:center; gap:6px; background:#dcfce7; color:#166534; font-size:13px; padding:4px 12px; border-radius:20px; margin-top:12px; }
+
+/* Stats */
+.stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:16px; margin-bottom:32px; }
+.stat-card { background:var(--card-bg); border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid var(--border); }
+.stat-icon { font-size:28px; margin-bottom:8px; }
+.stat-num { font-size:28px; font-weight:700; }
+.stat-label { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+/* Section */
+.section { background:var(--card-bg); border-radius:12px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid var(--border); margin-bottom:24px; }
+.section h3 { font-size:16px; font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+.section h3 .badge { font-size:11px; background:var(--accent-light); color:var(--accent); padding:2px 8px; border-radius:10px; }
+
+/* Table */
+table { width:100%; border-collapse:collapse; font-size:13px; }
+thead th { text-align:left; padding:10px 12px; background:#f8fafc; color:var(--text-muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--border); }
+tbody td { padding:10px 12px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
+tbody tr:hover { background:#f8fafc; }
+.status-badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:500; }
+.status-pending { background:#fef3c7; color:#92400e; }
+.status-confirmed { background:#dcfce7; color:#166534; }
+.btn { display:inline-flex; align-items:center; gap:4px; padding:6px 14px; border-radius:8px; border:none; cursor:pointer; font-size:13px; font-weight:500; transition:all 0.15s; }
+.btn-confirm { background:#22c55e; color:#fff; }
+.btn-confirm:hover { background:#16a34a; }
+.btn-delete { background:#fee2e2; color:#dc2626; }
+.btn-delete:hover { background:#fecaca; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { background:#2563eb; }
+a.link { color:var(--accent); text-decoration:none; }
+a.link:hover { text-decoration:underline; }
+
+/* Loading */
+.loading { text-align:center; padding:40px; color:var(--text-muted); }
+.empty { text-align:center; padding:40px; color:var(--text-muted); }
+
+/* Refresh button */
+.refresh-btn { float:right; background:var(--bg); border:1px solid var(--border); padding:6px 14px; border-radius:8px; cursor:pointer; font-size:13px; }
+.refresh-btn:hover { background:var(--accent-light); }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <h1>⚡ WorkBuddy</h1>
+    <p>自動化任務管理中心</p>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" onclick="showSection('pending', event)">📋 待確認項目</a>
+    <a class="nav-item" onclick="showSection('promo', event)">📱 每日「易」Post</a>
+    <a class="nav-item" onclick="showSection('stock', event)">📈 美股傳真</a>
+    <a class="nav-item" onclick="showSection('news', event)">📰 每日新聞撮要</a>
+    <a class="nav-item" onclick="showSection('assets', event)">🎨 設計素材庫</a>
+    <a class="nav-item" onclick="showSection('scripts', event)">⚙️ 自動化腳本</a>
+  </nav>
+  <div class="sidebar-footer">
+    ⚡ <span id="status-text">3 個自動化運行中</span><br>
+    上次更新：<span id="last-update">--:--</span>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+  <div class="header">
+    <h2 id="page-title">📋 待確認項目</h2>
+    <p id="page-desc">以下項目等待管理層確認後方可出街</p>
+    <div class="status-bar" id="status-bar">⚡ 載入中...</div>
+  </div>
+
+  <!-- 待確認項目 -->
+  <div id="sec-pending" class="section">
+    <h3>📋 待確認項目 <span class="badge" id="pending-count">0</span>
+      <button class="refresh-btn" onclick="loadPending()">🔄 重新整理</button>
+    </h3>
+    <div id="pending-loading" class="loading">載入中...</div>
+    <div id="pending-empty" class="empty" style="display:none;">📭 暫無待確認項目</div>
+    <table id="pending-table" style="display:none;">
+      <thead>
+        <tr>
+          <th>類型</th>
+          <th>標題</th>
+          <th>建立時間</th>
+          <th>狀態</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="pending-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- 每日 Post -->
+  <div id="sec-promo" class="section" style="display:none;">
+    <h3>📱 每日「易」Post</h3>
+    <div class="stats" id="promo-stats"></div>
+    <div id="promo-items"></div>
+  </div>
+
+  <!-- 美股報告 -->
+  <div id="sec-stock" class="section" style="display:none;">
+    <h3>📈 每日美股報告</h3>
+    <div class="stats" id="stock-stats"></div>
+    <div id="stock-items"></div>
+  </div>
+
+  <!-- 新聞撮要 -->
+  <div id="sec-news" class="section" style="display:none;">
+    <h3>📰 每日新聞撮要</h3>
+    <div class="stats" id="news-stats"></div>
+    <div id="news-items"></div>
+  </div>
+
+  <!-- 設計素材 -->
+  <div id="sec-assets" class="section" style="display:none;">
+    <h3>🎨 設計素材庫</h3>
+    <div id="assets-items"></div>
+  </div>
+
+  <!-- 自動化腳本 -->
+  <div id="sec-scripts" class="section" style="display:none;">
+    <h3>⚙️ 自動化腳本</h3>
+    <div id="scripts-items"></div>
+  </div>
+</div>
+
+<script>
+// ========= 設定區：GAS Web App URL =========
+const GAS_URL = "https://script.google.com/macros/s/AKfycbz4nv68ss6kVKmUB2wDfvg0Y3FebvA_AXrq8lElcepz5UqxWnWKiUbcA-_S-h7hHF-U/exec";
+// ==============================================
+
+let allItems = [];
+let jsonpCounter = 0;
+
+function apiCall(params, callback) {
+  jsonpCounter++;
+  const cbName = "gas_cb_" + jsonpCounter;
+  // Create global callback
+  window[cbName] = function(data) {
+    // Clean up
+    delete window[cbName];
+    const script = document.getElementById("jsonp_" + cbName);
+    if (script) script.remove();
+    callback(data);
+  };
+  
+  // Build URL
+  const url = new URL(GAS_URL);
+  Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
+  url.searchParams.append("callback", cbName);
+  
+  // Create script tag
+  const script = document.createElement("script");
+  script.id = "jsonp_" + cbName;
+  script.src = url.toString();
+  document.head.appendChild(script);
+  
+  // Timeout after 10s
+  setTimeout(() => {
+    if (window[cbName]) {
+      delete window[cbName];
+      const s = document.getElementById("jsonp_" + cbName);
+      if (s) s.remove();
+      callback({ success: false, error: "timeout" });
+    }
+  }, 10000);
+}
+
+function formatTime(iso) {
+  if (!iso) return "--";
+  return iso.replace("T", " ").substring(0, 19);
+}
+
+function loadPending() {
+  document.getElementById("pending-loading").style.display = "block";
+  document.getElementById("pending-table").style.display = "none";
+  document.getElementById("pending-empty").style.display = "none";
+  
+  apiCall({ action: "list_pending" }, function(data) {
+    allItems = data.items || [];
+    
+    document.getElementById("pending-loading").style.display = "none";
+    document.getElementById("pending-count").textContent = allItems.length;
+    
+    if (allItems.length === 0) {
+      document.getElementById("pending-empty").style.display = "block";
+    } else {
+      document.getElementById("pending-table").style.display = "table";
+      const tbody = document.getElementById("pending-tbody");
+      tbody.innerHTML = "";
+      allItems.forEach(item => {
+        const tr = document.createElement("tr");
+        const driveLink = item.driveUrl ? `<a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a>` : item.title;
+        tr.innerHTML = `
+          <td>${item.type}</td>
+          <td>${driveLink}</td>
+          <td>${formatTime(item.createdAt)}</td>
+          <td><span class="status-badge status-pending">${item.status}</span></td>
+          <td>
+            <button class="btn btn-confirm" onclick="confirmItem('${item.id}')">✅ 確認出街</button>
+            <button class="btn btn-delete" onclick="deleteItem('${item.id}')" style="margin-left:4px;">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    
+    document.getElementById("status-bar").innerHTML = `⚡ ${allItems.length} 個項目待確認`;
+    document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
+  });
+}
+
+function confirmItem(id) {
+  if (!confirm("確認此項目出街？確認後將推送到社群平台。")) return;
+  
+  apiCall({ action: "confirm", id: id }, function(data) {
+    if (data.success) {
+      alert("✅ 已確認！項目將安排出街。");
+      loadPending();
+    } else {
+      alert("❌ 確認失敗：" + (data.error || "未知錯誤"));
+    }
+  });
+}
+
+function deleteItem(id) {
+  if (!confirm("確定刪除此項目？")) return;
+  
+  apiCall({ action: "delete", id: id }, function(data) {
+    if (data.success) {
+      alert("🗑️ 已刪除");
+      loadPending();
+    } else {
+      alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
+    }
+  });
+}
+
+function showSection(name, evt) {
+  ["pending","promo","stock","news","assets","scripts"].forEach(n => {
+    document.getElementById("sec-" + n).style.display = "none";
+  });
+  document.getElementById("sec-" + name).style.display = "block";
+  document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+  if (evt && evt.currentTarget) evt.currentTarget.classList.add("active");
+  
+  const titles = {
+    pending: ["📋 待確認項目", "以下項目等待管理層確認後方可出街"],
+    promo:   ["📱 每日「易」Post", "每日 10:00 自動生成宣傳圖及社群發文內容"],
+    stock:   ["📈 每日美股報告", "每晚 21:00 自動生成深度分析報告（含百家撮要）"],
+    news:    ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞撮要"],
+    assets:  ["🎨 設計素材庫", "EventEasy Logo、SVG 模板等設計資源"],
+    scripts: ["⚙️ 自動化腳本", "所有自動化任務的執行腳本及技術文件"]
+  };
+  document.getElementById("page-title").textContent = titles[name][0];
+  document.getElementById("page-desc").textContent = titles[name][1];
+}
+
+// 首次載入
+loadPending();
+setInterval(loadPending, 60000);
+</script>
+</body>
+</html>
