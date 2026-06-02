@@ -91,12 +91,12 @@ a.link:hover { text-decoration:underline; }
     <p>自動化任務管理中心</p>
   </div>
   <nav class="sidebar-nav">
-    <a class="nav-item active" onclick="showSection('pending')">📋 待確認項目</a>
-    <a class="nav-item" onclick="showSection('promo')">📮 每日「易」Post</a>
-    <a class="nav-item" onclick="showSection('stock')">📈 美股傳真</a>
-    <a class="nav-item" onclick="showSection('news')">📰 每日新聞撮要</a>
-    <a class="nav-item" onclick="showSection('assets')">🎨 設計素材庫</a>
-    <a class="nav-item" onclick="showSection('scripts')">⚙️ 自動化腳本</a>
+    <a class="nav-item active" onclick="showSection('pending', event)">📋 待確認項目</a>
+    <a class="nav-item" onclick="showSection('promo', event)">📱 每日「易」Post</a>
+    <a class="nav-item" onclick="showSection('stock', event)">📈 美股傳真</a>
+    <a class="nav-item" onclick="showSection('news', event)">📰 每日新聞撮要</a>
+    <a class="nav-item" onclick="showSection('assets', event)">🎨 設計素材庫</a>
+    <a class="nav-item" onclick="showSection('scripts', event)">⚙️ 自動化腳本</a>
   </nav>
   <div class="sidebar-footer">
     🟢 <span id="status-text">3 個自動化運行中</span><br>
@@ -112,7 +112,7 @@ a.link:hover { text-decoration:underline; }
     <div class="status-bar" id="status-bar">🟢 載入中...</div>
   </div>
 
-  <!-- 待確認項目（預設顯示） -->
+  <!-- 待確認項目 -->
   <div id="sec-pending" class="section">
     <h3>📋 待確認項目 <span class="badge" id="pending-count">0</span>
       <button class="refresh-btn" onclick="loadPending()">🔄 重新整理</button>
@@ -135,7 +135,7 @@ a.link:hover { text-decoration:underline; }
 
   <!-- 每日 Post -->
   <div id="sec-promo" class="section" style="display:none;">
-    <h3>📮 每日「易」Post</h3>
+    <h3>📱 每日「易」Post</h3>
     <div class="stats" id="promo-stats"></div>
     <div id="promo-items"></div>
   </div>
@@ -168,23 +168,21 @@ a.link:hover { text-decoration:underline; }
 </div>
 
 <script>
-// ========== 設定區：請將此 URL 換成你自己嘅 GAS Web App URL ==========
+// ========= 設定區：GAS Web App URL =========
 const GAS_URL = "https://script.google.com/macros/s/AKfycbz4nv68ss6kVKmUB2wDfvg0Y3FebvA_AXrq8lElcepz5UqxWnWKiUbcA-_S-h7hHF-U/exec";
-// ========================================================================
+// ===============================================
 
 let allItems = [];
 
-function formatTime(iso) {
-  if (!iso) return "--";
-  // "2026-06-03 01:23:45" format
-  return iso.replace("T", " ").substring(0, 19);
-}
-
-async function apiCall(params) {
+function apiCall(params) {
   const url = new URL(GAS_URL);
   Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
-  const resp = await fetch(url.toString());
-  return resp.json();
+  return fetch(url.toString()).then(r => r.json());
+}
+
+function formatTime(iso) {
+  if (!iso) return "--";
+  return iso.replace("T", " ").substring(0, 19);
 }
 
 async function loadPending() {
@@ -207,9 +205,10 @@ async function loadPending() {
       tbody.innerHTML = "";
       allItems.forEach(item => {
         const tr = document.createElement("tr");
+        const driveLink = item.driveUrl ? `<a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a>` : item.title;
         tr.innerHTML = `
           <td>${item.type}</td>
-          <td>${item.driveUrl ? `<a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a>` : item.title}</td>
+          <td>${driveLink}</td>
           <td>${formatTime(item.createdAt)}</td>
           <td><span class="status-badge status-pending">${item.status}</span></td>
           <td>
@@ -230,14 +229,8 @@ async function loadPending() {
 
 async function confirmItem(id) {
   if (!confirm("確認此項目出街？確認後將推送到社群平台。")) return;
-  
   try {
-    const data = await fetch(GAS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ action: "confirm", id: id })
-    }).then(r => r.json());
-    
+    const data = await apiCall({ action: "confirm", id: id });
     if (data.success) {
       alert("✅ 已確認！項目將安排出街。");
       loadPending();
@@ -251,14 +244,8 @@ async function confirmItem(id) {
 
 async function deleteItem(id) {
   if (!confirm("確定刪除此項目？")) return;
-  
   try {
-    const data = await fetch(GAS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ action: "delete", id: id })
-    }).then(r => r.json());
-    
+    const data = await apiCall({ action: "delete", id: id });
     if (data.success) {
       alert("🗑️ 已刪除");
       loadPending();
@@ -270,22 +257,18 @@ async function deleteItem(id) {
   }
 }
 
-function showSection(name) {
-  // Hide all
+function showSection(name, evt) {
   ["pending","promo","stock","news","assets","scripts"].forEach(n => {
     document.getElementById("sec-" + n).style.display = "none";
   });
-  // Show target
   document.getElementById("sec-" + name).style.display = "block";
-  // Update active nav
   document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
-  event.currentTarget.classList.add("active");
+  if (evt && evt.currentTarget) evt.currentTarget.classList.add("active");
   
-  // Update title
   const titles = {
     pending: ["📋 待確認項目", "以下項目等待管理層確認後方可出街"],
-    promo:   ["📮 每日「易」Post", "每日 10:00 自動生成宣傳圖及社群發文內容"],
-    stock:   ["📈 美股傳真", "每晚 21:00 自動生成深度分析報告（含百家撮要）"],
+    promo:   ["📱 每日「易」Post", "每日 10:00 自動生成宣傳圖及社群發文內容"],
+    stock:   ["📈 每日美股報告", "每晚 21:00 自動生成深度分析報告（含百家撮要）"],
     news:    ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞撮要"],
     assets:  ["🎨 設計素材庫", "EventEasy Logo、SVG 模板等設計資源"],
     scripts: ["⚙️ 自動化腳本", "所有自動化任務的執行腳本及技術文件"]
@@ -296,7 +279,7 @@ function showSection(name) {
 
 // 首次載入
 loadPending();
-setInterval(loadPending, 60000); // 每 60 秒自動更新
+setInterval(loadPending, 60000);
 </script>
 </body>
 </html>
