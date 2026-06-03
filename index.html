@@ -22,7 +22,7 @@
   --red: #ef4444;
   --yellow: #eab308;
 }
-body { font-family: 'Sarasa Gothic SC', 'Noto Sans TC', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
+body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
 
 /* Sidebar */
 .sidebar { width:var(--sidebar-w); background:var(--sidebar-bg); color:#fff; display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; }
@@ -44,7 +44,7 @@ body { font-family: 'Sarasa Gothic SC', 'Noto Sans TC', system-ui, sans-serif; d
 .status-bar { display:inline-flex; align-items:center; gap:6px; background:#dcfce7; color:#166534; font-size:13px; padding:4px 12px; border-radius:20px; margin-top:12px; }
 
 /* Stats */
-.stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:16px; margin-bottom:32px; }
+.stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:16px; margin-bottom:24px; }
 .stat-card { background:var(--card-bg); border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid var(--border); }
 .stat-icon { font-size:28px; margin-bottom:8px; }
 .stat-num { font-size:28px; font-weight:700; }
@@ -68,8 +68,8 @@ tbody tr:hover { background:#f8fafc; }
 .btn-confirm:hover { background:#16a34a; }
 .btn-delete { background:#fee2e2; color:#dc2626; }
 .btn-delete:hover { background:#fecaca; }
-.btn-primary { background:var(--accent); color:#fff; }
-.btn-primary:hover { background:#2563eb; }
+.btn-preview { background:#e0f2fe; color:#0284c7; }
+.btn-preview:hover { background:#bae6fd; }
 a.link { color:var(--accent); text-decoration:none; }
 a.link:hover { text-decoration:underline; }
 
@@ -80,6 +80,28 @@ a.link:hover { text-decoration:underline; }
 /* Refresh button */
 .refresh-btn { float:right; background:var(--bg); border:1px solid var(--border); padding:6px 14px; border-radius:8px; cursor:pointer; font-size:13px; }
 .refresh-btn:hover { background:var(--accent-light); }
+
+/* Card grid layout for promo options */
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:16px; }
+.card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px; }
+.card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+.card-header { display:flex; justify-content:space-between; align-items:start; margin-bottom:12px; }
+.card-title { font-weight:600; font-size:14px; }
+.card-meta { font-size:12px; color:var(--text-muted); }
+.card-body { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:12px; }
+.card-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.card-preview { width:100%; border-radius:8px; margin-bottom:12px; max-height:200px; object-fit:cover; }
+
+/* Type badges */
+.type-badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+.type-promoA { background:#dbeafe; color:#1d4ed8; }
+.type-promoB { background:#fce7f3; color:#be185d; }
+.type-promoC { background:#fef3c7; color:#92400e; }
+.type-stock { background:#dcfce7; color:#166534; }
+.type-news { background:#f3e8ff; color:#7c3aed; }
+
+/* Note for auto-confirmed */
+.auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
 </style>
 </head>
 <body>
@@ -88,18 +110,16 @@ a.link:hover { text-decoration:underline; }
 <div class="sidebar">
   <div class="sidebar-header">
     <h1>⚡ WorkBuddy</h1>
-    <p>自動化任務管理中心</p>
+    <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav">
-    <a class="nav-item active" onclick="showSection('pending', event)">📋 待確認項目</a>
-    <a class="nav-item" onclick="showSection('promo', event)">📱 每日「易」Post</a>
-    <a class="nav-item" onclick="showSection('stock', event)">📈 美股傳真</a>
+    <a class="nav-item active" onclick="showSection('pending', event)">📋 待確認 (揀選出街)</a>
+    <a class="nav-item" onclick="showSection('stock', event)">📈 美股分析報告</a>
     <a class="nav-item" onclick="showSection('news', event)">📰 每日新聞撮要</a>
-    <a class="nav-item" onclick="showSection('assets', event)">🎨 設計素材庫</a>
-    <a class="nav-item" onclick="showSection('scripts', event)">⚙️ 自動化腳本</a>
+    <a class="nav-item" onclick="showSection('confirmed', event)">✅ 已出街記錄</a>
   </nav>
   <div class="sidebar-footer">
-    ⚡ <span id="status-text">3 個自動化運行中</span><br>
+    ⚡ <span id="status-text">4 個自動化運行中</span><br>
     上次更新：<span id="last-update">--:--</span>
   </div>
 </div>
@@ -107,98 +127,92 @@ a.link:hover { text-decoration:underline; }
 <!-- Main Content -->
 <div class="main">
   <div class="header">
-    <h2 id="page-title">📋 待確認項目</h2>
-    <p id="page-desc">以下項目等待管理層確認後方可出街</p>
+    <h2 id="page-title">📋 待確認 — 揀選出街</h2>
+    <p id="page-desc">每日 3 款宣傳圖選項，揀好撳「確認出街」推送至社群媒體</p>
     <div class="status-bar" id="status-bar">⚡ 載入中...</div>
   </div>
 
-  <!-- 待確認項目 -->
+  <!-- 待確認項目 (宣傳圖) -->
   <div id="sec-pending" class="section">
-    <h3>📋 待確認項目 <span class="badge" id="pending-count">0</span>
+    <h3>🖼️ 今日宣傳圖選項 <span class="badge" id="pending-count">0</span>
       <button class="refresh-btn" onclick="loadPending()">🔄 重新整理</button>
     </h3>
+    <p class="auto-note">💡 每日 10:00 自動生成 3 款宣傳圖，揀選後撳「確認出街」</p>
     <div id="pending-loading" class="loading">載入中...</div>
-    <div id="pending-empty" class="empty" style="display:none;">📭 暫無待確認項目</div>
-    <table id="pending-table" style="display:none;">
+    <div id="pending-empty" class="empty" style="display:none;">📭 今日暫無待確認項目。<br><small>每日早上 10:00 自動生成</small></div>
+    <div id="pending-cards" class="card-grid" style="display:none;"></div>
+  </div>
+
+  <!-- 美股報告 (自動確認，直接顯示) -->
+  <div id="sec-stock" class="section" style="display:none;">
+    <h3>📈 每日美股分析報告 <span class="badge" id="stock-count">0</span>
+      <button class="refresh-btn" onclick="loadStock()">🔄 重新整理</button>
+    </h3>
+    <p class="auto-note">⚡ 每晚 21:00 自動生成並確認，無需手動操作</p>
+    <div id="stock-loading" class="loading">載入中...</div>
+    <div id="stock-empty" class="empty" style="display:none;">📭 暫無美股報告<br><small>每晚 21:00 自動生成</small></div>
+    <table id="stock-table" style="display:none;">
       <thead>
-        <tr>
-          <th>類型</th>
-          <th>標題</th>
-          <th>建立時間</th>
-          <th>狀態</th>
-          <th>操作</th>
-        </tr>
+        <tr><th>類型</th><th>標題</th><th>建立時間</th><th>狀態</th><th>操作</th></tr>
       </thead>
-      <tbody id="pending-tbody"></tbody>
+      <tbody id="stock-tbody"></tbody>
     </table>
   </div>
 
-  <!-- 每日 Post -->
-  <div id="sec-promo" class="section" style="display:none;">
-    <h3>📱 每日「易」Post</h3>
-    <div class="stats" id="promo-stats"></div>
-    <div id="promo-items"></div>
-  </div>
-
-  <!-- 美股報告 -->
-  <div id="sec-stock" class="section" style="display:none;">
-    <h3>📈 每日美股報告</h3>
-    <div class="stats" id="stock-stats"></div>
-    <div id="stock-items"></div>
-  </div>
-
-  <!-- 新聞撮要 -->
+  <!-- 新聞撮要 (自動確認，直接顯示) -->
   <div id="sec-news" class="section" style="display:none;">
-    <h3>📰 每日新聞撮要</h3>
-    <div class="stats" id="news-stats"></div>
-    <div id="news-items"></div>
+    <h3>📰 每日新聞撮要 <span class="badge" id="news-count">0</span>
+      <button class="refresh-btn" onclick="loadNews()">🔄 重新整理</button>
+    </h3>
+    <p class="auto-note">⚡ 每日 10:00 自動生成並確認，無需手動操作</p>
+    <div id="news-loading" class="loading">載入中...</div>
+    <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 10:00 自動生成</small></div>
+    <table id="news-table" style="display:none;">
+      <thead>
+        <tr><th>類型</th><th>標題</th><th>建立時間</th><th>狀態</th><th>操作</th></tr>
+      </thead>
+      <tbody id="news-tbody"></tbody>
+    </table>
   </div>
 
-  <!-- 設計素材 -->
-  <div id="sec-assets" class="section" style="display:none;">
-    <h3>🎨 設計素材庫</h3>
-    <div id="assets-items"></div>
-  </div>
-
-  <!-- 自動化腳本 -->
-  <div id="sec-scripts" class="section" style="display:none;">
-    <h3>⚙️ 自動化腳本</h3>
-    <div id="scripts-items"></div>
+  <!-- 已出街記錄 -->
+  <div id="sec-confirmed" class="section" style="display:none;">
+    <h3>✅ 已出街記錄 <span class="badge" id="confirmed-count">0</span>
+      <button class="refresh-btn" onclick="loadConfirmed()">🔄 重新整理</button>
+    </h3>
+    <div id="confirmed-loading" class="loading">載入中...</div>
+    <div id="confirmed-empty" class="empty" style="display:none;">📭 暫無已出街記錄</div>
+    <table id="confirmed-table" style="display:none;">
+      <thead>
+        <tr><th>類型</th><th>標題</th><th>建立時間</th><th>確認時間</th><th>狀態</th></tr>
+      </thead>
+      <tbody id="confirmed-tbody"></tbody>
+    </table>
   </div>
 </div>
 
 <script>
-// ========= 設定區：GAS Web App URL =========
+// ========= 設定 =========
 const GAS_URL = "https://script.google.com/macros/s/AKfycbz4nv68ss6kVKmUB2wDfvg0Y3FebvA_AXrq8lElcepz5UqxWnWKiUbcA-_S-h7hHF-U/exec";
-// ==============================================
 
-let allItems = [];
 let jsonpCounter = 0;
 
 function apiCall(params, callback) {
   jsonpCounter++;
   const cbName = "gas_cb_" + jsonpCounter;
-  // Create global callback
   window[cbName] = function(data) {
-    // Clean up
     delete window[cbName];
     const script = document.getElementById("jsonp_" + cbName);
     if (script) script.remove();
     callback(data);
   };
-  
-  // Build URL
   const url = new URL(GAS_URL);
   Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
   url.searchParams.append("callback", cbName);
-  
-  // Create script tag
   const script = document.createElement("script");
   script.id = "jsonp_" + cbName;
   script.src = url.toString();
   document.head.appendChild(script);
-  
-  // Timeout after 10s
   setTimeout(() => {
     if (window[cbName]) {
       delete window[cbName];
@@ -211,55 +225,167 @@ function apiCall(params, callback) {
 
 function formatTime(iso) {
   if (!iso) return "--";
-  return iso.replace("T", " ").substring(0, 19);
+  return iso.replace("T", " ").substring(0, 19).replace("Z","").replace(" 0"," ");
 }
 
+function getTypeBadgeClass(type) {
+  if (type.includes("A")) return "type-promoA";
+  if (type.includes("B")) return "type-promoB";
+  if (type.includes("C")) return "type-promoC";
+  if (type.includes("美股")) return "type-stock";
+  if (type.includes("新聞")) return "type-news";
+  return "";
+}
+
+// ===== 待確認項目（宣傳圖卡片式） =====
 function loadPending() {
   document.getElementById("pending-loading").style.display = "block";
-  document.getElementById("pending-table").style.display = "none";
+  document.getElementById("pending-cards").style.display = "none";
   document.getElementById("pending-empty").style.display = "none";
   
   apiCall({ action: "list_pending" }, function(data) {
-    allItems = data.items || [];
-    
+    const items = (data.items || []).filter(i => i.type.includes("宣傳圖"));
     document.getElementById("pending-loading").style.display = "none";
-    document.getElementById("pending-count").textContent = allItems.length;
+    document.getElementById("pending-count").textContent = items.length;
     
-    if (allItems.length === 0) {
+    if (items.length === 0) {
       document.getElementById("pending-empty").style.display = "block";
     } else {
-      document.getElementById("pending-table").style.display = "table";
-      const tbody = document.getElementById("pending-tbody");
-      tbody.innerHTML = "";
-      allItems.forEach(item => {
-        const tr = document.createElement("tr");
-        const driveLink = item.driveUrl ? `<a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a>` : item.title;
-        tr.innerHTML = `
-          <td>${item.type}</td>
-          <td>${driveLink}</td>
-          <td>${formatTime(item.createdAt)}</td>
-          <td><span class="status-badge status-pending">${item.status}</span></td>
-          <td>
+      const grid = document.getElementById("pending-cards");
+      grid.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
+            <span class="card-meta">${formatTime(item.createdAt)}</span>
+          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-body">${item.notes || "無備註"}</div>
+          <div class="card-actions">
+            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 預覽</button>
             <button class="btn btn-confirm" onclick="confirmItem('${item.id}')">✅ 確認出街</button>
-            <button class="btn btn-delete" onclick="deleteItem('${item.id}')" style="margin-left:4px;">🗑️</button>
+            <button class="btn btn-delete" onclick="deleteItem('${item.id}')">🗑️ 刪除</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      document.getElementById("pending-cards").style.display = "grid";
+    }
+    document.getElementById("status-bar").innerHTML = `⚡ ${items.length} 款宣傳圖等你揀選`;
+    document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
+  });
+}
+
+// ===== 美股報告（已確認） =====
+function loadStock() {
+  document.getElementById("stock-loading").style.display = "block";
+  document.getElementById("stock-table").style.display = "none";
+  document.getElementById("stock-empty").style.display = "none";
+  
+  apiCall({ action: "list", status: "已確認" }, function(data) {
+    const items = (data.items || []).filter(i => i.type.includes("美股"));
+    document.getElementById("stock-loading").style.display = "none";
+    document.getElementById("stock-count").textContent = items.length;
+    
+    if (items.length === 0) {
+      document.getElementById("stock-empty").style.display = "block";
+    } else {
+      document.getElementById("stock-table").style.display = "table";
+      const tbody = document.getElementById("stock-tbody");
+      tbody.innerHTML = "";
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="type-badge type-stock">${item.type}</span></td>
+          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
+          <td>${formatTime(item.createdAt)}</td>
+          <td><span class="status-badge status-confirmed">${item.status}</span></td>
+          <td>
+            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
           </td>
         `;
         tbody.appendChild(tr);
       });
     }
-    
-    document.getElementById("status-bar").innerHTML = `⚡ ${allItems.length} 個項目待確認`;
-    document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
   });
 }
 
-function confirmItem(id) {
-  if (!confirm("確認此項目出街？確認後將推送到社群平台。")) return;
+// ===== 新聞撮要（已確認） =====
+function loadNews() {
+  document.getElementById("news-loading").style.display = "block";
+  document.getElementById("news-table").style.display = "none";
+  document.getElementById("news-empty").style.display = "none";
   
+  apiCall({ action: "list", status: "已確認" }, function(data) {
+    const items = (data.items || []).filter(i => i.type.includes("新聞"));
+    document.getElementById("news-loading").style.display = "none";
+    document.getElementById("news-count").textContent = items.length;
+    
+    if (items.length === 0) {
+      document.getElementById("news-empty").style.display = "block";
+    } else {
+      document.getElementById("news-table").style.display = "table";
+      const tbody = document.getElementById("news-tbody");
+      tbody.innerHTML = "";
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="type-badge type-news">${item.type}</span></td>
+          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
+          <td>${formatTime(item.createdAt)}</td>
+          <td><span class="status-badge status-confirmed">${item.status}</span></td>
+          <td>
+            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  });
+}
+
+// ===== 已出街記錄 =====
+function loadConfirmed() {
+  document.getElementById("confirmed-loading").style.display = "block";
+  document.getElementById("confirmed-table").style.display = "none";
+  document.getElementById("confirmed-empty").style.display = "none";
+  
+  apiCall({ action: "list", status: "已確認" }, function(data) {
+    const items = data.items || [];
+    document.getElementById("confirmed-loading").style.display = "none";
+    document.getElementById("confirmed-count").textContent = items.length;
+    
+    if (items.length === 0) {
+      document.getElementById("confirmed-empty").style.display = "block";
+    } else {
+      document.getElementById("confirmed-table").style.display = "table";
+      const tbody = document.getElementById("confirmed-tbody");
+      tbody.innerHTML = "";
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span></td>
+          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
+          <td>${formatTime(item.createdAt)}</td>
+          <td>${formatTime(item.confirmedAt)}</td>
+          <td><span class="status-badge status-confirmed">${item.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  });
+}
+
+// ===== 確認/刪除 =====
+function confirmItem(id) {
+  if (!confirm("✅ 確認此宣傳圖出街？推送至 Facebook + Instagram + LinkedIn")) return;
   apiCall({ action: "confirm", id: id }, function(data) {
     if (data.success) {
-      alert("✅ 已確認！項目將安排出街。");
+      alert("✅ 已確認！項目將安排推送至社群媒體。");
       loadPending();
+      loadConfirmed();
     } else {
       alert("❌ 確認失敗：" + (data.error || "未知錯誤"));
     }
@@ -268,7 +394,6 @@ function confirmItem(id) {
 
 function deleteItem(id) {
   if (!confirm("確定刪除此項目？")) return;
-  
   apiCall({ action: "delete", id: id }, function(data) {
     if (data.success) {
       alert("🗑️ 已刪除");
@@ -279,8 +404,9 @@ function deleteItem(id) {
   });
 }
 
+// ===== 頁面切換 =====
 function showSection(name, evt) {
-  ["pending","promo","stock","news","assets","scripts"].forEach(n => {
+  ["pending","stock","news","confirmed"].forEach(n => {
     document.getElementById("sec-" + n).style.display = "none";
   });
   document.getElementById("sec-" + name).style.display = "block";
@@ -288,15 +414,19 @@ function showSection(name, evt) {
   if (evt && evt.currentTarget) evt.currentTarget.classList.add("active");
   
   const titles = {
-    pending: ["📋 待確認項目", "以下項目等待管理層確認後方可出街"],
-    promo:   ["📱 每日「易」Post", "每日 10:00 自動生成宣傳圖及社群發文內容"],
-    stock:   ["📈 每日美股報告", "每晚 21:00 自動生成深度分析報告（含百家撮要）"],
-    news:    ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞撮要"],
-    assets:  ["🎨 設計素材庫", "EventEasy Logo、SVG 模板等設計資源"],
-    scripts: ["⚙️ 自動化腳本", "所有自動化任務的執行腳本及技術文件"]
+    pending: ["📋 待確認 — 揀選出街", "每日 3 款宣傳圖選項，揀好撳「確認出街」"],
+    stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
+    news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
+    confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"]
   };
   document.getElementById("page-title").textContent = titles[name][0];
   document.getElementById("page-desc").textContent = titles[name][1];
+  
+  // 切換時刷新資料
+  if (name === "pending") loadPending();
+  if (name === "stock") loadStock();
+  if (name === "news") loadNews();
+  if (name === "confirmed") loadConfirmed();
 }
 
 // 首次載入
