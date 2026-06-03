@@ -90,6 +90,9 @@ a.link:hover { text-decoration:underline; }
 .card-header { display:flex; justify-content:space-between; align-items:start; margin-bottom:12px; }
 .card-title { font-weight:600; font-size:14px; }
 .card-meta { font-size:12px; color:var(--text-muted); }
+.btn-publish-now { margin-left:auto; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; border:none; border-radius:6px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer; white-space:nowrap; transition:all 0.15s; }
+.btn-publish-now:hover { background:linear-gradient(135deg, #d97706, #b45309); transform:translateY(-1px); box-shadow:0 2px 6px rgba(217,119,6,0.3); }
+.btn-publish-now:disabled { background:#d1d5db; cursor:not-allowed; transform:none; box-shadow:none; }
 .card-body { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:12px; }
 .card-actions { display:flex; gap:8px; flex-wrap:wrap; }
 .card-preview { width:100%; border-radius:8px; margin-bottom:12px; max-height:200px; object-fit:cover; }
@@ -416,6 +419,7 @@ function loadOutbox() {
           <div class="card-header">
             <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
             <span class="card-meta">📅 ${getScheduledTime(item.type)}</span>
+            <button class="btn-publish-now" onclick="publishNow('${item.id}', this)">🚀 現在出街</button>
           </div>
           <div class="card-title">${item.title}</div>
           <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
@@ -454,6 +458,42 @@ function getScheduledTime(type) {
   if (t.includes("美股")) return "今日 21:00 出街";
   if (t.includes("文案")) return "手動排程 · 待推送";
   return "待定";
+}
+
+// ===== 立即出街（管理員手動推送） =====
+function publishNow(id, btn) {
+  if (!confirm("🚀 確定現在立即出街？\n\n將會推送至已設定的社群平台。")) return;
+  btn.disabled = true;
+  btn.textContent = '⏳ 推送中...';
+  apiCall({ action: "confirm", id: id }, function(data) {
+    if (data.success) {
+      btn.textContent = '✅ 已出街';
+      btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
+      // 1.5 秒後移除卡片
+      var card = btn.closest('.card');
+      if (card) {
+        card.style.transition = 'opacity 0.4s, transform 0.4s';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
+        setTimeout(function() { card.remove(); updateOutboxCount(); }, 400);
+      }
+    } else {
+      alert('❌ 推送失敗：' + (data.error || '未知錯誤'));
+      btn.disabled = false;
+      btn.textContent = '🚀 現在出街';
+    }
+  });
+}
+
+function updateOutboxCount() {
+  var grid = document.getElementById('outbox-cards');
+  if (!grid) return;
+  var cards = grid.querySelectorAll('.card');
+  document.getElementById('outbox-count').textContent = cards.length;
+  if (cards.length === 0) {
+    document.getElementById('outbox-empty').style.display = 'block';
+    grid.style.display = 'none';
+  }
 }
 
 // ===== 美股報告（已確認） =====
