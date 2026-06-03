@@ -121,8 +121,17 @@ a.link:hover { text-decoration:underline; }
 .post-card-label.label-a { background:#dbeafe; color:#1d4ed8; }
 .post-card-label.label-b { background:#fce7f3; color:#be185d; }
 .post-card-label.label-c { background:#ede9fe; color:#6d28d9; }
-.post-card-footer { border-top:1px solid #f3f4f6; padding:12px 16px; display:flex; gap:16px; }
+.post-card-footer { border-top:1px solid #f3f4f6; padding:12px 16px; display:flex; gap:16px; align-items:center; }
 .post-card-stat { font-size:12px; color:#9ca3af; display:flex; align-items:center; gap:4px; }
+.post-card-footer-right { margin-left:auto; }
+.post-card-edit-btn { position:absolute; top:8px; right:12px; background:none; border:1px solid #e5e7eb; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; color:#6b7280; transition:all 0.15s; }
+.post-card-edit-btn:hover { background:#f3f4f6; color:#374151; border-color:#d1d5db; }
+.post-card-edit-btn.saving { background:#fef3c7; color:#92400e; border-color:#fcd34d; }
+.post-card-body.editing { background:#fffbeb; border-radius:8px; outline:2px dashed #fcd34d; outline-offset:2px; padding:12px; cursor:text; }
+.post-card-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:6px 16px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+.post-card-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); transform:translateY(-1px); box-shadow:0 2px 8px rgba(5,150,105,0.3); }
+.post-card-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; transform:none; box-shadow:none; }
+.post-card { position:relative; }
 </style>
 </head>
 <body>
@@ -203,7 +212,8 @@ a.link:hover { text-decoration:underline; }
     <h3>📝 IG / Facebook 貼文文案（可直接複製發帖）</h3>
     <div class="post-cards">
       <!-- 款式 1：專業商務版 -->
-      <div class="post-card">
+      <div class="post-card" id="post-card-1">
+        <button class="post-card-edit-btn" onclick="toggleEdit('post-card-1')">✏️ 編輯</button>
         <span class="post-card-label label-a">款式 1 · 專業商務版</span>
         <div class="post-card-header">
           <div class="post-card-avatar avatar-a">E</div>
@@ -212,7 +222,7 @@ a.link:hover { text-decoration:underline; }
             <div class="post-card-handle">@eventeasy · 適合公司、活動策劃、行政分享</div>
           </div>
         </div>
-        <div class="post-card-body"><span class="headline">還在煩惱搞活動要分開用幾個平台？</span>
+        <div class="post-card-body" id="post-body-1"><span class="headline">還在煩惱搞活動要分開用幾個平台？</span>
 報名、票務、簽到、數據、現場互動全部唔使周圍搵🔥
 <b>EventEasy.net 一站式全方位活動管理平台</b>
 無論企業研討會、展覽、學校活動、晚宴、市集、線上活動都完全適合✅
@@ -229,11 +239,13 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦公司專頁</span>
           <span class="post-card-stat">💬 可加行業 hashtag</span>
           <span class="post-card-stat">📋 一鍵複製</span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-1" onclick="confirmPublish('post-card-1','款式 1 · 專業商務版')">✅ 排隊出街</button></span>
         </div>
       </div>
 
       <!-- 款式 2：輕鬆吸睛版 -->
-      <div class="post-card">
+      <div class="post-card" id="post-card-2">
+        <button class="post-card-edit-btn" onclick="toggleEdit('post-card-2')">✏️ 編輯</button>
         <span class="post-card-label label-b">款式 2 · 輕鬆吸睛版</span>
         <div class="post-card-header">
           <div class="post-card-avatar avatar-b">E</div>
@@ -242,7 +254,7 @@ a.link:hover { text-decoration:underline; }
             <div class="post-card-handle">@eventeasy · IG 日常貼文 親民風</div>
           </div>
         </div>
-        <div class="post-card-body"><span class="headline">搞活動從來都唔使再頭痛🤯</span>
+        <div class="post-card-body" id="post-body-2"><span class="headline">搞活動從來都唔使再頭痛🤯</span>
 由報名、賣飛、簽到、數據統計到現場互動，
 一個 <b>EventEasy.net</b> 平台已經全包辦晒！
 不用安裝任何軟件，網頁即開即用
@@ -256,11 +268,13 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦 IG 日常</span>
           <span class="post-card-stat">💬 輕鬆互動風格</span>
           <span class="post-card-stat">📋 一鍵複製</span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-2" onclick="confirmPublish('post-card-2','款式 2 · 輕鬆吸睛版')">✅ 排隊出街</button></span>
         </div>
       </div>
 
       <!-- 款式 3：精簡短版 -->
-      <div class="post-card">
+      <div class="post-card" id="post-card-3">
+        <button class="post-card-edit-btn" onclick="toggleEdit('post-card-3')">✏️ 編輯</button>
         <span class="post-card-label label-c">款式 3 · 精簡短版</span>
         <div class="post-card-header">
           <div class="post-card-avatar avatar-c">E</div>
@@ -269,7 +283,7 @@ a.link:hover { text-decoration:underline; }
             <div class="post-card-handle">@eventeasy · Story / Reels 配文</div>
           </div>
         </div>
-        <div class="post-card-body"><span class="headline">搞活動唔使再左搵右搵！</span>
+        <div class="post-card-body" id="post-body-3"><span class="headline">搞活動唔使再左搵右搵！</span>
 <b>EventEasy.net</b> 一站式活動管理平台
 報名｜票務｜QR 簽到｜數據｜互動遊戲
 全部功能一平台搞掂✅
@@ -279,6 +293,7 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦 Story</span>
           <span class="post-card-stat">💬 短版吸睛</span>
           <span class="post-card-stat">📋 一鍵複製</span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-3" onclick="confirmPublish('post-card-3','款式 3 · 精簡短版')">✅ 排隊出街</button></span>
         </div>
       </div>
     </div>
@@ -532,6 +547,88 @@ function loadGallery() {
     `;
     grid.appendChild(card);
   });
+}
+
+// ===== 社群文案編輯 =====
+function toggleEdit(cardId) {
+  var card = document.getElementById(cardId);
+  var body = document.getElementById(cardId.replace('post-card','post-body'));
+  var btn = card.querySelector('.post-card-edit-btn');
+  if (!body || !btn) return;
+  
+  if (body.isContentEditable) {
+    // Save mode
+    body.contentEditable = 'false';
+    body.classList.remove('editing');
+    btn.classList.remove('saving');
+    btn.innerHTML = '✏️ 編輯';
+  } else {
+    // Edit mode
+    body.contentEditable = 'true';
+    body.classList.add('editing');
+    btn.classList.add('saving');
+    btn.innerHTML = '💾 儲存';
+  }
+}
+
+// ===== 社群文案排隊出街 =====
+function confirmPublish(cardId, styleLabel) {
+  var card = document.getElementById(cardId);
+  var body = document.getElementById(cardId.replace('post-card','post-body'));
+  var btn = document.getElementById(cardId.replace('post-card','confirm-btn'));
+  if (!body || !btn) return;
+  
+  // Exit edit mode if active
+  if (body.isContentEditable) {
+    body.contentEditable = 'false';
+    body.classList.remove('editing');
+    var editBtn = card.querySelector('.post-card-edit-btn');
+    if (editBtn) { editBtn.classList.remove('saving'); editBtn.innerHTML = '✏️ 編輯'; }
+  }
+  
+  // Get text content (strip HTML, keep newlines)
+  var text = body.innerText.trim();
+  var headline = '';
+  var h = body.querySelector('.headline');
+  if (h) headline = h.innerText.trim();
+  
+  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會加入待確認列表，等管理層揀選。')) return;
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ 傳送中...';
+  
+  var params = new URLSearchParams();
+  params.append('action', 'add');
+  params.append('type', '社群文案');
+  params.append('title', styleLabel);
+  params.append('notes', text);
+  params.append('status', '待確認');
+  
+  fetch(GAS_URL + '?' + params.toString())
+    .then(function(r) { return r.text(); })
+    .then(function(raw) {
+      try {
+        var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
+        if (data.success) {
+          alert('✅ 已加入待確認列表！\n\n可以在「📋 待確認」分頁查看。');
+          btn.textContent = '✅ 已排隊';
+          btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
+        } else {
+          alert('❌ 加入失敗：' + (data.error || '未知錯誤'));
+          btn.disabled = false;
+          btn.textContent = '✅ 排隊出街';
+        }
+      } catch(e) {
+        alert('❌ 伺服器回應異常，請稍後再試。');
+        btn.disabled = false;
+        btn.textContent = '✅ 排隊出街';
+      }
+    })
+    .catch(function(e) {
+      alert('❌ 網絡錯誤：' + e.message);
+      btn.disabled = false;
+      btn.textContent = '✅ 排隊出街';
+    });
 }
 
 // ===== 確認/刪除 =====
