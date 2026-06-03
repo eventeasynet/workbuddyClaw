@@ -132,6 +132,24 @@ a.link:hover { text-decoration:underline; }
 .post-card-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); transform:translateY(-1px); box-shadow:0 2px 8px rgba(5,150,105,0.3); }
 .post-card-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; transform:none; box-shadow:none; }
 .post-card { position:relative; }
+
+/* Event highlight cards */
+.event-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:0; margin-bottom:16px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.04); position:relative; }
+.event-card-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px 10px; }
+.event-card-header-left { display:flex; align-items:center; gap:10px; }
+.event-card-icon { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #06b6d4, #0891b2); display:flex; align-items:center; justify-content:center; font-size:16px; }
+.event-card-title { font-size:14px; font-weight:600; color:#0f172a; }
+.event-card-date { font-size:11px; color:#9ca3af; }
+.event-card-body { padding:0 16px 16px; white-space:pre-line; font-size:14px; line-height:1.75; color:#334155; }
+.event-card-body.editing { background:#fffbeb; border-radius:8px; outline:2px dashed #fcd34d; outline-offset:2px; padding:12px; margin:0 16px 16px; cursor:text; }
+.event-card-footer { border-top:1px solid #f3f4f6; padding:10px 16px; display:flex; gap:12px; align-items:center; }
+.event-card-footer-right { margin-left:auto; display:flex; gap:8px; }
+.event-edit-btn { background:none; border:1px solid #e5e7eb; border-radius:6px; padding:3px 10px; font-size:11px; cursor:pointer; color:#6b7280; }
+.event-edit-btn:hover { background:#f3f4f6; }
+.event-edit-btn.saving { background:#fef3c7; color:#92400e; border-color:#fcd34d; }
+.event-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:5px 14px; font-size:12px; font-weight:600; cursor:pointer; }
+.event-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); }
+.event-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; }
 </style>
 </head>
 <body>
@@ -147,11 +165,12 @@ a.link:hover { text-decoration:underline; }
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
     <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
     <a class="nav-item" data-section="copy">📝 社群文案</a>
+    <a class="nav-item" data-section="events">🌍 活動花絮</a>
     <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
     <a class="nav-item" data-section="confirmed">✅ 已出街記錄</a>
   </nav>
   <div class="sidebar-footer">
-    ⚡ <span id="status-text">4 個自動化運行中</span><br>
+    ⚡ <span id="status-text">5 個自動化運行中</span><br>
     上次更新：<span id="last-update">--:--</span>
   </div>
 </div>
@@ -297,6 +316,13 @@ a.link:hover { text-decoration:underline; }
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- 活動花絮（從 GAS 加載） -->
+  <div id="sec-events" class="section" style="display:none;">
+    <h3>🌍 每日世界各地活動花絮 <span class="badge" id="events-count">0</span></h3>
+    <p class="section-desc">每日 12:00 自動搜尋，可編輯後排隊出街</p>
+    <div id="events-list"></div>
   </div>
 
   <!-- 設計圖庫 -->
@@ -509,6 +535,120 @@ function loadConfirmed() {
   });
 }
 
+// ===== 活動花絮（從 GAS 加載） =====
+function loadEvents() {
+  var list = document.getElementById("events-list");
+  var badge = document.getElementById("events-count");
+  list.innerHTML = "<p style='color:#9ca3af;'>⏳ 載入中...</p>";
+  
+  apiCall({ action: "list", type: "活動花絮" }, function(data) {
+    var items = data.items || [];
+    badge.textContent = items.length;
+    if (items.length === 0) {
+      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 12:00 自動生成。</p>";
+      return;
+    }
+    list.innerHTML = "";
+    items.forEach(function(item) {
+      var card = document.createElement("div");
+      card.className = "event-card";
+      card.id = "event-card-" + item.id;
+      var notes = (item.notes || "").replace(/\n/g, "<br>");
+      card.innerHTML = `
+        <div class="event-card-header">
+          <div class="event-card-header-left">
+            <div class="event-card-icon">🌍</div>
+            <div><div class="event-card-title">${escHtml(item.title || "活動花絮")}</div>
+            <div class="event-card-date">🕐 每日 12:00 自動生成 · ${escHtml(item.type || "")}</div></div>
+          </div>
+          <button class="event-edit-btn" onclick="toggleEventEdit('event-card-${item.id}')">✏️ 編輯</button>
+        </div>
+        <div class="event-card-body" id="event-body-${item.id}">${notes}</div>
+        <div class="event-card-footer">
+          <span style="font-size:11px; color:#9ca3af;">📋 ID: ${item.id}</span>
+          <div class="event-card-footer-right">
+            <button class="event-confirm-btn" id="event-confirm-${item.id}" onclick="confirmEventPublish('${item.id}','${escAttr(item.title || "")}')">✅ 排隊出街</button>
+          </div>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  });
+}
+
+function toggleEventEdit(cardId) {
+  var bodyId = cardId.replace("event-card-", "event-body-");
+  var body = document.getElementById(bodyId);
+  var card = document.getElementById(cardId);
+  var btn = card.querySelector(".event-edit-btn");
+  if (!body || !btn) return;
+  if (body.isContentEditable) {
+    body.contentEditable = "false";
+    body.classList.remove("editing");
+    btn.classList.remove("saving");
+    btn.innerHTML = "✏️ 編輯";
+  } else {
+    body.contentEditable = "true";
+    body.classList.add("editing");
+    btn.classList.add("saving");
+    btn.innerHTML = "💾 儲存";
+  }
+}
+
+function escHtml(s) {
+  if (!s) return "";
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function escAttr(s) {
+  if (!s) return "";
+  return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+function confirmEventPublish(id, title) {
+  var body = document.getElementById("event-body-" + id);
+  var btn = document.getElementById("event-confirm-" + id);
+  if (!body || !btn) return;
+  if (body.isContentEditable) {
+    body.contentEditable = "false";
+    body.classList.remove("editing");
+    var eb = document.querySelector("#event-card-" + id + " .event-edit-btn");
+    if (eb) { eb.classList.remove("saving"); eb.innerHTML = "✏️ 編輯"; }
+  }
+  var text = body.innerText.trim();
+  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入已出街記錄。")) return;
+  btn.disabled = true;
+  btn.textContent = "⏳ 傳送中...";
+  var params = new URLSearchParams();
+  params.append("action", "confirm");
+  params.append("id", id);
+  fetch(GAS_URL + "?" + params.toString())
+    .then(function(r) { return r.text(); })
+    .then(function(raw) {
+      try {
+        var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
+        if (data.success) {
+          alert("✅ 已確認出街！");
+          btn.textContent = "✅ 已出街";
+          btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
+          btn.disabled = true;
+        } else {
+          alert("❌ 失敗：" + (data.error || "未知錯誤"));
+          btn.disabled = false;
+          btn.textContent = "✅ 排隊出街";
+        }
+      } catch(e) {
+        alert("❌ 伺服器回應異常");
+        btn.disabled = false;
+        btn.textContent = "✅ 排隊出街";
+      }
+    })
+    .catch(function(e) {
+      alert("❌ 網絡錯誤：" + e.message);
+      btn.disabled = false;
+      btn.textContent = "✅ 排隊出街";
+    });
+}
+
 // ===== 設計圖庫 =====
 const GALLERY_DATA = [
   { id:"A", title:"主視覺 Hero Banner", desc:"深色漸變 + 插圖 icon（火箭/盾牌/圖表）", fid:"1BXn_BX-EkvUNkIfxa-6oT0lYE41KohV_" },
@@ -660,7 +800,7 @@ function deleteItem(id) {
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
-    ["pending","stock","news","copy","gallery","confirmed"].forEach(n => {
+    ["pending","stock","news","copy","events","gallery","confirmed"].forEach(n => {
       var el = document.getElementById("sec-" + n);
       if (el) el.style.display = "none";
     });
@@ -680,7 +820,8 @@ function showSection(name) {
       news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
       confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"],
       gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
-      copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"]
+      copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"],
+      events: ["🌍 每日活動花絮", "世界各地精彩活動撮要 · 每日 12:00 自動生成 · 可編輯後排隊出街"]
     };
     document.getElementById("page-title").textContent = titles[name][0];
     document.getElementById("page-desc").textContent = titles[name][1];
@@ -690,6 +831,7 @@ function showSection(name) {
     if (name === "news") loadNews();
     if (name === "confirmed") loadConfirmed();
     if (name === "gallery") loadGallery();
+    if (name === "events") loadEvents();
   } catch(e) {
     console.error("showSection error:", e);
   }
