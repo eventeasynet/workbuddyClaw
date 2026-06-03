@@ -426,7 +426,7 @@ a.link:hover { text-decoration:underline; }
 
 <script>
 // ========= 設定 =========
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwigLM_sNtm5pxOQooAxtFfcooD90nzms7T0vEjYpOsQsNEDN6cjkur1kixYa8aPGCw/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbz3ZwQ9T4yvP9Gial3YqJa8tMpi9wAE8qTYThBJDZQKxB6SisspzD1NHzA0M_ClM0Du/exec";
 
 // ===== Buffer API 設定 =====
 const BUFFER_API = "https://api.buffer.com";
@@ -439,46 +439,25 @@ const BUFFER_CHANNELS = {
 };
 const BUFFER_DEFAULT_LOGO_URL = "https://drive.google.com/uc?export=view&id=17wMJ_xVO3HYM9gx_HERxk8ygpEbp4h7E";
 
+// Buffer 發帖（經 GAS 後端 proxy，避開瀏覽器 CORS 限制）
 async function bufferPost(text, channelId, opts = {}) {
-  const metadata = {};
-  const assets = [];
-  
-  // Facebook 需要 metadata
-  if (channelId === BUFFER_CHANNELS.facebook) {
-    metadata.facebook = { type: "post" };
-    if (opts.linkUrl) metadata.facebook.linkAttachment = { url: opts.linkUrl };
-    if (opts.firstComment) metadata.facebook.firstComment = opts.firstComment;
-  }
-
-  // Instagram 必須附圖
-  if (channelId === BUFFER_CHANNELS.instagram) {
-    assets.push({
-      image: { url: opts.imageUrl || BUFFER_DEFAULT_LOGO_URL }
+  return new Promise((resolve, reject) => {
+    const params = {
+      action: "buffer_post",
+      text: text,
+      channelId: channelId,
+      token: BUFFER_TOKEN,
+      imageUrl: opts.imageUrl || BUFFER_DEFAULT_LOGO_URL,
+      linkUrl: opts.linkUrl || ""
+    };
+    apiCall(params, function(data) {
+      if (data.success) {
+        resolve(data.post);
+      } else {
+        reject(new Error(data.error || "Buffer API 錯誤"));
+      }
     });
-  }
-
-  // LinkedIn 純文字即可，無需額外設定
-
-  const input = {
-    text: text,
-    channelId: channelId,
-    schedulingType: "automatic",
-    mode: opts.scheduledAt ? "customScheduled" : "shareNow",
-    ...(opts.scheduledAt ? { dueAt: opts.scheduledAt } : {}),
-    ...(Object.keys(metadata).length > 0 ? { metadata } : {}),
-    ...(assets.length > 0 ? { assets } : {})
-  };
-  const query = `mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
-  const resp = await fetch(BUFFER_API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + BUFFER_TOKEN },
-    body: JSON.stringify({ query, variables: { input } })
   });
-  const json = await resp.json();
-  if (json.errors) throw new Error(json.errors.map(e => e.message).join("; "));
-  const result = json.data.createPost;
-  if (result.message) throw new Error(result.message);
-  return result.post;
 }
 
 let jsonpCounter = 0;
