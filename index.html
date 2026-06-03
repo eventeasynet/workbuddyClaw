@@ -116,6 +116,7 @@ a.link:hover { text-decoration:underline; }
     <a class="nav-item active" onclick="showSection('pending', event)">📋 待確認 (揀選出街)</a>
     <a class="nav-item" onclick="showSection('stock', event)">📈 美股分析報告</a>
     <a class="nav-item" onclick="showSection('news', event)">📰 每日新聞撮要</a>
+    <a class="nav-item" onclick="showSection('gallery', event)">🎨 設計圖庫</a>
     <a class="nav-item" onclick="showSection('confirmed', event)">✅ 已出街記錄</a>
   </nav>
   <div class="sidebar-footer">
@@ -173,6 +174,13 @@ a.link:hover { text-decoration:underline; }
       </thead>
       <tbody id="news-tbody"></tbody>
     </table>
+  </div>
+
+  <!-- 設計圖庫 -->
+  <div id="sec-gallery" class="section" style="display:none;">
+    <h3>🎨 歷來設計圖庫 <span class="badge">14</span></h3>
+    <div id="gallery-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px;">
+    </div>
   </div>
 
   <!-- 已出街記錄 -->
@@ -378,6 +386,46 @@ function loadConfirmed() {
   });
 }
 
+// ===== 設計圖庫 =====
+const GALLERY_DATA = [
+  { id:"A", title:"主視覺 Hero Banner", desc:"深色漸變 + 插圖 icon（火箭/盾牌/圖表）", fid:"1BXn_BX-EkvUNkIfxa-6oT0lYE41KohV_" },
+  { id:"B", title:"數據對比", desc:"白色背景 + 左右對比卡片 + 進度條", fid:"10NrDSyzq3Q9TAodnto5l8tHzI-XHgpO4" },
+  { id:"C", title:"知識貼士", desc:"淺色漸變 + 編號卡片式 Tips（5 色）", fid:"1_zFe6pRTqqtYcKg_cOgICN8FRQG0rW2K" },
+  { id:"D", title:"HTML 風格版", desc:"CSS 圓角卡片 + 漸層 icon", fid:"1jYN8pRcwOnDmPOxYZgw1F10D0rXcbV8D" },
+  { id:"E", title:"Anchor 版", desc:"標題 + 錨點重點列表", fid:"1PSK2J5IFBeGPhwFbFNXe33q9JKZ4Y7YS" },
+  { id:"F", title:"NotebookLM 風格", desc:"學術雜誌風 + 雙欄排版", fid:"1BTqoq78MYumaDzu4qBKYUoAKr_LBGAcD" },
+  { id:"G", title:"改進版", desc:"優化排版 + 重點強調", fid:"1mX5Ksz4Q8pKShLOEb-BG9AYINMr7-_YM" },
+  { id:"H", title:"最終版", desc:"SVG + Resvg 渲染最終效果", fid:"1RVGdlgiUkKyWCqbH2GG4XUkjxT5eWAgu" },
+  { id:"I", title:"出街版", desc:"已推送至社群媒體版本", fid:"1iCTH4DtMgghuSXrMTNucXbEQJPY5KWrh" },
+  { id:"J", title:"完成版", desc:"第一代完整設計", fid:"1wbGDFvXFJwzxv1zdzRIb3cJ8EheIezq9" },
+  { id:"K", title:"Logo 版", desc:"含 Logo 疊加版本", fid:"11m3artaaELP6m2e-MiFIrKtfhTZSksb8" },
+  { id:"L", title:"宣傳圖 早鳥版", desc:"早期文案版本", fid:"1P5euzMxe7ZmNPdoYnPgwwxyeylwqWo5X" },
+  { id:"M", title:"宣傳圖 v2", desc:"第二代文案版本", fid:"1AsY4JMNrw93DZrpXCIX4BmxaeL2SA-Yo" },
+  { id:"N", title:"宣傳圖 v3", desc:"第三代文案版本", fid:"1Y-FlEx21cd9ixb4tjzEdkz8kNa2cWx_k" }
+];
+
+function loadGallery() {
+  const grid = document.getElementById("gallery-grid");
+  grid.innerHTML = "";
+  GALLERY_DATA.forEach(item => {
+    const thumb = "https://drive.google.com/thumbnail?id=" + item.fid + "&sz=w400";
+    const link = "https://drive.google.com/file/d/" + item.fid + "/view";
+    const card = document.createElement("div");
+    card.style.cssText = "background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden;";
+    card.innerHTML = `
+      <a href="${link}" target="_blank">
+        <img src="${thumb}" alt="${item.title}" style="width:100%; height:240px; object-fit:cover; display:block;" loading="lazy">
+      </a>
+      <div style="padding:12px;">
+        <div style="font-weight:600; font-size:13px;">${item.title}</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${item.desc}</div>
+        <a href="${link}" target="_blank" style="font-size:12px; color:var(--accent); margin-top:6px; display:inline-block;">👁️ 查看大圖</a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
 // ===== 確認/刪除 =====
 function confirmItem(id) {
   if (!confirm("✅ 確認此宣傳圖出街？推送至 Facebook + Instagram + LinkedIn")) return;
@@ -406,7 +454,7 @@ function deleteItem(id) {
 
 // ===== 頁面切換 =====
 function showSection(name, evt) {
-  ["pending","stock","news","confirmed"].forEach(n => {
+  ["pending","stock","news","gallery","confirmed"].forEach(n => {
     document.getElementById("sec-" + n).style.display = "none";
   });
   document.getElementById("sec-" + name).style.display = "block";
@@ -417,7 +465,8 @@ function showSection(name, evt) {
     pending: ["📋 待確認 — 揀選出街", "每日 3 款宣傳圖選項，揀好撳「確認出街」"],
     stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
     news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
-    confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"]
+    confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"],
+    gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"]
   };
   document.getElementById("page-title").textContent = titles[name][0];
   document.getElementById("page-desc").textContent = titles[name][1];
@@ -427,6 +476,7 @@ function showSection(name, evt) {
   if (name === "stock") loadStock();
   if (name === "news") loadNews();
   if (name === "confirmed") loadConfirmed();
+  if (name === "gallery") loadGallery();
 }
 
 // 首次載入
