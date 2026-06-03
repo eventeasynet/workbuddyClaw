@@ -102,6 +102,26 @@ a.link:hover { text-decoration:underline; }
 
 /* Note for auto-confirmed */
 .auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
+
+/* Post-style cards */
+.post-cards { display:flex; flex-wrap:wrap; gap:24px; }
+.post-card { flex:1 1 340px; min-width:300px; max-width:420px; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.06); border:1px solid #e5e7eb; }
+.post-card-header { display:flex; align-items:center; gap:10px; padding:14px 16px; }
+.post-card-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; font-weight:700; }
+.post-card-avatar.avatar-a { background:linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.post-card-avatar.avatar-b { background:linear-gradient(135deg, #ec4899, #be185d); }
+.post-card-avatar.avatar-c { background:linear-gradient(135deg, #8b5cf6, #6d28d9); }
+.post-card-user { font-size:13px; font-weight:600; }
+.post-card-handle { font-size:11px; color:#9ca3af; }
+.post-card-body { padding:0 16px 16px; white-space:pre-line; font-size:14px; line-height:1.75; color:#1e293b; }
+.post-card-body .hash { color:#3b82f6; }
+.post-card-body .link-text { color:#3b82f6; font-weight:500; }
+.post-card-label { display:inline-block; padding:2px 10px; border-radius:4px; font-size:11px; font-weight:600; margin:0 0 12px 16px; }
+.post-card-label.label-a { background:#dbeafe; color:#1d4ed8; }
+.post-card-label.label-b { background:#fce7f3; color:#be185d; }
+.post-card-label.label-c { background:#ede9fe; color:#6d28d9; }
+.post-card-footer { border-top:1px solid #f3f4f6; padding:12px 16px; display:flex; gap:16px; }
+.post-card-stat { font-size:12px; color:#9ca3af; display:flex; align-items:center; gap:4px; }
 </style>
 </head>
 <body>
@@ -116,6 +136,7 @@ a.link:hover { text-decoration:underline; }
     <a class="nav-item active" data-section="pending">📋 待確認 (揀選出街)</a>
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
     <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
+    <a class="nav-item" data-section="copy">📝 社群文案</a>
     <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
     <a class="nav-item" data-section="confirmed">✅ 已出街記錄</a>
   </nav>
@@ -174,6 +195,92 @@ a.link:hover { text-decoration:underline; }
       </thead>
       <tbody id="news-tbody"></tbody>
     </table>
+  </div>
+
+  <!-- 社群文案模板 -->
+  <div id="sec-copy" class="section" style="display:none;">
+    <h3>📝 IG / Facebook 貼文文案（可直接複製發帖）</h3>
+    <div class="post-cards">
+      <!-- 款式 1：專業商務版 -->
+      <div class="post-card">
+        <span class="post-card-label label-a">款式 1 · 專業商務版</span>
+        <div class="post-card-header">
+          <div class="post-card-avatar avatar-a">E</div>
+          <div>
+            <div class="post-card-user">EventEasy.net</div>
+            <div class="post-card-handle">@eventeasy · 適合公司、活動策劃、行政分享</div>
+          </div>
+        </div>
+        <div class="post-card-body">還在煩惱搞活動要分開用幾個平台？
+報名、票務、簽到、數據、現場互動全部唔使周圍搵🔥
+<b>EventEasy.net 一站式全方位活動管理平台</b>
+無論企業研討會、展覽、學校活動、晚宴、市集、線上活動都完全適合✅
+▪ 一鍵發布活動 + 線上即時報名
+▪ 電子門票 QR Code 快速入場簽到
+▪ 自動數據統計分析 慳時間慳人手
+▪ 內置互動遊戲 / 抽獎 即時帶動現場氣氛
+▪ 零技術上手 新手都即刻識用
+即刻睇完整使用指南👇
+<span class="link-text">www.eventeasy.net/guide</span>
+查詢熱線：24209166
+<span class="hash">#EventEasy #活動管理 #一站式活動平台 #活動策劃 #QR簽到 #電子門票</span></div>
+        <div class="post-card-footer">
+          <span class="post-card-stat">❤️ 推薦公司專頁</span>
+          <span class="post-card-stat">💬 可加行業 hashtag</span>
+          <span class="post-card-stat">📋 一鍵複製</span>
+        </div>
+      </div>
+
+      <!-- 款式 2：輕鬆吸睛版 -->
+      <div class="post-card">
+        <span class="post-card-label label-b">款式 2 · 輕鬆吸睛版</span>
+        <div class="post-card-header">
+          <div class="post-card-avatar avatar-b">E</div>
+          <div>
+            <div class="post-card-user">EventEasy.net</div>
+            <div class="post-card-handle">@eventeasy · IG 日常貼文 親民風</div>
+          </div>
+        </div>
+        <div class="post-card-body">搞活動從來都唔使再頭痛🤯
+由報名、賣飛、簽到、數據統計到現場互動，
+一個 <b>EventEasy.net</b> 平台已經全包辦晒！
+不用安裝任何軟件，網頁即開即用
+零門檻、零技術，行政 / 主辦都輕鬆上手
+各類活動場合都啱用，慳時間又慳成本✨
+立即了解完整教學：
+<span class="link-text">www.eventeasy.net/guide</span>
+☎ 查詢：24209166
+<span class="hash">#搞活動必備 #活動神器 #EventEasy #香港活動平台</span></div>
+        <div class="post-card-footer">
+          <span class="post-card-stat">❤️ 推薦 IG 日常</span>
+          <span class="post-card-stat">💬 輕鬆互動風格</span>
+          <span class="post-card-stat">📋 一鍵複製</span>
+        </div>
+      </div>
+
+      <!-- 款式 3：精簡短版 -->
+      <div class="post-card">
+        <span class="post-card-label label-c">款式 3 · 精簡短版</span>
+        <div class="post-card-header">
+          <div class="post-card-avatar avatar-c">E</div>
+          <div>
+            <div class="post-card-user">EventEasy.net</div>
+            <div class="post-card-handle">@eventeasy · Story / Reels 配文</div>
+          </div>
+        </div>
+        <div class="post-card-body">搞活動唔使再左搵右搵！
+<b>EventEasy.net</b> 一站式活動管理平台
+報名｜票務｜QR 簽到｜數據｜互動遊戲
+全部功能一平台搞掂✅
+使用指南：<span class="link-text">www.eventeasy.net/guide</span>
+查詢：24209166</div>
+        <div class="post-card-footer">
+          <span class="post-card-stat">❤️ 推薦 Story</span>
+          <span class="post-card-stat">💬 短版吸睛</span>
+          <span class="post-card-stat">📋 一鍵複製</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 設計圖庫 -->
@@ -455,7 +562,7 @@ function deleteItem(id) {
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
-    ["pending","stock","news","gallery","confirmed"].forEach(n => {
+    ["pending","stock","news","copy","gallery","confirmed"].forEach(n => {
       var el = document.getElementById("sec-" + n);
       if (el) el.style.display = "none";
     });
@@ -474,7 +581,8 @@ function showSection(name) {
       stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
       news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
       confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"],
-      gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"]
+      gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
+      copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"]
     };
     document.getElementById("page-title").textContent = titles[name][0];
     document.getElementById("page-desc").textContent = titles[name][1];
