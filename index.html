@@ -131,6 +131,8 @@ a.link:hover { text-decoration:underline; }
 .post-card-edit-btn { position:absolute; top:8px; right:12px; background:none; border:1px solid #e5e7eb; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; color:#6b7280; transition:all 0.15s; }
 .post-card-edit-btn:hover { background:#f3f4f6; color:#374151; border-color:#d1d5db; }
 .post-card-edit-btn.saving { background:#fef3c7; color:#92400e; border-color:#fcd34d; }
+.post-card-delete-btn-top { position:absolute; top:8px; right:80px; background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; transition:all 0.15s; }
+.post-card-delete-btn-top:hover { background:#fef2f2; border-color:#f87171; }
 .post-card-body.editing { background:#fffbeb; border-radius:8px; outline:2px dashed #fcd34d; outline-offset:2px; padding:12px; cursor:text; }
 .post-card-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:6px 16px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
 .post-card-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); transform:translateY(-1px); box-shadow:0 2px 8px rgba(5,150,105,0.3); }
@@ -154,8 +156,6 @@ a.link:hover { text-decoration:underline; }
 .event-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:5px 14px; font-size:12px; font-weight:600; cursor:pointer; }
 .event-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); }
 .event-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; }
-.post-card-delete-btn { background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:8px; padding:6px 12px; font-size:12px; cursor:pointer; transition:all 0.15s; }
-.post-card-delete-btn:hover { background:#fef2f2; border-color:#f87171; }
 .event-delete-btn { background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:8px; padding:5px 12px; font-size:12px; cursor:pointer; transition:all 0.15s; }
 .event-delete-btn:hover { background:#fef2f2; border-color:#f87171; }
 </style>
@@ -241,6 +241,7 @@ a.link:hover { text-decoration:underline; }
       <!-- 款式 1：專業商務版 -->
       <div class="post-card" id="post-card-1">
         <button class="post-card-edit-btn" onclick="toggleEdit('post-card-1')">✏️ 編輯</button>
+        <button class="post-card-delete-btn-top" onclick="deleteCard('post-card-1')" title="刪除">🗑️</button>
         <span class="post-card-label label-a">款式 1 · 專業商務版</span>
         <div class="post-card-header">
           <div class="post-card-avatar avatar-a">E</div>
@@ -266,13 +267,14 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦公司專頁</span>
           <span class="post-card-stat">💬 可加行業 hashtag</span>
           <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-1" onclick="confirmPublish('post-card-1','款式 1 · 專業商務版')">✅ 排隊出街</button><button class="post-card-delete-btn" onclick="deleteCard('post-card-1')" title="刪除">🗑️</button></span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-1" onclick="confirmPublish('post-card-1','款式 1 · 專業商務版')">✅ 排隊出街</button></span>
         </div>
       </div>
 
       <!-- 款式 2：輕鬆吸睛版 -->
       <div class="post-card" id="post-card-2">
         <button class="post-card-edit-btn" onclick="toggleEdit('post-card-2')">✏️ 編輯</button>
+        <button class="post-card-delete-btn-top" onclick="deleteCard('post-card-2')" title="刪除">🗑️</button>
         <span class="post-card-label label-b">款式 2 · 輕鬆吸睛版</span>
         <div class="post-card-header">
           <div class="post-card-avatar avatar-b">E</div>
@@ -295,13 +297,14 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦 IG 日常</span>
           <span class="post-card-stat">💬 輕鬆互動風格</span>
           <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-2" onclick="confirmPublish('post-card-2','款式 2 · 輕鬆吸睛版')">✅ 排隊出街</button><button class="post-card-delete-btn" onclick="deleteCard('post-card-2')" title="刪除">🗑️</button></span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-2" onclick="confirmPublish('post-card-2','款式 2 · 輕鬆吸睛版')">✅ 排隊出街</button></span>
         </div>
       </div>
 
       <!-- 款式 3：精簡短版 -->
       <div class="post-card" id="post-card-3">
         <button class="post-card-edit-btn" onclick="toggleEdit('post-card-3')">✏️ 編輯</button>
+        <button class="post-card-delete-btn-top" onclick="deleteCard('post-card-3')" title="刪除">🗑️</button>
         <span class="post-card-label label-c">款式 3 · 精簡短版</span>
         <div class="post-card-header">
           <div class="post-card-avatar avatar-c">E</div>
@@ -320,7 +323,7 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦 Story</span>
           <span class="post-card-stat">💬 短版吸睛</span>
           <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-3" onclick="confirmPublish('post-card-3','款式 3 · 精簡短版')">✅ 排隊出街</button><button class="post-card-delete-btn" onclick="deleteCard('post-card-3')" title="刪除">🗑️</button></span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-3" onclick="confirmPublish('post-card-3','款式 3 · 精簡短版')">✅ 排隊出街</button></span>
         </div>
       </div>
     </div>
@@ -775,6 +778,16 @@ function confirmPublish(cardId, styleLabel) {
           alert('✅ 已加入出街記錄！\n\n可以在「📤 出街記錄」分頁查看。');
           btn.textContent = '✅ 已排隊';
           btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
+          btn.disabled = true;
+          // 1.5 秒後自動隱藏卡片
+          setTimeout(function() {
+            if (card) {
+              card.style.transition = 'opacity 0.4s, transform 0.4s';
+              card.style.opacity = '0';
+              card.style.transform = 'scale(0.95)';
+              setTimeout(function() { card.style.display = 'none'; }, 400);
+            }
+          }, 1500);
         } else {
           alert('❌ 加入失敗：' + (data.error || '未知錯誤'));
           btn.disabled = false;
