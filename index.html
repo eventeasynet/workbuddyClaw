@@ -415,7 +415,7 @@ function loadOutbox() {
         card.innerHTML = `
           <div class="card-header">
             <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
-            <span class="card-meta">${formatTime(item.createdAt)}</span>
+            <span class="card-meta">📅 ${getScheduledTime(item.type)}</span>
           </div>
           <div class="card-title">${item.title}</div>
           <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
@@ -443,6 +443,17 @@ function deleteOutboxItem(id) {
       alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
     }
   });
+}
+
+// ===== 預計出街時間 =====
+function getScheduledTime(type) {
+  var t = type || "";
+  if (t.includes("新聞")) return "今日 10:00 出街";
+  if (t.includes("宣傳圖")) return "今日 10:00 出街";
+  if (t.includes("花絮")) return "今日 12:00 出街";
+  if (t.includes("美股")) return "今日 21:00 出街";
+  if (t.includes("文案")) return "手動排程 · 待推送";
+  return "待定";
 }
 
 // ===== 美股報告（已確認） =====
