@@ -36,7 +36,23 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .nav-item span { font-size:18px; }
 .nav-section-header { padding:16px 20px 6px; font-size:11px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.08em; }
 .nav-sub-item { padding-left:36px; font-size:13px; }
-.sidebar-footer { padding:16px 20px; border-top:1px solid #1e293b; font-size:12px; color:#64748b; }
+.sidebar-footer { padding:0; border-top:1px solid #1e293b; font-size:12px; color:#64748b; }
+.automation-panel { padding:12px 20px; }
+.automation-toggle { display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding:4px 0; user-select:none; }
+.automation-toggle:hover { color:#94a3b8; }
+.automation-toggle .arrow { font-size:10px; transition:transform 0.2s; }
+.automation-toggle .arrow.open { transform:rotate(90deg); }
+.automation-list { max-height:0; overflow:hidden; transition:max-height 0.3s ease; }
+.automation-list.open { max-height:400px; }
+.automation-item { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #1e293b; font-size:11px; }
+.automation-item:last-child { border-bottom:none; }
+.automation-item .auto-icon { font-size:14px; flex-shrink:0; }
+.automation-item .auto-info { flex:1; min-width:0; }
+.automation-item .auto-name { color:#e2e8f0; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.automation-item .auto-time { color:#64748b; font-size:10px; }
+.automation-item .auto-status { font-size:10px; padding:2px 6px; border-radius:10px; flex-shrink:0; }
+.auto-status-active { background:#065f46; color:#6ee7b7; }
+.auto-status-paused { background:#78350f; color:#fcd34d; }
 
 /* Main */
 .main { margin-left:var(--sidebar-w); flex:1; padding:32px; max-width:1200px; }
@@ -182,8 +198,57 @@ a.link:hover { text-decoration:underline; }
     <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
   </nav>
   <div class="sidebar-footer">
-    ⚡ <span id="status-text">5 個自動化運行中</span><br>
-    上次更新：<span id="last-update">--:--</span>
+    <div class="automation-panel" id="automation-panel">
+      <div class="automation-toggle" onclick="toggleAutoPanel()">
+        <span>⚡ <span id="status-text">5 個自動化運行中</span></span>
+        <span class="arrow" id="auto-arrow">▶</span>
+      </div>
+      <div class="automation-list" id="auto-list">
+        <div class="automation-item">
+          <span class="auto-icon">📰</span>
+          <div class="auto-info">
+            <div class="auto-name">每日新聞撮要</div>
+            <div class="auto-time">每日 08:00 生成 → 10:00 出街</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-1780281485638">運行中</span>
+        </div>
+        <div class="automation-item">
+          <span class="auto-icon">🎨</span>
+          <div class="auto-info">
+            <div class="auto-name">宣傳圖生成</div>
+            <div class="auto-time">每日 08:00 生成 → 10:00 出街</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-1780353918149">運行中</span>
+        </div>
+        <div class="automation-item">
+          <span class="auto-icon">🌍</span>
+          <div class="auto-info">
+            <div class="auto-name">活動花絮</div>
+            <div class="auto-time">每日 10:00 生成 → 12:00 出街</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-1780476184986">運行中</span>
+        </div>
+        <div class="automation-item">
+          <span class="auto-icon">📈</span>
+          <div class="auto-info">
+            <div class="auto-name">美股分析報告</div>
+            <div class="auto-time">每日 19:00 生成 → 21:00 出街</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-1780253895980">運行中</span>
+        </div>
+        <div class="automation-item">
+          <span class="auto-icon">🌙</span>
+          <div class="auto-info">
+            <div class="auto-name">對話總結與記憶寫入</div>
+            <div class="auto-time">每日 23:00 執行</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-1780257155139">運行中</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:8px 20px 12px; font-size:11px; color:#64748b;">
+      上次更新：<span id="last-update">--:--</span>
+    </div>
   </div>
 </div>
 
@@ -222,9 +287,9 @@ a.link:hover { text-decoration:underline; }
     <h3>📈 每日美股分析報告 <span class="badge" id="stock-count">0</span>
       <button class="refresh-btn" onclick="loadStock()">🔄 重新整理</button>
     </h3>
-    <p class="auto-note">⚡ 每晚 21:00 自動生成並確認，無需手動操作</p>
+    <p class="auto-note">⚡ 每晚 19:00 自動生成 · 21:00 出街，無需手動操作</p>
     <div id="stock-loading" class="loading">載入中...</div>
-    <div id="stock-empty" class="empty" style="display:none;">📭 暫無美股報告<br><small>每晚 21:00 自動生成</small></div>
+    <div id="stock-empty" class="empty" style="display:none;">📭 暫無美股報告<br><small>每晚 19:00 生成 → 21:00 出街</small></div>
     <table id="stock-table" style="display:none;">
       <thead>
         <tr><th>類型</th><th>標題</th><th>建立時間</th><th>狀態</th><th>操作</th></tr>
@@ -238,9 +303,9 @@ a.link:hover { text-decoration:underline; }
     <h3>📰 每日新聞撮要 <span class="badge" id="news-count">0</span>
       <button class="refresh-btn" onclick="loadNews()">🔄 重新整理</button>
     </h3>
-    <p class="auto-note">⚡ 每日 10:00 自動生成並確認，無需手動操作</p>
+    <p class="auto-note">⚡ 每日 08:00 自動生成 · 10:00 出街，無需手動操作</p>
     <div id="news-loading" class="loading">載入中...</div>
-    <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 10:00 自動生成</small></div>
+    <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 08:00 生成 → 10:00 出街</small></div>
     <table id="news-table" style="display:none;">
       <thead>
         <tr><th>類型</th><th>標題</th><th>建立時間</th><th>狀態</th><th>操作</th></tr>
@@ -347,7 +412,7 @@ a.link:hover { text-decoration:underline; }
   <!-- 活動花絮（從 GAS 加載） -->
   <div id="sec-events" class="section" style="display:none;">
     <h3>🌍 每日世界各地活動花絮 <span class="badge" id="events-count">0</span></h3>
-    <p class="section-desc">每日 12:00 自動搜尋，可編輯後排隊出街</p>
+    <p class="section-desc">每日 10:00 生成 · 12:00 出街，可編輯後排隊出街</p>
     <div id="events-list"></div>
   </div>
 
@@ -362,6 +427,59 @@ a.link:hover { text-decoration:underline; }
 <script>
 // ========= 設定 =========
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwigLM_sNtm5pxOQooAxtFfcooD90nzms7T0vEjYpOsQsNEDN6cjkur1kixYa8aPGCw/exec";
+
+// ===== Buffer API 設定 =====
+const BUFFER_API = "https://api.buffer.com";
+const BUFFER_TOKEN = "ktY3HueL9rcyWTmtYYXuLgjWub-Gtjeon581vW-AcOr";
+const BUFFER_ORG = "6a1de7662d32712827f4dace";
+const BUFFER_CHANNELS = {
+  facebook:  "6a1e74afc687a22dd44f6f6b", // EventEasy.net Facebook Page
+  instagram: "6a1e6612c687a22dd44f3a6a", // EventEast.net Instagram
+  linkedin:  "6a1e6590c687a22dd44f37f0"  // eventeasy-net LinkedIn
+};
+const BUFFER_DEFAULT_LOGO_URL = "https://drive.google.com/uc?export=view&id=17wMJ_xVO3HYM9gx_HERxk8ygpEbp4h7E";
+
+async function bufferPost(text, channelId, opts = {}) {
+  const metadata = {};
+  const assets = [];
+  
+  // Facebook 需要 metadata
+  if (channelId === BUFFER_CHANNELS.facebook) {
+    metadata.facebook = { type: "post" };
+    if (opts.linkUrl) metadata.facebook.linkAttachment = { url: opts.linkUrl };
+    if (opts.firstComment) metadata.facebook.firstComment = opts.firstComment;
+  }
+
+  // Instagram 必須附圖
+  if (channelId === BUFFER_CHANNELS.instagram) {
+    assets.push({
+      image: { url: opts.imageUrl || BUFFER_DEFAULT_LOGO_URL }
+    });
+  }
+
+  // LinkedIn 純文字即可，無需額外設定
+
+  const input = {
+    text: text,
+    channelId: channelId,
+    schedulingType: "automatic",
+    mode: opts.scheduledAt ? "customScheduled" : "shareNow",
+    ...(opts.scheduledAt ? { dueAt: opts.scheduledAt } : {}),
+    ...(Object.keys(metadata).length > 0 ? { metadata } : {}),
+    ...(assets.length > 0 ? { assets } : {})
+  };
+  const query = `mutation CreatePost($input: CreatePostInput!) { createPost(input: $input) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
+  const resp = await fetch(BUFFER_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + BUFFER_TOKEN },
+    body: JSON.stringify({ query, variables: { input } })
+  });
+  const json = await resp.json();
+  if (json.errors) throw new Error(json.errors.map(e => e.message).join("; "));
+  const result = json.data.createPost;
+  if (result.message) throw new Error(result.message);
+  return result.post;
+}
 
 let jsonpCounter = 0;
 
@@ -551,21 +669,72 @@ function requeueItem(id, btn) {
   });
 }
 
-// ===== 立即出街（管理員手動推送） =====
-function publishNow(id, btn) {
-  if (!confirm("🚀 確定現在立即出街？\n\n將會推送至已設定的社群平台。")) return;
+// ===== 立即出街（管理員手動推送）→ 真正 call Buffer API → 3 個頻道全發 =====
+async function publishNow(id, btn) {
+  if (!confirm("🚀 確定現在立即出街？\n\n將推送至：\n• Facebook（EventEasy.net Page）\n• Instagram（EventEast.net + Logo）\n• LinkedIn（eventeasy-net）")) return;
   btn.disabled = true;
   btn.textContent = '⏳ 推送中...';
-  apiCall({ action: "confirm", id: id }, function(data) {
-    if (data.success) {
-      alert('✅ 已成功出街！\n\n內容已移至「✅ 已出街內容」分頁。');
-      loadOutbox();
-      loadPublished();
-    } else {
-      alert('❌ 推送失敗：' + (data.error || '未知錯誤'));
-      btn.disabled = false;
-      btn.textContent = '🚀 現在出街';
+
+  // 1. 從 GAS 讀取完整內容
+  const item = await new Promise((resolve) => {
+    apiCall({ action: "list", status: "待出街" }, function(data) {
+      const found = (data.items || []).find(i => i.id == id);
+      resolve(found || null);
+    });
+  });
+  if (!item) { alert("❌ 找不到該項目"); btn.disabled = false; btn.textContent = '🚀 現在出街'; return; }
+
+  // 2. 組合貼文文字（title + 內容）
+  const text = [item.title || "", item.notes || ""].filter(Boolean).join("\n\n");
+
+  // 3. 依次發送到 3 個頻道
+  const targets = [
+    { name: "Facebook",   id: BUFFER_CHANNELS.facebook },
+    { name: "Instagram",  id: BUFFER_CHANNELS.instagram },
+    { name: "LinkedIn",   id: BUFFER_CHANNELS.linkedin }
+  ];
+  const results = [];
+  for (const ch of targets) {
+    btn.textContent = '⏳ 推送 ' + ch.name + '...';
+    try {
+      const post = await bufferPost(text, ch.id);
+      results.push("✅ " + ch.name + "（" + (post.dueAt ? "已排程" : "已發送") + "）");
+      console.log("✅ " + ch.name + " 發帖成功：" + post.id);
+    } catch (err) {
+      results.push("❌ " + ch.name + "：" + err.message);
     }
+  }
+
+  // 4. 更新 GAS 狀態：delete + re-add（GAS v13 冇 update API）
+  btn.textContent = '⏳ 更新狀態...';
+  apiCall({ action: "delete", id: id }, function(delRes) {
+    console.log("[publishNow] delete result:", delRes);
+    if (!delRes.success) {
+      btn.textContent = '🚀 現在出街';
+      btn.disabled = false;
+      alert('📤 推送結果：\n\n' + results.join("\n") + '\n\n⚠️ Buffer 已推送，但 GAS 狀態更新失敗（刪除失敗）');
+      return;
+    }
+    // Re-add with status=已出街（用 apiCall 包裝，JSONP 正確）
+    apiCall({
+      action: "add",
+      type: item.type || "",
+      title: item.title || "",
+      notes: item.notes || "",
+      status: "已出街"
+    }, function(addRes) {
+      console.log("[publishNow] re-add result:", addRes);
+      btn.textContent = '🚀 現在出街';
+      if (addRes.success) {
+        alert('📤 推送結果：\n\n' + results.join("\n") + '\n\n✅ 內容已移至「已出街內容」分頁。');
+        loadOutbox();
+        loadPublished();
+      } else {
+        alert('📤 推送結果：\n\n' + results.join("\n") + '\n\n⚠️ Buffer 已推送，但 GAS 狀態更新失敗（重新寫入失敗）');
+        btn.disabled = false;
+        loadOutbox();
+      }
+    });
   });
 }
 
@@ -658,7 +827,7 @@ function loadEvents() {
     var items = (data.items || []).filter(function(i) { return i.type && (i.type === "活動花絮" || i.type.indexOf("活動花絮") !== -1); });
     badge.textContent = items.length;
     if (items.length === 0) {
-      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 12:00 自動生成。</p>";
+      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 10:00 生成（12:00 出街）。</p>";
       return;
     }
     list.innerHTML = "";
@@ -674,7 +843,7 @@ function loadEvents() {
           <div class="event-card-header-left">
             <div class="event-card-icon">🌍</div>
             <div><div class="event-card-title">${escHtml(item.title || "活動花絮")}</div>
-            <div class="event-card-date">🕐 每日 12:00 自動生成 · ${escHtml(item.type || "")}</div></div>
+            <div class="event-card-date">🕐 每日 10:00 生成 · 12:00 出街 · ${escHtml(item.type || "")}</div></div>
           </div>
           <button class="event-edit-btn" onclick="toggleEventEdit('event-card-${item.id}')">✏️ 編輯</button>
         </div>
@@ -844,7 +1013,7 @@ function updateEventCount() {
     var cards = list.querySelectorAll(".event-card");
     badge.textContent = cards.length;
     if (cards.length === 0) {
-      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 12:00 自動生成。</p>";
+      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 10:00 生成（12:00 出街）。</p>";
     }
   }
 }
@@ -961,11 +1130,11 @@ function showSection(name) {
     const titles = {
       outbox: ["📤 出街記錄", "所有排隊出街嘅項目，狀態為「待出街」，等待推送"],
       published: ["✅ 已出街內容", "所有已推送出街嘅內容記錄，可查看或重新排隊"],
-      stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
-      news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
+      stock: ["📈 美股分析報告", "每晚 19:00 生成 · 21:00 出街（含百家撮要 + 最終總結）"],
+      news: ["📰 每日新聞撮要", "每日 08:00 生成 · 10:00 出街"],
       gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
       copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"],
-      events: ["🌍 每日活動花絮", "世界各地精彩活動撮要 · 每日 12:00 自動生成 · 可編輯後排隊出街"]
+      events: ["🌍 每日活動花絮", "世界各地精彩活動撮要 · 每日 10:00 生成 · 12:00 出街 · 可編輯後排隊出街"]
     };
     document.getElementById("page-title").textContent = titles[name][0];
     document.getElementById("page-desc").textContent = titles[name][1];
@@ -1012,6 +1181,49 @@ document.addEventListener("DOMContentLoaded", function() {
 // 首次載入
 loadOutbox();
 setInterval(loadOutbox, 60000);
+
+// ===== 自動化面板上落 =====
+function toggleAutoPanel() {
+  var list = document.getElementById("auto-list");
+  var arrow = document.getElementById("auto-arrow");
+  if (!list || !arrow) return;
+  list.classList.toggle("open");
+  arrow.classList.toggle("open");
+}
+
+// ===== 載入自動化狀態（從 GAS 讀取最後執行時間）=====
+function loadAutomationStatus() {
+  // 嘗詴從 GAS 讀取 automation 狀態
+  // GAS 需支援 action=automation_status
+  // 若未實作，則保持靜態顯示
+  try {
+    var script = document.createElement("script");
+    script.src = GAS_URL + "?action=automation_status&callback=handleAutoStatus";
+    window.handleAutoStatus = function(data) {
+      delete window.handleAutoStatus;
+      if (!data || !data.automations) return;
+      data.automations.forEach(function(a) {
+        var el = document.getElementById("auto-status-" + a.id);
+        if (el) {
+          if (a.status === "ACTIVE") {
+            el.className = "auto-status auto-status-active";
+            el.textContent = "運行中";
+          } else {
+            el.className = "auto-status auto-status-paused";
+            el.textContent = "已暫停";
+          }
+        }
+      });
+      var activeCount = (data.automations || []).filter(function(a){ return a.status === "ACTIVE"; }).length;
+      document.getElementById("status-text").textContent = activeCount + " 個自動化運行中";
+    };
+    document.head.appendChild(script);
+  } catch(e) {}
+}
+
+// 首次載入自動化狀態
+loadAutomationStatus();
+setInterval(loadAutomationStatus, 300000);  // 每 5 分鐘更新一次
 </script>
 </body>
 </html>
