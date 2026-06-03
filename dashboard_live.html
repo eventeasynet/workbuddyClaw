@@ -762,7 +762,7 @@ function confirmPublish(cardId, styleLabel) {
   var params = new URLSearchParams();
   params.append('action', 'add');
   params.append('type', '社群文案');
-  params.append('title', styleLabel);
+  params.append('title', headline || styleLabel);
   params.append('notes', text);
   params.append('status', '待出街');
   
