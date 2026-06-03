@@ -34,6 +34,8 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .nav-item:hover { background:var(--sidebar-hover); color:#fff; }
 .nav-item.active { background:var(--sidebar-active); color:#fff; border-left:3px solid var(--accent); }
 .nav-item span { font-size:18px; }
+.nav-section-header { padding:16px 20px 6px; font-size:11px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.08em; }
+.nav-sub-item { padding-left:36px; font-size:13px; }
 .sidebar-footer { padding:16px 20px; border-top:1px solid #1e293b; font-size:12px; color:#64748b; }
 
 /* Main */
@@ -99,6 +101,8 @@ a.link:hover { text-decoration:underline; }
 .type-promoC { background:#fef3c7; color:#92400e; }
 .type-stock { background:#dcfce7; color:#166534; }
 .type-news { background:#f3e8ff; color:#7c3aed; }
+.type-copy { background:#fce7f3; color:#be185d; }
+.type-events { background:#dbeafe; color:#0891b2; }
 
 /* Note for auto-confirmed */
 .auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
@@ -165,13 +169,13 @@ a.link:hover { text-decoration:underline; }
     <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="pending">📋 待確認 (揀選出街)</a>
+    <a class="nav-item active" data-section="outbox">📤 出街記錄</a>
+    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
+    <div class="nav-section-header">📦 生成內容</div>
+    <a class="nav-item nav-sub-item" data-section="copy">📝 社群文案</a>
+    <a class="nav-item nav-sub-item" data-section="events">🌍 活動花絮</a>
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
     <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
-    <a class="nav-item" data-section="copy">📝 社群文案</a>
-    <a class="nav-item" data-section="events">🌍 活動花絮</a>
-    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
-    <a class="nav-item" data-section="confirmed">✅ 已出街記錄</a>
   </nav>
   <div class="sidebar-footer">
     ⚡ <span id="status-text">5 個自動化運行中</span><br>
@@ -182,20 +186,20 @@ a.link:hover { text-decoration:underline; }
 <!-- Main Content -->
 <div class="main">
   <div class="header">
-    <h2 id="page-title">📋 待確認 — 揀選出街</h2>
-    <p id="page-desc">每日 3 款宣傳圖選項，揀好撳「確認出街」推送至社群媒體</p>
+    <h2 id="page-title">📤 出街記錄</h2>
+    <p id="page-desc">所有排隊出街嘅項目，狀態為「待出街」，等待推送</p>
     <div class="status-bar" id="status-bar">⚡ 載入中...</div>
   </div>
 
-  <!-- 待確認項目 (宣傳圖) -->
-  <div id="sec-pending" class="section">
-    <h3>🖼️ 今日宣傳圖選項 <span class="badge" id="pending-count">0</span>
-      <button class="refresh-btn" onclick="loadPending()">🔄 重新整理</button>
+  <!-- 出街記錄（所有排隊出街項目，狀態=待出街） -->
+  <div id="sec-outbox" class="section">
+    <h3>📤 排隊出街清單 <span class="badge" id="outbox-count">0</span>
+      <button class="refresh-btn" onclick="loadOutbox()">🔄 重新整理</button>
     </h3>
-    <p class="auto-note">💡 每日 10:00 自動生成 3 款宣傳圖，揀選後撳「確認出街」</p>
-    <div id="pending-loading" class="loading">載入中...</div>
-    <div id="pending-empty" class="empty" style="display:none;">📭 今日暫無待確認項目。<br><small>每日早上 10:00 自動生成</small></div>
-    <div id="pending-cards" class="card-grid" style="display:none;"></div>
+    <p class="auto-note">💡 所有按了「排隊出街」的項目都會顯示在此，狀態為「待出街」</p>
+    <div id="outbox-loading" class="loading">載入中...</div>
+    <div id="outbox-empty" class="empty" style="display:none;">📭 暫無排隊出街項目<br><small>在社群文案或活動花絮按「✅ 排隊出街」即可加到此處</small></div>
+    <div id="outbox-cards" class="card-grid" style="display:none;"></div>
   </div>
 
   <!-- 美股報告 (自動確認，直接顯示) -->
@@ -335,21 +339,6 @@ a.link:hover { text-decoration:underline; }
     <div id="gallery-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px;">
     </div>
   </div>
-
-  <!-- 已出街記錄 -->
-  <div id="sec-confirmed" class="section" style="display:none;">
-    <h3>✅ 已出街記錄 <span class="badge" id="confirmed-count">0</span>
-      <button class="refresh-btn" onclick="loadConfirmed()">🔄 重新整理</button>
-    </h3>
-    <div id="confirmed-loading" class="loading">載入中...</div>
-    <div id="confirmed-empty" class="empty" style="display:none;">📭 暫無已出街記錄</div>
-    <table id="confirmed-table" style="display:none;">
-      <thead>
-        <tr><th>類型</th><th>標題</th><th>建立時間</th><th>確認時間</th><th>狀態</th></tr>
-      </thead>
-      <tbody id="confirmed-tbody"></tbody>
-    </table>
-  </div>
 </div>
 
 <script>
@@ -395,47 +384,61 @@ function getTypeBadgeClass(type) {
   if (type.includes("C")) return "type-promoC";
   if (type.includes("美股")) return "type-stock";
   if (type.includes("新聞")) return "type-news";
+  if (type.includes("文案")) return "type-copy";
+  if (type.includes("花絮")) return "type-events";
   return "";
 }
 
-// ===== 待確認項目（宣傳圖卡片式） =====
-function loadPending() {
-  document.getElementById("pending-loading").style.display = "block";
-  document.getElementById("pending-cards").style.display = "none";
-  document.getElementById("pending-empty").style.display = "none";
+// ===== 出街記錄（所有排隊出街項目，status=待出街） =====
+function loadOutbox() {
+  document.getElementById("outbox-loading").style.display = "block";
+  document.getElementById("outbox-cards").style.display = "none";
+  document.getElementById("outbox-empty").style.display = "none";
   
-  apiCall({ action: "list_pending" }, function(data) {
-    const items = (data.items || []).filter(i => i.type.includes("宣傳圖"));
-    document.getElementById("pending-loading").style.display = "none";
-    document.getElementById("pending-count").textContent = items.length;
+  apiCall({ action: "list", status: "待出街" }, function(data) {
+    const items = data.items || [];
+    document.getElementById("outbox-loading").style.display = "none";
+    document.getElementById("outbox-count").textContent = items.length;
     
     if (items.length === 0) {
-      document.getElementById("pending-empty").style.display = "block";
+      document.getElementById("outbox-empty").style.display = "block";
     } else {
-      const grid = document.getElementById("pending-cards");
+      const grid = document.getElementById("outbox-cards");
       grid.innerHTML = "";
       items.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
+        const notesPreview = (item.notes || "無內容").substring(0, 80);
         card.innerHTML = `
           <div class="card-header">
             <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
             <span class="card-meta">${formatTime(item.createdAt)}</span>
           </div>
           <div class="card-title">${item.title}</div>
-          <div class="card-body">${item.notes || "無備註"}</div>
+          <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
           <div class="card-actions">
-            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 預覽</button>
-            <button class="btn btn-confirm" onclick="confirmItem('${item.id}')">✅ 確認出街</button>
-            <button class="btn btn-delete" onclick="deleteItem('${item.id}')">🗑️ 刪除</button>
+            <span class="status-badge status-pending">待出街</span>
+            <button class="btn btn-delete" onclick="deleteOutboxItem('${item.id}')">🗑️ 刪除</button>
           </div>
         `;
         grid.appendChild(card);
       });
-      document.getElementById("pending-cards").style.display = "grid";
+      document.getElementById("outbox-cards").style.display = "grid";
     }
-    document.getElementById("status-bar").innerHTML = `⚡ ${items.length} 款宣傳圖等你揀選`;
+    document.getElementById("status-bar").innerHTML = `⚡ ${items.length} 個項目排隊出街中`;
     document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
+  });
+}
+
+function deleteOutboxItem(id) {
+  if (!confirm("🗑️ 確定刪除此項目？")) return;
+  apiCall({ action: "delete", id: id }, function(data) {
+    if (data.success) {
+      alert("🗑️ 已刪除");
+      loadOutbox();
+    } else {
+      alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
+    }
   });
 }
 
@@ -500,38 +503,6 @@ function loadNews() {
           <td>
             <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
           </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-  });
-}
-
-// ===== 已出街記錄 =====
-function loadConfirmed() {
-  document.getElementById("confirmed-loading").style.display = "block";
-  document.getElementById("confirmed-table").style.display = "none";
-  document.getElementById("confirmed-empty").style.display = "none";
-  
-  apiCall({ action: "list", status: "已確認" }, function(data) {
-    const items = data.items || [];
-    document.getElementById("confirmed-loading").style.display = "none";
-    document.getElementById("confirmed-count").textContent = items.length;
-    
-    if (items.length === 0) {
-      document.getElementById("confirmed-empty").style.display = "block";
-    } else {
-      document.getElementById("confirmed-table").style.display = "table";
-      const tbody = document.getElementById("confirmed-tbody");
-      tbody.innerHTML = "";
-      items.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span></td>
-          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
-          <td>${formatTime(item.createdAt)}</td>
-          <td>${formatTime(item.confirmedAt)}</td>
-          <td><span class="status-badge status-confirmed">${item.status}</span></td>
         `;
         tbody.appendChild(tr);
       });
@@ -620,20 +591,23 @@ function confirmEventPublish(id, title) {
     if (eb) { eb.classList.remove("saving"); eb.innerHTML = "✏️ 編輯"; }
   }
   var text = body.innerText.trim();
-  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入已出街記錄。")) return;
+  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入出街記錄，狀態為「待出街」。")) return;
   btn.disabled = true;
   btn.textContent = "⏳ 傳送中...";
   var params = new URLSearchParams();
-  params.append("action", "confirm");
-  params.append("id", id);
+  params.append("action", "add");
+  params.append("type", "活動花絮");
+  params.append("title", title);
+  params.append("notes", text);
+  params.append("status", "待出街");
   fetch(GAS_URL + "?" + params.toString())
     .then(function(r) { return r.text(); })
     .then(function(raw) {
       try {
         var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
         if (data.success) {
-          alert("✅ 已確認出街！");
-          btn.textContent = "✅ 已出街";
+          alert("✅ 已加入出街記錄！");
+          btn.textContent = "✅ 已排隊";
           btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
           btn.disabled = true;
         } else {
@@ -778,7 +752,7 @@ function confirmPublish(cardId, styleLabel) {
   var h = body.querySelector('.headline');
   if (h) headline = h.innerText.trim();
   
-  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會加入待確認列表，等管理層揀選。')) return;
+  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會加入出街記錄，狀態為「待出街」。')) return;
   
   btn.disabled = true;
   btn.textContent = '⏳ 傳送中...';
@@ -788,7 +762,7 @@ function confirmPublish(cardId, styleLabel) {
   params.append('type', '社群文案');
   params.append('title', styleLabel);
   params.append('notes', text);
-  params.append('status', '待確認');
+  params.append('status', '待出街');
   
   fetch(GAS_URL + '?' + params.toString())
     .then(function(r) { return r.text(); })
@@ -796,7 +770,7 @@ function confirmPublish(cardId, styleLabel) {
       try {
         var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
         if (data.success) {
-          alert('✅ 已加入待確認列表！\n\n可以在「📋 待確認」分頁查看。');
+          alert('✅ 已加入出街記錄！\n\n可以在「📤 出街記錄」分頁查看。');
           btn.textContent = '✅ 已排隊';
           btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
         } else {
@@ -817,36 +791,10 @@ function confirmPublish(cardId, styleLabel) {
     });
 }
 
-// ===== 確認/刪除 =====
-function confirmItem(id) {
-  if (!confirm("✅ 確認此宣傳圖出街？推送至 Facebook + Instagram + LinkedIn")) return;
-  apiCall({ action: "confirm", id: id }, function(data) {
-    if (data.success) {
-      alert("✅ 已確認！項目將安排推送至社群媒體。");
-      loadPending();
-      loadConfirmed();
-    } else {
-      alert("❌ 確認失敗：" + (data.error || "未知錯誤"));
-    }
-  });
-}
-
-function deleteItem(id) {
-  if (!confirm("確定刪除此項目？")) return;
-  apiCall({ action: "delete", id: id }, function(data) {
-    if (data.success) {
-      alert("🗑️ 已刪除");
-      loadPending();
-    } else {
-      alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
-    }
-  });
-}
-
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
-    ["pending","stock","news","copy","events","gallery","confirmed"].forEach(n => {
+    ["pending","stock","news","copy","events","gallery","outbox"].forEach(n => {
       var el = document.getElementById("sec-" + n);
       if (el) el.style.display = "none";
     });
@@ -861,10 +809,9 @@ function showSection(name) {
     });
     
     const titles = {
-      pending: ["📋 待確認 — 揀選出街", "每日 3 款宣傳圖選項，揀好撳「確認出街」"],
+      outbox: ["📤 出街記錄", "所有排隊出街嘅項目，狀態為「待出街」，等待推送"],
       stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
       news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
-      confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"],
       gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
       copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"],
       events: ["🌍 每日活動花絮", "世界各地精彩活動撮要 · 每日 12:00 自動生成 · 可編輯後排隊出街"]
@@ -872,10 +819,9 @@ function showSection(name) {
     document.getElementById("page-title").textContent = titles[name][0];
     document.getElementById("page-desc").textContent = titles[name][1];
     
-    if (name === "pending") loadPending();
+    if (name === "outbox") loadOutbox();
     if (name === "stock") loadStock();
     if (name === "news") loadNews();
-    if (name === "confirmed") loadConfirmed();
     if (name === "gallery") loadGallery();
     if (name === "events") loadEvents();
   } catch(e) {
@@ -912,8 +858,8 @@ document.addEventListener("DOMContentLoaded", function() {
 })();
 
 // 首次載入
-loadPending();
-setInterval(loadPending, 60000);
+loadOutbox();
+setInterval(loadOutbox, 60000);
 </script>
 </body>
 </html>
