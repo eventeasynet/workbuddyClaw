@@ -824,7 +824,12 @@ function loadEvents() {
   list.innerHTML = "<p style='color:#9ca3af;'>⏳ 載入中...</p>";
   
   apiCall({ action: "list", type: "活動花絮" }, function(data) {
-    var items = (data.items || []).filter(function(i) { return i.type && (i.type === "活動花絮" || i.type.indexOf("活動花絮") !== -1); });
+    var items = (data.items || []).filter(function(i) {
+      // 只顯示 type 是活動花絮，且狀態不是「待出街」或「已出街」的項目
+      var isEvent = i.type && (i.type === "活動花絮" || i.type.indexOf("活動花絮") !== -1);
+      var notOutbox = !i.status || i.status === "待確認";
+      return isEvent && notOutbox;
+    });
     badge.textContent = items.length;
     if (items.length === 0) {
       list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 10:00 生成（12:00 出街）。</p>";
@@ -903,38 +908,34 @@ function confirmEventPublish(id, title) {
   if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入出街記錄，狀態為「待出街」。")) return;
   btn.disabled = true;
   btn.textContent = "⏳ 傳送中...";
-  var params = new URLSearchParams();
-  params.append("action", "add");
-  params.append("type", "活動花絮");
-  params.append("title", title);
-  params.append("notes", text);
-  params.append("status", "待出街");
-  fetch(GAS_URL + "?" + params.toString())
-    .then(function(r) { return r.text(); })
-    .then(function(raw) {
-      try {
-        var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
-        if (data.success) {
-          alert("✅ 已加入出街記錄！");
-          btn.textContent = "✅ 已排隊";
-          btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
-          btn.disabled = true;
-        } else {
-          alert("❌ 失敗：" + (data.error || "未知錯誤"));
-          btn.disabled = false;
-          btn.textContent = "✅ 排隊出街";
-        }
-      } catch(e) {
-        alert("❌ 伺服器回應異常");
-        btn.disabled = false;
-        btn.textContent = "✅ 排隊出街";
+  apiCall({
+    action: "add",
+    type: "活動花絮",
+    title: title,
+    notes: text,
+    status: "待出街"
+  }, function(data) {
+    if (data.success) {
+      alert("✅ 已加入出街記錄！\n\n請到「📤 出街記錄」查看。");
+      btn.textContent = "✅ 已排隊";
+      btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
+      btn.disabled = true;
+      // 1.5 秒後自動隱藏卡片
+      var card = document.getElementById("event-card-" + id);
+      if (card) {
+        setTimeout(function() {
+          card.style.transition = "opacity 0.4s, transform 0.4s";
+          card.style.opacity = "0";
+          card.style.transform = "scale(0.95)";
+          setTimeout(function() { card.style.display = "none"; }, 400);
+        }, 1500);
       }
-    })
-    .catch(function(e) {
-      alert("❌ 網絡錯誤：" + e.message);
+    } else {
+      alert("❌ 失敗：" + (data.error || "未知錯誤"));
       btn.disabled = false;
       btn.textContent = "✅ 排隊出街";
-    });
+    }
+  });
 }
 
 // ===== 設計圖庫 =====
