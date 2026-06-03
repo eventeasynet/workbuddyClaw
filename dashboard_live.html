@@ -802,12 +802,15 @@ function loadEvents() {
   list.innerHTML = "<p style='color:#9ca3af;'>⏳ 載入中...</p>";
   
   apiCall({ action: "list", type: "活動花絮" }, function(data) {
+    console.log("loadEvents raw data:", data);
     var items = (data.items || []).filter(function(i) {
       // 只顯示 type 是活動花絮，且狀態不是「待出街」或「已出街」的項目
       var isEvent = i.type && (i.type === "活動花絮" || i.type.indexOf("活動花絮") !== -1);
       var notOutbox = !i.status || i.status === "待確認";
+      console.log("loadEvents item:", i.id, i.type, i.status, "isEvent:", isEvent, "notOutbox:", notOutbox);
       return isEvent && notOutbox;
     });
+    console.log("loadEvents filtered items:", items.length);
     badge.textContent = items.length;
     if (items.length === 0) {
       list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 10:00 生成（12:00 出街）。</p>";
