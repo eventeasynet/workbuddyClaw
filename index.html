@@ -150,6 +150,10 @@ a.link:hover { text-decoration:underline; }
 .event-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:5px 14px; font-size:12px; font-weight:600; cursor:pointer; }
 .event-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); }
 .event-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; }
+.post-card-delete-btn { background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:8px; padding:6px 12px; font-size:12px; cursor:pointer; transition:all 0.15s; }
+.post-card-delete-btn:hover { background:#fef2f2; border-color:#f87171; }
+.event-delete-btn { background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:8px; padding:5px 12px; font-size:12px; cursor:pointer; transition:all 0.15s; }
+.event-delete-btn:hover { background:#fef2f2; border-color:#f87171; }
 </style>
 </head>
 <body>
@@ -258,7 +262,7 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦公司專頁</span>
           <span class="post-card-stat">💬 可加行業 hashtag</span>
           <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-1" onclick="confirmPublish('post-card-1','款式 1 · 專業商務版')">✅ 排隊出街</button></span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-1" onclick="confirmPublish('post-card-1','款式 1 · 專業商務版')">✅ 排隊出街</button><button class="post-card-delete-btn" onclick="deleteCard('post-card-1')" title="刪除">🗑️</button></span>
         </div>
       </div>
 
@@ -287,7 +291,7 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦 IG 日常</span>
           <span class="post-card-stat">💬 輕鬆互動風格</span>
           <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-2" onclick="confirmPublish('post-card-2','款式 2 · 輕鬆吸睛版')">✅ 排隊出街</button></span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-2" onclick="confirmPublish('post-card-2','款式 2 · 輕鬆吸睛版')">✅ 排隊出街</button><button class="post-card-delete-btn" onclick="deleteCard('post-card-2')" title="刪除">🗑️</button></span>
         </div>
       </div>
 
@@ -312,7 +316,7 @@ a.link:hover { text-decoration:underline; }
           <span class="post-card-stat">❤️ 推薦 Story</span>
           <span class="post-card-stat">💬 短版吸睛</span>
           <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-3" onclick="confirmPublish('post-card-3','款式 3 · 精簡短版')">✅ 排隊出街</button></span>
+          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-3" onclick="confirmPublish('post-card-3','款式 3 · 精簡短版')">✅ 排隊出街</button><button class="post-card-delete-btn" onclick="deleteCard('post-card-3')" title="刪除">🗑️</button></span>
         </div>
       </div>
     </div>
@@ -542,7 +546,7 @@ function loadEvents() {
   list.innerHTML = "<p style='color:#9ca3af;'>⏳ 載入中...</p>";
   
   apiCall({ action: "list", type: "活動花絮" }, function(data) {
-    var items = data.items || [];
+    var items = (data.items || []).filter(function(i) { return i.type && (i.type === "活動花絮" || i.type.indexOf("活動花絮") !== -1); });
     badge.textContent = items.length;
     if (items.length === 0) {
       list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 12:00 自動生成。</p>";
@@ -568,6 +572,7 @@ function loadEvents() {
           <span style="font-size:11px; color:#9ca3af;">📋 ID: ${item.id}</span>
           <div class="event-card-footer-right">
             <button class="event-confirm-btn" id="event-confirm-${item.id}" onclick="confirmEventPublish('${item.id}','${escAttr(item.title || "")}')">✅ 排隊出街</button>
+            <button class="event-delete-btn" onclick="deleteEventItem('${item.id}')" title="刪除">🗑️</button>
           </div>
         </div>
       `;
@@ -687,6 +692,47 @@ function loadGallery() {
     `;
     grid.appendChild(card);
   });
+}
+
+// ===== 文案卡片刪除 =====
+function deleteCard(cardId) {
+  var card = document.getElementById(cardId);
+  if (!card) return;
+  if (!confirm("🗑️ 確定要刪除此文案卡片？\n\n刪除後可重新整理頁面恢復。")) return;
+  card.style.transition = "opacity 0.3s, transform 0.3s";
+  card.style.opacity = "0";
+  card.style.transform = "scale(0.95)";
+  setTimeout(function() { card.style.display = "none"; }, 300);
+}
+
+// ===== 活動花絮刪除（從 GAS 刪除） =====
+function deleteEventItem(id) {
+  if (!confirm("🗑️ 確定要刪除此活動花絮？\n\n此操作將從系統中永久移除。")) return;
+  apiCall({ action: "delete", id: id }, function(data) {
+    if (data.success) {
+      var card = document.getElementById("event-card-" + id);
+      if (card) {
+        card.style.transition = "opacity 0.3s, transform 0.3s";
+        card.style.opacity = "0";
+        card.style.transform = "scale(0.95)";
+        setTimeout(function() { card.remove(); updateEventCount(); }, 300);
+      }
+    } else {
+      alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
+    }
+  });
+}
+
+function updateEventCount() {
+  var list = document.getElementById("events-list");
+  var badge = document.getElementById("events-count");
+  if (list && badge) {
+    var cards = list.querySelectorAll(".event-card");
+    badge.textContent = cards.length;
+    if (cards.length === 0) {
+      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 12:00 自動生成。</p>";
+    }
+  }
 }
 
 // ===== 社群文案編輯 =====
