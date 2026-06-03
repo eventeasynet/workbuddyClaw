@@ -173,12 +173,13 @@ a.link:hover { text-decoration:underline; }
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
     <a class="nav-item active" data-section="outbox">📤 出街記錄</a>
-    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
+    <a class="nav-item" data-section="published">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
     <a class="nav-item nav-sub-item" data-section="copy">📝 社群文案</a>
     <a class="nav-item nav-sub-item" data-section="events">🌍 活動花絮</a>
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
     <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
+    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
   </nav>
   <div class="sidebar-footer">
     ⚡ <span id="status-text">5 個自動化運行中</span><br>
@@ -203,6 +204,17 @@ a.link:hover { text-decoration:underline; }
     <div id="outbox-loading" class="loading">載入中...</div>
     <div id="outbox-empty" class="empty" style="display:none;">📭 暫無排隊出街項目<br><small>在社群文案或活動花絮按「✅ 排隊出街」即可加到此處</small></div>
     <div id="outbox-cards" class="card-grid" style="display:none;"></div>
+  </div>
+
+  <!-- 已出街內容（status=已出街） -->
+  <div id="sec-published" class="section" style="display:none;">
+    <h3>✅ 已出街內容 <span class="badge" id="published-count">0</span>
+      <button class="refresh-btn" onclick="loadPublished()">🔄 重新整理</button>
+    </h3>
+    <p class="auto-note">📋 所有已推送出街嘅內容記錄，可查看詳情或重新排隊</p>
+    <div id="published-loading" class="loading">載入中...</div>
+    <div id="published-empty" class="empty" style="display:none;">📭 暫無已出街內容</div>
+    <div id="published-cards" class="card-grid" style="display:none;"></div>
   </div>
 
   <!-- 美股報告 (自動確認，直接顯示) -->
@@ -460,6 +472,85 @@ function getScheduledTime(type) {
   return "待定";
 }
 
+// ===== 已出街內容（status=已出街） =====
+function loadPublished() {
+  document.getElementById("published-loading").style.display = "block";
+  document.getElementById("published-cards").style.display = "none";
+  document.getElementById("published-empty").style.display = "none";
+  
+  apiCall({ action: "list", status: "已出街" }, function(data) {
+    const items = data.items || [];
+    document.getElementById("published-loading").style.display = "none";
+    document.getElementById("published-count").textContent = items.length;
+    
+    if (items.length === 0) {
+      document.getElementById("published-empty").style.display = "block";
+    } else {
+      const grid = document.getElementById("published-cards");
+      grid.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        const notesPreview = (item.notes || "無內容").substring(0, 80);
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
+            <span class="card-meta">📅 出街時間：${formatTime(item.confirmedAt || item.createdAt)}</span>
+          </div>
+          <div class="card-title">${item.title}</div>
+          <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
+          <div class="card-actions">
+            <span class="status-badge status-confirmed">已出街</span>
+            <button class="btn btn-confirm" onclick="requeueItem('${item.id}', this)">🔄 重新排隊</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      document.getElementById("published-cards").style.display = "grid";
+    }
+  });
+}
+
+// ===== 重新排隊（已出街 → 待出街） =====
+function requeueItem(id, btn) {
+  if (!confirm("🔄 確定將此內容重新排隊出街？\n\n將會移回「出街記錄」等待推送。")) return;
+  btn.disabled = true;
+  btn.textContent = '⏳ 處理中...';
+  // 用 update status
+  apiCall({ action: "list", status: "已出街" }, function(resp) {
+    // GAS v13 可能冇直接 update status API，用 delete + add 方式
+    var items = (resp.items || []).filter(i => i.id === id);
+    if (items.length === 0) { alert("❌ 找不到該項目"); btn.disabled = false; return; }
+    var item = items[0];
+    // delete then re-add with status=待出街
+    apiCall({ action: "delete", id: id }, function(delRes) {
+      if (!delRes.success) { alert("❌ 重新排隊失敗"); btn.disabled = false; return; }
+      // 手動 call GAS add
+      var params = new URLSearchParams();
+      params.append("action", "add");
+      params.append("type", item.type || "");
+      params.append("title", item.title || "");
+      params.append("notes", item.notes || "");
+      params.append("status", "待出街");
+      var script = document.createElement("script");
+      script.src = GAS_URL + "?" + params.toString() + "&callback=reqCb";
+      window.reqCb = function(rdata) {
+        delete window.reqCb;
+        if (rdata.success) {
+          alert("✅ 已重新排隊！");
+          loadPublished();
+          loadOutbox();
+        } else {
+          alert("❌ 重新排隊失敗：" + (rdata.error || ""));
+          btn.disabled = false;
+          btn.textContent = '🔄 重新排隊';
+        }
+      };
+      document.head.appendChild(script);
+    });
+  });
+}
+
 // ===== 立即出街（管理員手動推送） =====
 function publishNow(id, btn) {
   if (!confirm("🚀 確定現在立即出街？\n\n將會推送至已設定的社群平台。")) return;
@@ -467,16 +558,9 @@ function publishNow(id, btn) {
   btn.textContent = '⏳ 推送中...';
   apiCall({ action: "confirm", id: id }, function(data) {
     if (data.success) {
-      btn.textContent = '✅ 已出街';
-      btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
-      // 1.5 秒後移除卡片
-      var card = btn.closest('.card');
-      if (card) {
-        card.style.transition = 'opacity 0.4s, transform 0.4s';
-        card.style.opacity = '0';
-        card.style.transform = 'scale(0.95)';
-        setTimeout(function() { card.remove(); updateOutboxCount(); }, 400);
-      }
+      alert('✅ 已成功出街！\n\n內容已移至「✅ 已出街內容」分頁。');
+      loadOutbox();
+      loadPublished();
     } else {
       alert('❌ 推送失敗：' + (data.error || '未知錯誤'));
       btn.disabled = false;
@@ -860,7 +944,7 @@ function confirmPublish(cardId, styleLabel) {
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
-    ["pending","stock","news","copy","events","gallery","outbox"].forEach(n => {
+    ["pending","stock","news","copy","events","gallery","outbox","published"].forEach(n => {
       var el = document.getElementById("sec-" + n);
       if (el) el.style.display = "none";
     });
@@ -876,6 +960,7 @@ function showSection(name) {
     
     const titles = {
       outbox: ["📤 出街記錄", "所有排隊出街嘅項目，狀態為「待出街」，等待推送"],
+      published: ["✅ 已出街內容", "所有已推送出街嘅內容記錄，可查看或重新排隊"],
       stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
       news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
       gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
@@ -886,6 +971,7 @@ function showSection(name) {
     document.getElementById("page-desc").textContent = titles[name][1];
     
     if (name === "outbox") loadOutbox();
+    if (name === "published") loadPublished();
     if (name === "stock") loadStock();
     if (name === "news") loadNews();
     if (name === "gallery") loadGallery();
