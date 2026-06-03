@@ -112,12 +112,12 @@ a.link:hover { text-decoration:underline; }
     <h1>⚡ WorkBuddy</h1>
     <p>EventEasy 自動化管理中心</p>
   </div>
-  <nav class="sidebar-nav">
-    <a class="nav-item active" onclick="showSection('pending', event)">📋 待確認 (揀選出街)</a>
-    <a class="nav-item" onclick="showSection('stock', event)">📈 美股分析報告</a>
-    <a class="nav-item" onclick="showSection('news', event)">📰 每日新聞撮要</a>
-    <a class="nav-item" onclick="showSection('gallery', event)">🎨 設計圖庫</a>
-    <a class="nav-item" onclick="showSection('confirmed', event)">✅ 已出街記錄</a>
+  <nav class="sidebar-nav" id="sidebar-nav">
+    <a class="nav-item active" data-section="pending">📋 待確認 (揀選出街)</a>
+    <a class="nav-item" data-section="stock">📈 美股分析報告</a>
+    <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
+    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
+    <a class="nav-item" data-section="confirmed">✅ 已出街記錄</a>
   </nav>
   <div class="sidebar-footer">
     ⚡ <span id="status-text">4 個自動化運行中</span><br>
@@ -453,31 +453,69 @@ function deleteItem(id) {
 }
 
 // ===== 頁面切換 =====
-function showSection(name, evt) {
-  ["pending","stock","news","gallery","confirmed"].forEach(n => {
-    document.getElementById("sec-" + n).style.display = "none";
-  });
-  document.getElementById("sec-" + name).style.display = "block";
-  document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
-  if (evt && evt.currentTarget) evt.currentTarget.classList.add("active");
-  
-  const titles = {
-    pending: ["📋 待確認 — 揀選出街", "每日 3 款宣傳圖選項，揀好撳「確認出街」"],
-    stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
-    news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
-    confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"],
-    gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"]
-  };
-  document.getElementById("page-title").textContent = titles[name][0];
-  document.getElementById("page-desc").textContent = titles[name][1];
-  
-  // 切換時刷新資料
-  if (name === "pending") loadPending();
-  if (name === "stock") loadStock();
-  if (name === "news") loadNews();
-  if (name === "confirmed") loadConfirmed();
-  if (name === "gallery") loadGallery();
+function showSection(name) {
+  try {
+    ["pending","stock","news","gallery","confirmed"].forEach(n => {
+      var el = document.getElementById("sec-" + n);
+      if (el) el.style.display = "none";
+    });
+    var target = document.getElementById("sec-" + name);
+    if (!target) { console.error("Section not found: sec-" + name); return; }
+    target.style.display = "block";
+    
+    // Update active nav
+    document.querySelectorAll(".nav-item").forEach(function(el) {
+      el.classList.remove("active");
+      if (el.getAttribute("data-section") === name) el.classList.add("active");
+    });
+    
+    const titles = {
+      pending: ["📋 待確認 — 揀選出街", "每日 3 款宣傳圖選項，揀好撳「確認出街」"],
+      stock: ["📈 美股分析報告", "每晚 21:00 自動生成（含百家撮要 + 最終總結）"],
+      news: ["📰 每日新聞撮要", "每日 10:00 自動生成本港及國際新聞"],
+      confirmed: ["✅ 已出街記錄", "所有已確認並推送嘅項目記錄"],
+      gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"]
+    };
+    document.getElementById("page-title").textContent = titles[name][0];
+    document.getElementById("page-desc").textContent = titles[name][1];
+    
+    if (name === "pending") loadPending();
+    if (name === "stock") loadStock();
+    if (name === "news") loadNews();
+    if (name === "confirmed") loadConfirmed();
+    if (name === "gallery") loadGallery();
+  } catch(e) {
+    console.error("showSection error:", e);
+  }
 }
+
+// Event delegation for sidebar nav
+document.addEventListener("DOMContentLoaded", function() {
+  var nav = document.getElementById("sidebar-nav");
+  if (nav) {
+    nav.addEventListener("click", function(e) {
+      var item = e.target.closest(".nav-item");
+      if (item) {
+        var section = item.getAttribute("data-section");
+        if (section) showSection(section);
+      }
+    });
+  }
+});
+
+// If DOM already loaded, bind immediately
+(function() {
+  var nav = document.getElementById("sidebar-nav");
+  if (nav) {
+    nav.addEventListener("click", function(e) {
+      var item = e.target.closest(".nav-item");
+      if (item) {
+        var section = item.getAttribute("data-section");
+        if (section) showSection(section);
+      }
+    });
+  }
+})();
 
 // 首次載入
 loadPending();
