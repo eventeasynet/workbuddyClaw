@@ -434,19 +434,22 @@ const BUFFER_TOKEN = "7mmKJU3HkgZYNtWrbrKiel_xXtoQRpTtqAUfPDTZNR_";
 const BUFFER_ORG = "6a1de7662d32712827f4dace";
 const BUFFER_CHANNELS = {
   facebook:  "6a1e74afc687a22dd44f6f6b", // EventEasy.net Facebook Page
-  instagram: "6a1e6612c687a22dd44f3a6a", // EventEast.net Instagram
-  linkedin:  "6a1e6590c687a22dd44f37f0"  // eventeasy-net LinkedIn
+  instagram: "6a1e6612c687a22dd44f3a6a"  // EventEasy.net Instagram
+  // linkedin 已抽起（2026-06-04）
 };
 const BUFFER_DEFAULT_LOGO_URL = "https://drive.google.com/uc?export=view&id=17wMJ_xVO3HYM9gx_HERxk8ygpEbp4h7E";
 
 // Buffer 發帖（經 GAS 後端 proxy，Server-side 呼叫 Buffer API 避開 CORS）
+// imageUrl: 明確傳入圖片 URL；空字串 = 純文字貼，不帶圖
 async function bufferPost(text, channelId, opts = {}) {
   return new Promise((resolve, reject) => {
+    // opts.imageUrl 未定義時用 logo；明確傳空字串時不帶圖
+    const imageUrl = (opts.imageUrl !== undefined) ? opts.imageUrl : BUFFER_DEFAULT_LOGO_URL;
     apiCall({
       action: "buffer_post",
       text: text,
       channelId: channelId,
-      imageUrl: opts.imageUrl || BUFFER_DEFAULT_LOGO_URL,
+      imageUrl: imageUrl,
       linkUrl: opts.linkUrl || "",
       token: BUFFER_TOKEN
     }, function(data) {
@@ -649,7 +652,7 @@ function requeueItem(id, btn) {
 
 // ===== 立即出街（管理員手動推送）→ 真正 call Buffer API → 3 個頻道全發 =====
 async function publishNow(id, btn) {
-  if (!confirm("🚀 確定現在立即出街？\n\n將推送至：\n• Facebook（EventEasy.net Page）\n• Instagram（EventEast.net + Logo）\n• LinkedIn（eventeasy-net）")) return;
+  if (!confirm("🚀 確定現在立即出街？\n\n將推送至：\n• Facebook（EventEasy.net Page）\n• Instagram（EventEasy.net + Logo 圖）")) return;
   btn.disabled = true;
   btn.textContent = '⏳ 推送中...';
 
@@ -665,17 +668,16 @@ async function publishNow(id, btn) {
   // 2. 組合貼文文字（title + 內容）
   const text = [item.title || "", item.notes || ""].filter(Boolean).join("\n\n");
 
-  // 3. 依次發送到 3 個頻道
+  // 3. 依次發送到 2 個頻道（LinkedIn 已抽起）
   const targets = [
-    { name: "Facebook",   id: BUFFER_CHANNELS.facebook },
-    { name: "Instagram",  id: BUFFER_CHANNELS.instagram },
-    { name: "LinkedIn",   id: BUFFER_CHANNELS.linkedin }
+    { name: "Facebook",   id: BUFFER_CHANNELS.facebook,  imageUrl: "" },                          // Facebook: 純文字帖
+    { name: "Instagram",  id: BUFFER_CHANNELS.instagram, imageUrl: BUFFER_DEFAULT_LOGO_URL }       // Instagram: 必須帶圖
   ];
   const results = [];
   for (const ch of targets) {
     btn.textContent = '⏳ 推送 ' + ch.name + '...';
     try {
-      const post = await bufferPost(text, ch.id);
+      const post = await bufferPost(text, ch.id, { imageUrl: ch.imageUrl });
       results.push("✅ " + ch.name + "（" + (post.dueAt ? "已排程" : "已發送") + "）");
       console.log("✅ " + ch.name + " 發帖成功：" + post.id);
     } catch (err) {
