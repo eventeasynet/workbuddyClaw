@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060407;
+  var CURRENT = 2026060408;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -198,6 +198,35 @@ a.link:hover { text-decoration:underline; }
 .event-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; }
 .event-delete-btn { background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:8px; padding:5px 12px; font-size:12px; cursor:pointer; transition:all 0.15s; }
 .event-delete-btn:hover { background:#fef2f2; border-color:#f87171; }
+
+/* ===== 迷你月曆 ===== */
+.mini-cal { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; width:220px; box-shadow:0 2px 8px rgba(0,0,0,0.06); user-select:none; }
+.mini-cal-title { text-align:center; font-weight:700; font-size:13px; color:#1f2937; margin-bottom:6px; padding-bottom:6px; border-bottom:1px solid #f3f4f6; }
+.mini-cal-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.mini-cal-nav button { background:none; border:1px solid #e5e7eb; border-radius:4px; width:24px; height:24px; cursor:pointer; font-size:12px; color:#6b7280; display:flex; align-items:center; justify-content:center; }
+.mini-cal-nav button:hover { background:#f3f4f6; color:#1f2937; }
+.mini-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; text-align:center; }
+.mini-cal-day-hdr { font-size:10px; color:#9ca3af; padding:2px 0; font-weight:600; }
+.mini-cal-cell { font-size:11px; padding:4px 0; border-radius:5px; cursor:pointer; color:#374151; position:relative; transition:all 0.15s; }
+.mini-cal-cell:hover { background:#eff6ff; color:#1d4ed8; }
+.mini-cal-empty { cursor:default; }
+.mini-cal-has-data { font-weight:700; }
+.mini-cal-has-data::after { content:''; display:block; width:4px; height:4px; background:#3b82f6; border-radius:50%; margin:1px auto 0; }
+.mini-cal-active { background:#1d4ed8; color:#fff; font-weight:700; }
+.mini-cal-active::after { background:#fff; }
+.mini-cal-today { border:1.5px solid #3b82f6; }
+
+/* 日曆容器 */
+.cal-wrapper { position:relative; flex-shrink:0; }
+.cal-toggle { background:#fff; border:1px solid #d1d5db; border-radius:8px; padding:5px 12px; font-size:12px; cursor:pointer; color:#6b7280; display:flex; align-items:center; gap:4px; white-space:nowrap; }
+.cal-toggle:hover { border-color:#3b82f6; color:#3b82f6; }
+.cal-toggle.active { border-color:#1d4ed8; color:#1d4ed8; background:#eff6ff; }
+.cal-dropdown { position:absolute; top:100%; right:0; margin-top:6px; z-index:100; display:none; }
+.cal-dropdown.show { display:block; }
+
+/* 內容行：tabs + 月曆 */
+.content-toolbar { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.content-tabs { display:flex; gap:6px; flex-wrap:wrap; flex:1; min-width:0; }
 </style>
 </head>
 <body>
@@ -308,18 +337,19 @@ a.link:hover { text-decoration:underline; }
     <h3>📈 每日美股分析報告 <span class="badge" id="stock-count">0</span>
       <button class="refresh-btn" onclick="loadStock()">🔄 重新整理</button>
     </h3>
-    <p class="auto-note">⚡ 每晚 19:00 自動生成 · 21:00 出街，無需手動操作</p>
+    <p class="auto-note">⚡ 每晚 19:00 自動生成，排序方式：點上面日期 Tag 或右邊月曆揀日子</p>
     <div id="stock-loading" class="loading">載入中...</div>
     <div id="stock-empty" class="empty" style="display:none;">📭 暫無美股報告<br><small>每晚 19:00 生成 → 21:00 出街</small></div>
-    <!-- 報告選擇按鈕 -->
-    <div id="stock-tabs" style="display:none; margin-bottom:12px; display:flex; flex-wrap:wrap; gap:6px;">
-    </div>
-    <!-- iframe 容器 -->
-    <div id="stock-iframe-wrapper" style="display:none; position:relative; width:100%;">
-      <iframe id="stock-iframe" style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="" title="美股分析報告"></iframe>
-      <div style="margin-top:8px; text-align:right;">
-        <a id="stock-ext-link" href="#" target="_blank" style="font-size:13px; color:#3b82f6;">🔗 新視窗開啟</a>
+    <!-- 內容工具列：Tabs + 月曆 -->
+    <div id="stock-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="content-tabs" id="stock-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="stock-cal-toggle" onclick="toggleCalendar('stock')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="stock-cal-dropdown"></div>
+        </div>
       </div>
+      <div id="stock-reports-container"></div>
     </div>
   </div>
 
@@ -327,15 +357,19 @@ a.link:hover { text-decoration:underline; }
   <div id="sec-news" class="section" style="display:none;">
     <h3>📰 每日新聞撮要 <span class="badge" id="news-count">0</span>
       <button class="refresh-btn" onclick="loadNews()">🔄 重新整理</button>
-      <button class="refresh-btn" onclick="window.open(document.getElementById('news-iframe').src, '_blank')" style="margin-left:8px;">🔗 新視窗開啟</button>
     </h3>
-    <p class="auto-note">⚡ 每日 08:00 / 17:00 自動生成 · 10:00 / 傍晚出街，無需手動操作</p>
+    <p class="auto-note">⚡ 每日 08:00 / 17:00 自動生成，排序方式：點上面日期 Tag 或右邊月曆揀日子</p>
     <div id="news-loading" class="loading">載入中...</div>
     <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 08:00 生成 → 10:00 出街</small></div>
     <div id="news-viewer" style="display:none;">
-      <div id="news-tabs" style="margin-bottom:12px;display:flex;gap:8px;"></div>
+      <div class="content-toolbar">
+        <div class="content-tabs" id="news-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="news-cal-toggle" onclick="toggleCalendar('news')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="news-cal-dropdown"></div>
+        </div>
+      </div>
       <div id="news-iframe-wrappers"></div>
-      <p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;">📋 上方為完整新聞 HTML 報告，自動從 GitHub Pages 加載</p>
     </div>
   </div>
 
@@ -757,138 +791,247 @@ function updateOutboxCount() {
 }
 
 // ===== 美股報告（已確認，iframe 渲染） =====
-let stockReports = [];
-let stockActiveIdx = 0;
+// ===== 共享：日期分組 + 月曆 =====
+function fmtDateKey(ts) {
+  var d = new Date(ts);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function fmtDateShort(dk) {
+  var p = dk.split('-');
+  return p[1] + '/' + p[2];
+}
+
+function groupByDate(items) {
+  var g = {};
+  items.forEach(function(it) {
+    var k = fmtDateKey(it.createdAt);
+    if (!g[k]) g[k] = [];
+    g[k].push(it);
+  });
+  return g;
+}
+
+function renderCalendar(cntId, groups, activeDK, prefix) {
+  var cnt = document.getElementById(cntId);
+  var now = new Date();
+  var y = now.getFullYear(), m = now.getMonth();
+  var fd = new Date(y, m, 1).getDay();
+  var dim = new Date(y, m+1, 0).getDate();
+  var today = fmtDateKey(new Date());
+  var mn = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  var dh = ['日','一','二','三','四','五','六'];
+
+  var h = '<div class="mini-cal"><div class="mini-cal-nav"><button onclick="renderCalendar(\''+cntId+'\',stockDateGroups||newsDateGroups,\''+activeDK+'\',\''+prefix+'\')" style="visibility:hidden">◀</button><div class="mini-cal-title">'+y+'年 '+mn[m]+'</div><button onclick="renderCalendar(\''+cntId+'\',stockDateGroups||newsDateGroups,\''+activeDK+'\',\''+prefix+'\')" style="visibility:hidden">▶</button></div><div class="mini-cal-grid">';
+
+  dh.forEach(function(d) { h += '<div class="mini-cal-day-hdr">'+d+'</div>'; });
+  for (var i=0; i<fd; i++) h += '<div class="mini-cal-cell mini-cal-empty"></div>';
+  for (var d=1; d<=dim; d++) {
+    var dk = y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var cs = 'mini-cal-cell';
+    if (dk === today) cs += ' mini-cal-today';
+    if (groups[dk]) cs += ' mini-cal-has-data';
+    if (dk === activeDK) cs += ' mini-cal-active';
+    h += '<div class="'+cs+'" onclick="onCalDateClick(\''+prefix+'\',\''+dk+'\')">'+d+'</div>';
+  }
+  h += '</div></div>';
+  cnt.innerHTML = h;
+}
+
+// 切換月曆顯示
+function toggleCalendar(prefix) {
+  var dd = document.getElementById(prefix+'-cal-dropdown');
+  var btn = document.getElementById(prefix+'-cal-toggle');
+  var isOpen = dd.classList.contains('show');
+  // Close all
+  document.querySelectorAll('.cal-dropdown').forEach(function(el){ el.classList.remove('show'); });
+  document.querySelectorAll('.cal-toggle').forEach(function(el){ el.classList.remove('active'); });
+  if (!isOpen) { dd.classList.add('show'); btn.classList.add('active'); }
+}
+
+// 點文件外部關閉月曆
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.cal-wrapper')) {
+    document.querySelectorAll('.cal-dropdown').forEach(function(el){ el.classList.remove('show'); });
+    document.querySelectorAll('.cal-toggle').forEach(function(el){ el.classList.remove('active'); });
+  }
+});
+
+// ===== 美股報告 =====
+var stockDateGroups = {};
+var stockItemsAll = [];
+var stockActiveDK = '';
 
 function loadStock() {
   document.getElementById("stock-loading").style.display = "block";
-  document.getElementById("stock-tabs").style.display = "none";
-  document.getElementById("stock-iframe-wrapper").style.display = "none";
+  document.getElementById("stock-viewer").style.display = "none";
   document.getElementById("stock-empty").style.display = "none";
-  
+
   apiCall({ action: "list", status: "已確認" }, function(data) {
-    const items = (data.items || []).filter(i => i.type.includes("美股"));
-    stockReports = items;
+    var items = (data.items || []).filter(i => i.type.includes("美股"));
+    stockItemsAll = items;
+    stockDateGroups = groupByDate(items);
     document.getElementById("stock-loading").style.display = "none";
     document.getElementById("stock-count").textContent = items.length;
-    
+
     if (items.length === 0) {
       document.getElementById("stock-empty").style.display = "block";
       return;
     }
-    
-    // Build tab buttons
-    const tabsDiv = document.getElementById("stock-tabs");
-    tabsDiv.innerHTML = "";
-    tabsDiv.style.display = "flex";
-    
-    items.forEach(function(item, idx) {
-      const btn = document.createElement("button");
-      btn.id = "stock-tab-" + idx;
-      btn.style.cssText = "padding:6px 14px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:13px; white-space:nowrap; transition:all .2s;";
-      btn.textContent = (idx + 1) + ". " + (item.title || "報告").substring(0, 30);
-      btn.onclick = function() { showStockReport(idx); };
-      tabsDiv.appendChild(btn);
-    });
-    
-    document.getElementById("stock-iframe-wrapper").style.display = "block";
-    stockActiveIdx = 0;
-    showStockReport(0);
+
+    document.getElementById("stock-viewer").style.display = "block";
+    // Sort dates newest first
+    var dates = Object.keys(stockDateGroups).sort().reverse();
+    stockActiveDK = dates[0]; // default to latest
+    renderStockView(dates);
   });
 }
 
-function showStockReport(idx) {
-  stockActiveIdx = idx;
-  var item = stockReports[idx];
-  if (!item) return;
-  
-  // Update tab button styles
-  for (var i = 0; i < stockReports.length; i++) {
-    var btn = document.getElementById("stock-tab-" + i);
+function renderStockView(dates) {
+  // Tabs: max 5 most recent dates
+  var tabsDiv = document.getElementById("stock-tabs");
+  tabsDiv.innerHTML = "";
+  var showDates = dates.slice(0, 5);
+
+  showDates.forEach(function(dk) {
+    var btn = document.createElement("button");
+    btn.id = "stock-date-tab-"+dk;
+    btn.style.cssText = "padding:5px 12px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; white-space:nowrap; transition:all .2s;";
+    var count = stockDateGroups[dk].length;
+    btn.textContent = fmtDateShort(dk) + (count > 1 ? " ("+count+"篇)" : "");
+    btn.onclick = function() { setActiveStockDate(dk); };
+    tabsDiv.appendChild(btn);
+  });
+
+  // Calendar
+  renderCalendar("stock-cal-dropdown", stockDateGroups, stockActiveDK, "stock");
+
+  // Show reports for active date
+  setActiveStockDate(stockActiveDK);
+}
+
+function setActiveStockDate(dk) {
+  stockActiveDK = dk;
+  // Update tab styles
+  var dates = Object.keys(stockDateGroups).sort().reverse();
+  dates.slice(0, 5).forEach(function(d) {
+    var btn = document.getElementById("stock-date-tab-"+d);
     if (btn) {
-      btn.style.background = (i === idx) ? "#1d4ed8" : "#f9fafb";
-      btn.style.color = (i === idx) ? "#fff" : "#374151";
-      btn.style.borderColor = (i === idx) ? "#1d4ed8" : "#d1d5db";
+      btn.style.background = (d === dk) ? "#1d4ed8" : "#f9fafb";
+      btn.style.color = (d === dk) ? "#fff" : "#374151";
+      btn.style.borderColor = (d === dk) ? "#1d4ed8" : "#d1d5db";
     }
-  }
-  
-  var iframe = document.getElementById("stock-iframe");
-  var extLink = document.getElementById("stock-ext-link");
-  var url = item.driveUrl || item.link_url || "";
-  if (url) {
-    iframe.src = url + "?_t=" + Date.now();
-    extLink.href = url;
+  });
+  // Update calendar
+  renderCalendar("stock-cal-dropdown", stockDateGroups, dk, "stock");
+  // Show reports
+  var container = document.getElementById("stock-reports-container");
+  var reports = stockDateGroups[dk] || [];
+  container.innerHTML = "";
+  reports.forEach(function(it) {
+    var url = it.driveUrl || it.link_url || "";
+    var div = document.createElement("div");
+    div.style.cssText = "margin-bottom:12px;";
+    div.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">'+it.title+'</span><a href="'+url+'" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div><iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="'+url+'?_t='+Date.now()+'" sandbox="allow-scripts allow-same-origin"></iframe>';
+    container.appendChild(div);
+  });
+}
+
+function onCalDateClick(prefix, dk) {
+  document.querySelectorAll('.cal-dropdown').forEach(function(el){ el.classList.remove('show'); });
+  document.querySelectorAll('.cal-toggle').forEach(function(el){ el.classList.remove('active'); });
+  if (prefix === "stock") {
+    stockActiveDK = dk;
+    var dates = Object.keys(stockDateGroups).sort().reverse();
+    renderStockView(dates);
+  } else if (prefix === "news") {
+    newsActiveDK = dk;
+    var ndates = Object.keys(newsDateGroups).sort().reverse();
+    renderNewsView(ndates);
   }
 }
 
-// ===== 新聞撮要（已確認） =====
+// ===== 新聞撮要 =====
+var newsDateGroups = {};
+var newsItemsAll = [];
+var newsActiveDK = '';
+
 function loadNews() {
   document.getElementById("news-loading").style.display = "block";
   document.getElementById("news-viewer").style.display = "none";
   document.getElementById("news-empty").style.display = "none";
-  
+
   apiCall({ action: "list", status: "已確認" }, function(data) {
-    const items = (data.items || []).filter(i => i.type.includes("新聞"));
+    var items = (data.items || []).filter(i => i.type.includes("新聞"));
+    newsItemsAll = items;
+    newsDateGroups = groupByDate(items);
     document.getElementById("news-loading").style.display = "none";
     document.getElementById("news-count").textContent = items.length;
-    
+
     if (items.length === 0) {
       document.getElementById("news-empty").style.display = "block";
-    } else {
-      document.getElementById("news-viewer").style.display = "block";
-      
-      // 按 createdAt 排序（最新在前）
-      items.sort(function(a, b) {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
-      
-      // 建立 tabs + iframe wrappers
-      var tabsDiv = document.getElementById("news-tabs");
-      var wrappersDiv = document.getElementById("news-iframe-wrappers");
-      tabsDiv.innerHTML = "";
-      wrappersDiv.innerHTML = "";
-      
-      items.forEach(function(item, i) {
-        // 判斷 AM/PM
-        var isPM = item.title.includes("下午") || item.title.includes("PM") || item.notes.includes("PM");
-        var label = isPM ? "🌇 下午版" : "🌅 上午版";
-        
-        // Tab button
-        var btn = document.createElement("button");
-        btn.className = "refresh-btn";
-        if (i === 0) btn.style.background = "#3b82f6"; btn.style.color = "#fff";
-        btn.textContent = label;
-        btn.style.margin = "0";
-        btn.onclick = (function(idx) { return function() { switchNewsTab(idx); }; })(i);
-        tabsDiv.appendChild(btn);
-        
-        // Iframe wrapper
-        var wrapper = document.createElement("div");
-        wrapper.id = "news-wrap-" + i;
-        wrapper.style.display = (i === 0) ? "block" : "none";
-        var iframe = document.createElement("iframe");
-        iframe.style.cssText = "width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);";
-        iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
-        var url = item.driveUrl || "";
-        iframe.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "_t=" + Date.now();
-        wrapper.appendChild(iframe);
-        wrappersDiv.appendChild(wrapper);
-      });
+      return;
     }
+
+    document.getElementById("news-viewer").style.display = "block";
+    var dates = Object.keys(newsDateGroups).sort().reverse();
+    newsActiveDK = dates[0];
+    renderNewsView(dates);
   });
 }
 
-function switchNewsTab(idx) {
-  // Update tabs
-  var btns = document.querySelectorAll("#news-tabs button");
-  btns.forEach(function(b, i) {
-    b.style.background = (i === idx) ? "#3b82f6" : "";
-    b.style.color = (i === idx) ? "#fff" : "";
+function renderNewsView(dates) {
+  // Tabs: max 5 most recent dates
+  var tabsDiv = document.getElementById("news-tabs");
+  tabsDiv.innerHTML = "";
+  var showDates = dates.slice(0, 5);
+
+  showDates.forEach(function(dk) {
+    var btn = document.createElement("button");
+    btn.id = "news-date-tab-"+dk;
+    btn.style.cssText = "padding:5px 12px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; white-space:nowrap; transition:all .2s;";
+    var count = newsDateGroups[dk].length;
+    var label = fmtDateShort(dk);
+    if (count > 1) {
+      // Show AM/PM labels
+      var ampm = newsDateGroups[dk].map(function(it){
+        return it.title.indexOf("下午")>=0 ? "🌇下午" : "🌅上午";
+      });
+      label += " ("+ampm.join("+")+")";
+    }
+    btn.textContent = label;
+    btn.onclick = function() { setActiveNewsDate(dk); };
+    tabsDiv.appendChild(btn);
   });
-  // Show/hide iframes
-  var wrappers = document.querySelectorAll("#news-iframe-wrappers > div");
-  wrappers.forEach(function(w, i) {
-    w.style.display = (i === idx) ? "block" : "none";
+
+  // Calendar
+  renderCalendar("news-cal-dropdown", newsDateGroups, newsActiveDK, "news");
+  setActiveNewsDate(newsActiveDK);
+}
+
+function setActiveNewsDate(dk) {
+  newsActiveDK = dk;
+  var dates = Object.keys(newsDateGroups).sort().reverse();
+  dates.slice(0, 5).forEach(function(d) {
+    var btn = document.getElementById("news-date-tab-"+d);
+    if (btn) {
+      btn.style.background = (d === dk) ? "#1d4ed8" : "#f9fafb";
+      btn.style.color = (d === dk) ? "#fff" : "#374151";
+      btn.style.borderColor = (d === dk) ? "#1d4ed8" : "#d1d5db";
+    }
+  });
+  renderCalendar("news-cal-dropdown", newsDateGroups, dk, "news");
+
+  var wrappersDiv = document.getElementById("news-iframe-wrappers");
+  wrappersDiv.innerHTML = "";
+  var reports = newsDateGroups[dk] || [];
+  reports.forEach(function(it) {
+    var url = it.driveUrl || "";
+    var div = document.createElement("div");
+    div.style.marginBottom = "12px";
+    var ampm = it.title.indexOf("下午")>=0 ? "🌇 下午版" : "🌅 上午版";
+    div.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">'+ampm+' — '+it.title+'</span><a href="'+url+'" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div><iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="'+url+'?_t='+Date.now()+'" sandbox="allow-scripts allow-same-origin"></iframe>';
+    wrappersDiv.appendChild(div);
   });
 }
 
