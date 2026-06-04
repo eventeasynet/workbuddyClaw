@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060408;
+  var CURRENT = 2026060501;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -790,18 +790,20 @@ function updateOutboxCount() {
   }
 }
 
-// ===== 美股報告（已確認，iframe 渲染） =====
-// ===== 共享：日期分組 + 月曆 =====
+// ===== 共用：日期分組 + 月曆 =====
 function fmtDateKey(ts) {
   var d = new Date(ts);
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
-
 function fmtDateShort(dk) {
+  // 跨年時顯示年份，否則只顯示 月/日
   var p = dk.split('-');
+  var curYear = new Date().getFullYear();
+  if (p[0] != curYear) {
+    return p[0] + '/' + p[1] + '/' + p[2];
+  }
   return p[1] + '/' + p[2];
 }
-
 function groupByDate(items) {
   var g = {};
   items.forEach(function(it) {
@@ -812,44 +814,141 @@ function groupByDate(items) {
   return g;
 }
 
+// 全域變數
+var stockDateGroups = {};
+var stockActiveDK = '';
+var newsDateGroups = {};
+var newsActiveDK = '';
+// 月曆狀態：記住每個 prefix 嘅當前年份/月份
+var calState = { stock: null, news: null };
+
+// ===== 月曆渲染（支援年份 + 月份切換）=====
+function getCalState(prefix) {
+  if (!calState[prefix]) {
+    var now = new Date();
+    calState[prefix] = { y: now.getFullYear(), m: now.getMonth() };
+  }
+  return calState[prefix];
+}
+
+function changeMonth(prefix, delta) {
+  var st = getCalState(prefix);
+  st.m += delta;
+  if (st.m > 11) { st.m = 0; st.y++; }
+  if (st.m < 0)  { st.m = 11; st.y--; }
+  var groups = prefix === 'stock' ? stockDateGroups : newsDateGroups;
+  var activeDK = prefix === 'stock' ? stockActiveDK : newsActiveDK;
+  renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
+}
+
 function renderCalendar(cntId, groups, activeDK, prefix) {
   var cnt = document.getElementById(cntId);
-  var now = new Date();
-  var y = now.getFullYear(), m = now.getMonth();
+  if (!cnt) return;
+  var st = getCalState(prefix);
+  var y = st.y, m = st.m;
   var fd = new Date(y, m, 1).getDay();
-  var dim = new Date(y, m+1, 0).getDate();
+  var dim = new Date(y, m + 1, 0).getDate();
   var today = fmtDateKey(new Date());
   var mn = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
   var dh = ['日','一','二','三','四','五','六'];
 
-  var h = '<div class="mini-cal"><div class="mini-cal-nav"><button onclick="renderCalendar(\''+cntId+'\',stockDateGroups||newsDateGroups,\''+activeDK+'\',\''+prefix+'\')" style="visibility:hidden">◀</button><div class="mini-cal-title">'+y+'年 '+mn[m]+'</div><button onclick="renderCalendar(\''+cntId+'\',stockDateGroups||newsDateGroups,\''+activeDK+'\',\''+prefix+'\')" style="visibility:hidden">▶</button></div><div class="mini-cal-grid">';
+  var cal = document.createElement('div');
+  cal.className = 'mini-cal';
 
-  dh.forEach(function(d) { h += '<div class="mini-cal-day-hdr">'+d+'</div>'; });
-  for (var i=0; i<fd; i++) h += '<div class="mini-cal-cell mini-cal-empty"></div>';
-  for (var d=1; d<=dim; d++) {
-    var dk = y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    var cs = 'mini-cal-cell';
-    if (dk === today) cs += ' mini-cal-today';
-    if (groups[dk]) cs += ' mini-cal-has-data';
-    if (dk === activeDK) cs += ' mini-cal-active';
-    h += '<div class="'+cs+'" onclick="onCalDateClick(\''+prefix+'\',\''+dk+'\')">'+d+'</div>';
+  // 頂部：箭頭 + 標題 + 箭頭
+  var nav = document.createElement('div');
+  nav.className = 'mini-cal-nav';
+
+  var prevBtn = document.createElement('button');
+  prevBtn.textContent = '◀';
+  prevBtn.title = '上個月';
+  prevBtn.addEventListener('click', function(e) { e.stopPropagation(); changeMonth(prefix, -1); });
+
+  var title = document.createElement('div');
+  title.className = 'mini-cal-title';
+  title.textContent = y + '年 ' + mn[m];
+
+  var nextBtn = document.createElement('button');
+  nextBtn.textContent = '▶';
+  nextBtn.title = '下個月';
+  nextBtn.addEventListener('click', function(e) { e.stopPropagation(); changeMonth(prefix, 1); });
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(title);
+  nav.appendChild(nextBtn);
+  cal.appendChild(nav);
+
+  // 星期標頭
+  var grid = document.createElement('div');
+  grid.className = 'mini-cal-grid';
+  dh.forEach(function(d_) {
+    var hdr = document.createElement('div');
+    hdr.className = 'mini-cal-day-hdr';
+    hdr.textContent = d_;
+    grid.appendChild(hdr);
+  });
+
+  // 空白格
+  for (var i = 0; i < fd; i++) {
+    var empty = document.createElement('div');
+    empty.className = 'mini-cal-cell mini-cal-empty';
+    grid.appendChild(empty);
   }
-  h += '</div></div>';
-  cnt.innerHTML = h;
+
+  // 日期格
+  for (var d = 1; d <= dim; d++) {
+    var dk = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    var cell = document.createElement('div');
+    cell.className = 'mini-cal-cell';
+    if (dk === today) cell.classList.add('mini-cal-today');
+    if (groups[dk]) cell.classList.add('mini-cal-has-data');
+    if (dk === activeDK) cell.classList.add('mini-cal-active');
+    cell.textContent = d;
+    if (groups[dk]) {
+      (function(dateKey) {
+        cell.addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
+          document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
+          if (prefix === 'stock') {
+            stockActiveDK = dateKey;
+            var dates = Object.keys(stockDateGroups).sort().reverse();
+            renderStockView(dates);
+          } else if (prefix === 'news') {
+            newsActiveDK = dateKey;
+            var ndates = Object.keys(newsDateGroups).sort().reverse();
+            renderNewsView(ndates);
+          }
+        });
+      })(dk);
+    }
+    grid.appendChild(cell);
+  }
+
+  cal.appendChild(grid);
+  cnt.innerHTML = '';
+  cnt.appendChild(cal);
 }
 
 // 切換月曆顯示
 function toggleCalendar(prefix) {
-  var dd = document.getElementById(prefix+'-cal-dropdown');
-  var btn = document.getElementById(prefix+'-cal-toggle');
+  var dd = document.getElementById(prefix + '-cal-dropdown');
+  var btn = document.getElementById(prefix + '-cal-toggle');
+  if (!dd || !btn) return;
   var isOpen = dd.classList.contains('show');
-  // Close all
   document.querySelectorAll('.cal-dropdown').forEach(function(el){ el.classList.remove('show'); });
   document.querySelectorAll('.cal-toggle').forEach(function(el){ el.classList.remove('active'); });
-  if (!isOpen) { dd.classList.add('show'); btn.classList.add('active'); }
+  if (!isOpen) {
+    // 確保月曆已渲染（防止第一次打開時係空白）
+    var groups = prefix === 'stock' ? stockDateGroups : newsDateGroups;
+    var activeDK = prefix === 'stock' ? stockActiveDK : newsActiveDK;
+    renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
+    dd.classList.add('show');
+    btn.classList.add('active');
+  }
 }
 
-// 點文件外部關閉月曆
+// 點外部關閉月曆
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.cal-wrapper')) {
     document.querySelectorAll('.cal-dropdown').forEach(function(el){ el.classList.remove('show'); });
@@ -858,154 +957,126 @@ document.addEventListener('click', function(e) {
 });
 
 // ===== 美股報告 =====
-var stockDateGroups = {};
-var stockItemsAll = [];
-var stockActiveDK = '';
-
 function loadStock() {
-  document.getElementById("stock-loading").style.display = "block";
-  document.getElementById("stock-viewer").style.display = "none";
-  document.getElementById("stock-empty").style.display = "none";
+  document.getElementById('stock-loading').style.display = 'block';
+  document.getElementById('stock-viewer').style.display = 'none';
+  document.getElementById('stock-empty').style.display = 'none';
 
-  apiCall({ action: "list", status: "已確認" }, function(data) {
-    var items = (data.items || []).filter(i => i.type.includes("美股"));
-    stockItemsAll = items;
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) { return i.type && i.type.indexOf('美股') >= 0; });
     stockDateGroups = groupByDate(items);
-    document.getElementById("stock-loading").style.display = "none";
-    document.getElementById("stock-count").textContent = items.length;
+    document.getElementById('stock-loading').style.display = 'none';
+    document.getElementById('stock-count').textContent = items.length;
 
     if (items.length === 0) {
-      document.getElementById("stock-empty").style.display = "block";
+      document.getElementById('stock-empty').style.display = 'block';
       return;
     }
 
-    document.getElementById("stock-viewer").style.display = "block";
-    // Sort dates newest first
+    document.getElementById('stock-viewer').style.display = 'block';
     var dates = Object.keys(stockDateGroups).sort().reverse();
-    stockActiveDK = dates[0]; // default to latest
+    stockActiveDK = dates[0] || '';
     renderStockView(dates);
   });
 }
 
 function renderStockView(dates) {
-  // Tabs: max 5 most recent dates
-  var tabsDiv = document.getElementById("stock-tabs");
-  tabsDiv.innerHTML = "";
+  var tabsDiv = document.getElementById('stock-tabs');
+  tabsDiv.innerHTML = '';
   var showDates = dates.slice(0, 5);
 
   showDates.forEach(function(dk) {
-    var btn = document.createElement("button");
-    btn.id = "stock-date-tab-"+dk;
-    btn.style.cssText = "padding:5px 12px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; white-space:nowrap; transition:all .2s;";
-    var count = stockDateGroups[dk].length;
-    btn.textContent = fmtDateShort(dk) + (count > 1 ? " ("+count+"篇)" : "");
-    btn.onclick = function() { setActiveStockDate(dk); };
+    var btn = document.createElement('button');
+    btn.id = 'stock-date-tab-' + dk;
+    btn.style.cssText = 'padding:5px 12px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; white-space:nowrap; transition:all .2s;';
+    var count = (stockDateGroups[dk] || []).length;
+    btn.textContent = fmtDateShort(dk) + (count > 1 ? ' (' + count + '篇)' : '');
+    (function(dateKey) {
+      btn.onclick = function() { setActiveStockDate(dateKey); };
+    })(dk);
     tabsDiv.appendChild(btn);
   });
 
-  // Calendar
-  renderCalendar("stock-cal-dropdown", stockDateGroups, stockActiveDK, "stock");
-
-  // Show reports for active date
+  renderCalendar('stock-cal-dropdown', stockDateGroups, stockActiveDK, 'stock');
   setActiveStockDate(stockActiveDK);
 }
 
 function setActiveStockDate(dk) {
   stockActiveDK = dk;
-  // Update tab styles
   var dates = Object.keys(stockDateGroups).sort().reverse();
   dates.slice(0, 5).forEach(function(d) {
-    var btn = document.getElementById("stock-date-tab-"+d);
+    var btn = document.getElementById('stock-date-tab-' + d);
     if (btn) {
-      btn.style.background = (d === dk) ? "#1d4ed8" : "#f9fafb";
-      btn.style.color = (d === dk) ? "#fff" : "#374151";
-      btn.style.borderColor = (d === dk) ? "#1d4ed8" : "#d1d5db";
+      btn.style.background = (d === dk) ? '#1d4ed8' : '#f9fafb';
+      btn.style.color = (d === dk) ? '#fff' : '#374151';
+      btn.style.borderColor = (d === dk) ? '#1d4ed8' : '#d1d5db';
     }
   });
-  // Update calendar
-  renderCalendar("stock-cal-dropdown", stockDateGroups, dk, "stock");
-  // Show reports
-  var container = document.getElementById("stock-reports-container");
+  renderCalendar('stock-cal-dropdown', stockDateGroups, dk, 'stock');
+
+  var container = document.getElementById('stock-reports-container');
+  container.innerHTML = '';
   var reports = stockDateGroups[dk] || [];
-  container.innerHTML = "";
   reports.forEach(function(it) {
-    var url = it.driveUrl || it.link_url || "";
-    var div = document.createElement("div");
-    div.style.cssText = "margin-bottom:12px;";
-    div.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">'+it.title+'</span><a href="'+url+'" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div><iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="'+url+'?_t='+Date.now()+'" sandbox="allow-scripts allow-same-origin"></iframe>';
+    var url = it.driveUrl || it.link_url || '';
+    var div = document.createElement('div');
+    div.style.cssText = 'margin-bottom:12px;';
+    var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+    var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+    div.innerHTML = titleHtml + iframeHtml;
     container.appendChild(div);
   });
 }
 
-function onCalDateClick(prefix, dk) {
-  document.querySelectorAll('.cal-dropdown').forEach(function(el){ el.classList.remove('show'); });
-  document.querySelectorAll('.cal-toggle').forEach(function(el){ el.classList.remove('active'); });
-  if (prefix === "stock") {
-    stockActiveDK = dk;
-    var dates = Object.keys(stockDateGroups).sort().reverse();
-    renderStockView(dates);
-  } else if (prefix === "news") {
-    newsActiveDK = dk;
-    var ndates = Object.keys(newsDateGroups).sort().reverse();
-    renderNewsView(ndates);
-  }
-}
-
 // ===== 新聞撮要 =====
-var newsDateGroups = {};
-var newsItemsAll = [];
-var newsActiveDK = '';
-
 function loadNews() {
-  document.getElementById("news-loading").style.display = "block";
-  document.getElementById("news-viewer").style.display = "none";
-  document.getElementById("news-empty").style.display = "none";
+  document.getElementById('news-loading').style.display = 'block';
+  document.getElementById('news-viewer').style.display = 'none';
+  document.getElementById('news-empty').style.display = 'none';
 
-  apiCall({ action: "list", status: "已確認" }, function(data) {
-    var items = (data.items || []).filter(i => i.type.includes("新聞"));
-    newsItemsAll = items;
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) { return i.type && i.type.indexOf('新聞') >= 0; });
     newsDateGroups = groupByDate(items);
-    document.getElementById("news-loading").style.display = "none";
-    document.getElementById("news-count").textContent = items.length;
+    document.getElementById('news-loading').style.display = 'none';
+    document.getElementById('news-count').textContent = items.length;
 
     if (items.length === 0) {
-      document.getElementById("news-empty").style.display = "block";
+      document.getElementById('news-empty').style.display = 'block';
       return;
     }
 
-    document.getElementById("news-viewer").style.display = "block";
+    document.getElementById('news-viewer').style.display = 'block';
     var dates = Object.keys(newsDateGroups).sort().reverse();
-    newsActiveDK = dates[0];
+    newsActiveDK = dates[0] || '';
     renderNewsView(dates);
   });
 }
 
 function renderNewsView(dates) {
-  // Tabs: max 5 most recent dates
-  var tabsDiv = document.getElementById("news-tabs");
-  tabsDiv.innerHTML = "";
+  var tabsDiv = document.getElementById('news-tabs');
+  tabsDiv.innerHTML = '';
   var showDates = dates.slice(0, 5);
 
   showDates.forEach(function(dk) {
-    var btn = document.createElement("button");
-    btn.id = "news-date-tab-"+dk;
-    btn.style.cssText = "padding:5px 12px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; white-space:nowrap; transition:all .2s;";
-    var count = newsDateGroups[dk].length;
+    var btn = document.createElement('button');
+    btn.id = 'news-date-tab-' + dk;
+    btn.style.cssText = 'padding:5px 12px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; white-space:nowrap; transition:all .2s;';
+    var count = (newsDateGroups[dk] || []).length;
     var label = fmtDateShort(dk);
     if (count > 1) {
-      // Show AM/PM labels
-      var ampm = newsDateGroups[dk].map(function(it){
-        return it.title.indexOf("下午")>=0 ? "🌇下午" : "🌅上午";
+      var labels = newsDateGroups[dk].map(function(it) {
+        return it.title && it.title.indexOf('下午') >= 0 ? '🌇下午' : '🌅上午';
       });
-      label += " ("+ampm.join("+")+")";
+      label += ' (' + labels.join('+') + ')';
     }
     btn.textContent = label;
-    btn.onclick = function() { setActiveNewsDate(dk); };
+    (function(dateKey) {
+      btn.onclick = function() { setActiveNewsDate(dateKey); };
+    })(dk);
     tabsDiv.appendChild(btn);
   });
 
-  // Calendar
-  renderCalendar("news-cal-dropdown", newsDateGroups, newsActiveDK, "news");
+  renderCalendar('news-cal-dropdown', newsDateGroups, newsActiveDK, 'news');
   setActiveNewsDate(newsActiveDK);
 }
 
@@ -1013,24 +1084,26 @@ function setActiveNewsDate(dk) {
   newsActiveDK = dk;
   var dates = Object.keys(newsDateGroups).sort().reverse();
   dates.slice(0, 5).forEach(function(d) {
-    var btn = document.getElementById("news-date-tab-"+d);
+    var btn = document.getElementById('news-date-tab-' + d);
     if (btn) {
-      btn.style.background = (d === dk) ? "#1d4ed8" : "#f9fafb";
-      btn.style.color = (d === dk) ? "#fff" : "#374151";
-      btn.style.borderColor = (d === dk) ? "#1d4ed8" : "#d1d5db";
+      btn.style.background = (d === dk) ? '#1d4ed8' : '#f9fafb';
+      btn.style.color = (d === dk) ? '#fff' : '#374151';
+      btn.style.borderColor = (d === dk) ? '#1d4ed8' : '#d1d5db';
     }
   });
-  renderCalendar("news-cal-dropdown", newsDateGroups, dk, "news");
+  renderCalendar('news-cal-dropdown', newsDateGroups, dk, 'news');
 
-  var wrappersDiv = document.getElementById("news-iframe-wrappers");
-  wrappersDiv.innerHTML = "";
+  var wrappersDiv = document.getElementById('news-iframe-wrappers');
+  wrappersDiv.innerHTML = '';
   var reports = newsDateGroups[dk] || [];
   reports.forEach(function(it) {
-    var url = it.driveUrl || "";
-    var div = document.createElement("div");
-    div.style.marginBottom = "12px";
-    var ampm = it.title.indexOf("下午")>=0 ? "🌇 下午版" : "🌅 上午版";
-    div.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">'+ampm+' — '+it.title+'</span><a href="'+url+'" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div><iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="'+url+'?_t='+Date.now()+'" sandbox="allow-scripts allow-same-origin"></iframe>';
+    var url = it.driveUrl || '';
+    var div = document.createElement('div');
+    div.style.marginBottom = '12px';
+    var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
+    var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + ampm + ' — ' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+    div.innerHTML = titleHtml + iframeHtml;
     wrappersDiv.appendChild(div);
   });
 }
