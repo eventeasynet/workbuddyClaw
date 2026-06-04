@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060501;
+  var CURRENT = 2026060502;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -817,8 +817,9 @@ function groupByDate(items) {
 // 全域變數
 var stockDateGroups = {};
 var stockActiveDK = '';
-var newsDateGroups = {};
+var stockActiveIdx = 0;  // 追蹤當前選擇嘅報告索引
 var newsActiveDK = '';
+var newsActiveIdx = 0;  // 追蹤當前選擇嘅報告索引
 // 月曆狀態：記住每個 prefix 嘅當前年份/月份
 var calState = { stock: null, news: null };
 
@@ -1003,6 +1004,7 @@ function renderStockView(dates) {
 
 function setActiveStockDate(dk) {
   stockActiveDK = dk;
+  stockActiveIdx = 0;  // 重置為第一篇
   var dates = Object.keys(stockDateGroups).sort().reverse();
   dates.slice(0, 5).forEach(function(d) {
     var btn = document.getElementById('stock-date-tab-' + d);
@@ -1014,18 +1016,77 @@ function setActiveStockDate(dk) {
   });
   renderCalendar('stock-cal-dropdown', stockDateGroups, dk, 'stock');
 
+  // 渲染子 Tag（多篇時顯示）
   var container = document.getElementById('stock-reports-container');
   container.innerHTML = '';
   var reports = stockDateGroups[dk] || [];
-  reports.forEach(function(it) {
+  if (reports.length <= 1) {
+    // 只有一篇，直接顯示
+    var it = reports[0] || {};
     var url = it.driveUrl || it.link_url || '';
     var div = document.createElement('div');
-    div.style.cssText = 'margin-bottom:12px;';
+    div.id = 'stock-report-content';
     var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
     var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
     div.innerHTML = titleHtml + iframeHtml;
     container.appendChild(div);
+  } else {
+    // 多篇：先渲染子 Tag 列
+    var tagDiv = document.createElement('div');
+    tagDiv.id = 'stock-sub-tabs';
+    tagDiv.style.cssText = 'display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;';
+    reports.forEach(function(it, idx) {
+      var tag = document.createElement('button');
+      tag.id = 'stock-sub-tab-' + idx;
+      tag.style.cssText = 'padding:4px 10px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; transition:all .2s;';
+      // 用標題判斷上/下晝，或編號
+      var label = '報告 ' + (idx + 1);
+      if (it.title) {
+        if (it.title.indexOf('上午') >= 0 || it.title.indexOf('早上') >= 0) label = '🌅 上午版';
+        else if (it.title.indexOf('下午') >= 0) label = '🌇 下午版';
+        else if (it.title.indexOf('晚') >= 0) label = '🌙 晚間版';
+      }
+      tag.textContent = label;
+      (function(reportIdx) {
+        tag.onclick = function() { setActiveStockReport(reportIdx); };
+      })(idx);
+      tagDiv.appendChild(tag);
+    });
+    container.appendChild(tagDiv);
+    // 顯示目前揀中嘅報告
+    renderActiveStockReport();
+  }
+}
+
+function setActiveStockReport(idx) {
+  stockActiveIdx = idx;
+  // 更新子 Tag 樣式
+  var reports = stockDateGroups[stockActiveDK] || [];
+  reports.forEach(function(it, i) {
+    var tag = document.getElementById('stock-sub-tab-' + i);
+    if (tag) {
+      tag.style.background = (i === idx) ? '#1d4ed8' : '#f9fafb';
+      tag.style.color = (i === idx) ? '#fff' : '#374151';
+      tag.style.borderColor = (i === idx) ? '#1d4ed8' : '#d1d5db';
+    }
   });
+  renderActiveStockReport();
+}
+
+function renderActiveStockReport() {
+  // 移除舊內容（保留子 Tag 列）
+  var container = document.getElementById('stock-reports-container');
+  var oldContent = document.getElementById('stock-report-content');
+  if (oldContent) oldContent.remove();
+  var reports = stockDateGroups[stockActiveDK] || [];
+  var it = reports[stockActiveIdx] || reports[0] || {};
+  var url = it.driveUrl || it.link_url || '';
+  var div = document.createElement('div');
+  div.id = 'stock-report-content';
+  var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+  var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+  div.innerHTML = titleHtml + iframeHtml;
+  container.appendChild(div);
 }
 
 // ===== 新聞撮要 =====
@@ -1082,6 +1143,7 @@ function renderNewsView(dates) {
 
 function setActiveNewsDate(dk) {
   newsActiveDK = dk;
+  newsActiveIdx = 0;  // 重置為第一篇
   var dates = Object.keys(newsDateGroups).sort().reverse();
   dates.slice(0, 5).forEach(function(d) {
     var btn = document.getElementById('news-date-tab-' + d);
@@ -1093,19 +1155,78 @@ function setActiveNewsDate(dk) {
   });
   renderCalendar('news-cal-dropdown', newsDateGroups, dk, 'news');
 
+  // 渲染子 Tag（多篇時顯示）
   var wrappersDiv = document.getElementById('news-iframe-wrappers');
   wrappersDiv.innerHTML = '';
   var reports = newsDateGroups[dk] || [];
-  reports.forEach(function(it) {
+  if (reports.length <= 1) {
+    // 只有一篇，直接顯示
+    var it = reports[0] || {};
     var url = it.driveUrl || '';
     var div = document.createElement('div');
-    div.style.marginBottom = '12px';
+    div.id = 'news-report-content';
     var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
     var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + ampm + ' — ' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
     var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
     div.innerHTML = titleHtml + iframeHtml;
     wrappersDiv.appendChild(div);
+  } else {
+    // 多篇：先渲染子 Tag 列
+    var tagDiv = document.createElement('div');
+    tagDiv.id = 'news-sub-tabs';
+    tagDiv.style.cssText = 'display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;';
+    reports.forEach(function(it, idx) {
+      var tag = document.createElement('button');
+      tag.id = 'news-sub-tab-' + idx;
+      tag.style.cssText = 'padding:4px 10px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; transition:all .2s;';
+      var label = '報告 ' + (idx + 1);
+      if (it.title) {
+        if (it.title.indexOf('上午') >= 0 || it.title.indexOf('早上') >= 0) label = '🌅 上午版';
+        else if (it.title.indexOf('下午') >= 0) label = '🌇 下午版';
+        else if (it.title.indexOf('晚') >= 0) label = '🌙 晚間版';
+      }
+      tag.textContent = label;
+      (function(reportIdx) {
+        tag.onclick = function() { setActiveNewsReport(reportIdx); };
+      })(idx);
+      tagDiv.appendChild(tag);
+    });
+    wrappersDiv.appendChild(tagDiv);
+    // 顯示目前選中的報告
+    renderActiveNewsReport();
+  }
+}
+
+function setActiveNewsReport(idx) {
+  newsActiveIdx = idx;
+  // 更新子 Tag 樣式
+  var reports = newsDateGroups[newsActiveDK] || [];
+  reports.forEach(function(it, i) {
+    var tag = document.getElementById('news-sub-tab-' + i);
+    if (tag) {
+      tag.style.background = (i === idx) ? '#1d4ed8' : '#f9fafb';
+      tag.style.color = (i === idx) ? '#fff' : '#374151';
+      tag.style.borderColor = (i === idx) ? '#1d4ed8' : '#d1d5db';
+    }
   });
+  renderActiveNewsReport();
+}
+
+function renderActiveNewsReport() {
+  // 移除舊內容（保留子 Tag 列）
+  var wrappersDiv = document.getElementById('news-iframe-wrappers');
+  var oldContent = document.getElementById('news-report-content');
+  if (oldContent) oldContent.remove();
+  var reports = newsDateGroups[newsActiveDK] || [];
+  var it = reports[newsActiveIdx] || reports[0] || {};
+  var url = it.driveUrl || '';
+  var div = document.createElement('div');
+  div.id = 'news-report-content';
+  var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
+  var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + ampm + ' — ' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+  var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+  div.innerHTML = titleHtml + iframeHtml;
+  wrappersDiv.appendChild(div);
 }
 
 // ===== 活動花絮（從 GAS 加載） =====
