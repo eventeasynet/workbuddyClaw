@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060405;
+  var CURRENT = 2026060406;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -325,11 +325,12 @@ a.link:hover { text-decoration:underline; }
       <button class="refresh-btn" onclick="loadNews()">🔄 重新整理</button>
       <button class="refresh-btn" onclick="window.open(document.getElementById('news-iframe').src, '_blank')" style="margin-left:8px;">🔗 新視窗開啟</button>
     </h3>
-    <p class="auto-note">⚡ 每日 08:00 自動生成 · 10:00 出街，無需手動操作</p>
+    <p class="auto-note">⚡ 每日 08:00 / 17:00 自動生成 · 10:00 / 傍晚出街，無需手動操作</p>
     <div id="news-loading" class="loading">載入中...</div>
     <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 08:00 生成 → 10:00 出街</small></div>
     <div id="news-viewer" style="display:none;">
-      <iframe id="news-iframe" src="" style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" sandbox="allow-scripts allow-same-origin"></iframe>
+      <div id="news-tabs" style="margin-bottom:12px;display:flex;gap:8px;"></div>
+      <div id="news-iframe-wrappers"></div>
       <p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;">📋 上方為完整新聞 HTML 報告，自動從 GitHub Pages 加載</p>
     </div>
   </div>
@@ -799,21 +800,60 @@ function loadNews() {
     if (items.length === 0) {
       document.getElementById("news-empty").style.display = "block";
     } else {
-      // 取最新一條新聞，用 driveUrl 作為 iframe src
-      var latest = items[0];
-      var url = latest.driveUrl || "";
-      // 如果有 driveUrl 就用 iframe；否則 fallback 到舊表格
-      if (url) {
-        document.getElementById("news-viewer").style.display = "block";
-        var iframe = document.getElementById("news-iframe");
-        // 加 cache-buster 確保最新內容
+      document.getElementById("news-viewer").style.display = "block";
+      
+      // 按 createdAt 排序（最新在前）
+      items.sort(function(a, b) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      
+      // 建立 tabs + iframe wrappers
+      var tabsDiv = document.getElementById("news-tabs");
+      var wrappersDiv = document.getElementById("news-iframe-wrappers");
+      tabsDiv.innerHTML = "";
+      wrappersDiv.innerHTML = "";
+      
+      items.forEach(function(item, i) {
+        // 判斷 AM/PM
+        var isPM = item.title.includes("下午") || item.title.includes("PM") || item.notes.includes("PM");
+        var label = isPM ? "🌇 下午版" : "🌅 上午版";
+        
+        // Tab button
+        var btn = document.createElement("button");
+        btn.className = "refresh-btn";
+        if (i === 0) btn.style.background = "#3b82f6"; btn.style.color = "#fff";
+        btn.textContent = label;
+        btn.style.margin = "0";
+        btn.onclick = (function(idx) { return function() { switchNewsTab(idx); }; })(i);
+        tabsDiv.appendChild(btn);
+        
+        // Iframe wrapper
+        var wrapper = document.createElement("div");
+        wrapper.id = "news-wrap-" + i;
+        wrapper.style.display = (i === 0) ? "block" : "none";
+        var iframe = document.createElement("iframe");
+        iframe.style.cssText = "width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);";
+        iframe.setAttribute("sandbox", "allow-scripts allow-same-origin");
+        var url = item.driveUrl || "";
         iframe.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "_t=" + Date.now();
-      } else {
-        // Fallback: 無 driveUrl 時顯示提示
-        document.getElementById("news-empty").style.display = "block";
-        document.getElementById("news-empty").innerHTML = '📭 新聞記錄缺少連結<br><small>請確認 GAS 中 driveUrl 欄位已正確設定</small>';
-      }
+        wrapper.appendChild(iframe);
+        wrappersDiv.appendChild(wrapper);
+      });
     }
+  });
+}
+
+function switchNewsTab(idx) {
+  // Update tabs
+  var btns = document.querySelectorAll("#news-tabs button");
+  btns.forEach(function(b, i) {
+    b.style.background = (i === idx) ? "#3b82f6" : "";
+    b.style.color = (i === idx) ? "#fff" : "";
+  });
+  // Show/hide iframes
+  var wrappers = document.querySelectorAll("#news-iframe-wrappers > div");
+  wrappers.forEach(function(w, i) {
+    w.style.display = (i === idx) ? "block" : "none";
   });
 }
 
