@@ -650,7 +650,7 @@ function requeueItem(id, btn) {
   });
 }
 
-// ===== 立即出街（管理員手動推送）→ 真正 call Buffer API → 3 個頻道全發 =====
+// ===== 立即出街（管理員手動推送）→ 真正 call Buffer API → 2 個頻道（FB + IG）=====
 async function publishNow(id, btn) {
   if (!confirm("🚀 確定現在立即出街？\n\n將推送至：\n• Facebook（EventEasy.net Page）\n• Instagram（EventEasy.net + Logo 圖）")) return;
   btn.disabled = true;
