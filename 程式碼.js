@@ -34,7 +34,8 @@ function doGet(e) {
       const items = getItems("待確認");
       result = { success: true, items: items, count: items.length };
     } else if (action === "list_confirmed") {
-      const items = getItems("已確認");
+      const status = e.parameter.status || "已確認";
+      const items = getItems(status);
       result = { success: true, items: items, count: items.length };
     } else if (action === "test") {
       result = { status: "ok", message: "GAS Web App is working!", timestamp: new Date().toISOString() };
@@ -94,6 +95,7 @@ function handleWriteAction(e, action) {
     
     if (action === "confirm") {
       const id = e.parameter.id || "";
+      const newStatus = e.parameter.status || "已確認";  // 容許自訂狀態
       if (!id) {
         return { success: false, error: "Missing id" };
       }
@@ -105,7 +107,7 @@ function handleWriteAction(e, action) {
       for (let i = 1; i < data.length; i++) {
         if (data[i][0] === id) {
           const now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
-          sheet.getRange(i + 1, 5).setValue("已確認");
+          sheet.getRange(i + 1, 5).setValue(newStatus);
           sheet.getRange(i + 1, 7).setValue(now);
           updated = true;
           break;
@@ -113,7 +115,7 @@ function handleWriteAction(e, action) {
       }
       
       if (updated) {
-        return { success: true, message: "Item confirmed" };
+        return { success: true, message: "Item confirmed", status: newStatus };
       } else {
         return { success: false, error: "Item not found: " + id };
       }
@@ -174,16 +176,18 @@ function handleWriteAction(e, action) {
         assetsStr = ', assets: [' + assetsArr.join(', ') + ']';
       }
       
-      // Facebook 需要指定 type (post/story/reel)
+      // Facebook / Instagram 需要指定 type + 必要 metadata
       var metadataStr = "";
       if (channelId === "6a1e74afc687a22dd44f6f6b") {
         metadataStr = ', metadata: {facebook: {type: post}}';
+      } else if (channelId === "6a1e6612c687a22dd44f3a6a") {
+        metadataStr = ', metadata: {instagram: {type: post, shouldShareToFeed: true}}';
       }
       
-      // Instagram: 圖片會自動處理，不需要額外 metadata
-      // LinkedIn: 也不需要額外 metadata
-      
-      var query = 'mutation CreatePost { createPost(input: {text: "' + text.replace(/"/g, '\\"') + '"' +
+      // 用 GraphQL Block String (""") 處理多行文字，避免 escape問題
+      // Block String 內的三引號用 \""" escape
+      var safeText = text.replace(/"""/g, '\\"""');
+      var query = 'mutation CreatePost { createPost(input: {text: """\n' + safeText + '\n"""' +
         ', schedulingType: automatic, mode: shareNow, channelId: "' + channelId + '"' +
         assetsStr + metadataStr +
         '}) { ... on PostActionSuccess { post { id text status } } ... on MutationError { message } } }';
