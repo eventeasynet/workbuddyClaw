@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060404;
+  var CURRENT = 2026060405;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -336,7 +336,9 @@ a.link:hover { text-decoration:underline; }
 
   <!-- 社群文案模板 -->
   <div id="sec-copy" class="section" style="display:none;">
-    <h3>📝 IG / Facebook 貼文文案（可直接複製發帖）</h3>
+    <h3>📝 IG / Facebook 貼文文案（可直接複製發帖）
+      <button class="refresh-btn" onclick="resetCopyCards()" style="float:right;margin-left:8px;font-size:11px;">🔄 重置模板</button>
+    </h3>
     <div class="post-cards">
       <!-- 款式 1：專業商務版 -->
       <div class="post-card" id="post-card-1">
@@ -979,6 +981,55 @@ function loadGallery() {
   });
 }
 
+// ===== 模板卡片排隊狀態追蹤（localStorage，每日自動重置）=====
+function getQueueKey() {
+  return 'wb_copy_queued_' + new Date().toISOString().slice(0, 10);
+}
+
+function markCardQueued(cardId) {
+  var key = getQueueKey();
+  var queued = {};
+  try { queued = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
+  queued[cardId] = true;
+  localStorage.setItem(key, JSON.stringify(queued));
+}
+
+function isCardQueued(cardId) {
+  var key = getQueueKey();
+  try {
+    var queued = JSON.parse(localStorage.getItem(key) || '{}');
+    return !!queued[cardId];
+  } catch(e) { return false; }
+}
+
+function hideQueuedCards() {
+  ['post-card-1', 'post-card-2', 'post-card-3'].forEach(function(cardId) {
+    if (isCardQueued(cardId)) {
+      var card = document.getElementById(cardId);
+      if (card) {
+        card.style.display = 'none';
+      }
+    }
+  });
+}
+
+function resetCopyCards() {
+  if (!confirm('🔄 確定重置所有文案模板？\n\n所有 3 款卡片將重新顯示，可再次排隊。')) return;
+  var key = getQueueKey();
+  localStorage.removeItem(key);
+  ['post-card-1', 'post-card-2', 'post-card-3'].forEach(function(cardId) {
+    var card = document.getElementById(cardId);
+    if (card) card.style.display = '';
+    var btn = document.getElementById(cardId.replace('post-card','confirm-btn'));
+    if (btn) {
+      btn.textContent = '✅ 排隊出街';
+      btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+      btn.disabled = false;
+    }
+  });
+  alert('✅ 所有模板已重置！');
+}
+
 // ===== 文案卡片刪除 =====
 function deleteCard(cardId) {
   var card = document.getElementById(cardId);
@@ -1081,6 +1132,8 @@ function confirmPublish(cardId, styleLabel) {
       try {
         var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
         if (data.success) {
+          // 儲存到 localStorage，防止刷新後恢復顯示
+          markCardQueued(cardId);
           alert('✅ 已加入出街記錄！\n\n可以在「📤 出街記錄」分頁查看。');
           btn.textContent = '✅ 已排隊';
           btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
@@ -1182,6 +1235,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // 首次載入
 loadOutbox();
+hideQueuedCards();  // 隱藏今日已排隊的文案模板卡片
 setInterval(loadOutbox, 60000);
 
 // ===== 自動化面板上落 =====
