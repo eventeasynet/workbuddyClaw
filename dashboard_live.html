@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060403;
+  var CURRENT = 2026060404;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -323,16 +323,15 @@ a.link:hover { text-decoration:underline; }
   <div id="sec-news" class="section" style="display:none;">
     <h3>📰 每日新聞撮要 <span class="badge" id="news-count">0</span>
       <button class="refresh-btn" onclick="loadNews()">🔄 重新整理</button>
+      <button class="refresh-btn" onclick="window.open(document.getElementById('news-iframe').src, '_blank')" style="margin-left:8px;">🔗 新視窗開啟</button>
     </h3>
     <p class="auto-note">⚡ 每日 08:00 自動生成 · 10:00 出街，無需手動操作</p>
     <div id="news-loading" class="loading">載入中...</div>
     <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 08:00 生成 → 10:00 出街</small></div>
-    <table id="news-table" style="display:none;">
-      <thead>
-        <tr><th>類型</th><th>標題</th><th>建立時間</th><th>狀態</th><th>操作</th></tr>
-      </thead>
-      <tbody id="news-tbody"></tbody>
-    </table>
+    <div id="news-viewer" style="display:none;">
+      <iframe id="news-iframe" src="" style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" sandbox="allow-scripts allow-same-origin"></iframe>
+      <p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px;">📋 上方為完整新聞 HTML 報告，自動從 GitHub Pages 加載</p>
+    </div>
   </div>
 
   <!-- 社群文案模板 -->
@@ -787,7 +786,7 @@ function loadStock() {
 // ===== 新聞撮要（已確認） =====
 function loadNews() {
   document.getElementById("news-loading").style.display = "block";
-  document.getElementById("news-table").style.display = "none";
+  document.getElementById("news-viewer").style.display = "none";
   document.getElementById("news-empty").style.display = "none";
   
   apiCall({ action: "list", status: "已確認" }, function(data) {
@@ -798,22 +797,20 @@ function loadNews() {
     if (items.length === 0) {
       document.getElementById("news-empty").style.display = "block";
     } else {
-      document.getElementById("news-table").style.display = "table";
-      const tbody = document.getElementById("news-tbody");
-      tbody.innerHTML = "";
-      items.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><span class="type-badge type-news">${item.type}</span></td>
-          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
-          <td>${formatTime(item.createdAt)}</td>
-          <td><span class="status-badge status-confirmed">${item.status}</span></td>
-          <td>
-            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+      // 取最新一條新聞，用 driveUrl 作為 iframe src
+      var latest = items[0];
+      var url = latest.driveUrl || "";
+      // 如果有 driveUrl 就用 iframe；否則 fallback 到舊表格
+      if (url) {
+        document.getElementById("news-viewer").style.display = "block";
+        var iframe = document.getElementById("news-iframe");
+        // 加 cache-buster 確保最新內容
+        iframe.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "_t=" + Date.now();
+      } else {
+        // Fallback: 無 driveUrl 時顯示提示
+        document.getElementById("news-empty").style.display = "block";
+        document.getElementById("news-empty").innerHTML = '📭 新聞記錄缺少連結<br><small>請確認 GAS 中 driveUrl 欄位已正確設定</small>';
+      }
     }
   });
 }
