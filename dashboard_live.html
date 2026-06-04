@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060406;
+  var CURRENT = 2026060407;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -303,7 +303,7 @@ a.link:hover { text-decoration:underline; }
     <div id="published-cards" class="card-grid" style="display:none;"></div>
   </div>
 
-  <!-- 美股報告 (自動確認，直接顯示) -->
+  <!-- 美股報告 (自動確認，iframe 直接渲染) -->
   <div id="sec-stock" class="section" style="display:none;">
     <h3>📈 每日美股分析報告 <span class="badge" id="stock-count">0</span>
       <button class="refresh-btn" onclick="loadStock()">🔄 重新整理</button>
@@ -311,12 +311,16 @@ a.link:hover { text-decoration:underline; }
     <p class="auto-note">⚡ 每晚 19:00 自動生成 · 21:00 出街，無需手動操作</p>
     <div id="stock-loading" class="loading">載入中...</div>
     <div id="stock-empty" class="empty" style="display:none;">📭 暫無美股報告<br><small>每晚 19:00 生成 → 21:00 出街</small></div>
-    <table id="stock-table" style="display:none;">
-      <thead>
-        <tr><th>類型</th><th>標題</th><th>建立時間</th><th>狀態</th><th>操作</th></tr>
-      </thead>
-      <tbody id="stock-tbody"></tbody>
-    </table>
+    <!-- 報告選擇按鈕 -->
+    <div id="stock-tabs" style="display:none; margin-bottom:12px; display:flex; flex-wrap:wrap; gap:6px;">
+    </div>
+    <!-- iframe 容器 -->
+    <div id="stock-iframe-wrapper" style="display:none; position:relative; width:100%;">
+      <iframe id="stock-iframe" style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="" title="美股分析報告"></iframe>
+      <div style="margin-top:8px; text-align:right;">
+        <a id="stock-ext-link" href="#" target="_blank" style="font-size:13px; color:#3b82f6;">🔗 新視窗開啟</a>
+      </div>
+    </div>
   </div>
 
   <!-- 新聞撮要 (自動確認，直接顯示) -->
@@ -752,38 +756,69 @@ function updateOutboxCount() {
   }
 }
 
-// ===== 美股報告（已確認） =====
+// ===== 美股報告（已確認，iframe 渲染） =====
+let stockReports = [];
+let stockActiveIdx = 0;
+
 function loadStock() {
   document.getElementById("stock-loading").style.display = "block";
-  document.getElementById("stock-table").style.display = "none";
+  document.getElementById("stock-tabs").style.display = "none";
+  document.getElementById("stock-iframe-wrapper").style.display = "none";
   document.getElementById("stock-empty").style.display = "none";
   
   apiCall({ action: "list", status: "已確認" }, function(data) {
     const items = (data.items || []).filter(i => i.type.includes("美股"));
+    stockReports = items;
     document.getElementById("stock-loading").style.display = "none";
     document.getElementById("stock-count").textContent = items.length;
     
     if (items.length === 0) {
       document.getElementById("stock-empty").style.display = "block";
-    } else {
-      document.getElementById("stock-table").style.display = "table";
-      const tbody = document.getElementById("stock-tbody");
-      tbody.innerHTML = "";
-      items.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><span class="type-badge type-stock">${item.type}</span></td>
-          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
-          <td>${formatTime(item.createdAt)}</td>
-          <td><span class="status-badge status-confirmed">${item.status}</span></td>
-          <td>
-            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+      return;
     }
+    
+    // Build tab buttons
+    const tabsDiv = document.getElementById("stock-tabs");
+    tabsDiv.innerHTML = "";
+    tabsDiv.style.display = "flex";
+    
+    items.forEach(function(item, idx) {
+      const btn = document.createElement("button");
+      btn.id = "stock-tab-" + idx;
+      btn.style.cssText = "padding:6px 14px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:13px; white-space:nowrap; transition:all .2s;";
+      btn.textContent = (idx + 1) + ". " + (item.title || "報告").substring(0, 30);
+      btn.onclick = function() { showStockReport(idx); };
+      tabsDiv.appendChild(btn);
+    });
+    
+    document.getElementById("stock-iframe-wrapper").style.display = "block";
+    stockActiveIdx = 0;
+    showStockReport(0);
   });
+}
+
+function showStockReport(idx) {
+  stockActiveIdx = idx;
+  var item = stockReports[idx];
+  if (!item) return;
+  
+  // Update tab button styles
+  for (var i = 0; i < stockReports.length; i++) {
+    var btn = document.getElementById("stock-tab-" + i);
+    if (btn) {
+      btn.style.background = (i === idx) ? "#1d4ed8" : "#f9fafb";
+      btn.style.color = (i === idx) ? "#fff" : "#374151";
+      btn.style.borderColor = (i === idx) ? "#1d4ed8" : "#d1d5db";
+    }
+  }
+  
+  var iframe = document.getElementById("stock-iframe");
+  var extLink = document.getElementById("stock-ext-link");
+  var url = item.driveUrl || item.link_url || "";
+  if (url) {
+    iframe.src = url + "?_t=" + Date.now();
+    extLink.href = url;
+  }
 }
 
 // ===== 新聞撮要（已確認） =====
