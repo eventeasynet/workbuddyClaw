@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060503;
+  var CURRENT = 2026060504;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -64,7 +64,7 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .automation-toggle .arrow { font-size:10px; transition:transform 0.2s; }
 .automation-toggle .arrow.open { transform:rotate(90deg); }
 .automation-list { max-height:0; overflow:hidden; transition:max-height 0.3s ease; }
-.automation-list.open { max-height:400px; }
+.automation-list.open { max-height:1000px; overflow-y:auto; }
 .automation-item { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #1e293b; font-size:11px; }
 .automation-item:last-child { border-bottom:none; }
 .automation-item .auto-icon { font-size:14px; flex-shrink:0; }
