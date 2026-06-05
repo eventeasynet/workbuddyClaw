@@ -946,7 +946,7 @@ function setActiveStockDate(dk) {
   if (reports.length <= 1) {
     // 只有一篇，直接顯示
     var it = reports[0] || {};
-    var url = it.driveUrl || it.link_url || '';
+    var url = fixDriveUrl(it.driveUrl) || it.link_url || '';
     var div = document.createElement('div');
     div.id = 'stock-report-content';
     var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
@@ -1003,7 +1003,7 @@ function renderActiveStockReport() {
   if (oldContent) oldContent.remove();
   var reports = stockDateGroups[stockActiveDK] || [];
   var it = reports[stockActiveIdx] || reports[0] || {};
-  var url = it.driveUrl || it.link_url || '';
+  var url = fixDriveUrl(it.driveUrl) || it.link_url || '';
   var div = document.createElement('div');
   div.id = 'stock-report-content';
   var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
@@ -1085,7 +1085,7 @@ function setActiveNewsDate(dk) {
   if (reports.length <= 1) {
     // 只有一篇，直接顯示
     var it = reports[0] || {};
-    var url = it.driveUrl || '';
+    var url = fixDriveUrl(it.driveUrl) || '';
     var div = document.createElement('div');
     div.id = 'news-report-content';
     var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
@@ -1142,7 +1142,7 @@ function renderActiveNewsReport() {
   if (oldContent) oldContent.remove();
   var reports = newsDateGroups[newsActiveDK] || [];
   var it = reports[newsActiveIdx] || reports[0] || {};
-  var url = it.driveUrl || '';
+  var url = fixDriveUrl(it.driveUrl) || '';
   var div = document.createElement('div');
   div.id = 'news-report-content';
   var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
