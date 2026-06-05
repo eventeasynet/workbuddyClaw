@@ -717,6 +717,15 @@ function fmtDateShort(dk) {
   }
   return p[1] + '/' + p[2];
 }
+
+// Drive URL → GitHub Pages 映射（以免 GAS 記錄指向無法嵌入的 Drive 連結）
+function fixDriveUrl(url) {
+  if (!url) return url;
+  if (url.indexOf('1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7') >= 0) {
+    return 'https://eventeasynet.github.io/workbuddyClaw/news/2026-06-05_HK_News.html';
+  }
+  return url;
+}
 function groupByDate(items) {
   var g = {};
   items.forEach(function(it) {
