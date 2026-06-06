@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 <title>WorkBuddy 工作台</title>
 <script>
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060504;
+  var CURRENT = 2026060601;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -147,7 +147,7 @@ a.link:hover { text-decoration:underline; }
 /* Note for auto-confirmed */
 .auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
 
-/* === 整合出街記錄 === */
+/* === 整合待出街記錄 === */
 .outbox-zone { display:flex; flex-direction:column; gap:16px; }
 .outbox-body { font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:12px; max-height:200px; overflow-y:auto; padding:8px; border-radius:6px; background:#f9fafb; transition:all 0.15s; }
 .outbox-body.editing { background:#fffbeb; border:2px solid #f59e0b; outline:none; }
@@ -251,7 +251,7 @@ a.link:hover { text-decoration:underline; }
     <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="outbox">📤 出街記錄</a>
+    <a class="nav-item active" data-section="outbox">📤 待待出街記錄</a>
     <a class="nav-item" data-section="published">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
@@ -317,12 +317,12 @@ a.link:hover { text-decoration:underline; }
 <!-- Main Content -->
 <div class="main">
   <div class="header">
-    <h2 id="page-title">📤 出街記錄</h2>
+    <h2 id="page-title">📤 待待出街記錄</h2>
     <p id="page-desc">所有排隊出街嘅項目，狀態為「待出街」，等待推送</p>
     <div class="status-bar" id="status-bar">⚡ 載入中...</div>
   </div>
 
-  <!-- 整合出街記錄（活動花絮 + 社群文案 + 已排隊項目） -->
+  <!-- 整合待出街記錄（活動花絮 + 社群文案 + 已排隊項目） -->
   <div id="sec-outbox" class="section">
     <div id="outbox-loading" class="loading">載入中...</div>
     <div id="outbox-empty" class="empty" style="display:none;">📭 暫無待出街內容<br><small>活動花絮每日 10:00 生成 · 社群文案每日 10:00 生成</small></div>
@@ -419,7 +419,7 @@ a.link:hover { text-decoration:underline; }
     </div>
   </div>
 
-  <!-- 社群文案 & 活動花絮 已合併到「出街記錄」-->
+  <!-- 社群文案 & 活動花絮 已合併到「待出街記錄」-->
 
   <!-- 設計圖庫 -->
   <div id="sec-gallery" class="section" style="display:none;">
@@ -511,7 +511,7 @@ function getTypeBadgeClass(type) {
   return "";
 }
 
-// ===== 整合出街記錄（活動花絮 + 社群文案 = 統一管理） =====
+// ===== 整合待出街記錄（活動花絮 + 社群文案 = 統一管理） =====
 let autoPubTimers = {}; // interval IDs
 
 function loadOutbox() {
@@ -612,7 +612,7 @@ function renderOutboxCard(item, icon) {
     '<div class="card-actions">' +
       '<button class="btn btn-confirm" onclick="toggleOutboxEdit(\'' + item.id + '\')">✏️ 編輯</button>' +
       '<button class="btn btn-publish-now" id="btn-pub-' + item.id + '" onclick="handlePublishOutbox(\'' + item.id + '\', this)">🚀 立即出街</button>' +
-      '<button class="btn btn-delete" onclick="skipOutboxItem(\'' + item.id + '\')">⏭ 跳過</button>' +
+      '<button class="btn btn-delete" onclick="deleteOutboxItem(\'' + item.id + '\')">🗑 刪除</button>' +
     '</div>';
   
   return card;
@@ -657,16 +657,33 @@ function startAllCountdowns() {
     var cdEl = document.getElementById("cd-" + id);
     if (!cdEl) return;
     
-    var deadline = getAutoPubDeadline(id);
-    if (!deadline) return;
+    // 每次 updateFn 都從 localStorage 重新讀 deadline，避免閉包舊值問題
+    function getDeadline() {
+      var d = getAutoPubDeadline(id);
+      return d ? d : 0;
+    }
+    
+    // 如果完全沒有 deadline → 跳過（不應該發生）
+    if (!getAutoPubDeadline(id)) return;
+    
+    // 如果已經過期 → 俾 2 分鐘緩衝（免得用戶未睇就自動出街）
+    if (getAutoPubDeadline(id) <= Date.now()) {
+      var newDeadline = Date.now() + 2 * 60 * 1000;
+      setAutoPubDeadline(id, newDeadline);
+      cdEl.textContent = "⏱ 緩衝中 2:00";
+      cdEl.style.color = "#ef4444";
+    }
     
     var updateFn = function() {
+      var deadline = getDeadline();
+      if (!deadline) return;
       var remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
       cdEl.textContent = "⏱ " + formatCountdown(remaining);
       
       if (remaining <= 300 && remaining > 0) {
-        // 最後 5 分鐘變色提示
         cdEl.style.color = "#ef4444";
+      } else if (remaining > 300) {
+        cdEl.style.color = "#6b7280";
       }
       
       if (remaining <= 0) {
@@ -679,24 +696,20 @@ function startAllCountdowns() {
     
     updateFn(); // 立即更新一次
     autoPubTimers[id] = setInterval(updateFn, 1000);
-    
-    // 如果已經過期 → 俾 2 分鐘緩衝（免得用戶未睇就自動出街）
-    if (deadline <= Date.now()) {
-      deadline = Date.now() + 2 * 60 * 1000;
-      setAutoPubDeadline(id, deadline);
-      remaining = 120;
-      cdEl.textContent = "⏱ " + formatCountdown(remaining);
-      cdEl.style.color = "#ef4444";
-    }
   });
 }
 
 // 30 分鐘倒數完畢 → 自動出街
 function autoPublishItem(id) {
+  // 保險：檢查 deadline 是否真係過期
+  var deadline = getAutoPubDeadline(id);
+  if (!deadline || deadline > Date.now()) {
+    console.log("[autoPublish] 唔夠鐘，唔推：" + id + " | deadline=" + deadline + " | now=" + Date.now());
+    return;
+  }
   console.log("[autoPublish] 自動出街觸發: " + id);
   var btn = document.getElementById("btn-pub-" + id);
   if (btn) {
-    // 模擬用戶點擊「立即出街」
     handlePublishOutbox(id, btn);
   }
 }
@@ -824,9 +837,9 @@ function toggleOutboxEdit(id) {
   }
 }
 
-// ===== 跳過（刪除） =====
-function skipOutboxItem(id) {
-  if (!confirm("⏭ 確定跳過此項目？\n\n將會從系統中刪除。")) return;
+// ===== 刪除 =====
+function deleteOutboxItem(id) {
+  if (!confirm("🗑 確定刪除？\n\n將會從系統中永久刪除，無法復原。")) return;
   clearAutoPubTimer(id);
   apiCall({ action: "delete", id: id }, function(data) {
     if (data.success) {
@@ -886,7 +899,7 @@ function loadPublished() {
 
 // ===== 重新排隊（已出街 → 待出街） =====
 function requeueItem(id, btn) {
-  if (!confirm("🔄 確定將此內容重新排隊出街？\n\n將會移回「出街記錄」等待推送。")) return;
+  if (!confirm("🔄 確定將此內容重新排隊出街？\n\n將會移回「待出街記錄」等待推送。")) return;
   btn.disabled = true;
   btn.textContent = '⏳ 處理中...';
   // 用 update status
@@ -1673,7 +1686,7 @@ function confirmEventPublish(id, title) {
     if (eb) { eb.classList.remove("saving"); eb.innerHTML = "✏️ 編輯"; }
   }
   var text = body.innerText.trim();
-  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入出街記錄，狀態為「待出街」。")) return;
+  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入待出街記錄，狀態為「待出街」。")) return;
   btn.disabled = true;
   btn.textContent = "⏳ 傳送中...";
   apiCall({
@@ -1682,7 +1695,7 @@ function confirmEventPublish(id, title) {
     status: "待出街"
   }, function(data) {
     if (data.success) {
-      alert("✅ 已加入出街記錄！\n\n請到「📤 出街記錄」查看。");
+      alert("✅ 已加入待出街記錄！\n\n請到「📤 待出街記錄」查看。");
       btn.textContent = "✅ 已排隊";
       btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
       btn.disabled = true;
@@ -1939,7 +1952,7 @@ function confirmPublish(cardId, styleLabel) {
   // 提取記錄 ID（cardId 格式：post-card-WB_xxx）
   var recordId = cardId.replace('post-card-', '');
   
-  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會更新狀態為「待出街」，並加入出街記錄。')) return;
+  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會更新狀態為「待出街」，並加入待出街記錄。')) return;
   
   btn.disabled = true;
   btn.textContent = '⏳ 傳送中...';
@@ -1957,7 +1970,7 @@ function confirmPublish(cardId, styleLabel) {
         if (data.success) {
           // 儲存到 localStorage，防止刷新後恢復顯示
           markCardQueued(cardId);
-          alert('✅ 已加入出街記錄！\n\n可以在「📤 出街記錄」分頁查看。');
+          alert('✅ 已加入待出街記錄！\n\n可以在「📤 待出街記錄」分頁查看。');
           btn.textContent = '✅ 已排隊';
           btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
           btn.disabled = true;
@@ -2006,7 +2019,7 @@ function showSection(name) {
     });
     
     const titles = {
-      outbox: ["📤 出街記錄", "活動花絮 + 社群文案 · 30 分鐘自動出街 · 亦可即時推送"],
+      outbox: ["📤 待出街記錄", "活動花絮 + 社群文案 · 30 分鐘自動出街 · 亦可即時推送"],
       published: ["✅ 已出街內容", "所有已推送出街嘅內容記錄，可查看或重新排隊"],
       stock: ["📈 美股分析報告", "每晚 19:00 生成 · 21:00 出街（含百家撮要 + 最終總結）"],
       news: ["📰 每日新聞撮要", "每日 08:00 生成 · 10:00 出街"],
@@ -2039,7 +2052,7 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-  // 首次載入：出街記錄（已整合活動花絮 + 社群文案）
+  // 首次載入：待出街記錄（已整合活動花絮 + 社群文案）
   loadOutbox();
 });
 
