@@ -147,6 +147,19 @@ a.link:hover { text-decoration:underline; }
 /* Note for auto-confirmed */
 .auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
 
+/* === 整合出街記錄 === */
+.outbox-zone { display:flex; flex-direction:column; gap:16px; }
+.outbox-body { font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:12px; max-height:200px; overflow-y:auto; padding:8px; border-radius:6px; background:#f9fafb; transition:all 0.15s; }
+.outbox-body.editing { background:#fffbeb; border:2px solid #f59e0b; outline:none; }
+.auto-countdown { font-size:13px; font-weight:700; color:#6b7280; font-variant-numeric:tabular-nums; min-width:80px; text-align:right; transition:color 0.3s; }
+.auto-countdown.expiring { color:#ef4444; animation:pulse 1s infinite; }
+.auto-tag { display:inline-block; font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:10px; margin-left:8px; font-weight:500; vertical-align:middle; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* 分隔線 */
+#outbox-divider { position:relative; }
+#outbox-divider::after { content:"⬇ 社群文案 ⬇"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; padding:0 16px; font-size:11px; color:#9ca3af; }
+
 /* Post-style cards */
 .post-cards { display:flex; flex-wrap:wrap; gap:24px; }
 .post-card { flex:1 1 340px; min-width:300px; max-width:420px; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.06); border:1px solid #e5e7eb; }
@@ -241,8 +254,6 @@ a.link:hover { text-decoration:underline; }
     <a class="nav-item active" data-section="outbox">📤 出街記錄</a>
     <a class="nav-item" data-section="published">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
-    <a class="nav-item nav-sub-item" data-section="copy">📝 社群文案</a>
-    <a class="nav-item nav-sub-item" data-section="events">🌍 活動花絮</a>
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
     <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
     <a class="nav-item" data-section="ai">🤖 AI 發展情報</a>
@@ -311,15 +322,29 @@ a.link:hover { text-decoration:underline; }
     <div class="status-bar" id="status-bar">⚡ 載入中...</div>
   </div>
 
-  <!-- 出街記錄（所有排隊出街項目，狀態=待出街） -->
+  <!-- 整合出街記錄（活動花絮 + 社群文案 + 已排隊項目） -->
   <div id="sec-outbox" class="section">
-    <h3>📤 排隊出街清單 <span class="badge" id="outbox-count">0</span>
-      <button class="refresh-btn" onclick="loadOutbox()">🔄 重新整理</button>
-    </h3>
-    <p class="auto-note">💡 所有按了「排隊出街」的項目都會顯示在此，狀態為「待出街」</p>
     <div id="outbox-loading" class="loading">載入中...</div>
-    <div id="outbox-empty" class="empty" style="display:none;">📭 暫無排隊出街項目<br><small>在社群文案或活動花絮按「✅ 排隊出街」即可加到此處</small></div>
-    <div id="outbox-cards" class="card-grid" style="display:none;"></div>
+    <div id="outbox-empty" class="empty" style="display:none;">📭 暫無待出街內容<br><small>活動花絮每日 10:00 生成 · 社群文案每日 10:00 生成</small></div>
+    
+    <!-- 活動花絮區 -->
+    <div id="outbox-events-wrap" style="display:none;">
+      <h3>🌍 活動花絮 <span class="badge" id="outbox-events-count">0</span>
+        <span class="auto-tag">⏱ 30分鐘自動出街</span>
+      </h3>
+      <div id="outbox-events-zone" class="outbox-zone"></div>
+    </div>
+    
+    <!-- 分隔線 -->
+    <div id="outbox-divider" style="display:none; border-top:2px dashed #e5e7eb; margin:24px 0;"></div>
+    
+    <!-- 社群文案區 -->
+    <div id="outbox-copy-wrap" style="display:none;">
+      <h3>📝 社群文案 <span class="badge" id="outbox-copy-count">0</span>
+        <span class="auto-tag">⏱ 30分鐘自動出街</span>
+      </h3>
+      <div id="outbox-copy-zone" class="outbox-zone"></div>
+    </div>
   </div>
 
   <!-- 已出街內容（status=已出街） -->
@@ -394,22 +419,7 @@ a.link:hover { text-decoration:underline; }
     </div>
   </div>
 
-  <!-- 社群文案模板 -->
-  <div id="sec-copy" class="section" style="display:none;">
-    <h3>📝 IG / Facebook 貼文文案（可直接複製發帖）
-      <button class="refresh-btn" onclick="resetCopyCards()" style="float:right;margin-left:8px;font-size:11px;">🔄 重置模板</button>
-    </h3>
-    <div id="copy-loading" class="loading" style="display:none;">載入中...</div>
-    <div id="copy-empty" class="empty" style="display:none;">📭 暫無社群文案<br><small>每日 10:00 自動生成 3 款文案</small></div>
-    <div class="post-cards" id="copy-cards"></div>
-  </div>
-
-  <!-- 活動花絮（從 GAS 加載） -->
-  <div id="sec-events" class="section" style="display:none;">
-    <h3>🌍 每日世界各地活動花絮 <span class="badge" id="events-count">0</span></h3>
-    <p class="section-desc">每日 10:00 生成 · 12:00 出街，可編輯後排隊出街</p>
-    <div id="events-list"></div>
-  </div>
+  <!-- 社群文案 & 活動花絮 已合併到「出街記錄」-->
 
   <!-- 設計圖庫 -->
   <div id="sec-gallery" class="section" style="display:none;">
@@ -501,70 +511,339 @@ function getTypeBadgeClass(type) {
   return "";
 }
 
-// ===== 出街記錄（所有排隊出街項目，status=待出街） =====
+// ===== 整合出街記錄（活動花絮 + 社群文案 = 統一管理） =====
+let autoPubTimers = {}; // interval IDs
+
 function loadOutbox() {
-  document.getElementById("outbox-loading").style.display = "block";
-  document.getElementById("outbox-cards").style.display = "none";
-  document.getElementById("outbox-empty").style.display = "none";
+  var loading = document.getElementById("outbox-loading");
+  var empty = document.getElementById("outbox-empty");
+  var eventsWrap = document.getElementById("outbox-events-wrap");
+  var copyWrap = document.getElementById("outbox-copy-wrap");
+  var divider = document.getElementById("outbox-divider");
+  loading.style.display = "block";
+  empty.style.display = "none";
+  eventsWrap.style.display = "none";
+  copyWrap.style.display = "none";
+  divider.style.display = "none";
   
-  apiCall({ action: "list", status: "待出街" }, function(data) {
-    const items = data.items || [];
-    document.getElementById("outbox-loading").style.display = "none";
-    document.getElementById("outbox-count").textContent = items.length;
+  // 一次過拎晒所有數據
+  apiCall({ action: "list", status: "all" }, function(data) {
+    var all = data.items || [];
     
-    if (items.length === 0) {
-      document.getElementById("outbox-empty").style.display = "block";
+    // 篩選：活動花絮 = type 含「花絮」, status = 待確認
+    var events = all.filter(function(i) {
+      return i.type && i.type.indexOf('花絮') >= 0 && i.status === '待確認';
+    });
+    // 篩選：社群文案 = type 含「文案」, status = 待確認
+    var copies = all.filter(function(i) {
+      return i.type && i.type.indexOf('文案') >= 0 && i.status === '待確認';
+    });
+    
+    loading.style.display = "none";
+    var total = events.length + copies.length;
+    
+    if (total === 0) {
+      empty.style.display = "block";
+      document.getElementById("status-bar").innerHTML = "⚡ 暫無待出街內容";
     } else {
-      const grid = document.getElementById("outbox-cards");
-      grid.innerHTML = "";
-      items.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        const notesPreview = (item.notes || "無內容").substring(0, 80);
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
-            <span class="card-meta">📅 ${getScheduledTime(item.type)}</span>
-            <button class="btn-publish-now" onclick="publishNow('${item.id}', this)">🚀 現在出街</button>
-          </div>
-          <div class="card-title">${item.title}</div>
-          <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
-          <div class="card-actions">
-            <span class="status-badge status-pending">待出街</span>
-            <button class="btn btn-delete" onclick="deleteOutboxItem('${item.id}')">🗑️ 刪除</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      document.getElementById("outbox-cards").style.display = "grid";
+      var hasEvents = events.length > 0;
+      var hasCopies = copies.length > 0;
+      
+      if (hasEvents) {
+        eventsWrap.style.display = "block";
+        renderOutboxZone("outbox-events-zone", events, "🌍");
+        document.getElementById("outbox-events-count").textContent = events.length;
+      }
+      if (hasEvents && hasCopies) {
+        divider.style.display = "block";
+      }
+      if (hasCopies) {
+        copyWrap.style.display = "block";
+        renderOutboxZone("outbox-copy-zone", copies, "📝");
+        document.getElementById("outbox-copy-count").textContent = copies.length;
+      }
+      document.getElementById("status-bar").innerHTML = "⚡ " + total + " 個項目等待出街（" + events.length + " 花絮 + " + copies.length + " 文案）";
     }
-    document.getElementById("status-bar").innerHTML = `⚡ ${items.length} 個項目排隊出街中`;
     document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
+    
+    // 啟動 30 分鐘自動倒數
+    startAllCountdowns();
   });
 }
 
-function deleteOutboxItem(id) {
-  if (!confirm("🗑️ 確定刪除此項目？")) return;
+function renderOutboxZone(zoneId, items, icon) {
+  var zone = document.getElementById(zoneId);
+  if (!zone) return;
+  zone.innerHTML = "";
+  items.forEach(function(item) {
+    var card = renderOutboxCard(item, icon);
+    zone.appendChild(card);
+  });
+}
+
+function renderOutboxCard(item, icon) {
+  var card = document.createElement("div");
+  card.className = "card outbox-card";
+  card.id = "outbox-item-" + item.id;
+  
+  var notes = (item.notes || "").replace(/\n/g, "<br>");
+  var title = item.title || "（無標題）";
+  var typeLabel = item.type || "";
+  var createdAt = item.createdAt || "";
+  
+  // 計算 30 分鐘 deadline
+  var deadline = getAutoPubDeadline(item.id);
+  if (!deadline) {
+    // 首次：以 createdAt 或 now 為起點 + 30 分鐘
+    var start = createdAt ? new Date(createdAt).getTime() : Date.now();
+    deadline = start + 30 * 60 * 1000;
+    setAutoPubDeadline(item.id, deadline);
+  }
+  var remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+  var countdownHtml = formatCountdown(remaining);
+  
+  card.innerHTML = 
+    '<div class="card-header">' +
+      '<span class="type-badge ' + getTypeBadgeClass(typeLabel) + '">' + icon + ' ' + typeLabel + '</span>' +
+      '<span class="auto-countdown" id="cd-' + item.id + '">⏱ ' + countdownHtml + '</span>' +
+    '</div>' +
+    '<div class="card-title">' + escHtml(title) + '</div>' +
+    '<div class="card-body outbox-body" id="ob-body-' + item.id + '">' + notes + '</div>' +
+    '<div class="card-actions">' +
+      '<button class="btn btn-confirm" onclick="toggleOutboxEdit(\'' + item.id + '\')">✏️ 編輯</button>' +
+      '<button class="btn btn-publish-now" id="btn-pub-' + item.id + '" onclick="handlePublishOutbox(\'' + item.id + '\', this)">🚀 立即出街</button>' +
+      '<button class="btn btn-delete" onclick="skipOutboxItem(\'' + item.id + '\')">⏭ 跳過</button>' +
+    '</div>';
+  
+  return card;
+}
+
+// ===== 30 分鐘自動出街邏輯 =====
+function autoPubKey(id) { return 'wb_autopub_' + id; }
+
+function getAutoPubDeadline(id) {
+  var v = localStorage.getItem(autoPubKey(id));
+  return v ? parseInt(v) : null;
+}
+
+function setAutoPubDeadline(id, deadline) {
+  localStorage.setItem(autoPubKey(id), String(deadline));
+}
+
+function clearAutoPubTimer(id) {
+  localStorage.removeItem(autoPubKey(id));
+  if (autoPubTimers[id]) {
+    clearInterval(autoPubTimers[id]);
+    delete autoPubTimers[id];
+  }
+}
+
+function formatCountdown(seconds) {
+  if (seconds <= 0) return "0:00";
+  var m = Math.floor(seconds / 60);
+  var s = seconds % 60;
+  return m + ":" + (s < 10 ? "0" : "") + s;
+}
+
+function startAllCountdowns() {
+  // 清除舊 timer
+  Object.keys(autoPubTimers).forEach(function(k) { clearInterval(autoPubTimers[k]); });
+  autoPubTimers = {};
+  
+  // 為每個 outbox item 啟動倒數
+  var cards = document.querySelectorAll(".outbox-card");
+  cards.forEach(function(card) {
+    var id = card.id.replace("outbox-item-", "");
+    var cdEl = document.getElementById("cd-" + id);
+    if (!cdEl) return;
+    
+    var deadline = getAutoPubDeadline(id);
+    if (!deadline) return;
+    
+    var updateFn = function() {
+      var remaining = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+      cdEl.textContent = "⏱ " + formatCountdown(remaining);
+      
+      if (remaining <= 300 && remaining > 0) {
+        // 最後 5 分鐘變色提示
+        cdEl.style.color = "#ef4444";
+      }
+      
+      if (remaining <= 0) {
+        clearAutoPubTimer(id);
+        cdEl.textContent = "⏱ 自動出街中...";
+        cdEl.style.color = "#f59e0b";
+        autoPublishItem(id);
+      }
+    };
+    
+    updateFn(); // 立即更新一次
+    autoPubTimers[id] = setInterval(updateFn, 1000);
+    
+    // 如果已經過期，立即觸發
+    if (deadline <= Date.now()) {
+      clearInterval(autoPubTimers[id]);
+      delete autoPubTimers[id];
+      cdEl.textContent = "⏱ 自動出街中...";
+      cdEl.style.color = "#f59e0b";
+      autoPublishItem(id);
+    }
+  });
+}
+
+// 30 分鐘倒數完畢 → 自動出街
+function autoPublishItem(id) {
+  console.log("[autoPublish] 自動出街觸發: " + id);
+  var btn = document.getElementById("btn-pub-" + id);
+  if (btn) {
+    // 模擬用戶點擊「立即出街」
+    handlePublishOutbox(id, btn);
+  }
+}
+
+// ===== 立即出街（整合版） =====
+function handlePublishOutbox(id, btn) {
+  if (!confirm("🚀 確定立即出街？\n\n將推送至：\n• Facebook（EventEasy.net Page）\n• Instagram（EventEasy.net）\n\n推送後內容將移至「已出街內容」。")) return;
+  
+  clearAutoPubTimer(id);
+  btn.disabled = true;
+  btn.textContent = "⏳ 推送中...";
+  
+  // 先從 GAS 讀取完整內容
+  apiCall({ action: "list", status: "all" }, function(data) {
+    var item = (data.items || []).find(function(i) { return i.id == id; });
+    if (!item) { alert("❌ 找不到該項目"); btn.disabled = false; btn.textContent = "🚀 立即出街"; return; }
+    
+    // 組合貼文文字
+    var text = [item.title || "", item.notes || ""].filter(Boolean).join("\n\n");
+    
+    // 依次發送到 Buffer
+    var targets = [
+      { name: "Facebook",  id: BUFFER_CHANNELS.facebook,  imageUrl: "" },
+      { name: "Instagram", id: BUFFER_CHANNELS.instagram, imageUrl: BUFFER_DEFAULT_LOGO_URL }
+    ];
+    
+    var done = 0;
+    var results = [];
+    
+    function nextChannel(idx) {
+      if (idx >= targets.length) {
+        // 全部完成 → 更新 GAS 狀態
+        finishPublish(item, btn, results);
+        return;
+      }
+      var ch = targets[idx];
+      btn.textContent = "⏳ 推送 " + ch.name + "...";
+      bufferPost(text, ch.id, { imageUrl: ch.imageUrl }).then(function(post) {
+        results.push("✅ " + ch.name + "（已發送）");
+        nextChannel(idx + 1);
+      }).catch(function(err) {
+        results.push("❌ " + ch.name + "：" + err.message);
+        nextChannel(idx + 1);
+      });
+    }
+    nextChannel(0);
+  });
+}
+
+function finishPublish(item, btn, results) {
+  btn.textContent = "⏳ 更新狀態...";
+  // Delete + re-add with 已出街
+  apiCall({ action: "delete", id: item.id }, function(delRes) {
+    if (!delRes.success) {
+      btn.textContent = "🚀 立即出街";
+      btn.disabled = false;
+      alert("📤 推送結果：\n\n" + results.join("\n") + "\n\n⚠️ Buffer 已推送，但 GAS 狀態更新失敗");
+      return;
+    }
+    apiCall({
+      action: "add",
+      type: item.type || "",
+      title: item.title || "",
+      notes: item.notes || "",
+      status: "已出街"
+    }, function(addRes) {
+      btn.textContent = "✅ 已出街";
+      btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+      if (addRes.success) {
+        alert("📤 推送結果：\n\n" + results.join("\n") + "\n\n✅ 內容已移至「已出街內容」。");
+        // 即時移除卡片 + 更新計數
+        var card = document.getElementById("outbox-item-" + item.id);
+        if (card) {
+          card.style.transition = "opacity 0.3s";
+          card.style.opacity = "0";
+          setTimeout(function() { card.remove(); refreshOutboxCounts(); }, 300);
+        }
+      } else {
+        alert("📤 推送結果：\n\n" + results.join("\n") + "\n\n⚠️ Buffer 已推送，但 GAS 狀態更新失敗");
+        btn.disabled = false;
+      }
+    });
+  });
+}
+
+function refreshOutboxCounts() {
+  var eventsZone = document.getElementById("outbox-events-zone");
+  var copyZone = document.getElementById("outbox-copy-zone");
+  var eventsCount = eventsZone ? eventsZone.querySelectorAll(".outbox-card").length : 0;
+  var copyCount = copyZone ? copyZone.querySelectorAll(".outbox-card").length : 0;
+  var total = eventsCount + copyCount;
+  
+  var ec = document.getElementById("outbox-events-count");
+  var cc = document.getElementById("outbox-copy-count");
+  if (ec) ec.textContent = eventsCount;
+  if (cc) cc.textContent = copyCount;
+  
+  if (total === 0) {
+    document.getElementById("outbox-empty").style.display = "block";
+    document.getElementById("outbox-events-wrap").style.display = "none";
+    document.getElementById("outbox-copy-wrap").style.display = "none";
+    document.getElementById("outbox-divider").style.display = "none";
+    document.getElementById("status-bar").innerHTML = "⚡ 暫無待出街內容";
+  } else {
+    document.getElementById("status-bar").innerHTML = "⚡ " + total + " 個項目等待出街（" + eventsCount + " 花絮 + " + copyCount + " 文案）";
+  }
+}
+
+// ===== 編輯 =====
+function toggleOutboxEdit(id) {
+  var body = document.getElementById("ob-body-" + id);
+  if (!body) return;
+  if (body.isContentEditable) {
+    body.contentEditable = "false";
+    body.classList.remove("editing");
+    // 儲存編輯內容到 GAS
+    var newNotes = body.innerText.trim();
+    apiCall({ action: "confirm", id: id, status: "待確認" }, function() {
+      console.log("[outbox] 編輯已儲存 (id=" + id + ")");
+    });
+  } else {
+    body.contentEditable = "true";
+    body.classList.add("editing");
+    body.focus();
+  }
+}
+
+// ===== 跳過（刪除） =====
+function skipOutboxItem(id) {
+  if (!confirm("⏭ 確定跳過此項目？\n\n將會從系統中刪除。")) return;
+  clearAutoPubTimer(id);
   apiCall({ action: "delete", id: id }, function(data) {
     if (data.success) {
-      alert("🗑️ 已刪除");
-      loadOutbox();
+      var card = document.getElementById("outbox-item-" + id);
+      if (card) {
+        card.style.transition = "opacity 0.3s, transform 0.3s";
+        card.style.opacity = "0";
+        card.style.transform = "scale(0.95)";
+        setTimeout(function() { card.remove(); refreshOutboxCounts(); }, 300);
+      }
     } else {
       alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
     }
   });
 }
 
-// ===== 預計出街時間 =====
-function getScheduledTime(type) {
-  var t = type || "";
-  if (t.includes("新聞")) return "今日 10:00 出街";
-  if (t.includes("宣傳圖")) return "今日 10:00 出街";
-  if (t.includes("花絮")) return "今日 12:00 出街";
-  if (t.includes("美股")) return "今日 21:00 出街";
-  if (t.includes("文案")) return "手動排程 · 待推送";
-  return "待定";
-}
+// === 保留舊版 publishNow（供已排隊項目使用） ===
 
 // ===== 已出街內容（status=已出街） =====
 function loadPublished() {
@@ -653,7 +932,7 @@ async function publishNow(id, btn) {
 
   // 1. 從 GAS 讀取完整內容
   const item = await new Promise((resolve) => {
-    apiCall({ action: "list", status: "待出街" }, function(data) {
+    apiCall({ action: "list", status: "all" }, function(data) {
       const found = (data.items || []).find(i => i.id == id);
       resolve(found || null);
     });
@@ -714,14 +993,7 @@ async function publishNow(id, btn) {
 }
 
 function updateOutboxCount() {
-  var grid = document.getElementById('outbox-cards');
-  if (!grid) return;
-  var cards = grid.querySelectorAll('.card');
-  document.getElementById('outbox-count').textContent = cards.length;
-  if (cards.length === 0) {
-    document.getElementById('outbox-empty').style.display = 'block';
-    grid.style.display = 'none';
-  }
+  refreshOutboxCounts();
 }
 
 // ===== 共用：日期分組 + 月曆 =====
@@ -1719,7 +1991,7 @@ function confirmPublish(cardId, styleLabel) {
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
-    ["pending","stock","news","ai","copy","events","gallery","outbox","published"].forEach(n => {
+    ["pending","stock","news","ai","gallery","outbox","published"].forEach(n => {
       var el = document.getElementById("sec-" + n);
       if (el) el.style.display = "none";
     });
@@ -1734,14 +2006,12 @@ function showSection(name) {
     });
     
     const titles = {
-      outbox: ["📤 出街記錄", "所有排隊出街嘅項目，狀態為「待出街」，等待推送"],
+      outbox: ["📤 出街記錄", "活動花絮 + 社群文案 · 30 分鐘自動出街 · 亦可即時推送"],
       published: ["✅ 已出街內容", "所有已推送出街嘅內容記錄，可查看或重新排隊"],
       stock: ["📈 美股分析報告", "每晚 19:00 生成 · 21:00 出街（含百家撮要 + 最終總結）"],
       news: ["📰 每日新聞撮要", "每日 08:00 生成 · 10:00 出街"],
       ai: ["🤖 AI 發展情報", "每日 14:00 生成 · 涵蓋 AI 創作、漫劇、短視頻、補貼"],
-      gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
-      copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"],
-      events: ["🌍 每日活動花絮", "世界各地精彩活動撮要 · 每日 10:00 生成 · 12:00 出街 · 可編輯後排隊出街"]
+      gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"]
     };
     document.getElementById("page-title").textContent = titles[name][0];
     document.getElementById("page-desc").textContent = titles[name][1];
@@ -1752,7 +2022,6 @@ function showSection(name) {
     if (name === "news") loadNews();
     if (name === "ai") loadAI();
     if (name === "gallery") loadGallery();
-    if (name === "events") loadEvents();
   } catch(e) {
     console.error("showSection error:", e);
   }
@@ -1770,8 +2039,8 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-  // 首次載入：load 社群文案
-  loadCopy();
+  // 首次載入：出街記錄（已整合活動花絮 + 社群文案）
+  loadOutbox();
 });
 
 // If DOM already loaded, bind immediately
@@ -1790,7 +2059,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // 首次載入
 loadOutbox();
-loadCopy();  // 載入社群文案（待確認）
 hideQueuedCards();  // 隱藏今日已排隊的文案模板卡片
 setInterval(loadOutbox, 60000);
 
