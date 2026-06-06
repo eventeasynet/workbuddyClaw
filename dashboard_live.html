@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060603;
+  var CURRENT = 2026060604;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -1032,6 +1032,7 @@ var DRIVE_MAPPING = {
   '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
   '1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr': 'stock_report_20260605.html',
   '1eMNDXZipS7VPJGQ4JTWprTQr7BQ-Yb8l': 'stock_report_20260606.html',
+  '18aL3ljvqxUd3wLDr6VB8GOQQjVkDkkmD': 'ai_intelligence_20260606.html',
 };
 
 // 異步加載最新映射表（覆蓋硬編碼）
@@ -1224,6 +1225,11 @@ function loadStock() {
 
   apiCall({ action: 'list', status: '已確認' }, function(data) {
     var items = (data.items || []).filter(function(i) { return i.type && i.type.indexOf('美股') >= 0; });
+    // 🔍 除錯：打印所有美股項目嘅 driveUrl
+    console.log('[loadStock] 共 ' + items.length + ' 個美股項目');
+    items.forEach(function(it) {
+      console.log('[loadStock] ID=' + it.id + ' | title=' + (it.title||'') + ' | createdAt=' + (it.createdAt||'') + ' | driveUrl=' + (it.driveUrl||'(空白)'));
+    });
     stockDateGroups = groupByDate(items);
     document.getElementById('stock-loading').style.display = 'none';
     document.getElementById('stock-count').textContent = items.length;
@@ -1496,6 +1502,11 @@ function loadAI() {
 
   apiCall({ action: 'list', status: '已確認' }, function(data) {
     var items = (data.items || []).filter(function(i) { return i.type && i.type.indexOf('AI') >= 0; });
+    // 🔍 除錯：打印所有 AI 項目嘅 driveUrl
+    console.log('[loadAI] 共 ' + items.length + ' 個 AI 項目');
+    items.forEach(function(it) {
+      console.log('[loadAI] ID=' + it.id + ' | title=' + (it.title||'') + ' | createdAt=' + (it.createdAt||'') + ' | driveUrl=' + (it.driveUrl||'(空白)'));
+    });
     aiDateGroups = groupByDate(items);
     document.getElementById('ai-loading').style.display = 'none';
     document.getElementById('ai-count').textContent = items.length;
