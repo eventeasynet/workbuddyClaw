@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060601;
+  var CURRENT = 2026060602;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -251,7 +251,7 @@ a.link:hover { text-decoration:underline; }
     <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="outbox">📤 待待出街記錄</a>
+    <a class="nav-item active" data-section="outbox">📤 待出街記錄</a>
     <a class="nav-item" data-section="published">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
     <a class="nav-item" data-section="stock">📈 美股分析報告</a>
@@ -1038,6 +1038,7 @@ function fixDriveUrl(url) {
       '1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7': 'news/2026-06-05_HK_News.html',
       '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
       '1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr': 'stock_report_20260605.html',
+      '1eMNDXZipS7VPJGQ4JTWprTQr7BQ-Yb8l': 'stock_report_20260606.html',
     };
     if (map[fid]) return GH_PAGES + map[fid];
     // 默認：轉成 Drive preview
