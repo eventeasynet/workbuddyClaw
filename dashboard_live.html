@@ -680,13 +680,13 @@ function startAllCountdowns() {
     updateFn(); // 立即更新一次
     autoPubTimers[id] = setInterval(updateFn, 1000);
     
-    // 如果已經過期，立即觸發
+    // 如果已經過期 → 俾 2 分鐘緩衝（免得用戶未睇就自動出街）
     if (deadline <= Date.now()) {
-      clearInterval(autoPubTimers[id]);
-      delete autoPubTimers[id];
-      cdEl.textContent = "⏱ 自動出街中...";
-      cdEl.style.color = "#f59e0b";
-      autoPublishItem(id);
+      deadline = Date.now() + 2 * 60 * 1000;
+      setAutoPubDeadline(id, deadline);
+      remaining = 120;
+      cdEl.textContent = "⏱ " + formatCountdown(remaining);
+      cdEl.style.color = "#ef4444";
     }
   });
 }
