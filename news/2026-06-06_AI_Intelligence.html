@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 AI 行業情報速遞 — 2026年6月6日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+  
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: linear-gradient(135deg, #f8f7ff 0%, #ede9fe 50%, #f8f7ff 100%);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e5e0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1e1b4b;
+    position: relative;
+    z-index: 1;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #5b21b6;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .summary {
+    color: #6b7280;
+    font-size: 0.92em;
+    margin-top: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-title {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .emoji { font-size: 1.3em; }
+
+  /* Category colors */
+  .cat-tech .section-title { color: #4f46e5; border-color: #4f46e5; }
+  .cat-video .section-title { color: #059669; border-color: #059669; }
+  .cat-comic .section-title { color: #d97706; border-color: #d97706; }
+  .cat-subsidy .section-title { color: #db2777; border-color: #db2777; }
+  .cat-trend .section-title { color: #0284c7; border-color: #0284c7; }
+
+  /* Cards */
+  .card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: #818cf8;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+    transform: translateY(-1px);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 4px 0 0 4px;
+  }
+  .cat-tech .card::before { background: linear-gradient(180deg, #818cf8, #4f46e5); }
+  .cat-video .card::before { background: linear-gradient(180deg, #34d399, #059669); }
+  .cat-comic .card::before { background: linear-gradient(180deg, #fbbf24, #d97706); }
+  .cat-subsidy .card::before { background: linear-gradient(180deg, #f472b6, #db2777); }
+  .cat-trend .card::before { background: linear-gradient(180deg, #38bdf8, #0284c7); }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .card-title {
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #111827;
+  }
+  .card-tag {
+    flex-shrink: 0;
+    font-size: 0.75em;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .tag-hot { background: rgba(239, 68, 68, 0.08); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.2); }
+  .tag-new { background: rgba(34, 197, 94, 0.08); color: #16a34a; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .tag-policy { background: rgba(251, 191, 36, 0.1); color: #b45309; border: 1px solid rgba(251, 191, 36, 0.25); }
+  .tag-ipo { background: rgba(168, 85, 247, 0.08); color: #7c3aed; border: 1px solid rgba(168, 85, 247, 0.2); }
+  .tag-funding { background: rgba(56, 189, 248, 0.08); color: #0369a1; border: 1px solid rgba(56, 189, 248, 0.2); }
+
+  .card-body { color: #4b5563; font-size: 0.92em; }
+  .card-body ul { list-style: none; padding: 0; }
+  .card-body li { padding: 3px 0; padding-left: 16px; position: relative; }
+  .card-body li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #6366f1;
+    font-weight: bold;
+  }
+  .card-body .highlight {
+    color: #d97706;
+    font-weight: 600;
+  }
+  .card-body a {
+    color: #4f46e5;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .card-body a:hover { border-color: #4f46e5; }
+
+  /* Data Table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.88em;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: #f5f3ff;
+    color: #4c1d95;
+    font-weight: 600;
+    border-bottom: 1px solid #e5e0f0;
+  }
+  .data-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    color: #374151;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* Comparison box */
+  .comp-box {
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 10px;
+  }
+  .comp-box .label { color: #6d28d9; font-weight: 600; font-size: 0.88em; margin-bottom: 6px; }
+
+  /* Key number */
+  .key-num {
+    font-size: 1.5em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #818cf8, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    color: #9ca3af;
+    font-size: 0.82em;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 20px;
+  }
+
+  /* Stats banner */
+  .stats-banner {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  @media (max-width: 768px) {
+    .stats-banner { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat-item {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .stat-item .num {
+    font-size: 1.4em;
+    font-weight: 700;
+    background: linear-gradient(135deg, #818cf8, #f472b6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-item .label {
+    font-size: 0.78em;
+    color: #6b7280;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📡 AI 行業情報速遞</h1>
+  <div class="date-badge">2026年6月6日 · 星期六</div>
+  <div class="summary">
+    涵蓋國內、國際及香港 AI 創作技術、短視頻、漫劇、政府補貼、行業動態<br>
+    資訊來源：36氪、新浪財經、搜狐、AIApps、Kersai、香港數字政策辦公室等
+  </div>
+</div>
+
+<!-- 數據速覽 -->
+<div class="stats-banner">
+  <div class="stat-item"><div class="num">13</div><div class="label">本日精選情報</div></div>
+  <div class="stat-item"><div class="num">$426億</div><div class="label">Q2 AI融資總額</div></div>
+  <div class="stat-item"><div class="num">¥220億</div><div class="label">AI漫劇市場規模</div></div>
+  <div class="stat-item"><div class="num">HK$30億</div><div class="label">香港AI資助計劃</div></div>
+  <div class="stat-item"><div class="num">5+</div><div class="label">具身智能融資</div></div>
+</div>
+
+<!-- ==================== 🔬 AI 創作技術 ==================== -->
+<div class="section cat-tech">
+<div class="section-title"><span class="emoji">🔬</span> AI 創作技術</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">MiniMax M3 橫空出世：百萬 Token 上下文 + 1/20 計算量</div>
+    <span class="card-tag tag-hot">模型發布</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>基於 MiniMax 稀疏注意力（MSA）架構，<span class="highlight">單 token 計算量僅為上代 1/20</span></li>
+      <li>支援 <span class="highlight">100 萬 token 上下文</span>，1M token 場景下預填充速度快 9 倍、解碼速度快 15 倍</li>
+      <li>大幅降低大規模數據處理成本，企業級長文本應用利器</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">NVIDIA Cosmos 3：首個完全開源物理 AI「全模態模型」</div>
+    <span class="card-tag tag-new">開源突破</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>整合<span class="highlight">視覺推理、世界模擬、動作生成</span>三大能力於一體</li>
+      <li>支援生成罕見醫療場景合成影片，用於手術機器人訓練</li>
+      <li>NVIDIA Vera Rubin 平台：代理吞吐量較上代提升 <span class="highlight">10 倍</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Claude Opus 4.8 動態工作流 + Gemini 3.5 Flash 低價搶市</div>
+    <span class="card-tag tag-hot">激烈競逐</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li><strong>Claude Opus 4.8</strong>：支援動態工作流，可自動生成編排腳本、部署多子代理，<span class="highlight">代碼審查漏檢概率降低 4 倍</span></li>
+      <li><strong>Gemini 3.5 Flash</strong>：推理成本僅 <span class="highlight">$0.1/百萬 token</span>，成 Google 搜索 AI 模式默認模型</li>
+      <li><strong>GPT-5.5 Instant</strong>：幻覺聲明率降低 <span class="highlight">52.5%</span>，基準刷新</li>
+      <li>Google 同步發布開源 <strong>Gemma 4</strong> 模型家族，降低企業使用門檻</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Orion-100B：消費級硬件完成千億參數訓練</div>
+    <span class="card-tag tag-new">成本革命</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>僅用消費級硬件 + 開放互聯網，完成 <span class="highlight">1,000 億參數模型訓練</span></li>
+      <li>速度達傳統數據中心的 65%，訓練成本僅 <span class="highlight">$1.25/小時</span>（對比 8×B200 節點 $50/小時）</li>
+      <li>MCP 協議季度增長 58%，已註冊 9,400 個伺服器，成為 AI 代理連接外部工具的通用標準</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<!-- ==================== 🎬 短視頻 ==================== -->
+<div class="section cat-video">
+<div class="section-title"><span class="emoji">🎬</span> 短視頻 & AI 影片生成</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">國產 AI 影片工具崛起：Sora 關停後的市場重構</div>
+    <span class="card-tag tag-hot">格局巨變</span>
+  </div>
+  <div class="card-body">
+    <table class="data-table">
+      <tr><th>模型</th><th>核心優勢</th><th>廠商</th></tr>
+      <tr><td><strong>可靈 3.0</strong></td><td>登頂全球視頻大模型榜首 · 原生 4K@60fps · 唯一滿足廣播標準</td><td>快手</td></tr>
+      <tr><td><strong>Seedance 2.0</strong></td><td>跨鏡頭角色一致性最強 · 音畫同步</td><td>字節跳動</td></tr>
+      <tr><td><strong>Vidu Q3</strong></td><td>高清輸出 · 多鏡頭原生敘事</td><td>生數科技</td></tr>
+      <tr><td><strong>即夢 AI</strong></td><td>中文理解優勢 · 性價比高</td><td>字節跳動</td></tr>
+    </table>
+    <div class="comp-box" style="margin-top:12px;">
+      <div class="label">📊 市場關鍵數據</div>
+      <ul>
+        <li>OpenAI Sora 2 已停產：高峰推理成本 $1,500萬/天 vs 總收入 $210萬</li>
+        <li>可靈 3.0 支援最長 3 分鐘 AI 影片製作，1080P 高清輸出</li>
+        <li>5 家已發布 Agent 產品（Luma、Pika、Runway 等），競爭升級為「哪個 Agent 用對模型」</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Zoom AI 生產力套件 6 月上線：會議 → 交付物一條龍</div>
+    <span class="card-tag tag-new">企業工具</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li><strong>ZoomMate</strong>：$20/用戶/月，實時接入會議，聯動 Salesforce、Jira、Slack 等</li>
+      <li>自動將會議記錄轉化為文檔、演示文稿等交付物</li>
+      <li><strong>Zoom AI 生產力套件</strong>：$10/用戶/月，含 Canvas + Slides，兼容微軟 Office</li>
+      <li>Google Imagen 3 Nano/Pro 支援以<span class="highlight">影片檔為提示</span>生成上下文感知圖像，已接入 Shopify</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<!-- ==================== 📺 AI 漫劇 ==================== -->
+<div class="section cat-comic">
+<div class="section-title"><span class="emoji">📺</span> AI 漫劇</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">AI 漫劇 2026 大洗牌：仿真人走到盡頭，五大新賽道爆發</div>
+    <span class="card-tag tag-hot">賽道轉型</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>市場 80% 創作者仍在「仿真人」路線，觀眾和平台已看膩</li>
+      <li>2026 下半年五大爆發賽道：<span class="highlight">互動劇、精品 3D 漫劇、AI 仿真人劇、出海、知識付費</span></li>
+      <li>AI 仿真人劇播放量已超越往年所有 AI 劇及漫劇播放量總和</li>
+      <li>2025 年 AI 漫劇市場近 ¥200 億，2026 年預計 <span class="highlight">¥220 億</span>（同比 +270%）</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">三大模型突破打通任督二脈：製作週期月→週</div>
+    <span class="card-tag tag-new">技術突破</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li><strong>Seedance 2.0 / 可靈 3.0 / Vidu Q3</strong> 持續迭代，解決行業長期痛點</li>
+      <li>✅ <span class="highlight">多鏡頭原生敘事</span>能力顯著提升</li>
+      <li>✅ <span class="highlight">角色一致性</span>大幅改善——解決「跨鏡頭變臉」「風格漂移」</li>
+      <li>✅ <span class="highlight">音畫同步 + 高清輸出</span>實現突破</li>
+      <li>製作成本較真人短劇大幅下降，生產週期從<span class="highlight">「月級」壓縮至「週級」</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">產業鏈完整閉環：IP → 工具 → 製作 → 分發 → 出海</div>
+    <span class="card-tag tag-hot">生態成熟</span>
+  </div>
+  <div class="card-body">
+    <table class="data-table">
+      <tr><th>產業環節</th><th>代表企業</th><th>核心佈局</th></tr>
+      <tr><td>IP 端</td><td>中文在線、閱文、掌閱</td><td>海量網文 IP 高效改編</td></tr>
+      <tr><td>技術工具</td><td>萬興科技、捷成股份</td><td>AI 工具 + 工業化平台</td></tr>
+      <tr><td>內容製作</td><td>歡瑞世紀、博納影業</td><td>影視 IP 切入 AI 短劇</td></tr>
+      <tr><td>出海領跑</td><td>崑崙萬維</td><td>SkyReels V4 + 海外雙平台運營</td></tr>
+      <tr><td>差異化頭部</td><td>中文在線</td><td>自研「逍遙」大模型 + 全棧 AI 創作平台</td></tr>
+    </table>
+    <div class="comp-box" style="margin-top:12px;">
+      <div class="label">⚠️ 監管動態</div>
+      <ul>
+        <li>廣電總局已明確 AI 內容標註及備案要求，低質侵權 AI 漫劇加速出清</li>
+        <li>行業精品化趨勢確立，競爭邏輯從「比拼產能」轉向「優質內容供給能力」</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== 💰 政府補貼 ==================== -->
+<div class="section cat-subsidy">
+<div class="section-title"><span class="emoji">💰</span> 政府補貼與資助</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">🇭🇰 香港：2026-27 預算案六大 AI 政策落地</div>
+    <span class="card-tag tag-policy">香港政策</span>
+  </div>
+  <div class="card-body">
+    <table class="data-table">
+      <tr><th>政策項目</th><th>金額/資源</th><th>進展</th></tr>
+      <tr><td>AI+ 與產業發展策略委員會</td><td>財政司司長親自主持</td><td>今年內出台細節</td></tr>
+      <tr><td>人工智能研發院</td><td>預留 <span class="highlight">HK$10 億</span></td><td>2026 年下半年運作</td></tr>
+      <tr><td>人工智能資助計劃</td><td><span class="highlight">HK$30 億</span>（三年期）</td><td>已批出約 30 項目</td></tr>
+      <tr><td>全民 AI 培訓</td><td>HK$5,000 萬</td><td>2027/28 學年起</td></tr>
+      <tr><td>政府數智化（AI 效能提升組）</td><td>HK$1 億（3 年）</td><td>引入 Agentic AI</td></tr>
+      <tr><td>沙嶺數據園區</td><td>目標 2032 年算力 <span class="highlight">180,000 PFLOPS</span></td><td>招標進行中</td></tr>
+    </table>
+    <div class="comp-box" style="margin-top:12px;">
+      <div class="label">📌 企業 AI 資助要點</div>
+      <ul>
+        <li>每家企業 AI 資助上限提高至 <span class="highlight">HK$15 萬</span>（2026-27 預算案）</li>
+        <li>AI 超算中心算力已達 <span class="highlight">3,000 PFLOPS</span>，政府補貼 70% 算力成本</li>
+        <li>BUD 專項基金額外注資 HK$2 億，加速中小企 AI 採用</li>
+        <li>最易獲資助賽道：AI+醫療、具身智能</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">🇨🇳 內地：大模型備案制度 + 地方 AI 補貼搶先看</div>
+    <span class="card-tag tag-policy">國家級政策</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>全國生成式 AI 備案已突破 <span class="highlight">300 款</span>，監管框架加速完善</li>
+      <li>大模型需完成國家級備案方可運營，未備案不得開展服務</li>
+      <li>算法推薦服務和深度合成服務必須完成備案</li>
+    </ul>
+    <table class="data-table" style="margin-top:12px;">
+      <tr><th>地區</th><th>補貼金額</th><th>重點方向</th></tr>
+      <tr><td>廣州海珠區</td><td>最高 <span class="highlight">¥100 萬</span></td><td>AI 備案補貼（全國領先）</td></tr>
+      <tr><td>北京經開區</td><td><span class="highlight">¥100 萬</span></td><td>AI 備案補貼</td></tr>
+      <tr><td>中關村科學城</td><td>單企半年 <span class="highlight">¥5,000 萬</span></td><td>「模型券」基礎大模型研發</td></tr>
+      <tr><td>深圳龍崗區</td><td>專項扶持</td><td>全國首個支持「一人公司」AI 創業</td></tr>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ==================== 🌐 行業動態 ==================== -->
+<div class="section cat-trend">
+<div class="section-title"><span class="emoji">🌐</span> 行業動態與監管</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Anthropic 估值 $9,650 億 · 秘密提交 IPO 申請</div>
+    <span class="card-tag tag-ipo">重磅 IPO</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li>H 輪融資 <span class="highlight">$650 億</span>，投後估值 $9,650 億，超越 OpenAI 成全球估值最高未上市 AI 企業</li>
+      <li>2026 年 5 月營收運轉率 ~$470 億，年增約 5 倍</li>
+      <li>與 SpaceX 簽約獲超級計算機 Colossus 1 算力，月付 <span class="highlight">$12.5 億</span>（300 兆瓦）</li>
+      <li>下一代 Mythos 級模型預計數週內面向客戶開放</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">Q2 AI 融資 $426 億：具身智能成資本新寵</div>
+    <span class="card-tag tag-funding">融資風向</span>
+  </div>
+  <div class="card-body">
+    <table class="data-table">
+      <tr><th>企業</th><th>輪次</th><th>金額</th><th>賽道</th></tr>
+      <tr><td>Cognition（Devin 母公司）</td><td>新一輪</td><td><span class="highlight">$10 億</span></td><td>AI 軟件工程師</td></tr>
+      <tr><td>VAST（瓦嘶特科技）</td><td>A+ 及 A++</td><td><span class="highlight">近 $2 億</span></td><td>3D 生成大模型</td></tr>
+      <tr><td>維泛智能</td><td>種子輪</td><td>數億元</td><td>具身智能晶片</td></tr>
+      <tr><td>安世騰科技</td><td>天使輪</td><td>5,000 萬元</td><td>AGI 智算服務</td></tr>
+      <tr><td>量坤科技</td><td>—</td><td>億元級</td><td>量子計算 + AI</td></tr>
+    </table>
+    <div class="comp-box" style="margin-top:12px;">
+      <div class="label">📊 行業數據</div>
+      <ul>
+        <li>2026 Q2 AI 融資總額 <span class="highlight">$426 億</span>（312 輪），代理 AI 佔近半</li>
+        <li>代理 AI 全球市場預計從 2025 年 $70-80 億增至 2034 年 $1,390-1,990 億</li>
+        <li>AI 試點項目轉生產比例 Q2 達 <span class="highlight">31%</span>，較 Q1 的 18% 接近翻倍</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">🇪🇺 歐盟 AI 法案 8 月生效 · 合規倒數開始</div>
+    <span class="card-tag tag-policy">合規倒數</span>
+  </div>
+  <div class="card-body">
+    <ul>
+      <li><span class="highlight">2026 年 8 月 2 日</span>歐盟 AI 法案大部分規則正式生效</li>
+      <li>AI 生成內容需帶機器可讀元數據，合成媒體透明度要求提前至 12 月 2 日</li>
+      <li>美國團隊須在 8 月 2 日前向用戶明確告知 AI 生成內容屬性</li>
+      <li>2026 年中期 AI 生成代碼相關 CVE 數量較 2025 年增長近 <span class="highlight">6 倍</span></li>
+      <li>提示注入攻擊已被納入 CVE 漏洞類別，企業安全風險加劇</li>
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  📡 本報告由 WorkBuddy AI 自動生成 · 資訊來源：36氪、新浪財經、搜狐、AIApps、Kersai、香港數字政策辦公室等<br>
+  生成時間：2026年6月6日 12:55 HKT · 僅供參考，不構成任何投資或商業建議
+</div>
+
+</div>
+</body>
+</html>
