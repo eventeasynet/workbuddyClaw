@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060606;
+  var CURRENT = 2026060701;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -147,7 +147,7 @@ a.link:hover { text-decoration:underline; }
 /* Note for auto-confirmed */
 .auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
 
-/* === 整合待出街記錄 === */
+/* === 整合出街貼文 === */
 .outbox-zone { display:flex; flex-direction:column; gap:16px; }
 .outbox-body { font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:12px; max-height:200px; overflow-y:auto; padding:8px; border-radius:6px; background:#f9fafb; transition:all 0.15s; }
 .outbox-body.editing { background:#fffbeb; border:2px solid #f59e0b; outline:none; }
@@ -251,13 +251,13 @@ a.link:hover { text-decoration:underline; }
     <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="outbox">📤 待出街記錄</a>
-    <a class="nav-item" data-section="published">✅ 已出街內容</a>
+    <a class="nav-item active" data-section="outbox" href="#outbox">📤 出街貼文</a>
+    <a class="nav-item" data-section="published" href="#published">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
-    <a class="nav-item" data-section="stock">📈 美股分析報告</a>
-    <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
-    <a class="nav-item" data-section="ai">🤖 AI 發展情報</a>
-    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
+    <a class="nav-item" data-section="stock" href="#stock">📈 美股分析報告</a>
+    <a class="nav-item" data-section="news" href="#news">📰 每日新聞撮要</a>
+    <a class="nav-item" data-section="ai" href="#ai">🤖 AI 發展情報</a>
+    <a class="nav-item" data-section="gallery" href="#gallery">🎨 設計圖庫</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
@@ -317,12 +317,12 @@ a.link:hover { text-decoration:underline; }
 <!-- Main Content -->
 <div class="main">
   <div class="header">
-    <h2 id="page-title">📤 待待出街記錄</h2>
-    <p id="page-desc">所有排隊出街嘅項目，狀態為「待出街」，等待推送</p>
+    <h2 id="page-title">📤 出街貼文</h2>
+    <p id="page-desc">所有排隊出街嘅貼文 · 花絮 + 文案 · 30 分鐘倒數自動出街</p>
     <div class="status-bar" id="status-bar">⚡ 載入中...</div>
   </div>
 
-  <!-- 整合待出街記錄（活動花絮 + 社群文案 + 已排隊項目） -->
+  <!-- 整合出街貼文（活動花絮 + 社群文案 + 已排隊項目） -->
   <div id="sec-outbox" class="section">
     <div id="outbox-loading" class="loading">載入中...</div>
     <div id="outbox-empty" class="empty" style="display:none;">📭 暫無待出街內容<br><small>活動花絮每日 10:00 生成 · 社群文案每日 10:00 生成</small></div>
@@ -419,7 +419,7 @@ a.link:hover { text-decoration:underline; }
     </div>
   </div>
 
-  <!-- 社群文案 & 活動花絮 已合併到「待出街記錄」-->
+  <!-- 社群文案 & 活動花絮 已合併到「出街貼文」-->
 
   <!-- 設計圖庫 -->
   <div id="sec-gallery" class="section" style="display:none;">
@@ -511,7 +511,7 @@ function getTypeBadgeClass(type) {
   return "";
 }
 
-// ===== 整合待出街記錄（活動花絮 + 社群文案 = 統一管理） =====
+// ===== 整合出街貼文（活動花絮 + 社群文案 = 統一管理） =====
 let autoPubTimers = {}; // interval IDs
 
 function loadOutbox() {
@@ -899,7 +899,7 @@ function loadPublished() {
 
 // ===== 重新排隊（已出街 → 待出街） =====
 function requeueItem(id, btn) {
-  if (!confirm("🔄 確定將此內容重新排隊出街？\n\n將會移回「待出街記錄」等待推送。")) return;
+  if (!confirm("🔄 確定將此內容重新排隊出街？\n\n將會移回「出街貼文」等待推送。")) return;
   btn.disabled = true;
   btn.textContent = '⏳ 處理中...';
   // 用 update status
@@ -1761,7 +1761,7 @@ function confirmEventPublish(id, title) {
     if (eb) { eb.classList.remove("saving"); eb.innerHTML = "✏️ 編輯"; }
   }
   var text = body.innerText.trim();
-  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入待出街記錄，狀態為「待出街」。")) return;
+  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入出街貼文，狀態為「待出街」。")) return;
   btn.disabled = true;
   btn.textContent = "⏳ 傳送中...";
   apiCall({
@@ -1770,7 +1770,7 @@ function confirmEventPublish(id, title) {
     status: "待出街"
   }, function(data) {
     if (data.success) {
-      alert("✅ 已加入待出街記錄！\n\n請到「📤 待出街記錄」查看。");
+      alert("✅ 已加入出街貼文！\n\n請到「📤 出街貼文」查看。");
       btn.textContent = "✅ 已排隊";
       btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
       btn.disabled = true;
@@ -2027,7 +2027,7 @@ function confirmPublish(cardId, styleLabel) {
   // 提取記錄 ID（cardId 格式：post-card-WB_xxx）
   var recordId = cardId.replace('post-card-', '');
   
-  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會更新狀態為「待出街」，並加入待出街記錄。')) return;
+  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會更新狀態為「待出街」，並加入出街貼文。')) return;
   
   btn.disabled = true;
   btn.textContent = '⏳ 傳送中...';
@@ -2045,7 +2045,7 @@ function confirmPublish(cardId, styleLabel) {
         if (data.success) {
           // 儲存到 localStorage，防止刷新後恢復顯示
           markCardQueued(cardId);
-          alert('✅ 已加入待出街記錄！\n\n可以在「📤 待出街記錄」分頁查看。');
+          alert('✅ 已加入出街貼文！\n\n可以在「📤 出街貼文」分頁查看。');
           btn.textContent = '✅ 已排隊';
           btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
           btn.disabled = true;
@@ -2079,6 +2079,11 @@ function confirmPublish(cardId, styleLabel) {
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
+    // 同步 URL hash（唔觸發 hashchange，免得 loop）
+    if (window.location.hash !== "#" + name) {
+      history.replaceState(null, "", "#" + name);
+    }
+    
     ["pending","stock","news","ai","gallery","outbox","published"].forEach(n => {
       var el = document.getElementById("sec-" + n);
       if (el) el.style.display = "none";
@@ -2094,7 +2099,7 @@ function showSection(name) {
     });
     
     const titles = {
-      outbox: ["📤 待出街記錄", "活動花絮 + 社群文案 · 30 分鐘自動出街 · 亦可即時推送"],
+      outbox: ["📤 出街貼文", "活動花絮 + 社群文案 · 30 分鐘自動出街 · 亦可即時推送"],
       published: ["✅ 已出街內容", "所有已推送出街嘅內容記錄，可查看或重新排隊"],
       stock: ["📈 美股分析報告", "每晚 19:00 生成 · 21:00 出街（含百家撮要 + 最終總結）"],
       news: ["📰 每日新聞撮要", "每日 08:00 生成 · 10:00 出街"],
@@ -2120,6 +2125,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var nav = document.getElementById("sidebar-nav");
   if (nav) {
     nav.addEventListener("click", function(e) {
+      e.preventDefault();
       var item = e.target.closest(".nav-item");
       if (item) {
         var section = item.getAttribute("data-section");
@@ -2127,8 +2133,14 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   }
-  // 首次載入：待出街記錄（已整合活動花絮 + 社群文案）
-  loadOutbox();
+  // 根據 URL hash 決定初始頁面（冇 hash → 出街貼文）
+  var hash = window.location.hash.replace("#", "");
+  var validSections = ["outbox", "published", "stock", "news", "ai", "gallery"];
+  if (hash && validSections.indexOf(hash) >= 0) {
+    showSection(hash);
+  } else {
+    showSection("outbox");
+  }
 });
 
 // If DOM already loaded, bind immediately
@@ -2136,6 +2148,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var nav = document.getElementById("sidebar-nav");
   if (nav) {
     nav.addEventListener("click", function(e) {
+      e.preventDefault();
       var item = e.target.closest(".nav-item");
       if (item) {
         var section = item.getAttribute("data-section");
@@ -2145,9 +2158,15 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 })();
 
-// 首次載入
-loadOutbox();
-hideQueuedCards();  // 隱藏今日已排隊的文案模板卡片
+// 首次載入（冇 DOMContentLoaded 時 fallback）
+if (document.readyState === "complete" || document.readyState === "interactive") {
+  var hash2 = window.location.hash.replace("#", "");
+  var vs2 = ["outbox", "published", "stock", "news", "ai", "gallery"];
+  if (!hash2 || vs2.indexOf(hash2) < 0) {
+    showSection("outbox");
+  }
+}
+hideQueuedCards();
 setInterval(loadOutbox, 60000);
 
 // ===== 自動化面板上落 =====
