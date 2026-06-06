@@ -1405,10 +1405,8 @@ function confirmEventPublish(id, title) {
   btn.disabled = true;
   btn.textContent = "⏳ 傳送中...";
   apiCall({
-    action: "add",
-    type: "活動花絮",
-    title: title,
-    notes: text,
+    action: "confirm",
+    id: id,
     status: "待出街"
   }, function(data) {
     if (data.success) {
@@ -1416,7 +1414,8 @@ function confirmEventPublish(id, title) {
       btn.textContent = "✅ 已排隊";
       btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
       btn.disabled = true;
-      // 1.5 秒後自動隱藏卡片
+      // 儲存到 localStorage 防止刷新後恢復
+      markCardQueued("event-card-" + id);
       var card = document.getElementById("event-card-" + id);
       if (card) {
         setTimeout(function() {
