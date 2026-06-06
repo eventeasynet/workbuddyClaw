@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060604;
+  var CURRENT = 2026060605;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -1291,9 +1291,21 @@ function setActiveStockDate(dk) {
     var url = fixDriveUrl(it.driveUrl) || it.link_url || '';
     var div = document.createElement('div');
     div.id = 'stock-report-content';
-    var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-    var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url.replace(/'/g, "\\'") + '）</div>';
-    div.innerHTML = titleHtml + iframeHtml;
+    if (url) {
+      // 有 driveUrl：用 iframe
+      var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+      var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url.replace(/'/g, "\\'") + '）</div>';
+      div.innerHTML = titleHtml + iframeHtml;
+    } else {
+      // 冇 driveUrl：純文字（例如美股追蹤 14:00 版）
+      var notesHtml = it.notes || it.content || '（無內容）';
+      notesHtml = notesHtml.replace(/\n/g, '<br>');
+      div.innerHTML = '<div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px; padding:20px; font-size:14px; line-height:1.8; color:#1e293b;">' +
+        '<div style="font-size:16px; font-weight:700; color:#0369a1; margin-bottom:12px;">' + (it.title || '無標題') + '</div>' +
+        '<div style="font-size:11px; color:#64748b; margin-bottom:16px;">' + (it.type || '') + ' · ' + (it.createdAt || '') + '</div>' +
+        '<div style="white-space:pre-wrap;">' + notesHtml + '</div>' +
+        '</div>';
+    }
     container.appendChild(div);
   } else {
     // 多篇：先渲染子 Tag 列
@@ -1304,13 +1316,16 @@ function setActiveStockDate(dk) {
       var tag = document.createElement('button');
       tag.id = 'stock-sub-tab-' + idx;
       tag.style.cssText = 'padding:4px 10px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; transition:all .2s;';
-      // 用標題判斷上/下晝，或編號
+      // 用標題 + driveUrl 判斷類型
       var label = '報告 ' + (idx + 1);
+      var hasDrive = !!(it.driveUrl);
       if (it.title) {
         if (it.title.indexOf('上午') >= 0 || it.title.indexOf('早上') >= 0) label = '🌅 上午版';
         else if (it.title.indexOf('下午') >= 0) label = '🌇 下午版';
         else if (it.title.indexOf('晚') >= 0) label = '🌙 晚間版';
       }
+      if (!hasDrive) label += '（純文字）';
+      else label += '（報告）';
       tag.textContent = label;
       (function(reportIdx) {
         tag.onclick = function() { setActiveStockReport(reportIdx); };
@@ -1346,11 +1361,26 @@ function renderActiveStockReport() {
   var reports = stockDateGroups[stockActiveDK] || [];
   var it = reports[stockActiveIdx] || reports[0] || {};
   var url = fixDriveUrl(it.driveUrl) || it.link_url || '';
+  
   var div = document.createElement('div');
   div.id = 'stock-report-content';
-  var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-  var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
-  div.innerHTML = titleHtml + iframeHtml;
+  
+  if (url) {
+    // 有 driveUrl：用 iframe
+    var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+    var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
+    div.innerHTML = titleHtml + iframeHtml;
+  } else {
+    // 冇 driveUrl：純文字內容（例如美股追蹤 14:00 版本）
+    var notesHtml = it.notes || it.content || '（無內容）';
+    notesHtml = notesHtml.replace(/\n/g, '<br>');
+    var typeLabel = (it.type || '') + ' · ' + (it.createdAt || '');
+    div.innerHTML = '<div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:12px; padding:20px; font-size:14px; line-height:1.8; color:#1e293b;">' +
+      '<div style="font-size:16px; font-weight:700; color:#0369a1; margin-bottom:12px;">' + (it.title || '無標題') + '</div>' +
+      '<div style="font-size:11px; color:#64748b; margin-bottom:16px;">' + typeLabel + '</div>' +
+      '<div style="white-space:pre-wrap;">' + notesHtml + '</div>' +
+      '</div>';
+  }
   container.appendChild(div);
 }
 
