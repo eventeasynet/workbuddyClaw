@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股分析報告 - 富途牛牛 & 向上融科 | 2026-06-05</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d28;
+    --border: #2a2d3a;
+    --text: #e8eaed;
+    --text2: #9aa0a6;
+    --green: #16a34a;
+    --red: #dc2626;
+    --blue: #3b82f6;
+    --orange: #f59e0b;
+    --purple: #a855f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    padding: 24px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header .date { color: var(--text2); font-size: 14px; }
+  .header .tag {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+
+  /* Stock Card */
+  .stock-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .stock-card h2 {
+    font-size: 17px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stock-card h2 .code {
+    color: var(--text2);
+    font-weight: 400;
+    font-size: 13px;
+  }
+
+  /* Price Display */
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .price-big {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+  .price-change {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .up { color: var(--green); background: rgba(22,163,74,0.12); }
+  .down { color: var(--red); background: rgba(220,38,38,0.12); }
+  .premarket {
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .premarket span { font-weight: 600; }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-item {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .stat-item .label { font-size: 11px; color: var(--text2); text-transform: uppercase; }
+  .stat-item .value { font-size: 16px; font-weight: 600; margin-top: 2px; }
+
+  /* 52-week Range Bar */
+  .range-bar {
+    margin: 12px 0 16px;
+  }
+  .range-bar .label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .range-track {
+    position: relative;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+  }
+  .range-fill {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--orange));
+    border-radius: 3px;
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 3px;
+  }
+  .range-current {
+    position: absolute;
+    top: -4px;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* Section */
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--orange);
+    margin: 16px 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--orange);
+  }
+
+  /* Q1 Earnings */
+  .earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .earn-item {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  .earn-item .val { font-size: 18px; font-weight: 700; }
+  .earn-item .lbl { font-size: 11px; color: var(--text2); }
+  .earn-item .chg { font-size: 12px; margin-top: 2px; }
+  .earn-item .chg.up { color: var(--green); }
+  .earn-item .chg.down { color: var(--red); }
+
+  /* News List */
+  .news-list { list-style: none; }
+  .news-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .news-list li:last-child { border-bottom: none; }
+  .news-date {
+    background: var(--blue);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Analyst Table */
+  .analyst-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .analyst-table th {
+    text-align: left;
+    padding: 8px;
+    color: var(--text2);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  .analyst-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .rating-buy { color: var(--green); font-weight: 600; }
+  .rating-hold { color: var(--orange); font-weight: 600; }
+  .rating-sell { color: var(--red); font-weight: 600; }
+
+  /* ===== 百家撮要 ===== */
+  .baijia-section {
+    background: linear-gradient(135deg, #1e1433 0%, #1a1d28 100%);
+    border: 1px solid var(--purple);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .baijia-section h2 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 4px;
+    color: var(--purple);
+  }
+  .baijia-section .subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 16px;
+  }
+
+  /* Ratio Bars */
+  .ratio-bars {
+    display: flex;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .ratio-bull {
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .ratio-neutral {
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .ratio-bear {
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .ratio-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 16px;
+  }
+
+  /* Opinion Cards */
+  .opinion-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .opinion-card {
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .opinion-bull {
+    background: rgba(22,163,74,0.1);
+    border: 1px solid rgba(22,163,74,0.3);
+  }
+  .opinion-neutral {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+  }
+  .opinion-bear {
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.3);
+  }
+  .opinion-card h4 {
+    font-size: 13px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .opinion-bull h4 { color: var(--green); }
+  .opinion-neutral h4 { color: var(--orange); }
+  .opinion-bear h4 { color: var(--red); }
+
+  /* Key Takeaway */
+  .takeaway {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.3);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px;
+    margin-top: 14px;
+  }
+  .takeaway strong { color: var(--purple); }
+
+  /* Regulatory */
+  .reg-card {
+    background: var(--card);
+    border: 1px solid var(--red);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .reg-card h2 {
+    font-size: 17px;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    padding: 4px 0 12px;
+    font-size: 13px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 2px solid var(--bg);
+  }
+  .timeline-item .date {
+    color: var(--text2);
+    font-size: 11px;
+  }
+  .timeline-item.active::before { background: var(--orange); }
+
+  .footer {
+    text-align: center;
+    padding: 20px 0;
+    color: var(--text2);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    body { padding: 10px; }
+    .price-big { font-size: 26px; }
+    .opinion-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .earnings-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>美股分析報告</h1>
+  <div class="date">2026年6月5日（星期五）</div>
+  <span class="tag">每日自動生成 | 19:00</span>
+</div>
+
+<!-- ========== FUTU ========== -->
+<div class="stock-card">
+  <h2>富途控股 <span class="code">FUTU | NASDAQ</span></h2>
+
+  <div class="price-row">
+    <span class="price-big">$95.78</span>
+    <span class="price-change down">-0.46%</span>
+    <span class="premarket">盤前: <span class="down">$94.60 (-1.23%)</span></span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="label">市值</div>
+      <div class="value">$134.3億</div>
+    </div>
+    <div class="stat-item">
+      <div class="label">市盈率 (P/E)</div>
+      <div class="value">10.59x</div>
+    </div>
+    <div class="stat-item">
+      <div class="label">遠期 P/E</div>
+      <div class="value">6.58x</div>
+    </div>
+    <div class="stat-item">
+      <div class="label">EPS</div>
+      <div class="value">$9.05 <span class="up" style="font-size:12px">+51.8%</span></div>
+    </div>
+  </div>
+
+  <div class="range-bar">
+    <div class="label">52週範圍</div>
+    <div class="range-track">
+      <div class="range-fill" style="left:0%;width:100%"></div>
+      <div class="range-current" style="left:12%">▼</div>
+    </div>
+    <div class="range-labels">
+      <span style="color:var(--red)">$80.50</span>
+      <span style="color:var(--green);font-weight:700">$95.78</span>
+      <span>$202.53</span>
+    </div>
+  </div>
+
+  <div class="section-title">Q1 2026 財報亮點（5/28 發布）</div>
+  <div class="earnings-grid">
+    <div class="earn-item">
+      <div class="val">$7.47億</div>
+      <div class="lbl">總營收</div>
+      <div class="chg up">+25% YoY</div>
+    </div>
+    <div class="earn-item">
+      <div class="val">$0.77</div>
+      <div class="lbl">EPS</div>
+      <div class="chg down">-60.7%</div>
+    </div>
+    <div class="earn-item">
+      <div class="val">3,020萬</div>
+      <div class="lbl">用戶總數</div>
+      <div class="chg up">+14.9% YoY</div>
+    </div>
+    <div class="earn-item">
+      <div class="val">$4.18億</div>
+      <div class="lbl">累計回購</div>
+      <div class="chg up">進行中</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text2);margin-bottom:12px">EPS 大幅下滑主因一次性監管罰款 RMB 18.5億（約 HK$20億）計入。剔除罰款後 Non-GAAP 淨利潤增長強勁。淨新增入金賬戶和交易量創歷史新高。</p>
+
+  <div class="section-title">分析師評級</div>
+  <div style="font-size:13px;margin-bottom:10px">
+    <span style="color:var(--text2)">共識：</span>
+    <strong style="color:var(--green)">強烈買入</strong>
+    <span style="color:var(--text2)">（19 位分析師）</span>
+    <span style="margin-left:12px;color:var(--text2)">平均目標價：</span>
+    <strong>$167.02</strong>
+    <span class="up" style="font-size:12px">+74.4%</span>
+  </div>
+  <table class="analyst-table">
+    <thead><tr><th>機構</th><th>評級</th><th>目標價</th><th>動作</th></tr></thead>
+    <tbody>
+      <tr><td>BofA 美銀</td><td class="rating-buy">買入</td><td>$180</td><td>下調（原 $223.50）</td></tr>
+      <tr><td>Jefferies</td><td class="rating-buy">買入</td><td>$170.50</td><td>下調（原 $224）</td></tr>
+      <tr><td>中信里昂</td><td class="rating-buy">買入</td><td>$200</td><td>維持</td></tr>
+      <tr><td>JPMorgan 摩根大通</td><td class="rating-hold">中性</td><td>$100</td><td style="color:var(--red)">降級（原 Overweight $87）</td></tr>
+      <tr><td>Goldman Sachs 高盛</td><td class="rating-hold">中性</td><td>$102.13</td><td style="color:var(--red)">降級（原 Buy $210）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">近期動態</div>
+  <ul class="news-list">
+    <li><span class="news-date">6/4</span>公告 6/12 起暫停中國境內買入交易，賣出不限，落實 2 年整改期</li>
+    <li><span class="news-date">6/4</span>Moomoo 與 Kalshi 合作，擴展預測市場接入</li>
+    <li><span class="news-date">6/2</span>標普重申投資級信用評級</li>
+    <li><span class="news-date">5/28</span>Q1 財報：營收 $7.47 億（+25%），用戶破 3,000 萬</li>
+    <li><span class="news-date">5/22</span>監管重罰落地：擬罰 RMB 18.5 億，股價單日暴跌 28%</li>
+  </ul>
+</div>
+
+<!-- ========== TIGR ========== -->
+<div class="stock-card">
+  <h2>向上融科（老虎證券） <span class="code">TIGR | NASDAQ</span></h2>
+
+  <div class="price-row">
+    <span class="price-big">$4.76</span>
+    <span class="price-change up">+1.93%</span>
+    <span class="premarket">盤前: <span class="down">$4.71 (-1.05%)</span></span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="label">市值</div>
+      <div class="value">$8.46億</div>
+    </div>
+    <div class="stat-item">
+      <div class="label">市盈率 (P/E)</div>
+      <div class="value">7.59x</div>
+    </div>
+    <div class="stat-item">
+      <div class="label">遠期 P/E</div>
+      <div class="value">7.72x</div>
+    </div>
+    <div class="stat-item">
+      <div class="label">賬面價值</div>
+      <div class="value">$4.72</div>
+    </div>
+  </div>
+
+  <div class="range-bar">
+    <div class="label">52週範圍</div>
+    <div class="range-track">
+      <div class="range-fill" style="left:0%;width:100%"></div>
+      <div class="range-current" style="left:12%">▼</div>
+    </div>
+    <div class="range-labels">
+      <span style="color:var(--red)">$4.00</span>
+      <span style="color:var(--red);font-weight:700">$4.76</span>
+      <span>$13.55</span>
+    </div>
+  </div>
+
+  <div class="section-title">Q1 2026 財報亮點（6/2 發布）</div>
+  <div class="earnings-grid">
+    <div class="earn-item">
+      <div class="val">$1.55億</div>
+      <div class="lbl">總營收</div>
+      <div class="chg up">+26.3% YoY</div>
+    </div>
+    <div class="earn-item">
+      <div class="val">$4,760萬</div>
+      <div class="lbl">運營利潤</div>
+      <div class="chg up">+17.5% YoY</div>
+    </div>
+    <div class="earn-item">
+      <div class="val">-$2,690萬</div>
+      <div class="lbl">淨虧損</div>
+      <div class="chg down">一次性罰款</div>
+    </div>
+    <div class="earn-item">
+      <div class="val">128萬</div>
+      <div class="lbl">累計入金賬戶</div>
+      <div class="chg up">+11.3% YoY</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text2);margin-bottom:12px">淨虧損主因一次性監管罰款 RMB 4.112億（約 $6,000 萬）計入。剔除罰款後核心運營盈利能力良好。Q1 淨資產流入 $29 億，零售用戶合併賬戶淨流入超 $20 億（歷史首次）。客戶資產 $589 億（+28.4%）。董事會批准 $5,000 萬回購計劃（6/1/2027 到期）。</p>
+
+  <div class="section-title">分析師評級</div>
+  <div style="font-size:13px;margin-bottom:10px">
+    <span style="color:var(--text2)">共識：</span>
+    <strong style="color:var(--green)">買入</strong>
+    <span style="color:var(--text2)">（9 位分析師）</span>
+    <span style="margin-left:12px;color:var(--text2)">平均目標價：</span>
+    <strong>$9.14</strong>
+    <span class="up" style="font-size:12px">+92%</span>
+  </div>
+  <table class="analyst-table">
+    <thead><tr><th>機構</th><th>評級</th><th>目標價</th><th>動作</th></tr></thead>
+    <tbody>
+      <tr><td>BofA 美銀</td><td class="rating-buy">買入</td><td>$8.01</td><td>下調（原 $9.96）</td></tr>
+      <tr><td>Citi 花旗</td><td class="rating-buy">買入</td><td>$7.10</td><td style="color:var(--red)">大幅下調（原 $16.80）</td></tr>
+      <tr><td>Jefferies</td><td class="rating-buy">買入</td><td>$11.65</td><td>下調</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">近期動態</div>
+  <ul class="news-list">
+    <li><span class="news-date">6/2</span>Q1 財報：營收 $1.55 億（+26.3%），客戶資產 $589 億（+28.4%）</li>
+    <li><span class="news-date">6/1</span>董事會批准 $5,000 萬股份回購計劃</li>
+    <li><span class="news-date">5/22</span>監管罰款落地：罰沒 RMB 4.112 億</li>
+    <li><span class="news-date">持續</span>Put 期權交易異常活躍，多日超預期 13 倍，空頭情緒濃厚</li>
+    <li><span class="news-date">Q1</span>TigerAI 升級三模型協作系統，香港參與 10 個 IPO 項目</li>
+  </ul>
+</div>
+
+<!-- ========== 監管動態 ========== -->
+<div class="reg-card">
+  <h2>&#x26A0; 監管動態：八部門聯合整治</h2>
+  <div class="timeline">
+    <div class="timeline-item active">
+      <div class="date">2026-06-04</div>
+      <div>富途公告 6/12 起暫停中國境內買入交易，三家跨境券商已全部落地整改細則</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2026-05-22</div>
+      <div>八部門發布《整治方案》，對富途/老虎/長橋立案調查。富途罰 RMB 18.5 億，老虎罰沒 RMB 4.112 億。設 2 年集中整治期：禁止境內買入、禁止入金，僅允許賣出及轉出</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2023-05</div>
+      <div>富途、老虎 App 從中國內地應用商店下架</div>
+    </div>
+    <div class="timeline-item">
+      <div class="date">2022-12</div>
+      <div>證監會正式公告推進整治，禁止招攬新客戶</div>
+    </div>
+  </div>
+  <div style="background:rgba(220,38,38,0.08);border-radius:8px;padding:12px;margin-top:14px;font-size:12px">
+    <strong style="color:var(--red)">政策解讀：</strong>此次整治距中美元首北京會談僅一周，分析認為帶有「打掃房間請客人」政策意涵。整頓完成後，可能為持有境內牌照的合規境外金融機構打開大門。短期陣痛，長期或為行業洗牌帶來新機遇。受影響投資者：富途內地有資產客戶約 43.8 萬戶，老虎內地客戶資產約 $60 億。客戶資產安全不受影響，分別由美國 DTC 及香港中央結算託管。
+  </div>
+</div>
+
+<!-- ========== 百家撮要 ========== -->
+<div class="baijia-section">
+  <h2>百家撮要</h2>
+  <div class="subtitle">綜合 28 位分析師、機構觀點及市場情緒指標</div>
+
+  <!-- FUTU Sentiment -->
+  <div style="margin-bottom:18px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:8px">FUTU 富途控股</div>
+    <div class="ratio-bars">
+      <div class="ratio-bull" style="width:42%">看多 42%</div>
+      <div class="ratio-neutral" style="width:33%">中立 33%</div>
+      <div class="ratio-bear" style="width:25%">看淡 25%</div>
+    </div>
+    <div class="ratio-labels">
+      <span style="color:var(--green)">&#x25B2; 美銀/Jefferies/中信里昂</span>
+      <span style="color:var(--orange)">&#x25BC; 高盛/摩根大通</span>
+      <span style="color:var(--red)">&#x25BC; 空頭</span>
+    </div>
+  </div>
+
+  <!-- TIGR Sentiment -->
+  <div style="margin-bottom:18px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:8px">TIGR 向上融科</div>
+    <div class="ratio-bars">
+      <div class="ratio-bull" style="width:28%">看多 28%</div>
+      <div class="ratio-neutral" style="width:32%">中立 32%</div>
+      <div class="ratio-bear" style="width:40%">看淡 40%</div>
+    </div>
+    <div class="ratio-labels">
+      <span style="color:var(--green)">&#x25B2; 美銀/花旗</span>
+      <span style="color:var(--orange)">&#x25BC; 觀望</span>
+      <span style="color:var(--red)">&#x25BC; 期權空頭/花旗大砍目標價</span>
+    </div>
+  </div>
+
+  <!-- Opinion Cards -->
+  <div class="opinion-grid">
+    <div class="opinion-card opinion-bull">
+      <h4>&#x1F53A; 看多</h4>
+      <p><strong>美銀/Jefferies：</strong>監管罰款為一次性事件，不改核心增長邏輯。FUTU P/E 10.6x 極度低估，海外用戶增長強勁。回購力度加大，Cathie Wood ARK 基金持續增持。</p>
+      <hr style="border:none;border-top:1px solid rgba(22,163,74,0.2);margin:8px 0">
+      <p><strong>中信里昂：</strong>維持 Overweight，目標價 $200。富途基本面優秀，Moomoo 國際化打開增長空間。</p>
+    </div>
+    <div class="opinion-card opinion-neutral">
+      <h4>&#x25AC; 中立</h4>
+      <p><strong>高盛/摩根大通：</strong>降級至中性。2 年整改期內中國大陸收入將大幅萎縮（佔 FUTU ~13% 客戶），政策執行細節仍不明朗，短期下行風險大於上行空間。</p>
+      <hr style="border:none;border-top:1px solid rgba(245,158,11,0.2);margin:8px 0">
+      <p><strong>花旗（TIGR）：</strong>維持買入但目標價從 $16.80 砍至 $7.10，降幅 58%。大陸業務佔收入 20-25%，整改影響顯著。</p>
+    </div>
+    <div class="opinion-card opinion-bear">
+      <h4>&#x1F53B; 看淡</h4>
+      <p><strong>期權市場（TIGR）：</strong>看跌期權多日交易量超預期 13 倍，空頭情緒極度濃厚。股價接近 52 週最低，恐慌性拋售風險高。</p>
+      <hr style="border:none;border-top:1px solid rgba(220,38,38,0.2);margin:8px 0">
+      <p><strong>市場聲音：</strong>2 年「只出不進」可能引發資產加速外流，三家券商合計內地資產逾千億規模，流動性壓力不可忽視。</p>
+    </div>
+  </div>
+
+  <!-- Key Takeaway -->
+  <div class="takeaway">
+    <strong>&#x1F4CB; 百家撮要重點：</strong><br>
+    FUTU 多空分歧嚴重（分析師目標價 $102-$225，分歧度 74%）。基本面優秀但監管陰雲短期難散。<strong>共識觀點：短期觀望，中期逢低佈局。</strong>若整改期執行平穩、海外增長持續，估值修復空間可觀。<br><br>
+    TIGR 處境更為艱難——體量小、大陸收入佔比高、期權空頭壓力大。分析師雖維持買入但大幅下調目標價（花旗砍 58%），實質已轉向觀望。<strong>共識觀點：等待企穩信號，不急于抄底。</strong>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  本報告由 WorkBuddy Claw 自動生成，僅供參考，不構成投資建議<br>
+  數據來源：StockAnalysis / MarketBeat / VCP Scanner / Kraken / 東方財富 / 證監會公告<br>
+  生成時間：2026-06-05 19:00 HKT
+</div>
+
+</body>
+</html>

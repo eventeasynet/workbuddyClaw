@@ -740,10 +740,23 @@ function fmtDateShort(dk) {
 }
 
 // Drive URL → GitHub Pages 映射（以免 GAS 記錄指向無法嵌入的 Drive 連結）
+var GH_PAGES = 'https://eventeasynet.github.io/workbuddyClaw/';
+
 function fixDriveUrl(url) {
   if (!url) return url;
-  if (url.indexOf('1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7') >= 0) {
-    return 'https://eventeasynet.github.io/workbuddyClaw/news/2026-06-05_HK_News.html';
+  // 有 Drive file ID — 轉成可嵌入嘅 preview 格式
+  var m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m) {
+    var fid = m[1];
+    // 日期→GitHub Pages 映射（優先）
+    var map = {
+      '1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7': 'news/2026-06-05_HK_News.html',
+      '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
+      '1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr': 'stock_report_20260605.html',
+    };
+    if (map[fid]) return GH_PAGES + map[fid];
+    // 默認：轉成 Drive preview
+    return 'https://drive.google.com/file/d/' + fid + '/preview';
   }
   return url;
 }
