@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新聞撮要 — 2026年6月6日（週六）</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Noto Sans TC', 'Noto Sans CJK TC', 'PingFang HK', sans-serif;
+    background: #edf2f7;
+    color: #2d3748;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+    color: #fff;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .header .date {
+    font-size: 0.95em;
+    opacity: 0.85;
+  }
+  .header .tagline {
+    font-size: 0.85em;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+  .section {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.15em;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.7em;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #fff;
+    vertical-align: middle;
+  }
+  .badge-hk { background: #e53e3e; }
+  .badge-intl { background: #3182ce; }
+  .badge-fin { background: #38a169; }
+  .badge-alert { background: #d69e2e; }
+  .news-item {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .news-item h3 {
+    font-size: 1em;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 4px;
+  }
+  .news-item p {
+    font-size: 0.9em;
+    color: #4a5568;
+  }
+  .source {
+    font-size: 0.78em;
+    color: #a0aec0;
+    margin-top: 3px;
+  }
+  .source a {
+    color: #3182ce;
+    text-decoration: none;
+  }
+  .source a:hover {
+    text-decoration: underline;
+  }
+  .market-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 500px) {
+    .market-grid { grid-template-columns: 1fr; }
+  }
+  .market-card {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 12px 14px;
+    border-left: 4px solid #cbd5e0;
+  }
+  .market-card .label {
+    font-size: 0.8em;
+    color: #718096;
+    font-weight: 500;
+  }
+  .market-card .value {
+    font-size: 1.15em;
+    font-weight: 700;
+    color: #1a365d;
+    margin: 2px 0;
+  }
+  .market-card .change {
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+  .up { color: #e53e3e; }
+  .down { color: #38a169; }
+  .footer {
+    text-align: center;
+    font-size: 0.78em;
+    color: #a0aec0;
+    padding: 16px 0 24px;
+  }
+  .highlight-box {
+    background: #ebf8ff;
+    border-left: 4px solid #3182ce;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 0.9em;
+  }
+  .highlight-box strong { color: #1a365d; }
+  .alert-box {
+    background: #fff5f5;
+    border-left: 4px solid #e53e3e;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 0.9em;
+  }
+  .alert-box strong { color: #c53030; }
+  .divider {
+    margin: 4px 0 14px;
+    font-size: 0.85em;
+    color: #a0aec0;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📰 本港及國際新聞撮要</h1>
+    <div class="date">2026年6月6日（星期六）</div>
+    <div class="tagline">每日 08:00 自動生成 → 10:00 推播 · 百年一遇「666」周六</div>
+  </div>
+
+  <!-- 市場速覽 -->
+  <div class="section">
+    <div class="section-title">📊 市場速覽（6月5日收市）</div>
+    <div class="alert-box">
+      <strong>⚠️ 美股黑色星期五：</strong>非農就業數據大超預期，觸發加息恐慌，AI 科技股全面崩塌，納指錄得 2025 年 4 月以來最大單日跌幅！
+    </div>
+    <div class="market-grid">
+      <div class="market-card" style="border-left-color:#e53e3e">
+        <div class="label">恆生指數</div>
+        <div class="value">24,962</div>
+        <div class="change down">▼ 291 (-1.15%)</div>
+      </div>
+      <div class="market-card" style="border-left-color:#e53e3e">
+        <div class="label">恆生科技</div>
+        <div class="value">4,888</div>
+        <div class="change down">▼ 87 (-1.75%)</div>
+      </div>
+      <div class="market-card" style="border-left-color:#38a169">
+        <div class="label">道瓊斯</div>
+        <div class="value">50,867</div>
+        <div class="change down">▼ 695 (-1.35%)</div>
+      </div>
+      <div class="market-card" style="border-left-color:#38a169">
+        <div class="label">標普 500</div>
+        <div class="value">7,387</div>
+        <div class="change down">▼ 197 (-2.60%)</div>
+      </div>
+      <div class="market-card" style="border-left-color:#e53e3e">
+        <div class="label">納斯達克</div>
+        <div class="value">25,704</div>
+        <div class="change down">▼ 1,127 (-4.20%)</div>
+      </div>
+      <div class="market-card" style="border-left-color:#e53e3e">
+        <div class="label">國企指數</div>
+        <div class="value">8,437</div>
+        <div class="change down">▼ 65 (-0.77%)</div>
+      </div>
+    </div>
+    <div style="margin-top:10px; font-size:0.8em; color:#718096;">
+      港股成交 HK$3,428 億 · 2年美債息 4.16%（2024年2月以來新高）· 黃金抹去全年漲幅 · 白銀跌超 8%
+    </div>
+  </div>
+
+  <!-- 本港新聞 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="badge badge-hk">港聞</span> 本港新聞
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 八部門聯合整治跨境證券 富途老虎 6/12 起暫停內地買入</h3>
+      <p>八部門聯合印發《綜合整治非法跨境證券期貨基金經營活動實施方案》，香港證監會及金管局迅速響應。富途、老虎等境外券商已啟動整改，明確 6 月 12 日起暫停存量內地投資者的買入（開倉）交易及資金轉入服務。小紅書亦同步啟動金融專業號專項整治，打擊非法誘導跨境投資。</p>
+      <div class="source">來源：新浪財經港股頻道</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 港股通迎新貴：小馬智行、文遠知行納入 極兔速遞正式入恒指</h3>
+      <p>港股通名單迎來新一輪調整：小馬智行與文遠知行雙雙納入港股通交易範圍，預計 6 月 8 日起生效。同日，極兔速遞正式納入恒生指數成份股。綜合券商分析，港股通擴容將進一步提升港股流動性及估值體系。</p>
+      <div class="source">來源：新浪財經、恒生指數公司</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 智譜股價半年飆升 15 倍 擬 A+H 同步上市</h3>
+      <p>AI 企業智譜（02513.HK）上市不足 5 個月，股價從發行價 116.2 港元最高飆至 1,993 港元，期間納入恒生綜合指數及恒生科技指數成份股，並發布 GLM-5.1 高速版模型強化 Agent 應用能力。6 月 1 日公司公告擬申請上交所科創板 A 股上市，實現 A+H 雙平台佈局。</p>
+      <div class="source">來源：新浪財經港股頻道</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 力積存儲三度遞表港交所 存儲芯片「小巨人」爭上市</h3>
+      <p>浙江力積存儲科技股份有限公司第三次向港交所主板遞交上市申請（此前 2025 年 5 月、11 月兩度遞表均未入聆訊），中信證券任獨家保薦人。存儲芯片行業正處上行「超級周期」，產業鏈公司業績及估值同步修復。</p>
+      <div class="source">來源：新浪財經港股頻道</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 香港推出首個生產力級超級智能體 APEC 旅遊部長會議月底澳門舉行</h3>
+      <p>香港推出首個生產力級超級智能體，加快 AI 產業化進程。另外，第十三屆 APEC 旅遊部長會議將於 6 月 24 日至 28 日在澳門舉行，岑浩輝特首表示特區政府全力推進各項籌備工作。</p>
+      <div class="source">來源：新華網港澳頻道</div>
+    </div>
+  </div>
+
+  <!-- 國際新聞 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="badge badge-intl">國際</span> 國際新聞
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 美伊和談膠著：伊朗要求先解凍 240 億美元資產</h3>
+      <p>伊朗提出美伊達成和平協議的前提條件：美國須先解凍伊朗總計 240 億美元海外資產（臨時協議簽署後先解凍 120 億美元，餘額後續分階段釋放）。伊朗同時警告，若訴求得不到滿足，衝突存在再次升級風險。受美以伊衝突影響，霍爾木茲海峽海上交通已受限。</p>
+      <div class="source">來源：Livemint</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 澤連斯基：普京拒絕會面 「俄羅斯再次選擇戰爭」</h3>
+      <p>烏克蘭總統澤連斯基表示，俄方已拒絕雙方領導人面對面會晤的提議，指責俄羅斯正在放棄和平談判路徑、重新選擇軍事對抗方向。烏克蘭局勢仍陷僵局。</p>
+      <div class="source">來源：Livemint</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 世界盃倒數 5 天！6/11 墨西哥城揭幕 首推三國開幕禮</h3>
+      <p>2026 年美加墨世界盃將於 6 月 11 日在墨西哥城阿茲特克球場揭幕，史上首次擴軍至 48 隊 104 場比賽，並首度在三個主辦國各舉行一場開幕禮：墨西哥城（6/11）、多倫多及洛杉磯（6/12）。16 家全球贊助商中中國企業佔 4 席。</p>
+      <div class="source">來源：FIFA 官網、NBC</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 加拿大阿爾伯塔省分離主義支持率大幅下滑</h3>
+      <p>加拿大阿爾伯塔省最新民調顯示，主張該省脫離加拿大獨立的陣營支持率大幅下滑，獨立公投相關訴求短期內難以推進。</p>
+      <div class="source">來源：Livemint</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 法網爆冷：意大利球手阿納爾迪因身體不適退出四強</h3>
+      <p>2026 年法國網球公開賽男單半決賽出現意外，意大利球手馬泰奧·阿納爾迪因身體原因退賽，自稱「整晚無法入睡」。</p>
+      <div class="source">來源：Livemint</div>
+    </div>
+  </div>
+
+  <!-- 財經新聞 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="badge badge-fin">財經</span> 財經新聞
+    </div>
+
+    <div class="alert-box">
+      <strong>🔴 頭條：美股黑色星期五 — 非農數據引爆加息恐慌，納指暴跌 4.2%！</strong><br>
+      <span style="font-size:0.85em;">美國 5 月非農就業數據大超預期，2 年期國債收益率急升至 4.16%（2024 年 2 月以來新高），市場對美聯儲加息預期急升。納指出現 2025 年 4 月以來最大單日跌幅，AI 科技股全面崩塌。</span>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 美股三大指數集體重挫 · AI 交易全面崩塌</h3>
+      <p>標普 500 跌 2.6%，打破連續九周收漲紀錄；道指跌 695 點（-1.35%）；納指暴跌 4.2% 為 14 個月最大單日跌幅。英偉達跌超 6% 領跌科技板塊，博通財報未能提振市場信心。特朗普針對市場波動緊急發聲穩定預期。</p>
+      <div class="source">來源：Barron's、MarketWatch、TheStreet</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 黃金抹去全年漲幅 · 白銀單日暴跌 8%</h3>
+      <p>強勁就業數據大幅提振聯儲局加息預期，現貨黃金價格回落，完全抹去 2026 年以來的累計漲幅；現貨白銀同步大跌逾 8%，貴金屬板塊全線受壓。</p>
+      <div class="source">來源：東方財富網</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 美伊降級預期升溫 國際油價先跌後喘定</h3>
+      <p>市場對美伊達成停戰協議的憧憬持續發酵，國際油價本周初回落。惟伊朗要求先解凍 240 億美元資產的條件令談判前景增添不確定性，油價跌幅受限。</p>
+      <div class="source">來源：Livemint</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 高盛：逢跌就買！風險偏好創近五年最高</h3>
+      <p>高盛研究報告指出，當前美股市場風險偏好已達近五年最高水平。儘管短期或有波動，高盛建議投資者在未來數月「逢跌就買」，對美股中長期走勢保持樂觀。Mizuho 分析師亦表示此次拋售僅是「倉位正常化」。</p>
+      <div class="source">來源：東方財富網、Barron's</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 瑞銀：外資配置中國資產意願提升 仍有大量增配空間</h3>
+      <p>瑞銀研究指出，海外資金配置中國資產的意願明顯提升，但整體配置比例仍處於低位，未來仍有較大增配空間。恒指近期回調或為外資提供吸納機會。</p>
+      <div class="source">來源：東方財富網</div>
+    </div>
+
+    <div class="news-item">
+      <h3>🔹 SpaceX IPO 6/12 掛牌 · 估值 1.77 萬億美元史上最大</h3>
+      <p>SpaceX 發行價定為 135 美元，將於 6 月 12 日在納斯達克掛牌上市（代碼 SPCX），估值達 1.77 萬億美元，為全球史上最大規模 IPO。市場密切關注其對科技板塊資金流向的影響。</p>
+      <div class="source">來源：東方財富網</div>
+    </div>
+  </div>
+
+  <!-- 本週焦點預告 -->
+  <div class="section">
+    <div class="section-title">📅 未來一週焦點預告</div>
+    <div style="font-size:0.9em; color:#4a5568;">
+      <p>🔹 <strong>6月6日（今日）</strong> — 百年一遇「666」星期六 · 港股週末休市</p>
+      <p>🔹 <strong>6月8日（一）</strong> — 港股通新貴正式生效（小馬智行、文遠知行）· 極兔速遞納入恒指成份股</p>
+      <p>🔹 <strong>6月10日（三）</strong> — 美國 CPI 數據（20:30）· 阿里 FY2026 派息登記截止</p>
+      <p>🔹 <strong>6月11日（四）</strong> — 美加墨世界盃開幕 · 美國 PPI 數據</p>
+      <p>🔹 <strong>6月12日（五）</strong> — SpaceX IPO 掛牌 · 華為開發者大會 · 富途老虎暫停內地買入</p>
+      <p>🔹 <strong>6月17日（三）</strong> — 美聯儲 FOMC 利率決議及經濟預期</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    由 WorkBuddy 自動生成 · 每日 08:00 生成 → 10:00 推播<br>
+    資料來源：Livemint、Barron's、MarketWatch、TheStreet、東方財富網、新浪財經、新華網、FIFA 官網、恒生指數公司
+  </div>
+
+</div>
+</body>
+</html>
