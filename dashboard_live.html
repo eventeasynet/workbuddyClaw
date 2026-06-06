@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060605;
+  var CURRENT = 2026060606;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -1598,9 +1598,19 @@ function setActiveAIDate(dk) {
     var url = fixDriveUrl(it.driveUrl) || '';
     var div = document.createElement('div');
     div.id = 'ai-report-content';
-    var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">🤖 ' + (it.title || 'AI 發展情報') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
-    div.innerHTML = titleHtml + iframeHtml;
+    if (url) {
+      var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">🤖 ' + (it.title || 'AI 發展情報') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+      var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
+      div.innerHTML = titleHtml + iframeHtml;
+    } else {
+      var notesHtml = it.notes || it.content || '（無內容）';
+      notesHtml = notesHtml.replace(/\n/g, '<br>');
+      div.innerHTML = '<div style="background:#f5f3ff; border:1px solid #c4b5fd; border-radius:12px; padding:20px; font-size:14px; line-height:1.8; color:#1e293b;">' +
+        '<div style="font-size:16px; font-weight:700; color:#6d28d9; margin-bottom:12px;">🤖 ' + (it.title || 'AI 發展情報') + '</div>' +
+        '<div style="font-size:11px; color:#64748b; margin-bottom:16px;">' + (it.type || '') + ' · ' + (it.createdAt || '') + '</div>' +
+        '<div style="white-space:pre-wrap;">' + notesHtml + '</div>' +
+        '</div>';
+    }
     wrappersDiv.appendChild(div);
   } else {
     var tagDiv = document.createElement('div');
@@ -1644,9 +1654,19 @@ function renderActiveAIReport() {
   var url = fixDriveUrl(it.driveUrl) || '';
   var div = document.createElement('div');
   div.id = 'ai-report-content';
-  var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">🤖 ' + (it.title || 'AI 發展情報') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-  var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
-  div.innerHTML = titleHtml + iframeHtml;
+  if (url) {
+    var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">🤖 ' + (it.title || 'AI 發展情報') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
+    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
+    div.innerHTML = titleHtml + iframeHtml;
+  } else {
+    var notesHtml = it.notes || it.content || '（無內容）';
+    notesHtml = notesHtml.replace(/\n/g, '<br>');
+    div.innerHTML = '<div style="background:#f5f3ff; border:1px solid #c4b5fd; border-radius:12px; padding:20px; font-size:14px; line-height:1.8; color:#1e293b;">' +
+      '<div style="font-size:16px; font-weight:700; color:#6d28d9; margin-bottom:12px;">🤖 ' + (it.title || 'AI 發展情報') + '</div>' +
+      '<div style="font-size:11px; color:#64748b; margin-bottom:16px;">' + (it.type || '') + ' · ' + (it.createdAt || '') + '</div>' +
+      '<div style="white-space:pre-wrap;">' + notesHtml + '</div>' +
+      '</div>';
+  }
   wrappersDiv.appendChild(div);
 }
 
