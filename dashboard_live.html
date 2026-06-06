@@ -2120,54 +2120,44 @@ function showSection(name) {
   }
 }
 
-// Event delegation for sidebar nav
-document.addEventListener("DOMContentLoaded", function() {
-  var nav = document.getElementById("sidebar-nav");
-  if (nav) {
-    nav.addEventListener("click", function(e) {
-      e.preventDefault();
-      var item = e.target.closest(".nav-item");
-      if (item) {
-        var section = item.getAttribute("data-section");
-        if (section) showSection(section);
-      }
-    });
-  }
-  // 根據 URL hash 決定初始頁面（冇 hash → 出街貼文）
-  var hash = window.location.hash.replace("#", "");
-  var validSections = ["outbox", "published", "stock", "news", "ai", "gallery"];
-  if (hash && validSections.indexOf(hash) >= 0) {
-    showSection(hash);
-  } else {
-    showSection("outbox");
-  }
-});
-
-// If DOM already loaded, bind immediately
+// ===== 側欄導航（單一綁法，唔重複） =====
 (function() {
-  var nav = document.getElementById("sidebar-nav");
-  if (nav) {
+  var bound = false;
+  function bindNav() {
+    if (bound) return;
+    var nav = document.getElementById("sidebar-nav");
+    if (!nav) return;
+    bound = true;
     nav.addEventListener("click", function(e) {
-      e.preventDefault();
       var item = e.target.closest(".nav-item");
-      if (item) {
-        var section = item.getAttribute("data-section");
-        if (section) showSection(section);
-      }
+      if (!item) return;
+      e.preventDefault();
+      var section = item.getAttribute("data-section");
+      if (section) showSection(section);
     });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindNav);
+  } else {
+    bindNav();
   }
 })();
 
-// 首次載入（冇 DOMContentLoaded 時 fallback）
-if (document.readyState === "complete" || document.readyState === "interactive") {
-  var hash2 = window.location.hash.replace("#", "");
-  var vs2 = ["outbox", "published", "stock", "news", "ai", "gallery"];
-  if (!hash2 || vs2.indexOf(hash2) < 0) {
-    showSection("outbox");
+// 根據 URL hash 決定首次顯示邊頁
+(function() {
+  function initSection() {
+    var hash = window.location.hash.replace("#", "");
+    var valid = ["outbox","published","stock","news","ai","gallery"];
+    var sec = (hash && valid.indexOf(hash) >= 0) ? hash : "outbox";
+    showSection(sec);
+    hideQueuedCards();
   }
-}
-hideQueuedCards();
-setInterval(loadOutbox, 60000);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSection);
+  } else {
+    initSection();
+  }
+})();
 
 // ===== 自動化面板上落 =====
 function toggleAutoPanel() {
