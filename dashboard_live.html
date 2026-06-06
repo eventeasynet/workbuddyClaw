@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060701;
+  var CURRENT = 2026060703;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -251,13 +251,13 @@ a.link:hover { text-decoration:underline; }
     <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="outbox" href="#outbox">📤 出街貼文</a>
-    <a class="nav-item" data-section="published" href="#published">✅ 已出街內容</a>
+    <a class="nav-item active" data-section="outbox" href="#outbox" onclick="event.preventDefault();showSection('outbox');return false;">📤 出街貼文</a>
+    <a class="nav-item" data-section="published" href="#published" onclick="event.preventDefault();showSection('published');return false;">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
-    <a class="nav-item" data-section="stock" href="#stock">📈 美股分析報告</a>
-    <a class="nav-item" data-section="news" href="#news">📰 每日新聞撮要</a>
-    <a class="nav-item" data-section="ai" href="#ai">🤖 AI 發展情報</a>
-    <a class="nav-item" data-section="gallery" href="#gallery">🎨 設計圖庫</a>
+    <a class="nav-item" data-section="stock" href="#stock" onclick="event.preventDefault();showSection('stock');return false;">📈 美股分析報告</a>
+    <a class="nav-item" data-section="news" href="#news" onclick="event.preventDefault();showSection('news');return false;">📰 每日新聞撮要</a>
+    <a class="nav-item" data-section="ai" href="#ai" onclick="event.preventDefault();showSection('ai');return false;">🤖 AI 發展情報</a>
+    <a class="nav-item" data-section="gallery" href="#gallery" onclick="event.preventDefault();showSection('gallery');return false;">🎨 設計圖庫</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
@@ -528,7 +528,18 @@ function loadOutbox() {
   
   // 一次過拎晒所有數據
   apiCall({ action: "list", status: "all" }, function(data) {
-    var all = data.items || [];
+    // 確保 loading 一定會消失
+    try {
+      if (loading) loading.style.display = "none";
+      
+      if (!data || data.success === false) {
+        empty.style.display = "block";
+        empty.innerHTML = "⚠️ 無法連線 GAS<br><small>請檢查網絡或 GAS 部署狀態</small>";
+        document.getElementById("status-bar").innerHTML = "⚡ GAS 連線失敗";
+        return;
+      }
+      
+      var all = data.items || [];
     
     // 篩選：活動花絮 = type 含「花絮」, status = 待確認
     var events = all.filter(function(i) {
@@ -539,12 +550,11 @@ function loadOutbox() {
       return i.type && i.type.indexOf('文案') >= 0 && i.status === '待確認';
     });
     
-    loading.style.display = "none";
     var total = events.length + copies.length;
     
     if (total === 0) {
       empty.style.display = "block";
-      document.getElementById("status-bar").innerHTML = "⚡ 暫無待出街內容";
+      document.getElementById("status-bar").innerHTML = "⚡ 暫無出街貼文";
     } else {
       var hasEvents = events.length > 0;
       var hasCopies = copies.length > 0;
@@ -568,6 +578,11 @@ function loadOutbox() {
     
     // 啟動 30 分鐘自動倒數
     startAllCountdowns();
+    } catch(err) {
+      loading.style.display = "none";
+      empty.style.display = "block";
+      empty.innerHTML = "⚠️ 載入時發生錯誤<br><small>" + err.message + "</small>";
+    }
   });
 }
 
