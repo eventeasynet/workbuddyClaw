@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060602;
+  var CURRENT = 2026060603;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -1026,24 +1026,37 @@ function fmtDateShort(dk) {
 
 // Drive URL → GitHub Pages 映射（以免 GAS 記錄指向無法嵌入的 Drive 連結）
 var GH_PAGES = 'https://eventeasynet.github.io/workbuddyClaw/';
+// 硬編碼 fallback（俾網絡慢嘅情況用）
+var DRIVE_MAPPING = {
+  '1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7': 'news/2026-06-05_HK_News.html',
+  '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
+  '1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr': 'stock_report_20260605.html',
+  '1eMNDXZipS7VPJGQ4JTWprTQr7BQ-Yb8l': 'stock_report_20260606.html',
+};
+
+// 異步加載最新映射表（覆蓋硬編碼）
+(function() {
+  fetch(GH_PAGES + 'drive_mapping.json?_t=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.mapping) {
+        Object.assign(DRIVE_MAPPING, data.mapping);
+        console.log('[fixDriveUrl] 映射表已更新，共 ' + Object.keys(DRIVE_MAPPING).length + ' 條');
+      }
+    })
+    .catch(e => console.warn('[fixDriveUrl] 加載映射表失敗，使用硬編碼', e));
+})();
 
 function fixDriveUrl(url) {
-  if (!url) return url;
-  // 有 Drive file ID — 轉成可嵌入嘅 preview 格式
+  if (!url) { console.warn('[fixDriveUrl] URL 空白'); return url; }
   var m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (m) {
     var fid = m[1];
-    // 日期→GitHub Pages 映射（優先）
-    var map = {
-      '1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7': 'news/2026-06-05_HK_News.html',
-      '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
-      '1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr': 'stock_report_20260605.html',
-      '1eMNDXZipS7VPJGQ4JTWprTQr7BQ-Yb8l': 'stock_report_20260606.html',
-    };
-    if (map[fid]) return GH_PAGES + map[fid];
-    // 默認：轉成 Drive preview
-    return 'https://drive.google.com/file/d/' + fid + '/preview';
+    var result = DRIVE_MAPPING[fid] ? GH_PAGES + DRIVE_MAPPING[fid] : 'https://drive.google.com/file/d/' + fid + '/preview';
+    console.log('[fixDriveUrl]', fid, '→', result);
+    return result;
   }
+  console.log('[fixDriveUrl] 非 Drive URL，原樣返回：', url);
   return url;
 }
 function groupByDate(items) {
@@ -1273,7 +1286,7 @@ function setActiveStockDate(dk) {
     var div = document.createElement('div');
     div.id = 'stock-report-content';
     var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-    var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+    var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url.replace(/'/g, "\\'") + '）</div>';
     div.innerHTML = titleHtml + iframeHtml;
     container.appendChild(div);
   } else {
@@ -1330,7 +1343,7 @@ function renderActiveStockReport() {
   var div = document.createElement('div');
   div.id = 'stock-report-content';
   var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-  var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+  var iframeHtml = '<iframe style="width:100%; min-height:600px; border:1px solid #e5e7eb; border-radius:8px; background:#fff;" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
   div.innerHTML = titleHtml + iframeHtml;
   container.appendChild(div);
 }
@@ -1413,7 +1426,7 @@ function setActiveNewsDate(dk) {
     div.id = 'news-report-content';
     var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
     var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + ampm + ' — ' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
     div.innerHTML = titleHtml + iframeHtml;
     wrappersDiv.appendChild(div);
   } else {
@@ -1470,7 +1483,7 @@ function renderActiveNewsReport() {
   div.id = 'news-report-content';
   var ampm = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
   var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">' + ampm + ' — ' + (it.title || '') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-  var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+  var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
   div.innerHTML = titleHtml + iframeHtml;
   wrappersDiv.appendChild(div);
 }
@@ -1545,7 +1558,7 @@ function setActiveAIDate(dk) {
     var div = document.createElement('div');
     div.id = 'ai-report-content';
     var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">🤖 ' + (it.title || 'AI 發展情報') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+    var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
     div.innerHTML = titleHtml + iframeHtml;
     wrappersDiv.appendChild(div);
   } else {
@@ -1591,7 +1604,7 @@ function renderActiveAIReport() {
   var div = document.createElement('div');
   div.id = 'ai-report-content';
   var titleHtml = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;"><span style="font-size:13px; font-weight:600; color:#374151;">🤖 ' + (it.title || 'AI 發展情報') + '</span><a href="' + url + '" target="_blank" style="font-size:12px; color:#3b82f6; text-decoration:none;">🔗 新視窗開啟</a></div>';
-  var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin"></iframe>';
+  var iframeHtml = '<iframe style="width:100%;height:70vh;border:none;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);" src="' + url + '?_t=' + Date.now() + '" sandbox="allow-scripts allow-same-origin" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe><div style="display:none;padding:16px;color:#ef4444;border:1px solid #fca5a5;background:#fef2f2;border-radius:8px;font-size:13px;">⚠️ 載入失敗（' + url + '?_t=' + Date.now() + '）</div>';
   div.innerHTML = titleHtml + iframeHtml;
   wrappersDiv.appendChild(div);
 }

@@ -1,0 +1,11 @@
+{
+  "version": "2026060601",
+  "updatedAt": "2026-06-06T22:56:00+08:00",
+  "mapping": {
+    "1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7": "news/2026-06-05_HK_News.html",
+    "1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah": "news_summary_20260606.html",
+    "1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr": "stock_report_20260605.html",
+    "1eMNDXZipS7VPJGQ4JTWprTQr7BQ-Yb8l": "stock_report_20260606.html"
+  },
+  "notes": "GDrive file ID → GitHub Pages 相對路徑，供 dashboard_live.html fixDriveUrl() 使用"
+}
