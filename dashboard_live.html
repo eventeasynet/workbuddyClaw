@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060703;
+  var CURRENT = 2026060704;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -251,13 +251,13 @@ a.link:hover { text-decoration:underline; }
     <p>EventEasy 自動化管理中心</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="outbox" href="#outbox" onclick="event.preventDefault();showSection('outbox');return false;">📤 出街貼文</a>
-    <a class="nav-item" data-section="published" href="#published" onclick="event.preventDefault();showSection('published');return false;">✅ 已出街內容</a>
+    <a class="nav-item active" data-section="outbox" onclick="showSection('outbox');return false;">📤 出街貼文</a>
+    <a class="nav-item" data-section="published" onclick="showSection('published');return false;">✅ 已出街內容</a>
     <div class="nav-section-header">📦 生成內容</div>
-    <a class="nav-item" data-section="stock" href="#stock" onclick="event.preventDefault();showSection('stock');return false;">📈 美股分析報告</a>
-    <a class="nav-item" data-section="news" href="#news" onclick="event.preventDefault();showSection('news');return false;">📰 每日新聞撮要</a>
-    <a class="nav-item" data-section="ai" href="#ai" onclick="event.preventDefault();showSection('ai');return false;">🤖 AI 發展情報</a>
-    <a class="nav-item" data-section="gallery" href="#gallery" onclick="event.preventDefault();showSection('gallery');return false;">🎨 設計圖庫</a>
+    <a class="nav-item" data-section="stock" onclick="showSection('stock');return false;">📈 美股分析報告</a>
+    <a class="nav-item" data-section="news" onclick="showSection('news');return false;">📰 每日新聞撮要</a>
+    <a class="nav-item" data-section="ai" onclick="showSection('ai');return false;">🤖 AI 發展情報</a>
+    <a class="nav-item" data-section="gallery" onclick="showSection('gallery');return false;">🎨 設計圖庫</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
@@ -515,27 +515,35 @@ function getTypeBadgeClass(type) {
 let autoPubTimers = {}; // interval IDs
 
 function loadOutbox() {
+  // 每次都重新攞 DOM 元素，唔好 cache
   var loading = document.getElementById("outbox-loading");
   var empty = document.getElementById("outbox-empty");
   var eventsWrap = document.getElementById("outbox-events-wrap");
   var copyWrap = document.getElementById("outbox-copy-wrap");
   var divider = document.getElementById("outbox-divider");
-  loading.style.display = "block";
-  empty.style.display = "none";
-  eventsWrap.style.display = "none";
-  copyWrap.style.display = "none";
-  divider.style.display = "none";
+  if (loading) loading.style.display = "block";
+  if (empty) empty.style.display = "none";
+  if (eventsWrap) eventsWrap.style.display = "none";
+  if (copyWrap) copyWrap.style.display = "none";
+  if (divider) divider.style.display = "none";
   
   // 一次過拎晒所有數據
   apiCall({ action: "list", status: "all" }, function(data) {
-    // 確保 loading 一定會消失
+    // 每次都重新攞 DOM（防止元素已變）
+    var lo = document.getElementById("outbox-loading");
+    var em = document.getElementById("outbox-empty");
+    var ew = document.getElementById("outbox-events-wrap");
+    var cw = document.getElementById("outbox-copy-wrap");
+    var dv = document.getElementById("outbox-divider");
+    var sb = document.getElementById("status-bar");
+    var lu = document.getElementById("last-update");
+    
     try {
-      if (loading) loading.style.display = "none";
+      if (lo) lo.style.display = "none";
       
       if (!data || data.success === false) {
-        empty.style.display = "block";
-        empty.innerHTML = "⚠️ 無法連線 GAS<br><small>請檢查網絡或 GAS 部署狀態</small>";
-        document.getElementById("status-bar").innerHTML = "⚡ GAS 連線失敗";
+        if (em) { em.style.display = "block"; em.innerHTML = "⚠️ 無法連線 GAS<br><small>" + (data ? data.error : "timeout") + "</small>"; }
+        if (sb) sb.innerHTML = "⚡ GAS 連線失敗";
         return;
       }
       
@@ -553,35 +561,37 @@ function loadOutbox() {
     var total = events.length + copies.length;
     
     if (total === 0) {
-      empty.style.display = "block";
-      document.getElementById("status-bar").innerHTML = "⚡ 暫無出街貼文";
+      if (em) em.style.display = "block";
+      if (sb) sb.innerHTML = "⚡ 暫無出街貼文";
     } else {
       var hasEvents = events.length > 0;
       var hasCopies = copies.length > 0;
       
-      if (hasEvents) {
-        eventsWrap.style.display = "block";
+      if (hasEvents && ew) {
+        ew.style.display = "block";
         renderOutboxZone("outbox-events-zone", events, "🌍");
-        document.getElementById("outbox-events-count").textContent = events.length;
+        var ec = document.getElementById("outbox-events-count");
+        if (ec) ec.textContent = events.length;
       }
-      if (hasEvents && hasCopies) {
-        divider.style.display = "block";
+      if (hasEvents && hasCopies && dv) {
+        dv.style.display = "block";
       }
-      if (hasCopies) {
-        copyWrap.style.display = "block";
+      if (hasCopies && cw) {
+        cw.style.display = "block";
         renderOutboxZone("outbox-copy-zone", copies, "📝");
-        document.getElementById("outbox-copy-count").textContent = copies.length;
+        var cc = document.getElementById("outbox-copy-count");
+        if (cc) cc.textContent = copies.length;
       }
-      document.getElementById("status-bar").innerHTML = "⚡ " + total + " 個項目等待出街（" + events.length + " 花絮 + " + copies.length + " 文案）";
+      if (sb) sb.innerHTML = "⚡ " + total + " 個項目等待出街（" + events.length + " 花絮 + " + copies.length + " 文案）";
     }
-    document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
+    if (lu) lu.textContent = new Date().toLocaleTimeString('zh-HK');
     
     // 啟動 30 分鐘自動倒數
     startAllCountdowns();
     } catch(err) {
-      loading.style.display = "none";
-      empty.style.display = "block";
-      empty.innerHTML = "⚠️ 載入時發生錯誤<br><small>" + err.message + "</small>";
+      if (lo) lo.style.display = "none";
+      if (em) { em.style.display = "block"; em.innerHTML = "⚠️ 載入時發生錯誤<br><small>" + err.message + "</small>"; }
+      console.error("loadOutbox error:", err);
     }
   });
 }
