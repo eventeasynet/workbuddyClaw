@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060709;
+  var CURRENT = 2026060710;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -176,8 +176,13 @@ a.link:hover { text-decoration:underline; }
 .outbox-body.expanded { max-height:none; }
 
 /* 分隔線 */
+#outbox-divider-1 { position:relative; }
+#outbox-divider-1::after { content:"⬇ 宣傳圖 ⬇"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; padding:0 16px; font-size:11px; color:#9ca3af; }
+#outbox-divider-2 { position:relative; }
+#outbox-divider-2::after { content:"⬇ 社群文案 ⬇"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; padding:0 16px; font-size:11px; color:#9ca3af; }
+
+/* 分隔線 */
 #outbox-divider { position:relative; }
-#outbox-divider::after { content:"⬇ 社群文案 ⬇"; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; padding:0 16px; font-size:11px; color:#9ca3af; }
 
 /* Post-style cards */
 .post-cards { display:flex; flex-wrap:wrap; gap:24px; }
@@ -354,8 +359,19 @@ a.link:hover { text-decoration:underline; }
       <div id="outbox-events-zone" class="outbox-zone"></div>
     </div>
     
-    <!-- 分隔線 -->
-    <div id="outbox-divider" style="display:none; border-top:2px dashed #e5e7eb; margin:24px 0;"></div>
+    <!-- 分隔線：花絮 → 宣傳圖 -->
+    <div id="outbox-divider-1" style="display:none; border-top:2px dashed #e5e7eb; margin:24px 0;"></div>
+    
+    <!-- 宣傳圖區 -->
+    <div id="outbox-promo-wrap" style="display:none;">
+      <h3>🎨 宣傳圖 <span class="badge" id="outbox-promo-count">0</span>
+        <span class="auto-tag">⏱ 人手揀選確認</span>
+      </h3>
+      <div id="outbox-promo-zone" class="outbox-zone"></div>
+    </div>
+    
+    <!-- 分隔線：宣傳圖 → 文案 -->
+    <div id="outbox-divider-2" style="display:none; border-top:2px dashed #e5e7eb; margin:24px 0;"></div>
     
     <!-- 社群文案區 -->
     <div id="outbox-copy-wrap" style="display:none;">
@@ -558,13 +574,17 @@ function loadOutbox() {
   var loading = document.getElementById("outbox-loading");
   var empty = document.getElementById("outbox-empty");
   var eventsWrap = document.getElementById("outbox-events-wrap");
+  var promoWrap = document.getElementById("outbox-promo-wrap");
   var copyWrap = document.getElementById("outbox-copy-wrap");
-  var divider = document.getElementById("outbox-divider");
+  var divider1 = document.getElementById("outbox-divider-1");
+  var divider2 = document.getElementById("outbox-divider-2");
   if (loading) loading.style.display = "block";
   if (empty) empty.style.display = "none";
   if (eventsWrap) eventsWrap.style.display = "none";
+  if (promoWrap) promoWrap.style.display = "none";
   if (copyWrap) copyWrap.style.display = "none";
-  if (divider) divider.style.display = "none";
+  if (divider1) divider1.style.display = "none";
+  if (divider2) divider2.style.display = "none";
   
   // 一次過拎晒所有數據
   apiCall({ action: "list", status: "all" }, function(data) {
@@ -572,8 +592,10 @@ function loadOutbox() {
     var lo = document.getElementById("outbox-loading");
     var em = document.getElementById("outbox-empty");
     var ew = document.getElementById("outbox-events-wrap");
+    var pw = document.getElementById("outbox-promo-wrap");
     var cw = document.getElementById("outbox-copy-wrap");
-    var dv = document.getElementById("outbox-divider");
+    var d1 = document.getElementById("outbox-divider-1");
+    var d2 = document.getElementById("outbox-divider-2");
     var sb = document.getElementById("status-bar");
     var lu = document.getElementById("last-update");
     
@@ -592,18 +614,23 @@ function loadOutbox() {
     var events = all.filter(function(i) {
       return i.type && i.type.indexOf('花絮') >= 0 && i.status === '待確認';
     });
+    // 篩選：宣傳圖 = type 含「宣傳圖」, status = 待確認
+    var promos = all.filter(function(i) {
+      return i.type && i.type.indexOf('宣傳圖') >= 0 && i.status === '待確認';
+    });
     // 篩選：社群文案 = type 含「文案」, status = 待確認
     var copies = all.filter(function(i) {
       return i.type && i.type.indexOf('文案') >= 0 && i.status === '待確認';
     });
     
-    var total = events.length + copies.length;
+    var total = events.length + promos.length + copies.length;
     
     if (total === 0) {
       if (em) em.style.display = "block";
       if (sb) sb.innerHTML = "⚡ 暫無出街貼文";
     } else {
       var hasEvents = events.length > 0;
+      var hasPromos = promos.length > 0;
       var hasCopies = copies.length > 0;
       
       if (hasEvents && ew) {
@@ -612,8 +639,17 @@ function loadOutbox() {
         var ec = document.getElementById("outbox-events-count");
         if (ec) ec.textContent = events.length;
       }
-      if (hasEvents && hasCopies && dv) {
-        dv.style.display = "block";
+      if (hasEvents && hasPromos && d1) {
+        d1.style.display = "block";
+      }
+      if (hasPromos && pw) {
+        pw.style.display = "block";
+        renderOutboxZone("outbox-promo-zone", promos, "🎨");
+        var pc = document.getElementById("outbox-promo-count");
+        if (pc) pc.textContent = promos.length;
+      }
+      if ((hasEvents || hasPromos) && hasCopies && d2) {
+        d2.style.display = "block";
       }
       if (hasCopies && cw) {
         cw.style.display = "block";
@@ -621,7 +657,7 @@ function loadOutbox() {
         var cc = document.getElementById("outbox-copy-count");
         if (cc) cc.textContent = copies.length;
       }
-      if (sb) sb.innerHTML = "⚡ " + total + " 個項目等待出街（" + events.length + " 花絮 + " + copies.length + " 文案）";
+      if (sb) sb.innerHTML = "⚡ " + total + " 個項目等待出街（" + events.length + " 花絮 + " + promos.length + " 宣傳圖 + " + copies.length + " 文案）";
     }
     if (lu) lu.textContent = new Date().toLocaleTimeString('zh-HK');
     
@@ -867,24 +903,30 @@ function finishPublish(item, btn, results) {
 
 function refreshOutboxCounts() {
   var eventsZone = document.getElementById("outbox-events-zone");
+  var promoZone = document.getElementById("outbox-promo-zone");
   var copyZone = document.getElementById("outbox-copy-zone");
   var eventsCount = eventsZone ? eventsZone.querySelectorAll(".outbox-card").length : 0;
+  var promoCount = promoZone ? promoZone.querySelectorAll(".outbox-card").length : 0;
   var copyCount = copyZone ? copyZone.querySelectorAll(".outbox-card").length : 0;
-  var total = eventsCount + copyCount;
+  var total = eventsCount + promoCount + copyCount;
   
   var ec = document.getElementById("outbox-events-count");
+  var pc = document.getElementById("outbox-promo-count");
   var cc = document.getElementById("outbox-copy-count");
   if (ec) ec.textContent = eventsCount;
+  if (pc) pc.textContent = promoCount;
   if (cc) cc.textContent = copyCount;
   
   if (total === 0) {
     document.getElementById("outbox-empty").style.display = "block";
     document.getElementById("outbox-events-wrap").style.display = "none";
+    document.getElementById("outbox-promo-wrap").style.display = "none";
     document.getElementById("outbox-copy-wrap").style.display = "none";
-    document.getElementById("outbox-divider").style.display = "none";
+    document.getElementById("outbox-divider-1").style.display = "none";
+    document.getElementById("outbox-divider-2").style.display = "none";
     document.getElementById("status-bar").innerHTML = "⚡ 暫無待出街內容";
   } else {
-    document.getElementById("status-bar").innerHTML = "⚡ " + total + " 個項目等待出街（" + eventsCount + " 花絮 + " + copyCount + " 文案）";
+    document.getElementById("status-bar").innerHTML = "⚡ " + total + " 個項目等待出街（" + eventsCount + " 花絮 + " + promoCount + " 宣傳圖 + " + copyCount + " 文案）";
   }
 }
 
