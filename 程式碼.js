@@ -11,6 +11,18 @@ const SHEET_NAME = "Pending";
 const COLUMNS = ["ID", "Type", "Title", "DriveURL", "Status", "CreatedAt", "ConfirmedAt", "Notes"];
 
 /**
+ * 供 clasp run 直接呼叫，跳過 Web App
+ * 用法：clasp run addCopyByParams --params '["社群文案","標題","內文","待確認"]'
+ */
+function addCopyByParams(type, title, notes, status) {
+  const sheet = getSheet();
+  const id = "WB_" + new Date().getTime();
+  const now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+  sheet.appendRow([id, type, title, "", status || "待確認", now, "", notes || ""]);
+  return { success: true, id: id, message: "已寫入 GAS Sheet" };
+}
+
+/**
  * 统一入口：GET 和 POST 都走这里
  * JSONP 支援：通过 callback 参数实现跨域
  */
@@ -28,7 +40,15 @@ function doGet(e) {
     // 读取操作
     if (action === "list") {
       const status = (e && e.parameter.status) ? e.parameter.status : "all";
-      const items = getItems(status);
+      let items = getItems(status);
+      // 按 type 模糊過濾（支持逗號分隔多個 type）
+      const typeParam = (e && e.parameter.type) ? e.parameter.type : null;
+      if (typeParam) {
+        const types = typeParam.split(',');
+        items = items.filter(function(item) {
+          return types.some(function(t) { return (item.type || '').indexOf(t) >= 0; });
+        });
+      }
       result = { success: true, items: items };
     } else if (action === "list_pending") {
       const items = getItems("待確認");
@@ -44,13 +64,14 @@ function doGet(e) {
       const ss = SpreadsheetApp.getActiveSpreadsheet();
       result = { success: true, url: ss.getUrl(), name: ss.getName() };
     } else if (action === "raw_sheet") {
-      // 調試用：返回 Spreadsheet 原始數據（base64 encoded to avoid JSON issues）
+      // 調試用：返回 Spreadsheet 原始數據（限制行數避免 JSON 過大）
       const sheet = getSheet();
       const data = sheet.getDataRange().getValues();
-      const rows = data.map(function(row) {
+      const limit = parseInt(e.parameter.limit) || 10;  // 默认 10 行
+      const rows = data.slice(0, limit).map(function(row) {
         return row.map(function(cell) { return String(cell); });
       });
-      result = { success: true, rows: rows, sheetName: sheet.getName(), lastRow: sheet.getLastRow() };
+      result = { success: true, rows: rows, sheetName: sheet.getName(), lastRow: sheet.getLastRow(), totalRows: data.length, limit: limit };
     } else {
       result = { success: false, error: "Unknown action: " + action };
     }
@@ -66,8 +87,15 @@ function doGet(e) {
 }
 
 /**
- * 处理写操作（add/confirm/delete/buffer_post）
- * 通过 GET parameter 传参，避免 doPost 问题
+ * 支援 POST 請求（避免 URL 長度限制）
+ */
+function doPost(e) {
+  return doGet(e);
+}
+
+/**
+ * 處理寫操作（add/confirm/delete/buffer_post）
+ * 通過 GET parameter 傳參，避免 doPost 問題
  */
 function handleWriteAction(e, action) {
   try {
@@ -77,17 +105,18 @@ function handleWriteAction(e, action) {
       const driveUrl = e.parameter.driveUrl || e.parameter.link_url || "";
       const notes = e.parameter.notes || "";
       const status = e.parameter.status || "待確認";  // 默认待確認，可传 "已確認"
+      const createdAtParam = e.parameter.createdAt || "";  // 可選：自訂創建時間
       
       if (!type || !title) {
         return { success: false, error: "Missing type or title" };
       }
       
       const id = "WB_" + new Date().getTime();
-      const now = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+      const createdAt = createdAtParam || Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
       
       const sheet = getSheet();
-      const confirmedAt = (status === "已確認") ? now : "";
-      sheet.appendRow([id, type, title, driveUrl, status, now, confirmedAt, notes]);
+      const confirmedAt = (status === "已確認") ? createdAt : "";
+      sheet.appendRow([id, type, title, driveUrl, status, createdAt, confirmedAt, notes]);
       SpreadsheetApp.flush();
       
       return { success: true, id: id, message: "Item added", status: status };
@@ -116,6 +145,29 @@ function handleWriteAction(e, action) {
       
       if (updated) {
         return { success: true, message: "Item confirmed", status: newStatus };
+      } else {
+        return { success: false, error: "Item not found: " + id };
+      }
+    }
+    
+    if (action === "update_url") {
+      const id = e.parameter.id || "";
+      const newUrl = e.parameter.url || "";
+      if (!id || !newUrl) {
+        return { success: false, error: "Missing id or url" };
+      }
+      const sheet = getSheet();
+      const data = sheet.getDataRange().getValues();
+      let updated = false;
+      for (let i = 1; i < data.length; i++) {
+        if (data[i][0] === id) {
+          sheet.getRange(i + 1, 4).setValue(newUrl);  // Column D = URL
+          updated = true;
+          break;
+        }
+      }
+      if (updated) {
+        return { success: true, message: "URL updated" };
       } else {
         return { success: false, error: "Item not found: " + id };
       }
@@ -336,4 +388,21 @@ function authorizeUrlFetch() {
 function testWebApp() {
   var e = { parameter: { action: "test" } };
   return doGet(e);
+}
+
+/**
+ * 修復 6/5 新聞 URL：從 Drive 改為 GitHub Pages
+ */
+function fixNews605Url() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  if (!sheet) { return "Sheet not found"; }
+  var data = sheet.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (data[i][0] === "WB_1780617801816") {
+      var newUrl = "https://eventeasynet.github.io/workbuddyClaw/news/2026-06-05_HK_News.html";
+      sheet.getRange(i + 1, 4).setValue(newUrl);
+      return "Updated row " + (i+1) + " URL to: " + newUrl;
+    }
+  }
+  return "ID not found";
 }
