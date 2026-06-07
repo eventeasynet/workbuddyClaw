@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060708;
+  var CURRENT = 2026060709;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -639,6 +639,12 @@ function renderOutboxZone(zoneId, items, icon) {
   var zone = document.getElementById(zoneId);
   if (!zone) return;
   zone.innerHTML = "";
+  // 按 createdAt 最新在上排序
+  items.sort(function(a, b) {
+    var da = a.createdAt || "";
+    var db = b.createdAt || "";
+    return db.localeCompare(da);
+  });
   items.forEach(function(item) {
     var card = renderOutboxCard(item, icon);
     zone.appendChild(card);
