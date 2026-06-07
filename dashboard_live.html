@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060712;
+  var CURRENT = 2026060801;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -587,16 +587,19 @@ function loadOutbox() {
       
       var all = data.items || [];
     
-    // 今天日期（YYYY-MM-DD），只顯示今天的項目
-    var todayStr = new Date().toISOString().slice(0, 10);
+    // 香港時間日期對比（GMT+8）
+    function hkDateStr(d) {
+      return new Date(d).toLocaleDateString('en-CA', { timeZone: 'Asia/Hong_Kong' });
+    }
+    var todayStr = hkDateStr(new Date());
     
-    // 篩選：活動花絮 = type 含「花絮」, status = 待確認/待出街, 只限今天
+    // 篩選：活動花絮 = type 含「花絮」, status = 待確認/待出街, 只限今天（HK時間）
     var events = all.filter(function(i) {
-      return i.type && i.type.indexOf('花絮') >= 0 && (i.status === '待確認' || i.status === '待出街') && i.createdAt && i.createdAt.slice(0, 10) === todayStr;
+      return i.type && i.type.indexOf('花絮') >= 0 && (i.status === '待確認' || i.status === '待出街') && i.createdAt && hkDateStr(i.createdAt) === todayStr;
     });
-    // 篩選：社群文案 = type 含「文案」, status = 待確認/待出街, 只限今天
+    // 篩選：社群文案 = type 含「文案」, status = 待確認/待出街, 只限今天（HK時間）
     var copies = all.filter(function(i) {
-      return i.type && i.type.indexOf('文案') >= 0 && (i.status === '待確認' || i.status === '待出街') && i.createdAt && i.createdAt.slice(0, 10) === todayStr;
+      return i.type && i.type.indexOf('文案') >= 0 && (i.status === '待確認' || i.status === '待出街') && i.createdAt && hkDateStr(i.createdAt) === todayStr;
     });
     
     var total = events.length + copies.length;
