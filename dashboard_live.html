@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060707;
+  var CURRENT = 2026060708;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -155,6 +155,25 @@ a.link:hover { text-decoration:underline; }
 .auto-countdown.expiring { color:#ef4444; animation:pulse 1s infinite; }
 .auto-tag { display:inline-block; font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:10px; margin-left:8px; font-weight:500; vertical-align:middle; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* 出街貼文控制欄 */
+#outbox-controls { display:none; padding:12px 0; border-bottom:1px solid #e5e7eb; margin-bottom:16px; }
+#outbox-controls.show { display:flex; }
+#outbox-controls-inner { display:flex; gap:10px; align-items:center; flex-wrap:wrap; width:100%; }
+#outbox-search { flex:1; min-width:180px; padding:8px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; outline:none; }
+#outbox-search:focus { border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,0.1); }
+.outbox-ctrl-select { padding:8px 10px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; background:#fff; outline:none; cursor:pointer; }
+.outbox-ctrl-label { font-size:12px; color:#6b7280; white-space:nowrap; }
+/* 分頁 */
+.outbox-pagination { display:flex; gap:8px; align-items:center; justify-content:center; padding:16px 0 8px; font-size:13px; color:#6b7280; }
+.outbox-pagination button { padding:6px 14px; border:1px solid #d1d5db; border-radius:6px; background:#fff; cursor:pointer; font-size:13px; transition:all 0.15s; }
+.outbox-pagination button:hover:not(:disabled) { background:#eff6ff; border-color:#3b82f6; color:#2563eb; }
+.outbox-pagination button:disabled { opacity:0.4; cursor:default; }
+.outbox-pagination .page-info { padding:0 8px; font-weight:500; }
+/* 檢視全文 */
+.btn-view-full { font-size:12px; padding:4px 10px; border:1px solid #d1d5db; border-radius:6px; background:#fff; cursor:pointer; color:#6b7280; transition:all 0.15s; margin-left:8px; }
+.btn-view-full:hover { background:#eff6ff; border-color:#3b82f6; color:#2563eb; }
+.outbox-body.expanded { max-height:none; }
 
 /* 分隔線 */
 #outbox-divider { position:relative; }
@@ -353,9 +372,29 @@ a.link:hover { text-decoration:underline; }
       <button class="refresh-btn" onclick="loadPublished()">🔄 重新整理</button>
     </h3>
     <p class="auto-note">📋 所有已推送出街嘅內容記錄，可查看詳情或重新排隊</p>
+    <!-- 控制欄：搜尋 + 排序 + 每頁數量 -->
+    <div id="pub-controls" style="display:none;">
+      <div id="pub-controls-inner" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:0 0 14px;border-bottom:1px solid #e5e7eb;margin-bottom:14px;">
+        <input id="pub-search" type="text" placeholder="🔍 搜尋貼文..." oninput="onPubSearch()" style="flex:1;min-width:160px;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:13px;outline:none;">
+        <span class="outbox-ctrl-label">排序：</span>
+        <select id="pub-sort" class="outbox-ctrl-select" onchange="onPubSearch()">
+          <option value="desc">🆕 最新在上</option>
+          <option value="asc">📅 最舊在上</option>
+        </select>
+        <span class="outbox-ctrl-label">每頁：</span>
+        <select id="pub-perpage" class="outbox-ctrl-select" onchange="onPubSearch()">
+          <option value="10">10 個</option>
+          <option value="20" selected>20 個</option>
+          <option value="50">50 個</option>
+          <option value="100">100 個</option>
+        </select>
+      </div>
+    </div>
     <div id="published-loading" class="loading">載入中...</div>
     <div id="published-empty" class="empty" style="display:none;">📭 暫無已出街內容</div>
     <div id="published-cards" class="card-grid" style="display:none;"></div>
+    <!-- 分頁 -->
+    <div id="pub-pagination" style="display:none;"></div>
   </div>
 
   <!-- 美股報告 (自動確認，iframe 直接渲染) -->
@@ -884,42 +923,124 @@ function deleteOutboxItem(id) {
 // === 保留舊版 publishNow（供已排隊項目使用） ===
 
 // ===== 已出街內容（status=已出街） =====
+// ===== 已出街內容 =====
+var publishedAllItems = [];
+var publishedPage = 1;
+
 function loadPublished() {
   document.getElementById("published-loading").style.display = "block";
   document.getElementById("published-cards").style.display = "none";
   document.getElementById("published-empty").style.display = "none";
+  document.getElementById("pub-controls").style.display = "none";
+  document.getElementById("pub-pagination").style.display = "none";
   
   apiCall({ action: "list", status: "已出街" }, function(data) {
     const items = data.items || [];
+    publishedAllItems = items;
+    publishedPage = 1;
     document.getElementById("published-loading").style.display = "none";
     document.getElementById("published-count").textContent = items.length;
     
     if (items.length === 0) {
       document.getElementById("published-empty").style.display = "block";
     } else {
-      const grid = document.getElementById("published-cards");
-      grid.innerHTML = "";
-      items.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        const notesPreview = (item.notes || "無內容").substring(0, 80);
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
-            <span class="card-meta">📅 出街時間：${formatTime(item.confirmedAt || item.createdAt)}</span>
-          </div>
-          <div class="card-title">${item.title}</div>
-          <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
-          <div class="card-actions">
-            <span class="status-badge status-confirmed">已出街</span>
-            <button class="btn btn-confirm" onclick="requeueItem('${item.id}', this)">🔄 重新排隊</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      document.getElementById("published-cards").style.display = "grid";
+      document.getElementById("pub-controls").style.display = "block";
+      renderPublishedView();
     }
   });
+}
+
+function onPubSearch() {
+  publishedPage = 1;
+  renderPublishedView();
+}
+
+function renderPublishedView() {
+  var items = publishedAllItems.slice();
+  
+  // 搜尋過濾
+  var q = (document.getElementById("pub-search") || {}).value || "";
+  q = q.trim().toLowerCase();
+  if (q) {
+    items = items.filter(function(it) {
+      return (it.title || "").toLowerCase().indexOf(q) >= 0 || (it.notes || "").toLowerCase().indexOf(q) >= 0 || (it.type || "").toLowerCase().indexOf(q) >= 0;
+    });
+  }
+  
+  // 排序
+  var sort = (document.getElementById("pub-sort") || {}).value || "desc";
+  items.sort(function(a, b) {
+    var da = a.confirmedAt || a.createdAt || "";
+    var db = b.confirmedAt || b.createdAt || "";
+    if (sort === "desc") return db.localeCompare(da);
+    else return da.localeCompare(db);
+  });
+  
+  // 分頁
+  var perPage = parseInt((document.getElementById("pub-perpage") || {}).value || "20");
+  var totalPages = Math.max(1, Math.ceil(items.length / perPage));
+  if (publishedPage > totalPages) publishedPage = totalPages;
+  if (publishedPage < 1) publishedPage = 1;
+  var start = (publishedPage - 1) * perPage;
+  var pageItems = items.slice(start, start + perPage);
+  
+  // 渲染卡片
+  const grid = document.getElementById("published-cards");
+  grid.innerHTML = "";
+  pageItems.forEach(function(item) {
+    const card = document.createElement("div");
+    card.className = "card";
+    var notes = item.notes || "無內容";
+    var notesId = "pub-notes-" + item.id;
+    var notesPreview = notes.substring(0, 80);
+    var hasMore = notes.length > 80;
+    card.innerHTML = 
+      '<div class="card-header">' +
+        '<span class="type-badge ' + getTypeBadgeClass(item.type) + '">' + (item.type || '') + '</span>' +
+        '<span class="card-meta">📅 出街時間：' + formatTime(item.confirmedAt || item.createdAt) + '</span>' +
+      '</div>' +
+      '<div class="card-title">' + (item.title || '') + '</div>' +
+      '<div class="card-body" id="' + notesId + '_short">' + escHtml(notesPreview) + (hasMore ? '... <button class="btn-view-full" onclick="togglePubFull(\'' + item.id + '\')">📖 檢視全文</button>' : '') + '</div>' +
+      (hasMore ? '<div class="card-body" id="' + notesId + '_full" style="display:none;">' + escHtml(notes).replace(/\n/g, '<br>') + ' <button class="btn-view-full" onclick="togglePubFull(\'' + item.id + '\')">📕 收合</button></div>' : '') +
+      '<div class="card-actions">' +
+        '<span class="status-badge status-confirmed">已出街</span>' +
+        '<button class="btn btn-confirm" onclick="requeueItem(\'' + item.id + '\', this)">🔄 重新排隊</button>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+  document.getElementById("published-cards").style.display = "grid";
+  
+  // 分頁按鈕
+  var pgDiv = document.getElementById("pub-pagination");
+  if (totalPages <= 1) {
+    pgDiv.style.display = "none";
+  } else {
+    pgDiv.style.display = "flex";
+    pgDiv.className = "outbox-pagination";
+    pgDiv.innerHTML = 
+      '<button ' + (publishedPage <= 1 ? 'disabled' : '') + ' onclick="goPubPage(' + (publishedPage - 1) + ')">◀ 上一頁</button>' +
+      '<span class="page-info">第 ' + publishedPage + ' 頁 / 共 ' + totalPages + ' 頁（' + items.length + ' 個貼文）</span>' +
+      '<button ' + (publishedPage >= totalPages ? 'disabled' : '') + ' onclick="goPubPage(' + (publishedPage + 1) + ')">下一頁 ▶</button>';
+  }
+}
+
+function goPubPage(p) {
+  publishedPage = p;
+  renderPublishedView();
+  window.scrollTo({ top: document.getElementById("published-cards").offsetTop - 80, behavior: "smooth" });
+}
+
+function togglePubFull(id) {
+  var shortEl = document.getElementById("pub-notes-" + id + "_short");
+  var fullEl = document.getElementById("pub-notes-" + id + "_full");
+  if (!shortEl || !fullEl) return;
+  if (fullEl.style.display === "none") {
+    shortEl.style.display = "none";
+    fullEl.style.display = "block";
+  } else {
+    shortEl.style.display = "block";
+    fullEl.style.display = "none";
+  }
 }
 
 // ===== 重新排隊（已出街 → 待出街） =====
