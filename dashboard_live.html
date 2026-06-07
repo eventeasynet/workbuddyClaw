@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060705;
+  var CURRENT = 2026060707;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -1341,16 +1341,17 @@ function setActiveStockDate(dk) {
       var tag = document.createElement('button');
       tag.id = 'stock-sub-tab-' + idx;
       tag.style.cssText = 'padding:4px 10px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; transition:all .2s;';
-      // 用標題 + driveUrl 判斷類型
-      var label = '報告 ' + (idx + 1);
-      var hasDrive = !!(it.driveUrl);
-      if (it.title) {
-        if (it.title.indexOf('上午') >= 0 || it.title.indexOf('早上') >= 0) label = '🌅 上午版';
-        else if (it.title.indexOf('下午') >= 0) label = '🌇 下午版';
-        else if (it.title.indexOf('晚') >= 0) label = '🌙 晚間版';
+      // 用 type 判斷子標籤類型
+      var label;
+      if (it.type === '美股追蹤') {
+        label = '📊 美股版塊追蹤';
+      } else if (it.type === '美股報告') {
+        label = '💰 持股資訊分析';
+      } else if (it.title && it.title.indexOf('下午') >= 0) {
+        label = '🌇 下午版';
+      } else {
+        label = '🌅 上午版';
       }
-      if (!hasDrive) label += '（純文字）';
-      else label += '（報告）';
       tag.textContent = label;
       (function(reportIdx) {
         tag.onclick = function() { setActiveStockReport(reportIdx); };
