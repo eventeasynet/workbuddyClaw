@@ -1499,12 +1499,7 @@ function setActiveNewsDate(dk) {
       var tag = document.createElement('button');
       tag.id = 'news-sub-tab-' + idx;
       tag.style.cssText = 'padding:4px 10px; border:1px solid #d1d5db; border-radius:6px; background:#f9fafb; color:#374151; cursor:pointer; font-size:12px; transition:all .2s;';
-      var label = '報告 ' + (idx + 1);
-      if (it.title) {
-        if (it.title.indexOf('上午') >= 0 || it.title.indexOf('早上') >= 0) label = '🌅 上午版';
-        else if (it.title.indexOf('下午') >= 0) label = '🌇 下午版';
-        else if (it.title.indexOf('晚') >= 0) label = '🌙 晚間版';
-      }
+      var label = (it.title && it.title.indexOf('下午') >= 0) ? '🌇 下午版' : '🌅 上午版';
       tag.textContent = label;
       (function(reportIdx) {
         tag.onclick = function() { setActiveNewsReport(reportIdx); };
