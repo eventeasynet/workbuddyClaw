@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下午新聞撮要 - 2026年6月8日</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Microsoft JhengHei", sans-serif;
+  background: #f8fafc; color: #1e293b; line-height:1.75; padding:20px;
+}
+.container { max-width:720px; margin:0 auto; }
+
+.header {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+  color:#fff; padding:32px 28px; border-radius:16px; margin-bottom:24px;
+}
+.header h1 { font-size:24px; margin-bottom:8px; }
+.header .meta { font-size:13px; opacity:0.85; }
+
+.market-section {
+  background:#fff; border-radius:14px; padding:20px 24px; margin-bottom:16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left:4px solid #f59e0b;
+}
+.market-section h3 { font-size:14px; color:#92400e; margin-bottom:12px; }
+.market-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+@media (max-width:500px) { .market-grid { grid-template-columns:1fr; } }
+.market-item {
+  background:#fffbeb; border-radius:8px; padding:10px 14px;
+}
+.market-item .label { font-size:12px; color:#92400e; }
+.market-item .val { font-size:18px; font-weight:700; color:#1e293b; }
+.market-item .chg { font-size:13px; font-weight:600; }
+.up { color:#dc2626; }
+.down { color:#059669; }
+
+.card {
+  background:#fff; border-radius:14px; padding:24px; margin-bottom:16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left:4px solid #2563eb;
+  transition: transform 0.15s;
+}
+.card:hover { transform: translateX(4px); }
+.card.breaking { border-left-color:#dc2626; background:#fef2f2; }
+.card.business { border-left-color:#059669; }
+.card.weather { border-left-color:#0ea5e9; }
+.card.society { border-left-color:#8b5cf6; }
+.card.tech { border-left-color:#f59e0b; }
+.card.intl { border-left-color:#db2777; }
+.card.estate { border-left-color:#14b8a6; }
+
+.card h2 {
+  font-size:16px; color:#1e293b; margin-bottom:8px; line-height:1.4;
+}
+.card .source {
+  font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:6px;
+  margin-bottom:8px;
+}
+.card .source .cat {
+  display:inline-block; padding:2px 10px; border-radius:20px;
+  font-size:11px; font-weight:600;
+}
+.cat-breaking { background:#fee2e2; color:#dc2626; }
+.cat-finance { background:#d1fae5; color:#059669; }
+.cat-weather { background:#e0f2fe; color:#0284c7; }
+.cat-society { background:#ede9fe; color:#7c3aed; }
+.cat-tech { background:#fef3c7; color:#d97706; }
+.cat-intl { background:#fce7f3; color:#db2777; }
+.cat-estate { background:#ccfbf1; color:#0f766e; }
+.cat-edu { background:#f0fdf4; color:#16a34a; }
+
+.card p { font-size:14px; color:#475569; }
+
+.footer {
+  text-align:center; padding:24px; font-size:12px; color:#94a3b8;
+  border-top:1px solid #e2e8f0; margin-top:32px;
+}
+.footer a { color:#2563eb; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🌇 下午新聞撮要</h1>
+  <div class="meta">📅 2026年6月8日（星期一）｜📍 中國香港</div>
+  <div class="meta">📡 新聞來源：香港電台 RTHK、星島頭條、Livemint、新浪財經 等｜🕐 下午版</div>
+</div>
+
+<!-- 市場速覽 -->
+<div class="market-section">
+  <h3>📊 市場速覽（6月8日收市｜亞太全線重挫）</h3>
+  <div class="market-grid">
+    <div class="market-item">
+      <div class="label">恒生指數</div>
+      <div class="val">24,658</div>
+      <div class="chg down">▼ 304 (-1.22%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">恒生科技</div>
+      <div class="val">4,740</div>
+      <div class="chg down">▼ 148 (-3.03%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">國企指數</div>
+      <div class="val">8,340</div>
+      <div class="chg down">▼ 97 (-1.15%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">上證綜指</div>
+      <div class="val">3,952</div>
+      <div class="chg down">失守 4,000 點</div>
+    </div>
+    <div class="market-item">
+      <div class="label">日經 225</div>
+      <div class="val">64,080</div>
+      <div class="chg down">▼ 約 4%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">韓國 KOSPI</div>
+      <div class="val">熔斷</div>
+      <div class="chg down">▼ 逾 8%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">台灣加權</div>
+      <div class="val">--</div>
+      <div class="chg down">▼ 逾 3%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">創業板指</div>
+      <div class="val">--</div>
+      <div class="chg down">▼ 近 4%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">道瓊斯（6/5 收）</div>
+      <div class="val">50,867</div>
+      <div class="chg down">▼ 695 (-1.35%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">納斯達克（6/5 收）</div>
+      <div class="val">25,709</div>
+      <div class="chg down">▼ 1,122 (-4.18%)</div>
+    </div>
+  </div>
+  <div style="margin-top:10px;font-size:12px;color:#94a3b8;">
+    亞太股市全線暴跌｜韓股急跌逾8%觸發熔斷機制｜港股4日累跌逾1,380點｜滬指失守4,000點｜美股期貨今晚焦點：SpaceX上市及通脹數據
+  </div>
+</div>
+
+<!-- 突發 -->
+<div class="card breaking">
+  <h2>🚨 土瓜灣客貨車掟彎失控剷上行人路　兩途人捱撞　司機涉危駕被捕</h2>
+  <div class="source"><span class="cat cat-breaking">突發</span> 星島頭條 · 6月8日</div>
+  <p>土瓜灣發生嚴重交通意外，一輛客貨車掟彎時失控剷上行人路，導致兩名途人受傷。警方到場調查後，以涉嫌危險駕駛拘捕涉事司機，案件仍在調查中。</p>
+</div>
+
+<div class="card breaking">
+  <h2>🚨 屯門欣寶路簡約公屋地盤男工高處墮下　送院搶救不治</h2>
+  <div class="source"><span class="cat cat-breaking">突發</span> 星島頭條／RTHK · 6月8日</div>
+  <p>屯門欣寶路一個簡約公屋建築地盤發生致命工業意外，一名男工人從高處墮下，送院搶救後證實不治。勞工處已派員到場調查意外原因，並向承建商發出暫時停工通知書。</p>
+</div>
+
+<div class="card breaking">
+  <h2>🚨 愉景灣奪命家居意外　八旬婦疑抹窗失足墮樓亡</h2>
+  <div class="source"><span class="cat cat-breaking">突發</span> 星島頭條 · 6月8日</div>
+  <p>愉景灣發生致命家居意外，一名年約八旬老婦懷疑在家中抹窗時失足，從高處墮下，當場身亡。警方初步調查相信事件無可疑，列作「有人從高處墮下」處理。</p>
+</div>
+
+<div class="card breaking">
+  <h2>⚠️ 一周 100 宗 WhatsApp 騎劫騙案涉 1,800 萬　六旬婦被「乖女」呃 40 萬</h2>
+  <div class="source"><span class="cat cat-breaking">突發</span> 星島頭條 · 6月8日</div>
+  <p>警方公布過去一周錄得約 100 宗 WhatsApp 帳戶騎劫騙案，涉及總金額高達 1,800 萬港元。其中一名六旬婦人收到冒充「乖女」的訊息，被騙走 40 萬元。警方呼籲市民提高警覺，切勿輕易轉帳。</p>
+</div>
+
+<!-- 天氣 -->
+<div class="card weather">
+  <h2>🌧️ 凌晨紅雨襲港→清晨 5 時取消　今晚明早仍不穩　24 小時雨量可達 100 毫米</h2>
+  <div class="source"><span class="cat cat-weather">天氣</span> 香港天文台／RTHK · 6月8日</div>
+  <p>一道活躍低壓槽為華南沿岸帶來不穩定天氣，天文台凌晨一度發出紅色暴雨警告信號，其後改發黃雨，至清晨 5 時全面取消。天文台預測今晚及明早天氣持續不穩定，24 小時雨量可達 100 毫米，有驟雨及狂風雷暴。今日氣溫約 25-29°C，吹和緩至清勁西南風。本港廣泛地區凌晨受強雷雨區影響，多處錄得逾 50 毫米雨量。</p>
+</div>
+
+<!-- 財經 -->
+<div class="card business">
+  <h2>📉 港股低收 304 點　4 日累跌逾 1,380 點　失守 24,700 關口</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>港股延續上周跌勢，恒生指數今日低開 379 點後反覆向下，午後一度跌逾 400 點，收市報 24,658 點，跌 304 點（-1.22%），連跌 4 個交易日累計蒸發逾 1,380 點，失守 24,700 關口。科技指數跌幅更大，跌逾 3%。主板成交額接近 2,000 億元，顯示沽壓沉重。分析指出，市場審慎情緒或持續，亞太區股市調整時間可能較長。</p>
+</div>
+
+<div class="card business">
+  <h2>📉 亞太股市全線暴跌！韓股急瀉逾 8% 觸發熔斷　日股跌 4%　台股挫逾 3%</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>受美股上周五暴跌及中東地緣緊張雙重打擊，亞太區股市今日全面急挫。韓國 KOSPI 指數初段急跌逾 8%，觸發熔斷機制暫停交易，創近 3 星期新低；韓國交易所召開緊急會議討論穩定市場措施。日本日經 225 指數低收約 4%，力守 64,000 點關口。台灣加權指數挫逾 3%。亞太區內多個股市早段跌幅一度逾半成，午後跌幅略為收窄。</p>
+</div>
+
+<div class="card business">
+  <h2>📉 A 股重挫！滬指失守 4,000 點　創業板瀉近 4%</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>內地股市跟隨外圍急挫，上證綜合指數半日已失守 4,000 點重要心理關口，創業板指數跌幅接近 4%。人民銀行今日將逆回購規模增至 2,185 億元人民幣以緩解市場流動性壓力，在岸人民幣兌美元亦創約兩周新低。分析指外圍避險情緒升溫，短期 A 股或持續受壓。</p>
+</div>
+
+<div class="card business">
+  <h2>🛢️ OPEC+ 同意 7 月增產　連續 4 個月上調產量目標</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>石油輸出國組織及盟友（OPEC+）同意於 7 月進一步增產，為連續第 4 個月上調產量目標。增產決定正值伊朗封鎖霍爾木茲海峽導致全球原油供應緊張之際，市場關注增產幅度是否足以緩解供應壓力。國際油價近日維持在 93 美元/桶附近高位。</p>
+</div>
+
+<div class="card business">
+  <h2>🚀 美股本周焦點：SpaceX 上市及美國最新通脹數據</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>美股本周迎來重磅事件——SpaceX IPO 即將登場，市場預期將成為今年最受關注的科技股上市項目。此外，美國將公布 5 月消費者物價指數（CPI），數據將直接影響聯儲局減息預期。上周五美股全線重挫，納指暴跌逾 1,100 點，本周能否止跌回升備受關注。</p>
+</div>
+
+<div class="card business">
+  <h2>💰 中國外匯儲備 5 月底升至 3.44 萬億美元　連續 19 個月增持黃金</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>國家外匯管理局公布，截至 5 月底中國外匯儲備規模為 3.44 萬億美元，較 4 月底上升。此外，人民銀行連續 19 個月增持黃金儲備，反映在全球地緣政治不確定性增加下，中國持續推動外匯儲備多元化。</p>
+</div>
+
+<div class="card business">
+  <h2>🏗️ 發改委：中央財政今年支持城市更新資金達 970 億元人民幣</h2>
+  <div class="source"><span class="cat cat-finance">財經</span> 香港電台 RTHK · 6月8日</div>
+  <p>國家發改委公布，中央財政今年支持城市更新資金規模達 970 億元人民幣。住房城鄉建設部同時表示鼓勵民營企業參與城市基礎設施建設，預計將為基建及房地產相關行業帶來新機遇。</p>
+</div>
+
+<!-- 科技 -->
+<div class="card tech">
+  <h2>🤖 Nvidia 與 SK 海力士達成多年 AI 晶片技術合作協議</h2>
+  <div class="source"><span class="cat cat-tech">科技</span> 香港電台 RTHK · 6月8日</div>
+  <p>Nvidia 與韓國半導體巨頭 SK 海力士宣布達成多年技術合作協議，共同開發下一代 AI 晶片所需的高頻寬記憶體（HBM）。此合作被視為 AI 晶片供應鏈的重要戰略布局，將進一步鞏固 Nvidia 在 AI 運算市場的主導地位。消息公布後 SK 海力士股價在韓股熔斷前一度逆市上升。</p>
+</div>
+
+<div class="card tech">
+  <h2>🇭🇰 孫東：「全民 AI」開支 5,000 萬元　料 5 萬人次受惠　未來續加碼</h2>
+  <div class="source"><span class="cat cat-tech">科技</span> 香港電台 RTHK · 6月8日</div>
+  <p>創新科技及工業局局長孫東表示，「全民 AI」計劃開支達 5,000 萬港元，預計可讓 5 萬人次受惠，涵蓋 AI 基礎教育、行業應用培訓等範疇。孫東相信計劃會繼續加碼，推動香港全民 AI 素養提升。計劃配合早前成立的「AI+與產業發展策略委員會」，顯示政府加速 AI 布局的決心。</p>
+</div>
+
+<div class="card tech">
+  <h2>🇰🇷 李在明：政府將制定計劃有效利用半導體行業稅收盈餘</h2>
+  <div class="source"><span class="cat cat-tech">科技</span> 香港電台 RTHK · 6月8日</div>
+  <p>韓國總統李在明表示，政府將制定計劃有效利用半導體行業稅收盈餘，以支持國內晶片產業持續發展。此舉反映韓國政府在全球 AI 晶片競賽中積極布局，尤其關注與 Nvidia 等國際巨頭的合作機遇。</p>
+</div>
+
+<!-- 地產 -->
+<div class="card estate">
+  <h2>🏘️ 地產代理：上周末二手成交放緩　天氣因素影響睇樓意欲</h2>
+  <div class="source"><span class="cat cat-estate">地產</span> 香港電台 RTHK · 6月8日</div>
+  <p>地產代理數據顯示，上周末本港十大屋苑二手成交明顯放緩，主要受惡劣天氣影響市民外出睇樓意欲。業界指紅雨警告及持續雷暴令多區睇樓活動受阻，部分預約取消。不過代理預期，隨着天氣好轉，累積的購買力或於本周釋放。</p>
+</div>
+
+<div class="card estate">
+  <h2>🚗 粵車南下 7.25 擴至大灣區全部 9 城市　每日名額增至 200 輛</h2>
+  <div class="source"><span class="cat cat-estate">地產</span> 星島頭條 · 6月8日</div>
+  <p>「粵車南下」計劃將於 7 月 25 日起大幅擴展，由目前僅限珠海、中山等城市擴大至大灣區全部 9 個城市，新增深圳、佛山、東莞等。入境市區名額由現行每日 100 輛增至 200 輛。此外，機場「易泊飛」服務將於 6 月 15 日起擴至整個大灣區，全新「易泊遊」服務 7 月推出，進一步便利大灣區跨境出行。</p>
+</div>
+
+<!-- 國際 -->
+<div class="card intl">
+  <h2>🇰🇵 習近平抵達平壤展開國事訪問　金正恩夫婦親赴機場迎接</h2>
+  <div class="source"><span class="cat cat-intl">國際</span> 香港電台 RTHK · 6月8日</div>
+  <p>國家主席習近平今日抵達平壤，展開對朝鮮的國事訪問，朝鮮最高領導人金正恩偕夫人李雪主親赴機場迎接，並舉行歡迎儀式。習近平行前發表署名文章，強調中朝傳統友誼牢不可破。此行正值朝鮮半島及中東局勢持續緊張之際，外界高度關注中朝領導人會談成果。</p>
+</div>
+
+<div class="card intl">
+  <h2>🇵🇭 菲律賓南部強震增至 15 死逾 130 傷　錄得 1.4 米海嘯波</h2>
+  <div class="source"><span class="cat cat-intl">國際</span> 香港電台 RTHK · 6月8日</div>
+  <p>菲律賓南部棉蘭老島附近發生強烈地震，死亡人數已增至 15 人，逾 130 人受傷，多座建築物倒塌。地震引發最高約 1.4 米海嘯波，美國及周邊多國一度發布海嘯預警。菲律賓當局正全力展開救援工作，預計傷亡數字可能進一步上升。</p>
+</div>
+
+<div class="card intl">
+  <h2>🇮🇷 伊朗證實向以色列發射導彈　特朗普指行動無助談判</h2>
+  <div class="source"><span class="cat cat-intl">國際</span> 香港電台 RTHK · 6月8日</div>
+  <p>伊朗證實已向以色列北部發射多枚導彈，以色列國防軍啟動防空系統進行攔截。以色列同時表示將加大打擊黎巴嫩真主黨的力度。美國總統特朗普回應指伊朗的軍事行動「無助於談判進程」。此次襲擊威脅到 4 月達成的以伊停火協議全面崩潰，中東局勢急劇升溫。</p>
+</div>
+
+<div class="card intl">
+  <h2>🇺🇦 澤連斯基願凍結戰線結束戰爭　晤英法德領導人獲支持直接對話</h2>
+  <div class="source"><span class="cat cat-intl">國際</span> 香港電台 RTHK／Livemint · 6月8日</div>
+  <p>烏克蘭總統澤連斯基表示願意凍結當前戰鬥戰線，以此作為結束俄烏戰爭的最快途徑，並敦促俄羅斯總統普京回應其公開信。澤連斯基隨後與英國、法國、德國領導人會面，三國表示支持烏俄展開直接對話。澤連斯基強調必須加強歐洲防空合作以保障整體安全。俄方暫未正式回應。</p>
+</div>
+
+<div class="card intl">
+  <h2>🕊️ 加沙停火談判重啟　重點商討現階段加沙管理問題</h2>
+  <div class="source"><span class="cat cat-intl">國際</span> 香港電台 RTHK · 6月8日</div>
+  <p>加沙停火談判在多國斡旋下正式重啟，據報談判重點為現階段加沙地帶的管理安排及人道援助通道問題。此次談判是自以伊衝突升級以來首次恢復，國際社會寄予厚望，但過往多輪談判均未能達成持久協議。</p>
+</div>
+
+<div class="card intl">
+  <h2>🇰🇷 韓國地方選舉選票不足引發示威　總統李在明指示徹查</h2>
+  <div class="source"><span class="cat cat-intl">國際</span> 香港電台 RTHK · 6月8日</div>
+  <p>韓國地方選舉出現選票數量不足的異常情況，引發民眾示威抗議。總統李在明已指示相關部門徹查事件，以確保選舉公正性。事件對韓國政局穩定構成一定影響，在野黨要求全面重新點票。</p>
+</div>
+
+<!-- 社會 -->
+<div class="card society">
+  <h2>⚖️ 4 男認參與理大暴動　判囚 30 至 37 個月</h2>
+  <div class="source"><span class="cat cat-society">社會</span> 星島頭條 · 6月8日</div>
+  <p>2019 年 11 月理工大學暴動案，4 名被告承認暴動罪，今日在區域法院被判監禁 30 至 37 個月。被告包括 24 歲學生張頌堯、29 歲張展銘、22 歲地盤工人陳俊僖及 33 歲前教師陳沅銘。法官判刑時指各被告在暴動中扮演積極角色，須判處阻嚇性刑罰。</p>
+</div>
+
+<div class="card society">
+  <h2>⚖️ 打鼓嶺謀殺案兩村民謀殺罪成　官斥行為冷血判囚終身</h2>
+  <div class="source"><span class="cat cat-society">社會</span> 星島頭條 · 6月8日</div>
+  <p>打鼓嶺謀殺案在高院裁決，兩名村民被裁定謀殺罪成，判處終身監禁。案情指死者遭膠紙封口、刀刺胸部殺害後再被埋屍。法官在判詞中嚴厲斥責被告行為極度冷血，對死者家屬造成無法彌補的傷害。</p>
+</div>
+
+<div class="card society">
+  <h2>🏛️ 引進藥械辦正式投入運作　主動出擊加快引入新藥及創新醫療器械</h2>
+  <div class="source"><span class="cat cat-society">社會</span> 香港電台 RTHK · 6月8日</div>
+  <p>政府新設立的「引進藥物及醫療器械辦公室」（引進藥械辦）今日正式投入運作，將主動出擊加快引入新藥及創新醫療器械。此舉旨在縮短本港病人獲取國際前沿藥物及治療方案的時間，同時鞏固香港作為區域醫療創新樞紐的地位。</p>
+</div>
+
+<div class="card society">
+  <h2>⚽ 世界盃決賽周將展開　去年非法賭博投注 11 億元　警方加大打擊</h2>
+  <div class="source"><span class="cat cat-society">社會</span> 香港電台 RTHK · 6月8日</div>
+  <p>2026 年美加墨世界盃決賽周將於本周五（6 月 12 日）展開，警方公布去年非法賭博案件涉及投注紀錄高達 11 億港元，較前年大幅增加。警方將在世界盃期間加大力度打擊外圍賭博，民政及青年事務局局長麥美娟亦呼籲市民建立無賭博生活習慣。</p>
+</div>
+
+<div class="card society">
+  <h2>🏟️ 啟德體育園膺「年度最佳場地」國際殊榮　推三重禮遇慶祝</h2>
+  <div class="source"><span class="cat cat-society">社會</span> 星島頭條 · 6月8日</div>
+  <p>啟德體育園再獲國際殊榮，獲頒「年度最佳場地」大獎。園方宣布推出三重禮遇慶祝，包括免費導賞團、限定優惠及抽獎活動，與市民共享喜悅。啟德體育園自開幕以來已舉辦多項國際大型活動，成為香港新地標。</p>
+</div>
+
+<div class="card society">
+  <h2>🧹 過渡性房屋紮鐵工頭涉向工人索賄 5 萬元助續聘　被廉署起訴</h2>
+  <div class="source"><span class="cat cat-society">社會</span> 星島頭條／RTHK · 6月8日</div>
+  <p>廉政公署落案起訴一名過渡性房屋項目的紮鐵分判商工頭，涉嫌向一名工人索取及收受共逾 5 萬元賄款，以協助對方繼續獲聘。案件反映建造業界的貪腐風險，廉署強調對任何貪污行為零容忍。</p>
+</div>
+
+<!-- 教育 -->
+<div class="card society">
+  <h2>📚 信和集團夥城大推「蠔創探索」海洋修復教育計劃</h2>
+  <div class="source"><span class="cat cat-edu">教育</span> 星島頭條 · 6月8日</div>
+  <p>信和集團與香港城市大學合作推出全新「蠔創探索」教育計劃，結合海洋科研、科技應用與公眾實踐，旨在鼓勵市民尤其是年輕一代參與海洋生態修復工作。計劃包括學術研究、社區工作坊及海岸實地考察等多元活動。</p>
+</div>
+
+<div class="card society">
+  <h2>🎓 人才辦訪德法推廣香港創科優勢　慕尼黑創科馬拉松逾 1,200 人報名</h2>
+  <div class="source"><span class="cat cat-edu">教育</span> 星島頭條 · 6月8日</div>
+  <p>香港人才服務辦公室訪問德國及法國，向當地專才推廣香港的創科優勢及就業機遇。其中在慕尼黑舉辦的創科馬拉松活動吸引逾 1,200 人報名參加，反應熱烈。人才辦表示將繼續加強海外推廣，吸引國際高端人才來港發展。</p>
+</div>
+
+<div class="card society">
+  <h2>🌪️ 熱帶氣旋名單新增 9 個名字　包括「點心」由中國香港提出</h2>
+  <div class="source"><span class="cat cat-edu">教育</span> 香港電台 RTHK · 6月8日</div>
+  <p>世界氣象組織颱風委員會公布今年熱帶氣旋名單新增 9 個名字，其中一個為「點心」（Dim Sum），由中國香港提出。其餘新增名字還包括其他成員國提名的特色名稱。新名字將用於替換已退役的舊颱風名。</p>
+</div>
+
+<div class="footer">
+  <p>📋 本報告由 WorkBuddy 自動生成｜🕐 更新時間：2026年6月8日 16:55 HKT（下午版）</p>
+  <p>新聞來源：<a href="https://news.rthk.hk/" target="_blank">香港電台 RTHK</a> · <a href="https://www.stheadline.com/" target="_blank">星島頭條</a> · <a href="https://www.livemint.com/" target="_blank">Livemint</a> · <a href="https://finance.sina.com.cn/" target="_blank">新浪財經</a> · 天文台</p>
+  <p>⚠️ 以上內容僅供參考，不構成任何投資建議。市場數據以各交易所正式公布為準。</p>
+</div>
+
+</div>
+</body>
+</html>
