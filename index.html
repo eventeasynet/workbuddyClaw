@@ -823,31 +823,38 @@ function loadNews() {
     container.style.display = "block";
     container.innerHTML = "";
 
-    function extractDate(title) {
+    // 修正：extractDateLabel 返回日期字串（如 "6月9日"），group 建立時一次設定 dateLabel
+    function extractDateLabel(title) {
       var m = (title || "").match(/(\d+)月(\d+)日/);
+      if (m) return m[1] + "月" + m[2] + "日";
+      return null; // 找不到日期返回 null，呢行自己一組
+    }
+
+    function dateLabelToNum(label) {
+      var m = (label || "").match(/(\d+)月(\d+)日/);
       if (m) return parseInt(m[1]) * 100 + parseInt(m[2]);
       return 0;
     }
 
     var groups = {};
     items.forEach(function(item) {
-      var dateKey = extractDate(item.title);
-      if (!groups[dateKey]) groups[dateKey] = { dateLabel: "", items: [] };
-      groups[dateKey].items.push(item);
-      var dm = (item.title || "").match(/(\d+月\d+日)/);
-      if (dm) groups[dateKey].dateLabel = dm[1];
+      var label = extractDateLabel(item.title) || "未知日期";
+      if (!groups[label]) groups[label] = { dateLabel: label, items: [] }; // ← 修正：建立時一次 set 好，唔可以 loop 入面覆蓋
+      groups[label].items.push(item);
     });
 
-    var sortedKeys = Object.keys(groups).sort(function(a, b) { return parseInt(b) - parseInt(a); });
+    var sortedLabels = Object.keys(groups).sort(function(a, b) {
+      return dateLabelToNum(b) - dateLabelToNum(a);
+    });
 
-    sortedKeys.forEach(function(key) {
-      var group = groups[key];
+    sortedLabels.forEach(function(label) {
+      var group = groups[label];
       var groupDiv = document.createElement("div");
       groupDiv.className = "date-group";
 
       var header = document.createElement("div");
       header.className = "date-header";
-      header.innerHTML = "📅 " + (group.dateLabel || "未知日期");
+      header.innerHTML = "📅 " + group.dateLabel;
       groupDiv.appendChild(header);
 
       var order = {"上午": 0, "下午": 1, "AI": 2};
