@@ -727,7 +727,7 @@ function updateOutboxCount() {
   }
 }
 
-// ===== 美股報告（已確認） =====
+// ===== 美股報告（已確認，按日期分組：報告+追蹤） =====
 function loadStock() {
   document.getElementById("stock-loading").style.display = "block";
   document.getElementById("stock-table").style.display = "none";
@@ -741,55 +741,157 @@ function loadStock() {
     if (items.length === 0) {
       document.getElementById("stock-empty").style.display = "block";
     } else {
-      document.getElementById("stock-table").style.display = "table";
-      const tbody = document.getElementById("stock-tbody");
-      tbody.innerHTML = "";
-      items.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><span class="type-badge type-stock">${item.type}</span></td>
-          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
-          <td>${formatTime(item.createdAt)}</td>
-          <td><span class="status-badge status-confirmed">${item.status}</span></td>
-          <td>
-            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+      const container = document.getElementById("stock-table");
+      container.style.display = "block";
+      container.innerHTML = "";
+      
+      // Extract date from title (format: "📈 美股分析報告 - 6月5日" or "📊 板塊追蹤 - 6月5日")
+      function extractDate(title) {
+        var m = title.match(/(\d+)月(\d+)日/);
+        if (m) return parseInt(m[1]) * 100 + parseInt(m[2]);
+        return 0;
+      }
+      
+      // Group by date
+      var groups = {};
+      items.forEach(function(item) {
+        var dateKey = extractDate(item.title);
+        if (!groups[dateKey]) groups[dateKey] = { dateLabel: "", items: [] };
+        groups[dateKey].items.push(item);
+        var dm = item.title.match(/(\d+月\d+日)/);
+        if (dm) groups[dateKey].dateLabel = dm[1];
+      });
+      
+      // Sort date keys descending
+      var sortedKeys = Object.keys(groups).sort(function(a,b) { return parseInt(b) - parseInt(a); });
+      
+      sortedKeys.forEach(function(key) {
+        var group = groups[key];
+        var groupDiv = document.createElement("div");
+        groupDiv.style.cssText = "margin-bottom:20px; border:1px solid var(--border); border-radius:10px; overflow:hidden;";
+        
+        // Date header
+        var header = document.createElement("div");
+        header.style.cssText = "background:linear-gradient(135deg, #064e3b, #065f46); color:#fff; padding:12px 16px; font-weight:600; font-size:14px; display:flex; align-items:center; gap:8px;";
+        header.innerHTML = "📈 " + group.dateLabel;
+        groupDiv.appendChild(header);
+        
+        // Items for this date
+        var table = document.createElement("table");
+        table.style.cssText = "width:100%; border-collapse:collapse; font-size:13px;";
+        var thead = document.createElement("thead");
+        thead.innerHTML = '<tr><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">類型</th><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">標題</th><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">狀態</th><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">操作</th></tr>';
+        table.appendChild(thead);
+        var tbody = document.createElement("tbody");
+        
+        // Sort: 美股報告 first, then 美股追蹤
+        var typeOrder = {"美股報告": 0, "美股追蹤": 1};
+        group.items.sort(function(a,b) {
+          return (typeOrder[a.type] || 99) - (typeOrder[b.type] || 99);
+        });
+        
+        group.items.forEach(function(item) {
+          var typeIcon = item.type === "美股報告" ? "📈" : "📊";
+          var typeLabel = item.type === "美股報告" ? "持股分析" : "板塊追蹤";
+          var tr = document.createElement("tr");
+          tr.innerHTML = '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;"><span class="type-badge type-stock">' + typeIcon + ' ' + typeLabel + '</span></td>' +
+            '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;"><a class="link" href="' + (item.driveUrl || '#') + '" target="_blank">' + escHtml(item.title) + '</a></td>' +
+            '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;"><span class="status-badge status-confirmed">' + escHtml(item.status) + '</span></td>' +
+            '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">' + (item.driveUrl ? '<button class="btn btn-preview" onclick="window.open(\'' + item.driveUrl + '\', \'_blank\')">👁️ 查看</button>' : '<span style="color:#9ca3af;font-size:12px;">📝 純文字版</span>') + '</td>';
+          tbody.appendChild(tr);
+        });
+        
+        table.appendChild(tbody);
+        groupDiv.appendChild(table);
+        container.appendChild(groupDiv);
       });
     }
   });
 }
 
-// ===== 新聞撮要（已確認） =====
+// ===== 新聞撮要（已確認，按日期分組） =====
 function loadNews() {
   document.getElementById("news-loading").style.display = "block";
   document.getElementById("news-table").style.display = "none";
   document.getElementById("news-empty").style.display = "none";
   
   apiCall({ action: "list", status: "已確認" }, function(data) {
-    const items = (data.items || []).filter(i => i.type.includes("新聞"));
+    // 只匹配 type="新聞撮要" 或 type="AI情報"，排除 "AI情報新聞"
+    const items = (data.items || []).filter(i =>
+      i.type === "新聞撮要" || i.type === "AI情報"
+    );
     document.getElementById("news-loading").style.display = "none";
     document.getElementById("news-count").textContent = items.length;
     
     if (items.length === 0) {
       document.getElementById("news-empty").style.display = "block";
     } else {
-      document.getElementById("news-table").style.display = "table";
-      const tbody = document.getElementById("news-tbody");
-      tbody.innerHTML = "";
-      items.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><span class="type-badge type-news">${item.type}</span></td>
-          <td><a class="link" href="${item.driveUrl}" target="_blank">${item.title}</a></td>
-          <td>${formatTime(item.createdAt)}</td>
-          <td><span class="status-badge status-confirmed">${item.status}</span></td>
-          <td>
-            <button class="btn btn-preview" onclick="window.open('${item.driveUrl}', '_blank')">👁️ 查看</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
+      const container = document.getElementById("news-table");
+      container.style.display = "block";
+      container.innerHTML = "";
+      
+      // Extract date from title (format: "📰 上午新聞 - 6月5日" or "🌇 下午新聞 - 6月5日")
+      function extractDate(title) {
+        var m = title.match(/(\d+)月(\d+)日/);
+        if (m) return parseInt(m[1]) * 100 + parseInt(m[2]);
+        return 0;
+      }
+      
+      // Group by date
+      var groups = {};
+      items.forEach(function(item) {
+        var dateKey = extractDate(item.title);
+        if (!groups[dateKey]) groups[dateKey] = { dateLabel: "", items: [] };
+        groups[dateKey].items.push(item);
+        // Extract date label from title
+        var dm = item.title.match(/(\d+月\d+日)/);
+        if (dm) groups[dateKey].dateLabel = dm[1];
+      });
+      
+      // Sort date keys descending
+      var sortedKeys = Object.keys(groups).sort(function(a,b) { return parseInt(b) - parseInt(a); });
+      
+      sortedKeys.forEach(function(key) {
+        var group = groups[key];
+        var groupDiv = document.createElement("div");
+        groupDiv.style.cssText = "margin-bottom:20px; border:1px solid var(--border); border-radius:10px; overflow:hidden;";
+        
+        // Date header
+        var header = document.createElement("div");
+        header.style.cssText = "background:linear-gradient(135deg, #1e3a5f, #2d5a87); color:#fff; padding:12px 16px; font-weight:600; font-size:14px; display:flex; align-items:center; gap:8px;";
+        header.innerHTML = "📅 " + group.dateLabel;
+        groupDiv.appendChild(header);
+        
+        // Items for this date
+        var table = document.createElement("table");
+        table.style.cssText = "width:100%; border-collapse:collapse; font-size:13px;";
+        var thead = document.createElement("thead");
+        thead.innerHTML = '<tr><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">類型</th><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">標題</th><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">狀態</th><th style="text-align:left;padding:8px 12px;background:#f8fafc;color:#64748b;font-weight:600;font-size:11px;">操作</th></tr>';
+        table.appendChild(thead);
+        var tbody = document.createElement("tbody");
+        
+        // Sort items: 上午 first, then 下午, then AI情報
+        var order = {"上午": 0, "下午": 1, "AI": 2};
+        group.items.sort(function(a,b) {
+          var oa = 999, ob = 999;
+          for (var k in order) { if (a.title.indexOf(k) !== -1) oa = order[k]; }
+          for (var k in order) { if (b.title.indexOf(k) !== -1) ob = order[k]; }
+          return oa - ob;
+        });
+        
+        group.items.forEach(function(item) {
+          var tr = document.createElement("tr");
+          var typeClass = item.type === "AI情報" ? "type-events" : "type-news";
+          tr.innerHTML = '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;"><span class="type-badge ' + typeClass + '">' + escHtml(item.type) + '</span></td>' +
+            '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;"><a class="link" href="' + (item.driveUrl || '#') + '" target="_blank">' + escHtml(item.title) + '</a></td>' +
+            '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;"><span class="status-badge status-confirmed">' + escHtml(item.status) + '</span></td>' +
+            '<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">' + (item.driveUrl ? '<button class="btn btn-preview" onclick="window.open(\'' + item.driveUrl + '\', \'_blank\')">👁️ 查看</button>' : '') + '</td>';
+          tbody.appendChild(tr);
+        });
+        
+        table.appendChild(tbody);
+        groupDiv.appendChild(table);
+        container.appendChild(groupDiv);
       });
     }
   });
