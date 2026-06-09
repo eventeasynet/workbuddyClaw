@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新聞撮要 — 2026年6月8日（週一）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #f0f2f5;
+    color: #1a202c;
+    line-height: 1.7;
+    padding: 16px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #1e4d8c 50%, #2c5282 100%);
+    color: #fff;
+    padding: 28px 24px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .header .date {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-top: 6px;
+  }
+  .header .meta {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+  .ticker-bar {
+    background: #1a365d;
+    color: #e2e8f0;
+    padding: 12px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .ticker-bar .down { color: #22c55e; }
+  .ticker-bar .up { color: #ef4444; }
+  .ticker-bar span { white-space: nowrap; }
+  .content {
+    background: #fff;
+    padding: 24px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section {
+    margin-bottom: 28px;
+  }
+  .section:last-child { margin-bottom: 0; }
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a365d;
+    border-left: 4px solid #1a365d;
+    padding-left: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon {
+    font-size: 1.3rem;
+  }
+  .news-item {
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    background: #f7fafc;
+    border-radius: 6px;
+    border-left: 3px solid #cbd5e0;
+    transition: background 0.15s;
+  }
+  .news-item:hover { background: #edf2f7; }
+  .news-item.hot { border-left-color: #e53e3e; background: #fff5f5; }
+  .news-item.market { border-left-color: #dd6b20; background: #fffaf0; }
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+  .tag-politics { background: #ebf4ff; color: #2b6cb0; }
+  .tag-economy { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #e6fffa; color: #234e52; }
+  .tag-society { background: #faf5ff; color: #6b46c1; }
+  .tag-world { background: #fff5f5; color: #c53030; }
+  .tag-market { background: #ffedd5; color: #9a3412; }
+  .tag-alert { background: #fed7d7; color: #9b2c2c; font-weight: 700; }
+  .news-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 4px 0;
+  }
+  .news-summary {
+    font-size: 0.85rem;
+    color: #4a5568;
+    margin-top: 3px;
+  }
+  .news-source {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    margin-top: 4px;
+  }
+  .news-source a {
+    color: #3182ce;
+    text-decoration: none;
+  }
+  .news-source a:hover { text-decoration: underline; }
+  .highlight-box {
+    background: linear-gradient(135deg, #fffbeb 0%, #fff5f5 100%);
+    border: 1px solid #fbd38d;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .highlight-box .title {
+    font-weight: 700;
+    color: #c05621;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+  .highlight-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .highlight-box li {
+    padding: 4px 0;
+    font-size: 0.85rem;
+    color: #744210;
+  }
+  .highlight-box li::before {
+    content: "▸ ";
+    color: #dd6b20;
+    font-weight: 700;
+  }
+  .footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 0.75rem;
+    color: #a0aec0;
+  }
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.3rem; }
+    .content { padding: 14px; }
+    .news-item { padding: 10px; }
+    .ticker-bar { font-size: 0.75rem; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>📰 新聞撮要</h1>
+  <div class="date">2026年6月8日（週一）</div>
+  <div class="meta">每日自動生成 · 本港及國際焦點 · 08:00 發布</div>
+</div>
+
+<div class="ticker-bar">
+  <span>🇭🇰 恆指 <span class="down">24,962 ▼1.15%</span></span>
+  <span>🇺🇸 道指 <span class="down">50,867 ▼1.35%</span></span>
+  <span>🇺🇸 納指 <span class="down">25,709 ▼4.18%</span></span>
+  <span>🇺🇸 標普 <span class="down">7,384 ▼2.64%</span></span>
+  <span>🇨🇳 上證 <span class="down">4,028 ▼0.74%</span></span>
+  <span>🪙 黃金 <span class="down">$4,329 ▼3.28%</span></span>
+  <span>🛢 WTI <span class="down">$90.54 ▼2.69%</span></span>
+  <span>₿ BTC <span class="down">~$60K ▼7%</span></span>
+</div>
+
+<div class="content">
+
+<!-- ⚠️ 頭條警示 -->
+<div class="highlight-box">
+  <div class="title">⚠️ 本週焦點警示</div>
+  <ul>
+    <li>美股黑色星期五：非農超預期引發加息恐慌，費城半導體指數單日暴瀉10%（六年最大跌幅），AI板塊全面崩塌</li>
+    <li>中東戰火再燃：伊朗時隔兩個月襲擊以色列，美軍介入，油價周一亞市盤初飆升3%</li>
+    <li>高盛放棄2026年降息預期，加息概率上調至20%；市場已完全定價聯儲年內加息</li>
+    <li>黃金單日暴跌3.28%，抹去全年漲幅；比特幣跌破6萬美元創2024年10月以來新低</li>
+  </ul>
+</div>
+
+<!-- 本港新聞 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🇭🇰</span> 本港新聞</div>
+
+  <div class="news-item hot">
+    <span class="tag tag-tech">AI</span><span class="tag tag-economy">股市</span>
+    <div class="news-title">智譜、MiniMax 正式納入恒生科技指數</div>
+    <div class="news-summary">6月8日起生效，兩家合計權重約5%-9%，料吸引40億美元被動資金流入。智譜上市至今飆升逾10倍，MiniMax累漲超2倍，成港股AI稀缺標的。兩家公司亦啟動A股科創板上市，謀求A+H雙平台佈局。</div>
+    <div class="news-source">來源：<a href="https://finance.eastmoney.com/a/202606083762754657.html" target="_blank">東方財富</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-politics">時政</span>
+    <div class="news-title">李家超完成中亞訪問 哈薩克斯坦料更多國企赴港上市</div>
+    <div class="news-summary">行政長官李家超率商貿代表團完成哈薩克斯坦及烏茲別克斯坦訪問行程，促成多領域合作。隨着雙邊經貿深化，預計更多哈薩克國企選擇香港上市融資。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-economy">經濟</span>
+    <div class="news-title">港府撥款5,000萬推「全民AI培訓」計劃</div>
+    <div class="news-summary">香港特區政府推動全民AI素養提升，專項撥款5,000萬港元，覆蓋不同年齡層及行業群體，全面提升市民人工智能應用能力。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-society">民生</span>
+    <div class="news-title">天文台：未來一兩日天氣不穩定 或發暴雨警告</div>
+    <div class="news-summary">受廣闊低壓槽影響，6月7日晚至9日初時天氣不穩定，有驟雨及狂風雷暴，雨勢有時頗大。天文台表示有需要時會發出暴雨警告信號。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-politics">人才政策</span>
+    <div class="news-title">孫玉菡：香港將為搶人才做更厚實工作</div>
+    <div class="news-summary">勞工及福利局局長孫玉菡表示將進一步優化人才引進政策，推出更多配套措施鞏固香港人才高地優勢。海內外高學歷求職者雲集，人才持續流入做大「經濟蛋糕」。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-tech">科技</span>
+    <div class="news-title">港大首創極低溫類腦運算晶片 突破太空探測極限</div>
+    <div class="news-summary">香港大學研發出全球首創極低溫類腦運算晶片，可在太空極端低溫環境下穩定運作，有望突破現有太空探測設備運算性能限制。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-society">航天</span>
+    <div class="news-title">神舟二十三號：香港首位航天員黎家盈狀態良好</div>
+    <div class="news-summary">神舟二十三號乘組進入中國空間站近兩周，《天宮TV》播出最新畫面，包括香港首位航天員黎家盈在內三名航天員已適應微重力環境，有序推進在軌工作。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-economy">金融</span>
+    <div class="news-title">金管局回應內地客戶開戶：流程運作暢順</div>
+    <div class="news-summary">香港金管局回應內地客戶在港銀行開戶事宜，稱銀行業已落實最新監管要求，開戶合規有序。內地居民可透過跨境理財通、滬深港通等合法渠道配置境外資產。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-society">活動</span>
+    <div class="news-title">家鄉市集尾日人氣旺 世界盃將至抗賭球教育啟動</div>
+    <div class="news-summary">第四屆家鄉市集進入尾日人潮不減，共展銷110萬件特產。第五屆香港潮州節同步開鑼。世界盃6月11日開幕在即，平和基金開展公眾教育防範非法賭球。</div>
+    <div class="news-source">來源：<a href="https://www.hkcna.hk/" target="_blank">香港新聞網</a></div>
+  </div>
+</div>
+
+<!-- 國際新聞 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🌍</span> 國際新聞</div>
+
+  <div class="news-item hot">
+    <span class="tag tag-alert">突發</span><span class="tag tag-world">中東</span>
+    <div class="news-title">伊朗時隔兩個月襲擊以色列 中東戰火重燃</div>
+    <div class="news-summary">伊朗向以色列發射導彈，以軍成功攔截來襲導彈，以色列北部多地拉響防空警報。美軍擊落4架伊朗無人機並空襲伊朗沿海雷達站。伊朗導彈還擊科威特、巴林美軍基地，巴林科威特全國拉響防空警報。特朗普呼籲伊朗「回到談判桌」，油價周一亞市盤初飆升3%。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-world">中東</span>
+    <div class="news-title">以色列空襲貝魯特南郊 伊朗發報復警告</div>
+    <div class="news-summary">以色列6月7日空襲黎巴嫩貝魯特南郊達希耶，以方稱該區為真主黨指揮中心。伊朗明確警告將就此次空襲作出回應。</div>
+    <div class="news-source">來源：<a href="https://www.livemint.com/news/world/total-world-latest-news-on-june-7-2026-live-updates-11780793596247.html" target="_blank">Livemint</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-world">俄烏</span>
+    <div class="news-title">澤連斯基願接受凍結停火 普京拒絕對話</div>
+    <div class="news-summary">烏克蘭總統澤連斯基表示願意接受按當前交火線凍結的停火方案以實現最快停火。但普京稱澤連斯基「粗魯無禮」，與其會面「沒有任何意義」，並披露烏軍在轉達和談意願次日凌晨襲擊了盧甘斯克宿舍樓。俄方顧問稱美國正試圖退出烏克蘭問題談判。</div>
+    <div class="news-source">來源：<a href="https://www.livemint.com/news/world/total-world-latest-news-on-june-7-2026-live-updates-11780793596247.html" target="_blank">Livemint</a> · <a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-politics">美國</span>
+    <div class="news-title">特朗普提名沃什掌聯儲 反對加息「應降息」</div>
+    <div class="news-summary">特朗普提名的新任聯儲局主席沃什將於6月16-17日首次主持貨幣政策會議。特朗普明確表態反對加息，稱「提高利率是錯誤做法，應該降息」。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-society">體育</span>
+    <div class="news-title">2026世界盃倒數3天！6月11日美加墨揭幕</div>
+    <div class="news-summary">2026年美加墨世界盃將於6月11日開幕，首次擴軍至48強，分12組展開小組賽。16家全球贊助商中中國企業佔4席。</div>
+    <div class="news-source">來源：<a href="https://xinsanban.10jqka.com.cn/20260531/c677103863.shtml" target="_blank">同花順</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-tech">科技</span>
+    <div class="news-title">Apple WWDC 6月9日登場 升級版Siri將發布</div>
+    <div class="news-summary">蘋果2026年全球開發者大會將於北京時間6月9日至13日舉辦，外界預期將發布升級版Siri，OpenAI亦籌劃ChatGPT推出以來最大改版轉型「超級應用」。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-economy">能源</span>
+    <div class="news-title">OPEC+ 七國7月增產18.8萬桶/日</div>
+    <div class="news-summary">沙特、俄羅斯、伊拉克等7個主要產油國7月將增產18.8萬桶/日，下一次OPEC+會議將於7月5日舉行。增產消息疊加中東局勢，油價短期波動加劇。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+</div>
+
+<!-- 財經新聞 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📈</span> 財經新聞</div>
+
+  <div class="news-item hot">
+    <span class="tag tag-alert">美股</span>
+    <div class="news-title">美股黑色星期五！費城半導體指數暴瀉10% 創六年最大跌幅</div>
+    <div class="news-summary">5月非農新增17.2萬人超預期近一倍，引發加息恐慌。三大指數集體重挫：納指-4.18%、標普-2.64%、道指-1.35%。費城半導體指數單日暴跌10%，抹去逾萬億美元市值。英偉達-6.2%、AMD-13.3%、博通-7.9%、Meta-5.5%。10年期美債收益率升至4.53%，市場已完全定價聯儲年內加息。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-macro">宏觀</span>
+    <div class="news-title">高盛放棄2026年降息預期 加息概率升至20%</div>
+    <div class="news-summary">高盛將降息時間推遲至2027年6月和12月，加息概率從10%上調至20%。全市場僅花旗仍預測年內降息3次。核心PCE通脹料維持3%以上，聯儲缺乏降息緊迫感。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-market">商品</span>
+    <div class="news-title">黃金暴跌3.28%抹去全年漲幅 比特幣跌破6萬美元</div>
+    <div class="news-summary">現貨黃金單日暴跌3.28%報4,328.70美元，大幅跌破200日均線，全周累跌4.62%抹去年初至今漲幅。白銀跌8.05%。比特幣一度暴跌7%跌破6萬美元（2024年10月以來首次），以太坊單日暴跌11%。美元指數創兩個月最佳單日表現。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-economy">A股</span>
+    <div class="news-title">A股全線走弱 創業板跌逾3%</div>
+    <div class="news-summary">上證指數收4,027.74點跌0.74%，深證成指收15,314.70點跌2.21%，創業板指收3,957.93點跌3.20%。證監會主席吳清稱公募基金改革進入「棋至中盤」關鍵期，要堅決遏制賭押賽道、風格漂移等頑疾。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-tech">AI</span>
+    <div class="news-title">博通CEO回應股價大跌：不關心短期股價 確認OpenAI定制芯片年內量產</div>
+    <div class="news-summary">博通聯手阿波羅、黑石完成350億美元芯片融資，為迄今最大規模芯片融資。CEO陳福陽透露深度綁定Google TPU抗衡英偉達，押注Anthropic獲高回報，預計未來兩年營收翻倍增超500億美元。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-tech">Space</span>
+    <div class="news-title">SpaceX 計劃 IPO 募資750億美元 年化ARR達260億</div>
+    <div class="news-summary">SpaceX先後與Anthropic、Google簽下合計700億美元算力租賃大單，計劃IPO募資750億美元用於建設太空數據中心，但被質疑定價超出市價、存在「循環金融」風險。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-tech">中國科技</span>
+    <div class="news-title">中國電科55所硅基氮化鎵射頻芯片量產突破500萬顆</div>
+    <div class="news-summary">自主研發的全球首款量產智能終端用硅基氮化鎵射頻芯片已交付超500萬顆，實現規模化商用，打破「高性能與低成本不可兼得」行業痛點，助力空天地一體化信息網絡建設。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-economy">能源</span>
+    <div class="news-title">中國氫煤混燒技術重大突破：首次實現50%綠氫摻燒、100%純氫燃燒</div>
+    <div class="news-summary">我國自主研發的氫煤混燒技術取得重大突破，為煤電低碳轉型提供關鍵技術路徑。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tag-economy">黃金</span>
+    <div class="news-title">中國央行連續19個月增持黃金 5月增32萬盎司</div>
+    <div class="news-summary">中國央行連續19個月增持黃金，5月環比增加32萬盎司，增持幅度持續擴大。5月外匯儲備規模34,422.38億美元。</div>
+    <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1867381136557408501" target="_blank">華爾街見聞</a></div>
+  </div>
+</div>
+
+<!-- 本週前瞻 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📅</span> 本週前瞻</div>
+
+  <div class="news-item">
+    <span class="tag tag-tech">科技</span>
+    <div class="news-title">6月9日（週二）：Apple WWDC 2026 開發者大會開幕</div>
+    <div class="news-summary">預期發布升級版Siri，為年內最大Apple事件之一。</div>
+  </div>
+  <div class="news-item">
+    <span class="tag tag-society">體育</span>
+    <div class="news-title">6月11日（週四）：2026美加墨世界盃揭幕</div>
+    <div class="news-summary">首次48強參賽，為期一個月，中國企業佔全球贊助商4席。</div>
+  </div>
+  <div class="news-item">
+    <span class="tag tag-market">聯儲</span>
+    <div class="news-title">6月11-12日：美國5月CPI數據公布</div>
+    <div class="news-summary">在非農超預期引發加息恐慌後，CPI數據將成為市場判斷聯儲下一步行動的關鍵指標。</div>
+  </div>
+  <div class="news-item">
+    <span class="tag tag-politics">聯儲</span>
+    <div class="news-title">6月16-17日：新任聯儲主席沃什首次主持FOMC會議</div>
+    <div class="news-summary">特朗普提名的新任聯儲主席首次亮相，市場高度關注其政策立場。</div>
+  </div>
+</div>
+
+</div> <!-- end content -->
+
+<div class="footer">
+  每日新聞撮要 · 自動生成於 2026-06-08 08:00 HKT · 資料來源：華爾街見聞、Livemint、香港新聞網、東方財富等
+</div>
+
+</div>
+</body>
+</html>
