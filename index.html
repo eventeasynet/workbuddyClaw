@@ -360,7 +360,7 @@ function groupByDate(items) {
 }
 
 // ===== Drive URL → GitHub Pages 映射 =====
-var GH_PAGES = 'https://eventeasynet.github.io/workbuddyClaw/';
+var GH_PAGES = 'https://dash.vigoradv.com/';
 var DRIVE_MAPPING = {
   '1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7': 'news/2026-06-05_HK_News.html',
   '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
@@ -383,6 +383,8 @@ var DRIVE_MAPPING = {
 
 function fixDriveUrl(url) {
   if (!url) return '';
+  // 將 github.io URL 替換為 dash.vigoradv.com（避免 http redirect 導致混合內容封鎖）
+  url = url.replace(/https?:\/\/eventeasynet\.github\.io\/workbuddyClaw\//g, 'https://dash.vigoradv.com/');
   var m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (m) {
     var fid = m[1];
