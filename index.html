@@ -3,11 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 <title>WorkBuddy 工作台</title>
+<script>
+// 防緩存：每次加載檢查遠端版本
+(function(){
+  var KEY = 'wb_dashboard_ver';
+  var CURRENT = 2026061201;
+  var stored = localStorage.getItem(KEY);
+  if (stored && parseInt(stored) < CURRENT) {
+    console.log('Dashboard 有新版本，清除緩存...');
+    localStorage.setItem(KEY, CURRENT);
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        names.forEach(function(n) { caches.delete(n); });
+      });
+    }
+  }
+  localStorage.setItem(KEY, CURRENT);
+})();
+</script>
 <style>
 * { margin:0; padding:0; box-sizing: border-box; }
 :root {
-  --sidebar-w: 240px;
+  --sidebar-w: 180px;
   --sidebar-bg: #0f172a;
   --sidebar-hover: #1e293b;
   --sidebar-active: #1e3a5f;
@@ -21,174 +42,104 @@
   --green: #22c55e;
   --red: #ef4444;
   --yellow: #eab308;
+  --ai-accent: #7c3aed;
+  --stock-accent: #059669;
 }
 body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
 
 /* Sidebar */
 .sidebar { width:var(--sidebar-w); background:var(--sidebar-bg); color:#fff; display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; }
-.sidebar-header { padding:24px 20px 16px; border-bottom:1px solid #1e293b; }
-.sidebar-header h1 { font-size:20px; font-weight:700; }
-.sidebar-header p { font-size:12px; color:#94a3b8; margin-top:4px; }
+.sidebar-header { padding:20px 16px 12px; border-bottom:1px solid #1e293b; }
+.sidebar-header h1 { font-size:17px; font-weight:700; }
+.sidebar-header p { font-size:11px; color:#94a3b8; margin-top:4px; }
 .sidebar-nav { flex:1; padding:12px 0; overflow-y:auto; }
-.nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; cursor:pointer; font-size:14px; color:#cbd5e1; text-decoration:none; transition:background 0.15s; }
+.nav-item { display:flex; align-items:center; gap:8px; padding:10px 16px; cursor:pointer; font-size:13px; color:#cbd5e1; text-decoration:none; transition:background 0.15s; }
 .nav-item:hover { background:var(--sidebar-hover); color:#fff; }
 .nav-item.active { background:var(--sidebar-active); color:#fff; border-left:3px solid var(--accent); }
-.nav-item span { font-size:18px; }
-.nav-section-header { padding:16px 20px 6px; font-size:11px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.08em; }
-.nav-sub-item { padding-left:36px; font-size:13px; }
+.nav-item span { font-size:16px; }
 .sidebar-footer { padding:0; border-top:1px solid #1e293b; font-size:12px; color:#64748b; }
-.automation-panel { padding:12px 20px; }
+.automation-panel { padding:10px 16px; }
 .automation-toggle { display:flex; align-items:center; justify-content:space-between; cursor:pointer; padding:4px 0; user-select:none; }
 .automation-toggle:hover { color:#94a3b8; }
 .automation-toggle .arrow { font-size:10px; transition:transform 0.2s; }
 .automation-toggle .arrow.open { transform:rotate(90deg); }
 .automation-list { max-height:0; overflow:hidden; transition:max-height 0.3s ease; }
-.automation-list.open { max-height:400px; }
-.automation-item { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px solid #1e293b; font-size:11px; }
+.automation-list.open { max-height:1000px; overflow-y:auto; }
+.automation-item { display:flex; align-items:center; gap:6px; padding:5px 0; border-bottom:1px solid #1e293b; font-size:10px; }
 .automation-item:last-child { border-bottom:none; }
-.automation-item .auto-icon { font-size:14px; flex-shrink:0; }
+.automation-item .auto-icon { font-size:12px; flex-shrink:0; }
 .automation-item .auto-info { flex:1; min-width:0; }
 .automation-item .auto-name { color:#e2e8f0; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.automation-item .auto-time { color:#64748b; font-size:10px; }
-.automation-item .auto-status { font-size:10px; padding:2px 6px; border-radius:10px; flex-shrink:0; }
+.automation-item .auto-time { color:#64748b; font-size:9px; }
+.automation-item .auto-status { font-size:9px; padding:1px 5px; border-radius:10px; flex-shrink:0; }
 .auto-status-active { background:#065f46; color:#6ee7b7; }
 .auto-status-paused { background:#78350f; color:#fcd34d; }
 
 /* Main */
-.main { margin-left:var(--sidebar-w); flex:1; padding:32px; max-width:1200px; }
-.header { margin-bottom:32px; }
-.header h2 { font-size:24px; font-weight:700; }
-.header p { color:var(--text-muted); margin-top:4px; font-size:14px; }
-.status-bar { display:inline-flex; align-items:center; gap:6px; background:#dcfce7; color:#166534; font-size:13px; padding:4px 12px; border-radius:20px; margin-top:12px; }
-
-/* Stats */
-.stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:16px; margin-bottom:24px; }
-.stat-card { background:var(--card-bg); border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid var(--border); }
-.stat-icon { font-size:28px; margin-bottom:8px; }
-.stat-num { font-size:28px; font-weight:700; }
-.stat-label { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.main { margin-left:var(--sidebar-w); flex:1; padding:24px 28px; min-height:100vh; }
 
 /* Section */
-.section { background:var(--card-bg); border-radius:12px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid var(--border); margin-bottom:24px; }
-.section h3 { font-size:16px; font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-.section h3 .badge { font-size:11px; background:var(--accent-light); color:var(--accent); padding:2px 8px; border-radius:10px; }
+.section { display:none; }
+.section.active { display:block; }
 
-/* Table */
-table { width:100%; border-collapse:collapse; font-size:13px; }
-thead th { text-align:left; padding:10px 12px; background:#f8fafc; color:var(--text-muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid var(--border); }
-tbody td { padding:10px 12px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
-tbody tr:hover { background:#f8fafc; }
-.status-badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:500; }
-.status-pending { background:#fef3c7; color:#92400e; }
-.status-confirmed { background:#dcfce7; color:#166534; }
-.btn { display:inline-flex; align-items:center; gap:4px; padding:6px 14px; border-radius:8px; border:none; cursor:pointer; font-size:13px; font-weight:500; transition:all 0.15s; }
-.btn-confirm { background:#22c55e; color:#fff; }
-.btn-confirm:hover { background:#16a34a; }
-.btn-delete { background:#fee2e2; color:#dc2626; }
-.btn-delete:hover { background:#fecaca; }
-.btn-preview { background:#e0f2fe; color:#0284c7; }
-.btn-preview:hover { background:#bae6fd; }
-a.link { color:var(--accent); text-decoration:none; }
-a.link:hover { text-decoration:underline; }
+/* Content toolbar: 5-day tabs + calendar */
+.content-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
+.date-tabs { display:flex; gap:6px; flex:1; }
+.date-tab { padding:8px 16px; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); color:var(--text); cursor:pointer; font-size:13px; font-weight:500; white-space:nowrap; transition:all 0.2s; }
+.date-tab:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-light); }
+.date-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.date-tab.active-ai { background:var(--ai-accent); color:#fff; border-color:var(--ai-accent); }
+.date-tab.active-stock { background:var(--stock-accent); color:#fff; border-color:var(--stock-accent); }
+.date-tab.no-data { opacity:0.45; cursor:default; }
+.date-tab .tab-label { display:block; font-size:11px; color:var(--text-muted); font-weight:400; margin-top:1px; }
+.date-tab.active .tab-label, .date-tab.active-ai .tab-label, .date-tab.active-stock .tab-label { color:rgba(255,255,255,0.8); }
+
+/* Sub tabs */
+.sub-tabs { display:flex; gap:8px; margin-bottom:16px; }
+.sub-tab { padding:6px 14px; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); color:var(--text); cursor:pointer; font-size:13px; transition:all 0.2s; }
+.sub-tab:hover { border-color:var(--accent); color:var(--accent); }
+.sub-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.sub-tab.active-stock { background:var(--stock-accent); color:#fff; border-color:var(--stock-accent); }
+
+/* Content area */
+.content-area { background:var(--card-bg); border-radius:12px; border:1px solid var(--border); overflow:hidden; min-height:500px; }
+.content-area iframe { width:100%; height:75vh; border:none; }
+.content-area .text-report { padding:24px; font-size:14px; line-height:1.8; white-space:pre-wrap; }
+.content-area .report-header { display:flex; justify-content:space-between; align-items:center; padding:12px 20px; border-bottom:1px solid var(--border); background:#f8fafc; }
+.content-area .report-header .report-title { font-size:14px; font-weight:600; color:var(--text); }
+.content-area .report-header a { font-size:12px; color:var(--accent); text-decoration:none; }
+.content-area .report-header a:hover { text-decoration:underline; }
+.content-area .empty-msg { padding:40px; text-align:center; color:var(--text-muted); font-size:14px; }
+.content-area .error-msg { padding:20px; color:var(--red); background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; margin:16px; font-size:13px; }
 
 /* Loading */
-.loading { text-align:center; padding:40px; color:var(--text-muted); }
-.empty { text-align:center; padding:40px; color:var(--text-muted); }
+.loading { text-align:center; padding:60px 20px; color:var(--text-muted); font-size:14px; }
 
-/* Refresh button */
-.refresh-btn { float:right; background:var(--bg); border:1px solid var(--border); padding:6px 14px; border-radius:8px; cursor:pointer; font-size:13px; }
-.refresh-btn:hover { background:var(--accent-light); }
+/* ===== 迷你月曆 ===== */
+.mini-cal { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; width:210px; box-shadow:0 4px 16px rgba(0,0,0,0.12); user-select:none; }
+.mini-cal-title { text-align:center; font-weight:700; font-size:13px; color:#1f2937; margin-bottom:6px; padding-bottom:6px; border-bottom:1px solid #f3f4f6; }
+.mini-cal-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.mini-cal-nav button { background:none; border:1px solid #e5e7eb; border-radius:4px; width:24px; height:24px; cursor:pointer; font-size:12px; color:#6b7280; display:flex; align-items:center; justify-content:center; }
+.mini-cal-nav button:hover { background:#f3f4f6; color:#1f2937; }
+.mini-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; text-align:center; }
+.mini-cal-day-hdr { font-size:10px; color:#9ca3af; padding:2px 0; font-weight:600; }
+.mini-cal-cell { font-size:11px; padding:4px 0; border-radius:5px; cursor:pointer; color:#374151; position:relative; transition:all 0.15s; }
+.mini-cal-cell:hover { background:#eff6ff; color:#1d4ed8; }
+.mini-cal-empty { cursor:default; }
+.mini-cal-empty:hover { background:transparent; color:#374151; }
+.mini-cal-has-data { font-weight:700; }
+.mini-cal-has-data::after { content:''; display:block; width:4px; height:4px; background:#3b82f6; border-radius:50%; margin:1px auto 0; }
+.mini-cal-active { background:#1d4ed8; color:#fff; font-weight:700; }
+.mini-cal-active::after { background:#fff; }
+.mini-cal-today { border:1.5px solid #3b82f6; }
 
-/* Card grid layout for promo options */
-.card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:16px; }
-.card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px; }
-.card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
-.card-header { display:flex; justify-content:space-between; align-items:start; margin-bottom:12px; }
-.card-title { font-weight:600; font-size:14px; }
-.card-meta { font-size:12px; color:var(--text-muted); }
-.btn-publish-now { margin-left:auto; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; border:none; border-radius:6px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer; white-space:nowrap; transition:all 0.15s; }
-.btn-publish-now:hover { background:linear-gradient(135deg, #d97706, #b45309); transform:translateY(-1px); box-shadow:0 2px 6px rgba(217,119,6,0.3); }
-.btn-publish-now:disabled { background:#d1d5db; cursor:not-allowed; transform:none; box-shadow:none; }
-.card-body { font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:12px; }
-.card-actions { display:flex; gap:8px; flex-wrap:wrap; }
-.card-preview { width:100%; border-radius:8px; margin-bottom:12px; max-height:200px; object-fit:cover; }
-
-/* Type badges */
-.type-badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
-.type-promoA { background:#dbeafe; color:#1d4ed8; }
-.type-promoB { background:#fce7f3; color:#be185d; }
-.type-promoC { background:#fef3c7; color:#92400e; }
-.type-stock { background:#dcfce7; color:#166534; }
-.type-news { background:#f3e8ff; color:#7c3aed; }
-.type-copy { background:#fce7f3; color:#be185d; }
-.type-events { background:#dbeafe; color:#0891b2; }
-
-/* Note for auto-confirmed */
-.auto-note { font-size:12px; color:#6b7280; font-style:italic; margin-bottom:16px; }
-
-/* Post-style cards */
-.post-cards { display:flex; flex-wrap:wrap; gap:24px; }
-.post-card { flex:1 1 340px; min-width:300px; max-width:420px; background:#fff; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.06); border:1px solid #e5e7eb; }
-.post-card-header { display:flex; align-items:center; gap:10px; padding:14px 16px; }
-.post-card-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; font-weight:700; }
-.post-card-avatar.avatar-a { background:linear-gradient(135deg, #3b82f6, #1d4ed8); }
-.post-card-avatar.avatar-b { background:linear-gradient(135deg, #ec4899, #be185d); }
-.post-card-avatar.avatar-c { background:linear-gradient(135deg, #8b5cf6, #6d28d9); }
-.post-card-user { font-size:13px; font-weight:600; }
-.post-card-handle { font-size:11px; color:#9ca3af; }
-.post-card-body { padding:0 16px 16px; white-space:pre-line; font-size:14px; line-height:1.75; color:#1e293b; }
-.post-card-body .hash { color:#6b7280; font-size:11px; }
-.post-card-body .headline { font-size:17px; font-weight:700; display:block; margin-bottom:12px; color:#0f172a; line-height:1.5; }
-.post-card-body .link-text { color:#3b82f6; font-weight:500; }
-.post-card-label { display:inline-block; padding:2px 10px; border-radius:4px; font-size:11px; font-weight:600; margin:0 0 12px 16px; }
-.post-card-label.label-a { background:#dbeafe; color:#1d4ed8; }
-.post-card-label.label-b { background:#fce7f3; color:#be185d; }
-.post-card-label.label-c { background:#ede9fe; color:#6d28d9; }
-.post-card-footer { border-top:1px solid #f3f4f6; padding:12px 16px; display:flex; gap:16px; align-items:center; }
-.post-card-stat { font-size:12px; color:#9ca3af; display:flex; align-items:center; gap:4px; }
-.post-card-footer-right { margin-left:auto; }
-.post-card-edit-btn { position:absolute; top:8px; right:12px; background:none; border:1px solid #e5e7eb; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; color:#6b7280; transition:all 0.15s; }
-.post-card-edit-btn:hover { background:#f3f4f6; color:#374151; border-color:#d1d5db; }
-.post-card-edit-btn.saving { background:#fef3c7; color:#92400e; border-color:#fcd34d; }
-.post-card-delete-btn-top { position:absolute; top:8px; right:80px; background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; transition:all 0.15s; }
-.post-card-delete-btn-top:hover { background:#fef2f2; border-color:#f87171; }
-.post-card-body.editing { background:#fffbeb; border-radius:8px; outline:2px dashed #fcd34d; outline-offset:2px; padding:12px; cursor:text; }
-.post-card-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:6px 16px; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
-.post-card-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); transform:translateY(-1px); box-shadow:0 2px 8px rgba(5,150,105,0.3); }
-.post-card-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; transform:none; box-shadow:none; }
-.post-card { position:relative; }
-
-/* Event highlight cards */
-.event-card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:0; margin-bottom:16px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,0.04); position:relative; }
-.event-card-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px 10px; }
-.event-card-header-left { display:flex; align-items:center; gap:10px; }
-.event-card-icon { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #06b6d4, #0891b2); display:flex; align-items:center; justify-content:center; font-size:16px; }
-.event-card-title { font-size:14px; font-weight:600; color:#0f172a; }
-.event-card-date { font-size:11px; color:#9ca3af; }
-.event-card-body { padding:0 16px 16px; white-space:pre-line; font-size:14px; line-height:1.75; color:#334155; }
-.event-card-body.editing { background:#fffbeb; border-radius:8px; outline:2px dashed #fcd34d; outline-offset:2px; padding:12px; margin:0 16px 16px; cursor:text; }
-.event-card-footer { border-top:1px solid #f3f4f6; padding:10px 16px; display:flex; gap:12px; align-items:center; }
-.event-card-footer-right { margin-left:auto; display:flex; gap:8px; }
-.event-edit-btn { background:none; border:1px solid #e5e7eb; border-radius:6px; padding:3px 10px; font-size:11px; cursor:pointer; color:#6b7280; }
-.event-edit-btn:hover { background:#f3f4f6; }
-.event-edit-btn.saving { background:#fef3c7; color:#92400e; border-color:#fcd34d; }
-.event-confirm-btn { background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; border-radius:8px; padding:5px 14px; font-size:12px; font-weight:600; cursor:pointer; }
-.event-confirm-btn:hover { background:linear-gradient(135deg, #059669, #047857); }
-.event-confirm-btn:disabled { background:#d1d5db; cursor:not-allowed; }
-.event-delete-btn { background:none; border:1px solid #fca5a5; color:#ef4444; border-radius:8px; padding:5px 12px; font-size:12px; cursor:pointer; transition:all 0.15s; }
-.event-delete-btn:hover { background:#fef2f2; border-color:#f87171; }
-
-/* Date-grouped list layout */
-.date-group { margin-bottom:20px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#fff; }
-.date-header { background:linear-gradient(135deg, #1e3a5f, #2d5a87); color:#fff; padding:14px 18px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; }
-.date-header-stock { background:linear-gradient(135deg, #064e3b, #065f46); }
-.date-item { display:flex; align-items:center; gap:12px; padding:12px 18px; border-bottom:1px solid #f1f5f9; font-size:13px; }
-.date-item:last-child { border-bottom:none; }
-.date-item-type { min-width:90px; }
-.date-item-title { flex:1; }
-.date-item-status { min-width:70px; }
-.date-item-action { min-width:80px; text-align:right; }
-.version-footer { text-align:center; padding:16px; font-size:11px; color:#94a3b8; margin-top:8px; }
+/* 月曆容器 */
+.cal-wrapper { position:relative; flex-shrink:0; }
+.cal-toggle { background:#fff; border:1px solid #d1d5db; border-radius:8px; padding:6px 12px; font-size:12px; cursor:pointer; color:#6b7280; display:flex; align-items:center; gap:4px; white-space:nowrap; }
+.cal-toggle:hover { border-color:var(--accent); color:var(--accent); }
+.cal-toggle.active { border-color:#1d4ed8; color:#1d4ed8; background:#eff6ff; }
+.cal-dropdown { position:absolute; top:100%; right:0; margin-top:6px; z-index:100; display:none; }
+.cal-dropdown.show { display:block; }
 </style>
 </head>
 <body>
@@ -197,17 +148,12 @@ a.link:hover { text-decoration:underline; }
 <div class="sidebar">
   <div class="sidebar-header">
     <h1>⚡ WorkBuddy</h1>
-    <p>EventEasy 自動化管理中心</p>
+    <p>EventEasy 內容管理</p>
   </div>
   <nav class="sidebar-nav" id="sidebar-nav">
-    <a class="nav-item active" data-section="outbox">📤 出街記錄</a>
-    <a class="nav-item" data-section="published">✅ 已出街內容</a>
-    <div class="nav-section-header">📦 生成內容</div>
-    <a class="nav-item nav-sub-item" data-section="copy">📝 社群文案</a>
-    <a class="nav-item nav-sub-item" data-section="events">🌍 活動花絮</a>
-    <a class="nav-item" data-section="stock">📈 美股分析報告</a>
-    <a class="nav-item" data-section="news">📰 每日新聞撮要</a>
-    <a class="nav-item" data-section="gallery">🎨 設計圖庫</a>
+    <a class="nav-item active" data-section="news" onclick="showSection('news');return false;"><span>📰</span> 每日新聞撮要</a>
+    <a class="nav-item" data-section="ai" onclick="showSection('ai');return false;"><span>📡</span> AI 情報</a>
+    <a class="nav-item" data-section="stock" onclick="showSection('stock');return false;"><span>📈</span> 股票分析報告</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
@@ -220,7 +166,7 @@ a.link:hover { text-decoration:underline; }
           <span class="auto-icon">📰</span>
           <div class="auto-info">
             <div class="auto-name">每日新聞撮要</div>
-            <div class="auto-time">每日 08:00 生成 → 10:00 出街</div>
+            <div class="auto-time">08:00 生成 → 10:00 出街</div>
           </div>
           <span class="auto-status auto-status-active" id="auto-status-1780281485638">運行中</span>
         </div>
@@ -228,7 +174,7 @@ a.link:hover { text-decoration:underline; }
           <span class="auto-icon">🎨</span>
           <div class="auto-info">
             <div class="auto-name">宣傳圖生成</div>
-            <div class="auto-time">每日 08:00 生成 → 10:00 出街</div>
+            <div class="auto-time">08:00 生成 → 10:00 出街</div>
           </div>
           <span class="auto-status auto-status-active" id="auto-status-1780353918149">運行中</span>
         </div>
@@ -236,7 +182,7 @@ a.link:hover { text-decoration:underline; }
           <span class="auto-icon">🌍</span>
           <div class="auto-info">
             <div class="auto-name">活動花絮</div>
-            <div class="auto-time">每日 10:00 生成 → 12:00 出街</div>
+            <div class="auto-time">10:00 生成 → 12:00 出街</div>
           </div>
           <span class="auto-status auto-status-active" id="auto-status-1780476184986">運行中</span>
         </div>
@@ -244,7 +190,7 @@ a.link:hover { text-decoration:underline; }
           <span class="auto-icon">📈</span>
           <div class="auto-info">
             <div class="auto-name">美股分析報告</div>
-            <div class="auto-time">每日 19:00 生成 → 21:00 出街</div>
+            <div class="auto-time">19:00 生成 → 21:00 出街</div>
           </div>
           <span class="auto-status auto-status-active" id="auto-status-1780253895980">運行中</span>
         </div>
@@ -258,7 +204,7 @@ a.link:hover { text-decoration:underline; }
         </div>
       </div>
     </div>
-    <div style="padding:8px 20px 12px; font-size:11px; color:#64748b;">
+    <div style="padding:6px 16px 10px; font-size:10px; color:#64748b;">
       上次更新：<span id="last-update">--:--</span>
     </div>
   </div>
@@ -266,1037 +212,693 @@ a.link:hover { text-decoration:underline; }
 
 <!-- Main Content -->
 <div class="main">
-  <div class="header">
-    <h2 id="page-title">📤 出街記錄</h2>
-    <p id="page-desc">所有排隊出街嘅項目，狀態為「待出街」，等待推送</p>
-    <div class="status-bar" id="status-bar">⚡ 載入中...</div>
-  </div>
 
-  <!-- 出街記錄（所有排隊出街項目，狀態=待出街） -->
-  <div id="sec-outbox" class="section">
-    <h3>📤 排隊出街清單 <span class="badge" id="outbox-count">0</span>
-      <button class="refresh-btn" onclick="loadOutbox()">🔄 重新整理</button>
-    </h3>
-    <p class="auto-note">💡 所有按了「排隊出街」的項目都會顯示在此，狀態為「待出街」</p>
-    <div id="outbox-loading" class="loading">載入中...</div>
-    <div id="outbox-empty" class="empty" style="display:none;">📭 暫無排隊出街項目<br><small>在社群文案或活動花絮按「✅ 排隊出街」即可加到此處</small></div>
-    <div id="outbox-cards" class="card-grid" style="display:none;"></div>
-  </div>
-
-  <!-- 已出街內容（status=已出街） -->
-  <div id="sec-published" class="section" style="display:none;">
-    <h3>✅ 已出街內容 <span class="badge" id="published-count">0</span>
-      <button class="refresh-btn" onclick="loadPublished()">🔄 重新整理</button>
-    </h3>
-    <p class="auto-note">📋 所有已推送出街嘅內容記錄，可查看詳情或重新排隊</p>
-    <div id="published-loading" class="loading">載入中...</div>
-    <div id="published-empty" class="empty" style="display:none;">📭 暫無已出街內容</div>
-    <div id="published-cards" class="card-grid" style="display:none;"></div>
-  </div>
-
-  <!-- 美股報告 (自動確認，直接顯示) -->
-  <div id="sec-stock" class="section" style="display:none;">
-    <h3>📈 每日美股分析報告 <span class="badge" id="stock-count">0</span>
-      <button class="refresh-btn" onclick="loadStock()">🔄 重新整理</button>
-    </h3>
-    <p class="auto-note">⚡ 每晚 19:00 自動生成 · 21:00 出街，無需手動操作</p>
-    <div id="stock-loading" class="loading">載入中...</div>
-    <div id="stock-empty" class="empty" style="display:none;">📭 暫無美股報告<br><small>每晚 19:00 生成 → 21:00 出街</small></div>
-    <div id="stock-list" style="display:none;"></div>
-  </div>
-
-  <!-- 新聞撮要 (自動確認，直接顯示) -->
-  <div id="sec-news" class="section" style="display:none;">
-    <h3>📰 每日新聞撮要 <span class="badge" id="news-count">0</span>
-      <button class="refresh-btn" onclick="loadNews()">🔄 重新整理</button>
-    </h3>
-    <p class="auto-note">⚡ 每日 08:00 自動生成 · 10:00 出街，無需手動操作</p>
-    <div id="news-loading" class="loading">載入中...</div>
-    <div id="news-empty" class="empty" style="display:none;">📭 暫無新聞撮要<br><small>每日早上 08:00 生成 → 10:00 出街</small></div>
-    <div id="news-list" style="display:none;"></div>
-  </div>
-
-  <!-- 社群文案模板 -->
-  <div id="sec-copy" class="section" style="display:none;">
-    <h3>📝 IG / Facebook 貼文文案（可直接複製發帖）</h3>
-    <div class="post-cards">
-      <!-- 款式 1：專業商務版 -->
-      <div class="post-card" id="post-card-1">
-        <button class="post-card-edit-btn" onclick="toggleEdit('post-card-1')">✏️ 編輯</button>
-        <button class="post-card-delete-btn-top" onclick="deleteCard('post-card-1')" title="刪除">🗑️</button>
-        <span class="post-card-label label-a">款式 1 · 專業商務版</span>
-        <div class="post-card-header">
-          <div class="post-card-avatar avatar-a">E</div>
-          <div>
-            <div class="post-card-user">EventEasy.net</div>
-            <div class="post-card-handle">@eventeasy · 適合公司、活動策劃、行政分享</div>
-          </div>
-        </div>
-        <div class="post-card-body" id="post-body-1"><span class="headline">還在煩惱搞活動要分開用幾個平台？</span>
-報名、票務、簽到、數據、現場互動全部唔使周圍搵🔥
-<b>EventEasy.net 一站式全方位活動管理平台</b>
-無論企業研討會、展覽、學校活動、晚宴、市集、線上活動都完全適合✅
-▪ 一鍵發布活動 + 線上即時報名
-▪ 電子門票 QR Code 快速入場簽到
-▪ 自動數據統計分析 慳時間慳人手
-▪ 內置互動遊戲 / 抽獎 即時帶動現場氣氛
-▪ 零技術上手 新手都即刻識用
-
-即刻睇完整使用指南👇
-<span class="link-text">www.eventeasy.net/guide</span>
-<span class="hash">#EventEasy #活動管理 #一站式活動平台 #活動策劃 #QR簽到 #電子門票</span></div>
-        <div class="post-card-footer">
-          <span class="post-card-stat">❤️ 推薦公司專頁</span>
-          <span class="post-card-stat">💬 可加行業 hashtag</span>
-          <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-1" onclick="confirmPublish('post-card-1','款式 1 · 專業商務版')">✅ 排隊出街</button></span>
+  <!-- 新聞撮要 -->
+  <div id="sec-news" class="section">
+    <div id="news-loading" class="loading">📰 載入新聞撮要中...</div>
+    <div id="news-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="date-tabs" id="news-date-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="news-cal-toggle" onclick="toggleCalendar('news')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="news-cal-dropdown"></div>
         </div>
       </div>
-
-      <!-- 款式 2：輕鬆吸睛版 -->
-      <div class="post-card" id="post-card-2">
-        <button class="post-card-edit-btn" onclick="toggleEdit('post-card-2')">✏️ 編輯</button>
-        <button class="post-card-delete-btn-top" onclick="deleteCard('post-card-2')" title="刪除">🗑️</button>
-        <span class="post-card-label label-b">款式 2 · 輕鬆吸睛版</span>
-        <div class="post-card-header">
-          <div class="post-card-avatar avatar-b">E</div>
-          <div>
-            <div class="post-card-user">EventEasy.net</div>
-            <div class="post-card-handle">@eventeasy · IG 日常貼文 親民風</div>
-          </div>
-        </div>
-        <div class="post-card-body" id="post-body-2"><span class="headline">搞活動從來都唔使再頭痛🤯</span>
-由報名、賣飛、簽到、數據統計到現場互動，
-一個 <b>EventEasy.net</b> 平台已經全包辦晒！
-不用安裝任何軟件，網頁即開即用
-零門檻、零技術，行政 / 主辦都輕鬆上手
-各類活動場合都啱用，慳時間又慳成本✨
-
-立即了解完整教學：
-<span class="link-text">www.eventeasy.net/guide</span>
-<span class="hash">#搞活動必備 #活動神器 #EventEasy #香港活動平台</span></div>
-        <div class="post-card-footer">
-          <span class="post-card-stat">❤️ 推薦 IG 日常</span>
-          <span class="post-card-stat">💬 輕鬆互動風格</span>
-          <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-2" onclick="confirmPublish('post-card-2','款式 2 · 輕鬆吸睛版')">✅ 排隊出街</button></span>
-        </div>
-      </div>
-
-      <!-- 款式 3：精簡短版 -->
-      <div class="post-card" id="post-card-3">
-        <button class="post-card-edit-btn" onclick="toggleEdit('post-card-3')">✏️ 編輯</button>
-        <button class="post-card-delete-btn-top" onclick="deleteCard('post-card-3')" title="刪除">🗑️</button>
-        <span class="post-card-label label-c">款式 3 · 精簡短版</span>
-        <div class="post-card-header">
-          <div class="post-card-avatar avatar-c">E</div>
-          <div>
-            <div class="post-card-user">EventEasy.net</div>
-            <div class="post-card-handle">@eventeasy · Story / Reels 配文</div>
-          </div>
-        </div>
-        <div class="post-card-body" id="post-body-3"><span class="headline">搞活動唔使再左搵右搵！</span>
-<b>EventEasy.net</b> 一站式活動管理平台
-報名｜票務｜QR 簽到｜數據｜互動遊戲
-全部功能一平台搞掂✅
-
-使用指南：<span class="link-text">www.eventeasy.net/guide</span></div>
-        <div class="post-card-footer">
-          <span class="post-card-stat">❤️ 推薦 Story</span>
-          <span class="post-card-stat">💬 短版吸睛</span>
-          <span class="post-card-stat">📋 一鍵複製</span>
-          <span class="post-card-footer-right"><button class="post-card-confirm-btn" id="confirm-btn-3" onclick="confirmPublish('post-card-3','款式 3 · 精簡短版')">✅ 排隊出街</button></span>
-        </div>
-      </div>
+      <div class="sub-tabs" id="news-sub-tabs"></div>
+      <div id="news-content-area" class="content-area"></div>
     </div>
+    <div id="news-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無新聞撮要<br><small>每日 08:00 / 17:00 自動生成</small></div>
   </div>
 
-  <!-- 活動花絮（從 GAS 加載） -->
-  <div id="sec-events" class="section" style="display:none;">
-    <h3>🌍 每日世界各地活動花絮 <span class="badge" id="events-count">0</span></h3>
-    <p class="section-desc">每日 10:00 生成 · 12:00 出街，可編輯後排隊出街</p>
-    <div id="events-list"></div>
-  </div>
-
-  <!-- 設計圖庫 -->
-  <div id="sec-gallery" class="section" style="display:none;">
-    <h3>🎨 歷來設計圖庫 <span class="badge">14</span></h3>
-    <div id="gallery-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px;">
+  <!-- AI 情報 -->
+  <div id="sec-ai" class="section">
+    <div id="ai-loading" class="loading">📡 載入 AI 情報中...</div>
+    <div id="ai-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="date-tabs" id="ai-date-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="ai-cal-toggle" onclick="toggleCalendar('ai')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="ai-cal-dropdown"></div>
+        </div>
+      </div>
+      <div id="ai-content-area" class="content-area"></div>
     </div>
+    <div id="ai-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無 AI 情報<br><small>每日 14:00 自動生成</small></div>
   </div>
 
-  <div class="version-footer">Dashboard v2026.06.10-2 · 如畫面異常請按 Ctrl+Shift+R 強制刷新</div>
+  <!-- 股票分析報告 -->
+  <div id="sec-stock" class="section">
+    <div id="stock-loading" class="loading">📈 載入股票報告中...</div>
+    <div id="stock-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="date-tabs" id="stock-date-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="stock-cal-toggle" onclick="toggleCalendar('stock')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="stock-cal-dropdown"></div>
+        </div>
+      </div>
+      <div class="sub-tabs" id="stock-sub-tabs"></div>
+      <div id="stock-content-area" class="content-area"></div>
+    </div>
+    <div id="stock-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無股票報告<br><small>每晚 19:00 自動生成</small></div>
+  </div>
+
 </div>
 
 <script>
 // ========= 設定 =========
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzBbYmNoDdi5MCdCvdQ9p1FQLoa623rL3K9hemRcjLoXU-CSxdyBpikUWkXrQMUUSZj/exec";
+var GAS_URL = "https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec";
 
-// ===== Buffer API 設定 =====
-const BUFFER_API = "https://api.buffer.com";
-const BUFFER_TOKEN = "ktY3HueL9rcyWTmtYYXuLgjWub-Gtjeon581vW-AcOr";
-const BUFFER_ORG = "6a1de7662d32712827f4dace";
-const BUFFER_CHANNELS = {
-  facebook:  "6a1e74afc687a22dd44f6f6b", // EventEasy.net Facebook Page
-  instagram: "6a1e6612c687a22dd44f3a6a", // EventEast.net Instagram
-  linkedin:  "6a1e6590c687a22dd44f37f0"  // eventeasy-net LinkedIn
-};
-const BUFFER_DEFAULT_LOGO_URL = "https://drive.google.com/uc?export=view&id=17wMJ_xVO3HYM9gx_HERxk8ygpEbp4h7E";
-
-// Buffer 發帖（經 GAS 後端 proxy，Server-side 呼叫 Buffer API 避開 CORS）
-async function bufferPost(text, channelId, opts = {}) {
-  return new Promise((resolve, reject) => {
-    apiCall({
-      action: "buffer_post",
-      text: text,
-      channelId: channelId,
-      imageUrl: opts.imageUrl || BUFFER_DEFAULT_LOGO_URL,
-      linkUrl: opts.linkUrl || "",
-      token: BUFFER_TOKEN
-    }, function(data) {
-      if (data.success) {
-        resolve(data.post);
-      } else {
-        reject(new Error(data.error || "Buffer API 錯誤"));
-      }
-    });
-  });
-}
-
-let jsonpCounter = 0;
+// ===== GAS API (JSONP) =====
+var jsonpCounter = 0;
 
 function apiCall(params, callback) {
   jsonpCounter++;
-  const cbName = "gas_cb_" + jsonpCounter;
+  var cbName = "gas_cb_" + jsonpCounter;
   window[cbName] = function(data) {
     delete window[cbName];
-    const script = document.getElementById("jsonp_" + cbName);
+    var script = document.getElementById("jsonp_" + cbName);
     if (script) script.remove();
     callback(data);
   };
-  const url = new URL(GAS_URL);
-  Object.keys(params).forEach(k => url.searchParams.append(k, params[k]));
+  var url = new URL(GAS_URL);
+  Object.keys(params).forEach(function(k) { url.searchParams.append(k, params[k]); });
   url.searchParams.append("callback", cbName);
-  const script = document.createElement("script");
+  var script = document.createElement("script");
   script.id = "jsonp_" + cbName;
   script.src = url.toString();
   document.head.appendChild(script);
-  setTimeout(() => {
+  setTimeout(function() {
     if (window[cbName]) {
       delete window[cbName];
-      const s = document.getElementById("jsonp_" + cbName);
+      var s = document.getElementById("jsonp_" + cbName);
       if (s) s.remove();
       callback({ success: false, error: "timeout" });
     }
-  }, 10000);
+  }, 15000);
 }
 
-function formatTime(iso) {
-  if (!iso) return "--";
-  return iso.replace("T", " ").substring(0, 19).replace("Z","").replace(" 0"," ");
+// ===== 日期工具 =====
+function fmtDateKey(ts) {
+  var d = new Date(ts);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
-function getTypeBadgeClass(type) {
-  if (type.includes("A")) return "type-promoA";
-  if (type.includes("B")) return "type-promoB";
-  if (type.includes("C")) return "type-promoC";
-  if (type.includes("美股")) return "type-stock";
-  if (type.includes("新聞")) return "type-news";
-  if (type.includes("文案")) return "type-copy";
-  if (type.includes("花絮")) return "type-events";
-  return "";
+function fmtDateShort(dk) {
+  var p = dk.split('-');
+  var curYear = new Date().getFullYear();
+  if (parseInt(p[0]) !== curYear) return p[0] + '/' + p[1] + '/' + p[2];
+  return p[1] + '/' + p[2];
 }
 
-// ===== 出街記錄（所有排隊出街項目，status=待出街） =====
-function loadOutbox() {
-  document.getElementById("outbox-loading").style.display = "block";
-  document.getElementById("outbox-cards").style.display = "none";
-  document.getElementById("outbox-empty").style.display = "none";
-  
-  apiCall({ action: "list", status: "待出街" }, function(data) {
-    const items = data.items || [];
-    document.getElementById("outbox-loading").style.display = "none";
-    document.getElementById("outbox-count").textContent = items.length;
-    
-    if (items.length === 0) {
-      document.getElementById("outbox-empty").style.display = "block";
-    } else {
-      const grid = document.getElementById("outbox-cards");
-      grid.innerHTML = "";
-      items.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        const notesPreview = (item.notes || "無內容").substring(0, 80);
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
-            <span class="card-meta">📅 ${getScheduledTime(item.type)}</span>
-            <button class="btn-publish-now" onclick="publishNow('${item.id}', this)">🚀 現在出街</button>
-          </div>
-          <div class="card-title">${item.title}</div>
-          <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
-          <div class="card-actions">
-            <span class="status-badge status-pending">待出街</span>
-            <button class="btn btn-delete" onclick="deleteOutboxItem('${item.id}')">🗑️ 刪除</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      document.getElementById("outbox-cards").style.display = "grid";
-    }
-    document.getElementById("status-bar").innerHTML = `⚡ ${items.length} 個項目排隊出街中`;
-    document.getElementById("last-update").textContent = new Date().toLocaleTimeString('zh-HK');
-  });
+function fmtDateLabel(dk) {
+  var p = dk.split('-');
+  var d = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  var weekdays = ['日','一','二','三','四','五','六'];
+  return parseInt(p[1]) + '月' + parseInt(p[2]) + '日 (' + weekdays[d.getDay()] + ')';
 }
 
-function deleteOutboxItem(id) {
-  if (!confirm("🗑️ 確定刪除此項目？")) return;
-  apiCall({ action: "delete", id: id }, function(data) {
-    if (data.success) {
-      alert("🗑️ 已刪除");
-      loadOutbox();
-    } else {
-      alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
-    }
-  });
+function addDays(dk, n) {
+  var p = dk.split('-');
+  var d = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  d.setDate(d.getDate() + n);
+  return fmtDateKey(d);
 }
 
-// ===== 預計出街時間 =====
-function getScheduledTime(type) {
-  var t = type || "";
-  if (t.includes("新聞")) return "今日 10:00 出街";
-  if (t.includes("宣傳圖")) return "今日 10:00 出街";
-  if (t.includes("花絮")) return "今日 12:00 出街";
-  if (t.includes("美股")) return "今日 21:00 出街";
-  if (t.includes("文案")) return "手動排程 · 待推送";
-  return "待定";
+function todayKey() {
+  return fmtDateKey(new Date());
 }
 
-// ===== 已出街內容（status=已出街） =====
-function loadPublished() {
-  document.getElementById("published-loading").style.display = "block";
-  document.getElementById("published-cards").style.display = "none";
-  document.getElementById("published-empty").style.display = "none";
-  
-  apiCall({ action: "list", status: "已出街" }, function(data) {
-    const items = data.items || [];
-    document.getElementById("published-loading").style.display = "none";
-    document.getElementById("published-count").textContent = items.length;
-    
-    if (items.length === 0) {
-      document.getElementById("published-empty").style.display = "block";
-    } else {
-      const grid = document.getElementById("published-cards");
-      grid.innerHTML = "";
-      items.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        const notesPreview = (item.notes || "無內容").substring(0, 80);
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="type-badge ${getTypeBadgeClass(item.type)}">${item.type}</span>
-            <span class="card-meta">📅 出街時間：${formatTime(item.confirmedAt || item.createdAt)}</span>
-          </div>
-          <div class="card-title">${item.title}</div>
-          <div class="card-body">${notesPreview}${(item.notes||'').length > 80 ? '...' : ''}</div>
-          <div class="card-actions">
-            <span class="status-badge status-confirmed">已出街</span>
-            <button class="btn btn-confirm" onclick="requeueItem('${item.id}', this)">🔄 重新排隊</button>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-      document.getElementById("published-cards").style.display = "grid";
-    }
-  });
-}
-
-// ===== 重新排隊（已出街 → 待出街） =====
-function requeueItem(id, btn) {
-  if (!confirm("🔄 確定將此內容重新排隊出街？\n\n將會移回「出街記錄」等待推送。")) return;
-  btn.disabled = true;
-  btn.textContent = '⏳ 處理中...';
-  // 用 update status
-  apiCall({ action: "list", status: "已出街" }, function(resp) {
-    // GAS v13 可能冇直接 update status API，用 delete + add 方式
-    var items = (resp.items || []).filter(i => i.id === id);
-    if (items.length === 0) { alert("❌ 找不到該項目"); btn.disabled = false; return; }
-    var item = items[0];
-    // delete then re-add with status=待出街
-    apiCall({ action: "delete", id: id }, function(delRes) {
-      if (!delRes.success) { alert("❌ 重新排隊失敗"); btn.disabled = false; return; }
-      // 手動 call GAS add
-      var params = new URLSearchParams();
-      params.append("action", "add");
-      params.append("type", item.type || "");
-      params.append("title", item.title || "");
-      params.append("notes", item.notes || "");
-      params.append("status", "待出街");
-      var script = document.createElement("script");
-      script.src = GAS_URL + "?" + params.toString() + "&callback=reqCb";
-      window.reqCb = function(rdata) {
-        delete window.reqCb;
-        if (rdata.success) {
-          alert("✅ 已重新排隊！");
-          loadPublished();
-          loadOutbox();
-        } else {
-          alert("❌ 重新排隊失敗：" + (rdata.error || ""));
-          btn.disabled = false;
-          btn.textContent = '🔄 重新排隊';
-        }
-      };
-      document.head.appendChild(script);
-    });
-  });
-}
-
-// ===== 立即出街（管理員手動推送）→ 真正 call Buffer API → 3 個頻道全發 =====
-async function publishNow(id, btn) {
-  if (!confirm("🚀 確定現在立即出街？\n\n將推送至：\n• Facebook（EventEasy.net Page）\n• Instagram（EventEast.net + Logo）\n• LinkedIn（eventeasy-net）")) return;
-  btn.disabled = true;
-  btn.textContent = '⏳ 推送中...';
-
-  // 1. 從 GAS 讀取完整內容
-  const item = await new Promise((resolve) => {
-    apiCall({ action: "list", status: "待出街" }, function(data) {
-      const found = (data.items || []).find(i => i.id == id);
-      resolve(found || null);
-    });
-  });
-  if (!item) { alert("❌ 找不到該項目"); btn.disabled = false; btn.textContent = '🚀 現在出街'; return; }
-
-  // 2. 組合貼文文字（title + 內容）
-  const text = [item.title || "", item.notes || ""].filter(Boolean).join("\n\n");
-
-  // 3. 依次發送到 3 個頻道
-  const targets = [
-    { name: "Facebook",   id: BUFFER_CHANNELS.facebook },
-    { name: "Instagram",  id: BUFFER_CHANNELS.instagram },
-    { name: "LinkedIn",   id: BUFFER_CHANNELS.linkedin }
-  ];
-  const results = [];
-  for (const ch of targets) {
-    btn.textContent = '⏳ 推送 ' + ch.name + '...';
-    try {
-      const post = await bufferPost(text, ch.id);
-      results.push("✅ " + ch.name + "（" + (post.dueAt ? "已排程" : "已發送") + "）");
-      console.log("✅ " + ch.name + " 發帖成功：" + post.id);
-    } catch (err) {
-      results.push("❌ " + ch.name + "：" + err.message);
-    }
+function parseDateKeyFromTitle(title) {
+  if (!title) return null;
+  // 標準格式：6月11日
+  var m = title.match(/(\d{1,2})月(\d{1,2})日/);
+  if (m) {
+    var mm = m[1].padStart(2, '0');
+    var dd = m[2].padStart(2, '0');
+    return '2026-' + mm + '-' + dd;
   }
+  // 兼容格式：標題含 _260611 或 260611（年月日，6位）
+  var m2 = title.match(/_?(\d{6})/);
+  if (m2) {
+    var s = m2[1];
+    var mm2 = s.slice(0, 2);
+    var dd2 = s.slice(2, 4);
+    return '2026-' + mm2 + '-' + dd2;
+  }
+  return null;
+}
 
-  // 4. 更新 GAS 狀態：delete + re-add（GAS v13 冇 update API）
-  btn.textContent = '⏳ 更新狀態...';
-  apiCall({ action: "delete", id: id }, function(delRes) {
-    console.log("[publishNow] delete result:", delRes);
-    if (!delRes.success) {
-      btn.textContent = '🚀 現在出街';
-      btn.disabled = false;
-      alert('📤 推送結果：\n\n' + results.join("\n") + '\n\n⚠️ Buffer 已推送，但 GAS 狀態更新失敗（刪除失敗）');
-      return;
-    }
-    // Re-add with status=已出街（用 apiCall 包裝，JSONP 正確）
-    apiCall({
-      action: "add",
-      type: item.type || "",
-      title: item.title || "",
-      notes: item.notes || "",
-      status: "已出街"
-    }, function(addRes) {
-      console.log("[publishNow] re-add result:", addRes);
-      btn.textContent = '🚀 現在出街';
-      if (addRes.success) {
-        alert('📤 推送結果：\n\n' + results.join("\n") + '\n\n✅ 內容已移至「已出街內容」分頁。');
-        loadOutbox();
-        loadPublished();
-      } else {
-        alert('📤 推送結果：\n\n' + results.join("\n") + '\n\n⚠️ Buffer 已推送，但 GAS 狀態更新失敗（重新寫入失敗）');
-        btn.disabled = false;
-        loadOutbox();
+function groupByDate(items) {
+  var g = {};
+  items.forEach(function(it) {
+    var k = parseDateKeyFromTitle(it.title) || fmtDateKey(it.createdAt);
+    if (!g[k]) g[k] = [];
+    g[k].push(it);
+  });
+  return g;
+}
+
+// ===== Drive URL → GitHub Pages 映射 =====
+var GH_PAGES = 'https://eventeasynet.github.io/workbuddyClaw/';
+var DRIVE_MAPPING = {
+  '1dt8eDjwMa1N5fIOMfn4ivriWqc0Ab0m7': 'news/2026-06-05_HK_News.html',
+  '1yWSNiLp3oo-Gz6pP1aSoPKA4Ajzsxgah': 'news_summary_20260606.html',
+  '1v0QO5LbHTU3AQnnF_8Kv3EyB38wenYsr': 'stock_report_20260605.html',
+  '1eMNDXZipS7VPJGQ4JTWprTQr7BQ-Yb8l': 'stock_report_20260606.html',
+  '18aL3ljvqxUd3wLDr6VB8GOQQjVkDkkmD': 'ai_intelligence_20260606.html',
+};
+
+(function() {
+  fetch(GH_PAGES + 'drive_mapping.json?_t=' + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && data.mapping) {
+        Object.assign(DRIVE_MAPPING, data.mapping);
+        console.log('[fixDriveUrl] 映射表已更新，共 ' + Object.keys(DRIVE_MAPPING).length + ' 條');
       }
-    });
-  });
-}
+    })
+    .catch(function(e) { console.warn('[fixDriveUrl] 加載映射表失敗，使用硬編碼', e); });
+})();
 
-function updateOutboxCount() {
-  var grid = document.getElementById('outbox-cards');
-  if (!grid) return;
-  var cards = grid.querySelectorAll('.card');
-  document.getElementById('outbox-count').textContent = cards.length;
-  if (cards.length === 0) {
-    document.getElementById('outbox-empty').style.display = 'block';
-    grid.style.display = 'none';
+function fixDriveUrl(url) {
+  if (!url) return '';
+  var m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m) {
+    var fid = m[1];
+    return DRIVE_MAPPING[fid] ? GH_PAGES + DRIVE_MAPPING[fid] : 'https://drive.google.com/file/d/' + fid + '/preview';
   }
+  return url;
 }
 
-// ===== 美股報告（已確認，按日期分組：報告+追蹤） =====
-function loadStock() {
-  document.getElementById("stock-loading").style.display = "block";
-  document.getElementById("stock-list").style.display = "none";
-  document.getElementById("stock-empty").style.display = "none";
-
-  apiCall({ action: "list", status: "已確認" }, function(data) {
-    const items = (data.items || []).filter(i => i.type.includes("美股"));
-    document.getElementById("stock-loading").style.display = "none";
-    document.getElementById("stock-count").textContent = items.length;
-
-    if (items.length === 0) {
-      document.getElementById("stock-empty").style.display = "block";
-      return;
-    }
-
-    const container = document.getElementById("stock-list");
-    container.style.display = "block";
-    container.innerHTML = "";
-
-    // 修正：extractDateLabel 返回日期字串，group 建立時一次設定 dateLabel
-    function extractDateLabel(title) {
-      var m = (title || "").match(/(\d+)月(\d+)日/);
-      if (m) return m[1] + "月" + m[2] + "日";
-      return null;
-    }
-
-    function dateLabelToNum(label) {
-      var m = (label || "").match(/(\d+)月(\d+)日/);
-      if (m) return parseInt(m[1]) * 100 + parseInt(m[2]);
-      return 0;
-    }
-
-    var groups = {};
-    items.forEach(function(item) {
-      var label = extractDateLabel(item.title) || "未知日期";
-      if (!groups[label]) groups[label] = { dateLabel: label, items: [] };
-      groups[label].items.push(item);
-    });
-
-    var sortedLabels = Object.keys(groups).sort(function(a, b) {
-      return dateLabelToNum(b) - dateLabelToNum(a);
-    });
-
-    sortedLabels.forEach(function(label) {
-      var group = groups[label];
-      var groupDiv = document.createElement("div");
-      groupDiv.className = "date-group";
-
-      var header = document.createElement("div");
-      header.className = "date-header date-header-stock";
-      header.innerHTML = "📈 " + group.dateLabel;
-      groupDiv.appendChild(header);
-
-      var typeOrder = {"美股報告": 0, "美股追蹤": 1};
-      group.items.sort(function(a, b) {
-        return (typeOrder[a.type] || 99) - (typeOrder[b.type] || 99);
-      });
-
-      group.items.forEach(function(item) {
-        var typeIcon = item.type === "美股報告" ? "📈" : "📊";
-        var typeLabel = item.type === "美股報告" ? "持股分析" : "板塊追蹤";
-        var row = document.createElement("div");
-        row.className = "date-item";
-        row.innerHTML =
-          '<div class="date-item-type"><span class="type-badge type-stock">' + typeIcon + ' ' + typeLabel + '</span></div>' +
-          '<div class="date-item-title"><a class="link" href="' + (item.driveUrl || "#") + '" target="_blank">' + escHtml(item.title) + '</a></div>' +
-          '<div class="date-item-status"><span class="status-badge status-confirmed">' + escHtml(item.status) + '</span></div>' +
-          '<div class="date-item-action">' + (item.driveUrl ? '<button class="btn btn-preview" onclick="window.open(\'' + item.driveUrl + '\', \'_blank\')">👁️ 查看</button>' : '<span style="color:#9ca3af;font-size:12px;">📝 純文字版</span>') + '</div>';
-        groupDiv.appendChild(row);
-      });
-
-      container.appendChild(groupDiv);
-    });
-  });
-}
-
-// ===== 新聞撮要（已確認，按日期分組） =====
-function loadNews() {
-  document.getElementById("news-loading").style.display = "block";
-  document.getElementById("news-list").style.display = "none";
-  document.getElementById("news-empty").style.display = "none";
-
-  apiCall({ action: "list", status: "已確認" }, function(data) {
-    const items = (data.items || []).filter(i =>
-      i.type === "新聞撮要" || i.type === "AI情報"
-    );
-    document.getElementById("news-loading").style.display = "none";
-    document.getElementById("news-count").textContent = items.length;
-
-    if (items.length === 0) {
-      document.getElementById("news-empty").style.display = "block";
-      return;
-    }
-
-    const container = document.getElementById("news-list");
-    container.style.display = "block";
-    container.innerHTML = "";
-
-    // 修正：extractDateLabel 返回日期字串（如 "6月9日"），group 建立時一次設定 dateLabel
-    function extractDateLabel(title) {
-      var m = (title || "").match(/(\d+)月(\d+)日/);
-      if (m) return m[1] + "月" + m[2] + "日";
-      return null; // 找不到日期返回 null，呢行自己一組
-    }
-
-    function dateLabelToNum(label) {
-      var m = (label || "").match(/(\d+)月(\d+)日/);
-      if (m) return parseInt(m[1]) * 100 + parseInt(m[2]);
-      return 0;
-    }
-
-    var groups = {};
-    items.forEach(function(item) {
-      var label = extractDateLabel(item.title) || "未知日期";
-      if (!groups[label]) groups[label] = { dateLabel: label, items: [] }; // ← 修正：建立時一次 set 好，唔可以 loop 入面覆蓋
-      groups[label].items.push(item);
-    });
-
-    var sortedLabels = Object.keys(groups).sort(function(a, b) {
-      return dateLabelToNum(b) - dateLabelToNum(a);
-    });
-
-    sortedLabels.forEach(function(label) {
-      var group = groups[label];
-      var groupDiv = document.createElement("div");
-      groupDiv.className = "date-group";
-
-      var header = document.createElement("div");
-      header.className = "date-header";
-      header.innerHTML = "📅 " + group.dateLabel;
-      groupDiv.appendChild(header);
-
-      var order = {"上午": 0, "下午": 1, "AI": 2};
-      group.items.sort(function(a, b) {
-        var oa = 999, ob = 999;
-        for (var k in order) { if (a.title.indexOf(k) !== -1) oa = order[k]; }
-        for (var k in order) { if (b.title.indexOf(k) !== -1) ob = order[k]; }
-        return oa - ob;
-      });
-
-      group.items.forEach(function(item) {
-        var typeClass = item.type === "AI情報" ? "type-events" : "type-news";
-        var row = document.createElement("div");
-        row.className = "date-item";
-        row.innerHTML =
-          '<div class="date-item-type"><span class="type-badge ' + typeClass + '">' + escHtml(item.type) + '</span></div>' +
-          '<div class="date-item-title"><a class="link" href="' + (item.driveUrl || "#") + '" target="_blank">' + escHtml(item.title) + '</a></div>' +
-          '<div class="date-item-status"><span class="status-badge status-confirmed">' + escHtml(item.status) + '</span></div>' +
-          '<div class="date-item-action">' + (item.driveUrl ? '<button class="btn btn-preview" onclick="window.open(\'' + item.driveUrl + '\', \'_blank\')">👁️ 查看</button>' : '') + '</div>';
-        groupDiv.appendChild(row);
-      });
-
-      container.appendChild(groupDiv);
-    });
-  });
-}
-
-// ===== 活動花絮（從 GAS 加載） =====
-function loadEvents() {
-  var list = document.getElementById("events-list");
-  var badge = document.getElementById("events-count");
-  list.innerHTML = "<p style='color:#9ca3af;'>⏳ 載入中...</p>";
-  
-  apiCall({ action: "list", type: "活動花絮" }, function(data) {
-    var items = (data.items || []).filter(function(i) {
-      // 只顯示 type 是活動花絮，且狀態不是「待出街」或「已出街」的項目
-      var isEvent = i.type && (i.type === "活動花絮" || i.type.indexOf("活動花絮") !== -1);
-      var notOutbox = !i.status || i.status === "待確認";
-      return isEvent && notOutbox;
-    });
-    badge.textContent = items.length;
-    if (items.length === 0) {
-      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 10:00 生成（12:00 出街）。</p>";
-      return;
-    }
-    list.innerHTML = "";
-    items.forEach(function(item) {
-      var card = document.createElement("div");
-      card.className = "event-card";
-      card.id = "event-card-" + item.id;
-      var notes = (item.notes || "")
-        .replace(/\n/g, "<br>")
-        .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" style="color:#3b82f6; text-decoration:none;" title="$2">🔗 $1</a>');
-      card.innerHTML = `
-        <div class="event-card-header">
-          <div class="event-card-header-left">
-            <div class="event-card-icon">🌍</div>
-            <div><div class="event-card-title">${escHtml(item.title || "活動花絮")}</div>
-            <div class="event-card-date">🕐 每日 10:00 生成 · 12:00 出街 · ${escHtml(item.type || "")}</div></div>
-          </div>
-          <button class="event-edit-btn" onclick="toggleEventEdit('event-card-${item.id}')">✏️ 編輯</button>
-        </div>
-        <div class="event-card-body" id="event-body-${item.id}">${notes}</div>
-        <div class="event-card-footer">
-          <span style="font-size:11px; color:#9ca3af;">📋 ID: ${item.id}</span>
-          <div class="event-card-footer-right">
-            <button class="event-confirm-btn" id="event-confirm-${item.id}" onclick="confirmEventPublish('${item.id}','${escAttr(item.title || "")}')">✅ 排隊出街</button>
-            <button class="event-delete-btn" onclick="deleteEventItem('${item.id}')" title="刪除">🗑️</button>
-          </div>
-        </div>
-      `;
-      list.appendChild(card);
-    });
-  });
-}
-
-function toggleEventEdit(cardId) {
-  var bodyId = cardId.replace("event-card-", "event-body-");
-  var body = document.getElementById(bodyId);
-  var card = document.getElementById(cardId);
-  var btn = card.querySelector(".event-edit-btn");
-  if (!body || !btn) return;
-  if (body.isContentEditable) {
-    body.contentEditable = "false";
-    body.classList.remove("editing");
-    btn.classList.remove("saving");
-    btn.innerHTML = "✏️ 編輯";
-  } else {
-    body.contentEditable = "true";
-    body.classList.add("editing");
-    btn.classList.add("saving");
-    btn.innerHTML = "💾 儲存";
-  }
-}
-
+// ===== 工具 =====
 function escHtml(s) {
   if (!s) return "";
   return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
-function escAttr(s) {
-  if (!s) return "";
-  return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+
+// ===== 全域狀態 =====
+var stockDateGroups = {};
+var newsDateGroups = {};
+var aiDateGroups = {};
+var stockActiveDK = '';  // 當前選中日期 (dateKey)
+var newsActiveDK = '';
+var aiActiveDK = '';
+var stockActiveSub = 0;  // 子 Tab 索引 (0=持股分析, 1=板塊追蹤)
+var newsActiveSub = 0;   // 子 Tab 索引 (0=上午, 1=下午)
+var calState = { stock: null, news: null, ai: null };
+
+// ===== 5 天日期 Tab 邏輯 =====
+// 規則：選中日期在中間（第 3 格），最新日期在最左
+// 排列：[center+2, center+1, center, center-1, center-2]
+function get5DayTabs(centerDK) {
+  var tabs = [];
+  for (var i = 2; i >= -2; i--) {
+    tabs.push(addDays(centerDK, i));
+  }
+  return tabs; // 最新在左，最舊在右
 }
 
-function confirmEventPublish(id, title) {
-  var body = document.getElementById("event-body-" + id);
-  var btn = document.getElementById("event-confirm-" + id);
-  if (!body || !btn) return;
-  if (body.isContentEditable) {
-    body.contentEditable = "false";
-    body.classList.remove("editing");
-    var eb = document.querySelector("#event-card-" + id + " .event-edit-btn");
-    if (eb) { eb.classList.remove("saving"); eb.innerHTML = "✏️ 編輯"; }
-  }
-  var text = body.innerText.trim();
-  if (!confirm("✅ 確認將活動花絮「" + title + "」排隊出街？\n\n將會加入出街記錄，狀態為「待出街」。")) return;
-  btn.disabled = true;
-  btn.textContent = "⏳ 傳送中...";
-  apiCall({
-    action: "add",
-    type: "活動花絮",
-    title: title,
-    notes: text,
-    status: "待出街"
-  }, function(data) {
-    if (data.success) {
-      alert("✅ 已加入出街記錄！\n\n請到「📤 出街記錄」查看。");
-      btn.textContent = "✅ 已排隊";
-      btn.style.background = "linear-gradient(135deg, #6b7280, #4b5563)";
-      btn.disabled = true;
-      // 1.5 秒後自動隱藏卡片
-      var card = document.getElementById("event-card-" + id);
-      if (card) {
-        setTimeout(function() {
-          card.style.transition = "opacity 0.4s, transform 0.4s";
-          card.style.opacity = "0";
-          card.style.transform = "scale(0.95)";
-          setTimeout(function() { card.style.display = "none"; }, 400);
-        }, 1500);
-      }
-    } else {
-      alert("❌ 失敗：" + (data.error || "未知錯誤"));
-      btn.disabled = false;
-      btn.textContent = "✅ 排隊出街";
+function renderDateTabs(prefix, groups) {
+  var tabsDiv = document.getElementById(prefix + '-date-tabs');
+  if (!tabsDiv) return;
+  tabsDiv.innerHTML = '';
+
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : newsActiveDK);
+  var tabDates = get5DayTabs(activeDK);
+
+  tabDates.forEach(function(dk) {
+    var btn = document.createElement('button');
+    btn.className = 'date-tab';
+    if (dk === activeDK) {
+      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : 'active'));
     }
-  });
-}
-
-// ===== 設計圖庫 =====
-const GALLERY_DATA = [
-  { id:"A", title:"主視覺 Hero Banner", desc:"深色漸變 + 插圖 icon（火箭/盾牌/圖表）", fid:"1BXn_BX-EkvUNkIfxa-6oT0lYE41KohV_" },
-  { id:"B", title:"數據對比", desc:"白色背景 + 左右對比卡片 + 進度條", fid:"10NrDSyzq3Q9TAodnto5l8tHzI-XHgpO4" },
-  { id:"C", title:"知識貼士", desc:"淺色漸變 + 編號卡片式 Tips（5 色）", fid:"1_zFe6pRTqqtYcKg_cOgICN8FRQG0rW2K" },
-  { id:"D", title:"HTML 風格版", desc:"CSS 圓角卡片 + 漸層 icon", fid:"1jYN8pRcwOnDmPOxYZgw1F10D0rXcbV8D" },
-  { id:"E", title:"Anchor 版", desc:"標題 + 錨點重點列表", fid:"1PSK2J5IFBeGPhwFbFNXe33q9JKZ4Y7YS" },
-  { id:"F", title:"NotebookLM 風格", desc:"學術雜誌風 + 雙欄排版", fid:"1BTqoq78MYumaDzu4qBKYUoAKr_LBGAcD" },
-  { id:"G", title:"改進版", desc:"優化排版 + 重點強調", fid:"1mX5Ksz4Q8pKShLOEb-BG9AYINMr7-_YM" },
-  { id:"H", title:"最終版", desc:"SVG + Resvg 渲染最終效果", fid:"1RVGdlgiUkKyWCqbH2GG4XUkjxT5eWAgu" },
-  { id:"I", title:"出街版", desc:"已推送至社群媒體版本", fid:"1iCTH4DtMgghuSXrMTNucXbEQJPY5KWrh" },
-  { id:"J", title:"完成版", desc:"第一代完整設計", fid:"1wbGDFvXFJwzxv1zdzRIb3cJ8EheIezq9" },
-  { id:"K", title:"Logo 版", desc:"含 Logo 疊加版本", fid:"11m3artaaELP6m2e-MiFIrKtfhTZSksb8" },
-  { id:"L", title:"宣傳圖 早鳥版", desc:"早期文案版本", fid:"1P5euzMxe7ZmNPdoYnPgwwxyeylwqWo5X" },
-  { id:"M", title:"宣傳圖 v2", desc:"第二代文案版本", fid:"1AsY4JMNrw93DZrpXCIX4BmxaeL2SA-Yo" },
-  { id:"N", title:"宣傳圖 v3", desc:"第三代文案版本", fid:"1Y-FlEx21cd9ixb4tjzEdkz8kNa2cWx_k" }
-];
-
-function loadGallery() {
-  const grid = document.getElementById("gallery-grid");
-  grid.innerHTML = "";
-  GALLERY_DATA.forEach(item => {
-    const thumb = "https://drive.google.com/thumbnail?id=" + item.fid + "&sz=w400";
-    const link = "https://drive.google.com/file/d/" + item.fid + "/view";
-    const card = document.createElement("div");
-    card.style.cssText = "background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden;";
-    card.innerHTML = `
-      <a href="${link}" target="_blank">
-        <img src="${thumb}" alt="${item.title}" style="width:100%; height:240px; object-fit:cover; display:block;" loading="lazy">
-      </a>
-      <div style="padding:12px;">
-        <div style="font-weight:600; font-size:13px;">${item.title}</div>
-        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${item.desc}</div>
-        <a href="${link}" target="_blank" style="font-size:12px; color:var(--accent); margin-top:6px; display:inline-block;">👁️ 查看大圖</a>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-// ===== 文案卡片刪除 =====
-function deleteCard(cardId) {
-  var card = document.getElementById(cardId);
-  if (!card) return;
-  if (!confirm("🗑️ 確定要刪除此文案卡片？\n\n刪除後可重新整理頁面恢復。")) return;
-  card.style.transition = "opacity 0.3s, transform 0.3s";
-  card.style.opacity = "0";
-  card.style.transform = "scale(0.95)";
-  setTimeout(function() { card.style.display = "none"; }, 300);
-}
-
-// ===== 活動花絮刪除（從 GAS 刪除） =====
-function deleteEventItem(id) {
-  if (!confirm("🗑️ 確定要刪除此活動花絮？\n\n此操作將從系統中永久移除。")) return;
-  apiCall({ action: "delete", id: id }, function(data) {
-    if (data.success) {
-      var card = document.getElementById("event-card-" + id);
-      if (card) {
-        card.style.transition = "opacity 0.3s, transform 0.3s";
-        card.style.opacity = "0";
-        card.style.transform = "scale(0.95)";
-        setTimeout(function() { card.remove(); updateEventCount(); }, 300);
-      }
-    } else {
-      alert("❌ 刪除失敗：" + (data.error || "未知錯誤"));
+    if (!groups[dk]) {
+      btn.classList.add('no-data');
     }
-  });
-}
 
-function updateEventCount() {
-  var list = document.getElementById("events-list");
-  var badge = document.getElementById("events-count");
-  if (list && badge) {
-    var cards = list.querySelectorAll(".event-card");
-    badge.textContent = cards.length;
-    if (cards.length === 0) {
-      list.innerHTML = "<p style='color:#9ca3af;'>尚未有活動花絮，等待每日 10:00 生成（12:00 出街）。</p>";
-    }
-  }
-}
+    var label = fmtDateShort(dk);
+    var count = (groups[dk] || []).length;
+    var countText = count > 0 ? count + '篇' : '無數據';
 
-// ===== 社群文案編輯 =====
-function toggleEdit(cardId) {
-  var card = document.getElementById(cardId);
-  var body = document.getElementById(cardId.replace('post-card','post-body'));
-  var btn = card.querySelector('.post-card-edit-btn');
-  if (!body || !btn) return;
-  
-  if (body.isContentEditable) {
-    // Save mode
-    body.contentEditable = 'false';
-    body.classList.remove('editing');
-    btn.classList.remove('saving');
-    btn.innerHTML = '✏️ 編輯';
-  } else {
-    // Edit mode
-    body.contentEditable = 'true';
-    body.classList.add('editing');
-    btn.classList.add('saving');
-    btn.innerHTML = '💾 儲存';
-  }
-}
+    btn.innerHTML = '<span>' + label + '</span><span class="tab-label">' + countText + '</span>';
 
-// ===== 社群文案排隊出街 =====
-function confirmPublish(cardId, styleLabel) {
-  var card = document.getElementById(cardId);
-  var body = document.getElementById(cardId.replace('post-card','post-body'));
-  var btn = document.getElementById(cardId.replace('post-card','confirm-btn'));
-  if (!body || !btn) return;
-  
-  // Exit edit mode if active
-  if (body.isContentEditable) {
-    body.contentEditable = 'false';
-    body.classList.remove('editing');
-    var editBtn = card.querySelector('.post-card-edit-btn');
-    if (editBtn) { editBtn.classList.remove('saving'); editBtn.innerHTML = '✏️ 編輯'; }
-  }
-  
-  // Get text content (strip HTML, keep newlines)
-  var text = body.innerText.trim();
-  var headline = '';
-  var h = body.querySelector('.headline');
-  if (h) headline = h.innerText.trim();
-  
-  if (!confirm('✅ 確認將「' + styleLabel + '」排隊出街？\n\n標題：' + headline + '\n\n將會加入出街記錄，狀態為「待出街」。')) return;
-  
-  btn.disabled = true;
-  btn.textContent = '⏳ 傳送中...';
-  
-  var params = new URLSearchParams();
-  params.append('action', 'add');
-  params.append('type', '社群文案');
-  params.append('title', headline || styleLabel);
-  params.append('notes', text);
-  params.append('status', '待出街');
-  
-  fetch(GAS_URL + '?' + params.toString())
-    .then(function(r) { return r.text(); })
-    .then(function(raw) {
-      try {
-        var data = JSON.parse(raw.startsWith('"') ? JSON.parse(raw) : raw);
-        if (data.success) {
-          alert('✅ 已加入出街記錄！\n\n可以在「📤 出街記錄」分頁查看。');
-          btn.textContent = '✅ 已排隊';
-          btn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
-          btn.disabled = true;
-          // 1.5 秒後自動隱藏卡片
-          setTimeout(function() {
-            if (card) {
-              card.style.transition = 'opacity 0.4s, transform 0.4s';
-              card.style.opacity = '0';
-              card.style.transform = 'scale(0.95)';
-              setTimeout(function() { card.style.display = 'none'; }, 400);
-            }
-          }, 1500);
+    (function(dateKey) {
+      btn.onclick = function() {
+        if (prefix === 'stock') {
+          stockActiveDK = dateKey;
+          renderStockContent();
+        } else if (prefix === 'news') {
+          newsActiveDK = dateKey;
+          renderNewsContent();
         } else {
-          alert('❌ 加入失敗：' + (data.error || '未知錯誤'));
-          btn.disabled = false;
-          btn.textContent = '✅ 排隊出街';
+          aiActiveDK = dateKey;
+          renderAIContent();
         }
-      } catch(e) {
-        alert('❌ 伺服器回應異常，請稍後再試。');
-        btn.disabled = false;
-        btn.textContent = '✅ 排隊出街';
-      }
-    })
-    .catch(function(e) {
-      alert('❌ 網絡錯誤：' + e.message);
-      btn.disabled = false;
-      btn.textContent = '✅ 排隊出街';
-    });
+        renderDateTabs(prefix, groups);
+        renderCalendar(prefix + '-cal-dropdown', groups, dateKey, prefix);
+      };
+    })(dk);
+
+    tabsDiv.appendChild(btn);
+  });
 }
+
+// ===== 子 Tab =====
+// 新聞：上午新聞 + 下午新聞
+function renderNewsSubTabs() {
+  var div = document.getElementById('news-sub-tabs');
+  if (!div) return;
+  div.innerHTML = '';
+  var labels = ['🌅 上午新聞', '🌇 下午新聞'];
+  labels.forEach(function(label, idx) {
+    var btn = document.createElement('button');
+    btn.className = 'sub-tab' + (idx === newsActiveSub ? ' active' : '');
+    btn.textContent = label;
+    (function(i) {
+      btn.onclick = function() {
+        newsActiveSub = i;
+        renderNewsSubTabs();
+        renderNewsReport();
+      };
+    })(idx);
+    div.appendChild(btn);
+  });
+}
+
+// 股票：持股分析 + 板塊追蹤
+function renderStockSubTabs() {
+  var div = document.getElementById('stock-sub-tabs');
+  if (!div) return;
+  div.innerHTML = '';
+  var labels = ['💰 持股分析', '📊 板塊追蹤'];
+  labels.forEach(function(label, idx) {
+    var btn = document.createElement('button');
+    btn.className = 'sub-tab' + (idx === stockActiveSub ? ' active-stock' : '');
+    btn.textContent = label;
+    (function(i) {
+      btn.onclick = function() {
+        stockActiveSub = i;
+        renderStockSubTabs();
+        renderStockReport();
+      };
+    })(idx);
+    div.appendChild(btn);
+  });
+}
+
+// ===== 渲染報告內容 =====
+function renderReport(areaId, item) {
+  var area = document.getElementById(areaId);
+  if (!area) return;
+  area.innerHTML = '';
+
+  if (!item) {
+    area.innerHTML = '<div class="empty-msg">📭 該日期暫無此類報告</div>';
+    return;
+  }
+
+  var url = fixDriveUrl(item.driveUrl) || '';
+  var title = item.title || '';
+
+  if (url) {
+    // 有 driveUrl → iframe
+    var header = document.createElement('div');
+    header.className = 'report-header';
+    header.innerHTML = '<span class="report-title">' + escHtml(title) + '</span><a href="' + url + '" target="_blank">🔗 新視窗開啟</a>';
+    area.appendChild(header);
+
+    var iframe = document.createElement('iframe');
+    iframe.src = url + '?_t=' + Date.now();
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    area.appendChild(iframe);
+  } else {
+    // 無 driveUrl → 純文字
+    var notes = item.notes || item.content || '（無內容）';
+    var textDiv = document.createElement('div');
+    textDiv.className = 'text-report';
+    textDiv.innerHTML = '<div style="font-size:18px;font-weight:700;margin-bottom:12px;">' + escHtml(title) + '</div>' +
+      '<div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">' + escHtml(item.type || '') + ' · ' + escHtml(item.createdAt || '') + '</div>' +
+      '<div>' + escHtml(notes).replace(/\n/g, '<br>') + '</div>';
+    area.appendChild(textDiv);
+  }
+}
+
+function renderNewsReport() {
+  var reports = newsDateGroups[newsActiveDK] || [];
+  var target;
+  if (newsActiveSub === 0) {
+    // 上午新聞
+    target = reports.find(function(it) { return it.title && it.title.indexOf('下午') < 0; });
+  } else {
+    // 下午新聞
+    target = reports.find(function(it) { return it.title && it.title.indexOf('下午') >= 0; });
+  }
+  renderReport('news-content-area', target);
+}
+
+function renderStockReport() {
+  var reports = stockDateGroups[stockActiveDK] || [];
+  var target;
+  if (stockActiveSub === 0) {
+    // 持股分析（美股報告）
+    target = reports.find(function(it) { return it.type && it.type.indexOf('報告') >= 0; });
+    if (!target) target = reports.find(function(it) { return it.type && it.type.indexOf('追蹤') < 0; });
+  } else {
+    // 板塊追蹤（美股追蹤）
+    target = reports.find(function(it) { return it.type && it.type.indexOf('追蹤') >= 0; });
+  }
+  if (!target && reports.length > 0) {
+    target = reports[stockActiveSub < reports.length ? stockActiveSub : 0];
+  }
+  renderReport('stock-content-area', target);
+}
+
+function renderAIContent() {
+  var reports = aiDateGroups[aiActiveDK] || [];
+  var target = reports[0] || null;
+  renderReport('ai-content-area', target);
+}
+
+// ===== 整合渲染 =====
+function renderNewsContent() {
+  renderDateTabs('news', newsDateGroups);
+  renderNewsSubTabs();
+  renderNewsReport();
+}
+
+function renderStockContent() {
+  renderDateTabs('stock', stockDateGroups);
+  renderStockSubTabs();
+  renderStockReport();
+}
+
+// ===== 載入數據 =====
+function loadNews() {
+  document.getElementById('news-loading').style.display = 'block';
+  document.getElementById('news-viewer').style.display = 'none';
+  document.getElementById('news-empty').style.display = 'none';
+
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) {
+      return i.type && i.type.indexOf('新聞') >= 0 && i.type.indexOf('AI') < 0;
+    });
+    newsDateGroups = groupByDate(items);
+    document.getElementById('news-loading').style.display = 'none';
+
+    if (items.length === 0) {
+      document.getElementById('news-empty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('news-viewer').style.display = 'block';
+    // 默認選中最新有數據的日期
+    var dates = Object.keys(newsDateGroups).sort().reverse();
+    newsActiveDK = dates[0] || todayKey();
+    newsActiveSub = 0;
+    renderNewsContent();
+    renderCalendar('news-cal-dropdown', newsDateGroups, newsActiveDK, 'news');
+  });
+}
+
+function loadAI() {
+  document.getElementById('ai-loading').style.display = 'block';
+  document.getElementById('ai-viewer').style.display = 'none';
+  document.getElementById('ai-empty').style.display = 'none';
+
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) {
+      return i.type && i.type.indexOf('AI') >= 0;
+    });
+    aiDateGroups = groupByDate(items);
+    document.getElementById('ai-loading').style.display = 'none';
+
+    if (items.length === 0) {
+      document.getElementById('ai-empty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('ai-viewer').style.display = 'block';
+    var dates = Object.keys(aiDateGroups).sort().reverse();
+    aiActiveDK = dates[0] || todayKey();
+    renderAIContent();
+    renderDateTabs('ai', aiDateGroups);
+    renderCalendar('ai-cal-dropdown', aiDateGroups, aiActiveDK, 'ai');
+  });
+}
+
+function loadStock() {
+  document.getElementById('stock-loading').style.display = 'block';
+  document.getElementById('stock-viewer').style.display = 'none';
+  document.getElementById('stock-empty').style.display = 'none';
+
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) {
+      return i.type && i.type.indexOf('美股') >= 0;
+    });
+    stockDateGroups = groupByDate(items);
+    document.getElementById('stock-loading').style.display = 'none';
+
+    if (items.length === 0) {
+      document.getElementById('stock-empty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('stock-viewer').style.display = 'block';
+    var dates = Object.keys(stockDateGroups).sort().reverse();
+    stockActiveDK = dates[0] || todayKey();
+    stockActiveSub = 0;
+    renderStockContent();
+    renderCalendar('stock-cal-dropdown', stockDateGroups, stockActiveDK, 'stock');
+  });
+}
+
+// ===== 月曆 =====
+function getCalState(prefix) {
+  if (!calState[prefix]) {
+    var now = new Date();
+    calState[prefix] = { y: now.getFullYear(), m: now.getMonth() };
+  }
+  return calState[prefix];
+}
+
+function changeMonth(prefix, delta) {
+  var st = getCalState(prefix);
+  st.m += delta;
+  if (st.m > 11) { st.m = 0; st.y++; }
+  if (st.m < 0)  { st.m = 11; st.y--; }
+  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : newsDateGroups);
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : newsActiveDK);
+  renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
+}
+
+function renderCalendar(cntId, groups, activeDK, prefix) {
+  var cnt = document.getElementById(cntId);
+  if (!cnt) return;
+  var st = getCalState(prefix);
+  var y = st.y, m = st.m;
+  var fd = new Date(y, m, 1).getDay();
+  var dim = new Date(y, m + 1, 0).getDate();
+  var today = todayKey();
+  var mn = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  var dh = ['日','一','二','三','四','五','六'];
+
+  var cal = document.createElement('div');
+  cal.className = 'mini-cal';
+
+  // 導航
+  var nav = document.createElement('div');
+  nav.className = 'mini-cal-nav';
+  var prevBtn = document.createElement('button');
+  prevBtn.textContent = '◀';
+  prevBtn.title = '上個月';
+  prevBtn.addEventListener('click', function(e) { e.stopPropagation(); changeMonth(prefix, -1); });
+  var title = document.createElement('div');
+  title.className = 'mini-cal-title';
+  title.textContent = y + '年 ' + mn[m];
+  var nextBtn = document.createElement('button');
+  nextBtn.textContent = '▶';
+  nextBtn.title = '下個月';
+  nextBtn.addEventListener('click', function(e) { e.stopPropagation(); changeMonth(prefix, 1); });
+  nav.appendChild(prevBtn);
+  nav.appendChild(title);
+  nav.appendChild(nextBtn);
+  cal.appendChild(nav);
+
+  // 星期標頭 + 日期格
+  var grid = document.createElement('div');
+  grid.className = 'mini-cal-grid';
+  dh.forEach(function(d_) {
+    var hdr = document.createElement('div');
+    hdr.className = 'mini-cal-day-hdr';
+    hdr.textContent = d_;
+    grid.appendChild(hdr);
+  });
+  for (var i = 0; i < fd; i++) {
+    var empty = document.createElement('div');
+    empty.className = 'mini-cal-cell mini-cal-empty';
+    grid.appendChild(empty);
+  }
+  for (var d = 1; d <= dim; d++) {
+    var dk = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    var cell = document.createElement('div');
+    cell.className = 'mini-cal-cell';
+    if (dk === today) cell.classList.add('mini-cal-today');
+    if (groups[dk]) cell.classList.add('mini-cal-has-data');
+    if (dk === activeDK) cell.classList.add('mini-cal-active');
+    cell.textContent = d;
+    (function(dateKey) {
+      cell.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // 關閉所有月曆
+        document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
+        document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
+        // 設為選中日期
+        if (prefix === 'stock') {
+          stockActiveDK = dateKey;
+          renderStockContent();
+        } else if (prefix === 'news') {
+          newsActiveDK = dateKey;
+          renderNewsContent();
+        } else {
+          aiActiveDK = dateKey;
+          renderAIContent();
+          renderDateTabs('ai', aiDateGroups);
+        }
+        renderCalendar(prefix + '-cal-dropdown', groups, dateKey, prefix);
+      });
+    })(dk);
+    grid.appendChild(cell);
+  }
+  cal.appendChild(grid);
+  cnt.innerHTML = '';
+  cnt.appendChild(cal);
+}
+
+function toggleCalendar(prefix) {
+  var dd = document.getElementById(prefix + '-cal-dropdown');
+  var btn = document.getElementById(prefix + '-cal-toggle');
+  if (!dd || !btn) return;
+  var isOpen = dd.classList.contains('show');
+  document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
+  document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
+  if (!isOpen) {
+    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : newsDateGroups);
+    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : newsActiveDK);
+    renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
+    dd.classList.add('show');
+    btn.classList.add('active');
+  }
+}
+
+// 點外部關閉月曆
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.cal-wrapper')) {
+    document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
+    document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
+  }
+});
 
 // ===== 頁面切換 =====
 function showSection(name) {
   try {
-    ["pending","stock","news","copy","events","gallery","outbox","published"].forEach(n => {
-      var el = document.getElementById("sec-" + n);
-      if (el) el.style.display = "none";
+    if (window.location.hash !== '#' + name) {
+      history.replaceState(null, '', '#' + name);
+    }
+
+    ['news', 'ai', 'stock'].forEach(function(n) {
+      var el = document.getElementById('sec-' + n);
+      if (el) el.classList.remove('active');
     });
-    var target = document.getElementById("sec-" + name);
-    if (!target) { console.error("Section not found: sec-" + name); return; }
-    target.style.display = "block";
-    
-    // Update active nav
-    document.querySelectorAll(".nav-item").forEach(function(el) {
-      el.classList.remove("active");
-      if (el.getAttribute("data-section") === name) el.classList.add("active");
+    var target = document.getElementById('sec-' + name);
+    if (!target) return;
+    target.classList.add('active');
+
+    document.querySelectorAll('.nav-item').forEach(function(el) {
+      el.classList.remove('active');
+      if (el.getAttribute('data-section') === name) el.classList.add('active');
     });
-    
-    const titles = {
-      outbox: ["📤 出街記錄", "所有排隊出街嘅項目，狀態為「待出街」，等待推送"],
-      published: ["✅ 已出街內容", "所有已推送出街嘅內容記錄，可查看或重新排隊"],
-      stock: ["📈 美股分析報告", "每晚 19:00 生成 · 21:00 出街（含百家撮要 + 最終總結）"],
-      news: ["📰 每日新聞撮要", "每日 08:00 生成 · 10:00 出街"],
-      gallery: ["🎨 設計圖庫", "所有歷史設計版本一覽（14 款不同風格）"],
-      copy: ["📝 社群文案模板", "IG / Facebook 貼文文案 · 3 款風格可直接複製"],
-      events: ["🌍 每日活動花絮", "世界各地精彩活動撮要 · 每日 10:00 生成 · 12:00 出街 · 可編輯後排隊出街"]
-    };
-    document.getElementById("page-title").textContent = titles[name][0];
-    document.getElementById("page-desc").textContent = titles[name][1];
-    
-    if (name === "outbox") loadOutbox();
-    if (name === "published") loadPublished();
-    if (name === "stock") loadStock();
-    if (name === "news") loadNews();
-    if (name === "gallery") loadGallery();
-    if (name === "events") loadEvents();
+
+    if (name === 'news') loadNews();
+    if (name === 'ai') loadAI();
+    if (name === 'stock') loadStock();
   } catch(e) {
-    console.error("showSection error:", e);
+    console.error('showSection error:', e);
   }
 }
 
-// Event delegation for sidebar nav
-document.addEventListener("DOMContentLoaded", function() {
-  var nav = document.getElementById("sidebar-nav");
-  if (nav) {
-    nav.addEventListener("click", function(e) {
-      var item = e.target.closest(".nav-item");
-      if (item) {
-        var section = item.getAttribute("data-section");
-        if (section) showSection(section);
-      }
+// ===== 側欄導航 =====
+(function() {
+  var bound = false;
+  function bindNav() {
+    if (bound) return;
+    var nav = document.getElementById('sidebar-nav');
+    if (!nav) return;
+    bound = true;
+    nav.addEventListener('click', function(e) {
+      var item = e.target.closest('.nav-item');
+      if (!item) return;
+      e.preventDefault();
+      var section = item.getAttribute('data-section');
+      if (section) showSection(section);
     });
   }
-});
-
-// If DOM already loaded, bind immediately
-(function() {
-  var nav = document.getElementById("sidebar-nav");
-  if (nav) {
-    nav.addEventListener("click", function(e) {
-      var item = e.target.closest(".nav-item");
-      if (item) {
-        var section = item.getAttribute("data-section");
-        if (section) showSection(section);
-      }
-    });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindNav);
+  } else {
+    bindNav();
   }
 })();
 
-// 首次載入
-loadOutbox();
-setInterval(loadOutbox, 60000);
+// 初始化
+(function() {
+  function initSection() {
+    var hash = window.location.hash.replace('#', '');
+    var valid = ['news', 'ai', 'stock'];
+    var sec = (hash && valid.indexOf(hash) >= 0) ? hash : 'news';
+    showSection(sec);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSection);
+  } else {
+    initSection();
+  }
+})();
 
-// ===== 自動化面板上落 =====
+// ===== 自動化面板 =====
 function toggleAutoPanel() {
-  var list = document.getElementById("auto-list");
-  var arrow = document.getElementById("auto-arrow");
+  var list = document.getElementById('auto-list');
+  var arrow = document.getElementById('auto-arrow');
   if (!list || !arrow) return;
-  list.classList.toggle("open");
-  arrow.classList.toggle("open");
+  list.classList.toggle('open');
+  arrow.classList.toggle('open');
 }
 
-// ===== 載入自動化狀態（從 GAS 讀取最後執行時間）=====
+// 載入自動化狀態
 function loadAutomationStatus() {
-  // 嘗詴從 GAS 讀取 automation 狀態
-  // GAS 需支援 action=automation_status
-  // 若未實作，則保持靜態顯示
   try {
-    var script = document.createElement("script");
-    script.src = GAS_URL + "?action=automation_status&callback=handleAutoStatus";
-    window.handleAutoStatus = function(data) {
-      delete window.handleAutoStatus;
+    apiCall({ action: 'automation_status' }, function(data) {
       if (!data || !data.automations) return;
       data.automations.forEach(function(a) {
-        var el = document.getElementById("auto-status-" + a.id);
+        var el = document.getElementById('auto-status-' + a.id);
         if (el) {
-          if (a.status === "ACTIVE") {
-            el.className = "auto-status auto-status-active";
-            el.textContent = "運行中";
+          if (a.status === 'ACTIVE') {
+            el.className = 'auto-status auto-status-active';
+            el.textContent = '運行中';
           } else {
-            el.className = "auto-status auto-status-paused";
-            el.textContent = "已暫停";
+            el.className = 'auto-status auto-status-paused';
+            el.textContent = '已暫停';
           }
         }
       });
-      var activeCount = (data.automations || []).filter(function(a){ return a.status === "ACTIVE"; }).length;
-      document.getElementById("status-text").textContent = activeCount + " 個自動化運行中";
-    };
-    document.head.appendChild(script);
+      var activeCount = (data.automations || []).filter(function(a) { return a.status === 'ACTIVE'; }).length;
+      document.getElementById('status-text').textContent = activeCount + ' 個自動化運行中';
+    });
   } catch(e) {}
 }
 
-// 首次載入自動化狀態
 loadAutomationStatus();
-setInterval(loadAutomationStatus, 300000);  // 每 5 分鐘更新一次
+setInterval(loadAutomationStatus, 300000);
 </script>
 </body>
 </html>

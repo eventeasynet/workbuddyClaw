@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026060901;
+  var CURRENT = 2026061201;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -329,10 +329,30 @@ function todayKey() {
   return fmtDateKey(new Date());
 }
 
+function parseDateKeyFromTitle(title) {
+  if (!title) return null;
+  // 標準格式：6月11日
+  var m = title.match(/(\d{1,2})月(\d{1,2})日/);
+  if (m) {
+    var mm = m[1].padStart(2, '0');
+    var dd = m[2].padStart(2, '0');
+    return '2026-' + mm + '-' + dd;
+  }
+  // 兼容格式：標題含 _260611 或 260611（年月日，6位）
+  var m2 = title.match(/_?(\d{6})/);
+  if (m2) {
+    var s = m2[1];
+    var mm2 = s.slice(0, 2);
+    var dd2 = s.slice(2, 4);
+    return '2026-' + mm2 + '-' + dd2;
+  }
+  return null;
+}
+
 function groupByDate(items) {
   var g = {};
   items.forEach(function(it) {
-    var k = fmtDateKey(it.createdAt);
+    var k = parseDateKeyFromTitle(it.title) || fmtDateKey(it.createdAt);
     if (!g[k]) g[k] = [];
     g[k].push(it);
   });
