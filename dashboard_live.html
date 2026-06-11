@@ -540,14 +540,34 @@ function renderReport(areaId, item) {
     iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     area.appendChild(iframe);
   } else {
-    // 無 driveUrl → 純文字
-    var notes = item.notes || item.content || '（無內容）';
-    var textDiv = document.createElement('div');
-    textDiv.className = 'text-report';
-    textDiv.innerHTML = '<div style="font-size:18px;font-weight:700;margin-bottom:12px;">' + escHtml(title) + '</div>' +
-      '<div style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">' + escHtml(item.type || '') + ' · ' + escHtml(item.createdAt || '') + '</div>' +
-      '<div>' + escHtml(notes).replace(/\n/g, '<br>') + '</div>';
-    area.appendChild(textDiv);
+    // 無 driveUrl 但有 notes → 包成 HTML 用 iframe srcdoc 顯示
+    var notes = (item.notes || item.content || '（無內容）').trim();
+    var safeTitle = escHtml(title);
+    var safeType = escHtml(item.type || '');
+    var safeDate = escHtml(item.createdAt || '');
+    var safeNotes = escHtml(notes);
+    var html = '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+      '<style>body{font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,sans-serif;padding:24px;background:#fff;color:#1a1a2e;line-height:1.8;max-width:900px;margin:0 auto;}' +
+      'h2{font-size:18px;margin:0 0 8px 0;color:#1a1a2e;}' +
+      '.meta{font-size:11px;color:#888;margin-bottom:20px;}' +
+      '.content{white-space:pre-wrap;font-size:14px;}' +
+      'a{color:#4f46e5;}</style></head><body>' +
+      '<h2>' + safeTitle + '</h2>' +
+      '<div class="meta">' + safeType + ' · ' + safeDate + '</div>' +
+      '<div class="content">' + safeNotes.replace(/\n/g, '<br>') + '</div>' +
+      '</body></html>';
+    var header = document.createElement('div');
+    header.className = 'report-header';
+    header.innerHTML = '<span class="report-title">' + safeTitle + '</span>';
+    area.appendChild(header);
+    var iframe = document.createElement('iframe');
+    iframe.srcdoc = html;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    iframe.style.background = '#fff';
+    iframe.setAttribute('sandbox', 'allow-same-origin');
+    area.appendChild(iframe);
   }
 }
 
