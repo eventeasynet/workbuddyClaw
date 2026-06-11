@@ -140,6 +140,10 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .cal-toggle.active { border-color:#1d4ed8; color:#1d4ed8; background:#eff6ff; }
 .cal-dropdown { position:absolute; top:100%; right:0; margin-top:6px; z-index:100; display:none; }
 .cal-dropdown.show { display:block; }
+/* 強制 iframe 背景為白色 */
+iframe {
+  background: #ffffff !important;
+}
 </style>
 </head>
 <body>
@@ -338,12 +342,13 @@ function parseDateKeyFromTitle(title) {
     var dd = m[2].padStart(2, '0');
     return '2026-' + mm + '-' + dd;
   }
-  // 兼容格式：標題含 _260611 或 260611（年月日，6位）
+  // 兼容格式：標題含 _260611 或 260611（YYMMDD，6位）
   var m2 = title.match(/_?(\d{6})/);
   if (m2) {
-    var s = m2[1];
-    var mm2 = s.slice(0, 2);
-    var dd2 = s.slice(2, 4);
+    var s = m2[1];  // e.g. "260611"
+    // YYMMDD：26=年 06=月 11=日
+    var mm2 = s.slice(2, 4);
+    var dd2 = s.slice(4, 6);
     return '2026-' + mm2 + '-' + dd2;
   }
   return null;
