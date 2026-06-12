@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 AI 行業情報速遞 — 2026年6月12日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: linear-gradient(135deg, #f8f7ff 0%, #ede9fe 50%, #f8f7ff 100%);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e5e0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1e1b4b;
+    position: relative;
+    z-index: 1;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #5b21b6;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Category Section */
+  .category {
+    margin-bottom: 28px;
+  }
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid;
+  }
+  .category-header .icon {
+    font-size: 1.5em;
+  }
+  .category-header h2 {
+    font-size: 1.25em;
+    font-weight: 700;
+  }
+
+  /* Category Colors */
+  .cat-tech .category-header { border-color: #818cf8; color: #4338ca; }
+  .cat-tech .card { border-left: 4px solid #818cf8; }
+  .cat-video .category-header { border-color: #f472b6; color: #be185d; }
+  .cat-video .card { border-left: 4px solid #f472b6; }
+  .cat-drama .category-header { border-color: #fb923c; color: #c2410c; }
+  .cat-drama .card { border-left: 4px solid #fb923c; }
+  .cat-govt .category-header { border-color: #34d399; color: #047857; }
+  .cat-govt .card { border-left: 4px solid #34d399; }
+  .cat-industry .category-header { border-color: #60a5fa; color: #1d4ed8; }
+  .cat-industry .card { border-left: 4px solid #60a5fa; }
+
+  /* Card */
+  .card {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .card h3 {
+    font-size: 1.05em;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1e1b4b;
+  }
+  .card .source {
+    display: inline-block;
+    font-size: 0.75em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .cat-tech .source { background: #eef2ff; color: #4338ca; }
+  .cat-video .source { background: #fdf2f8; color: #be185d; }
+  .cat-drama .source { background: #fff7ed; color: #c2410c; }
+  .cat-govt .source { background: #ecfdf5; color: #047857; }
+  .cat-industry .source { background: #eff6ff; color: #1d4ed8; }
+  .card p {
+    font-size: 0.92em;
+    color: #374151;
+    line-height: 1.65;
+  }
+  .card .highlight {
+    font-weight: 600;
+    color: #1e1b4b;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #9ca3af;
+    font-size: 0.8em;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  /* Summary Bar */
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #4b5563;
+  }
+  .summary-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .dot-tech { background: #818cf8; }
+  .dot-video { background: #f472b6; }
+  .dot-drama { background: #fb923c; }
+  .dot-govt { background: #34d399; }
+  .dot-industry { background: #60a5fa; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📡 AI 行業情報速遞</h1>
+    <div class="date-badge">2026年6月12日（星期四）</div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <div class="summary-item"><span class="dot dot-tech"></span>AI創作技術 3則</div>
+    <div class="summary-item"><span class="dot dot-video"></span>短視頻 3則</div>
+    <div class="summary-item"><span class="dot dot-drama"></span>AI漫劇 2則</div>
+    <div class="summary-item"><span class="dot dot-govt"></span>政府補貼 2則</div>
+    <div class="summary-item"><span class="dot dot-industry"></span>行業動態 3則</div>
+  </div>
+
+  <!-- 1. AI 創作技術 -->
+  <div class="category cat-tech">
+    <div class="category-header">
+      <span class="icon">🔬</span>
+      <h2>AI 創作技術</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">Apple WWDC</span>
+      <h3>Xcode 27 雙引擎 AI 編程代理正式發布</h3>
+      <p>WWDC 2026 閉幕日推出重磅 AI 開發者工具：Xcode 27 內建本地 Neural Engine 模型提供實時 Swift 建議，雲端可路由至 <span class="highlight">Claude、Gemini、OpenAI</span> 三大模型。AI 代理可模擬完整應用、編寫測試、操控 iOS 模擬器。首下載量低於 200 萬次的 App 可免費使用 Private Cloud Compute，大幅降低獨立開發者 AI 集成門檻。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">華為 HDC</span>
+      <h3>鴻蒙 7 + 鴻蒙 AI 核心能力今日亮相</h3>
+      <p>華為開發者大會 HDC 2026 於東莞松山湖開幕，正式發布 <span class="highlight">HarmonyOS 7.0</span> 及鴻蒙 AI 核心能力。HarmonyOS NEXT 持續剝離安卓 AOSP 代碼，原生環境不再兼容安卓 APK，標誌鴻蒙生態全面獨立。鴻蒙 AI 將深入整合端側大模型能力，覆蓋全場景智能互聯。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">智源大會</span>
+      <h3>2026 智源大會今開幕：200+ 學者探討 Agent 與世界模型</h3>
+      <p>第 8 屆智源大會 6 月 12-13 日在北京舉行，匯聚 200 餘位頂尖學者及 40+ AI 企業 CEO，重點議題包括 <span class="highlight">AI Agent、世界模型、具身智能、AI 自進化與安全</span>。大會堅持「學術硬核」路線，被視為中國 AI 學術界年度風向標。</p>
+    </div>
+  </div>
+
+  <!-- 2. 短視頻 -->
+  <div class="category cat-video">
+    <div class="category-header">
+      <span class="icon">🎬</span>
+      <h2>短視頻</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">快手</span>
+      <h3>可靈 AI MAU 破 1318 萬，全球 AI 視頻賽道雙榜奪冠</h3>
+      <p>AI 產品榜最新數據：快手旗下可靈 AI 5 月在出海增速榜與全球增速榜雙榜奪冠，<span class="highlight">MAU 達 1318 萬，環比增 41.9%</span>。Q1 單季收入突破 6.5 億元人民幣，同比增長超 300%。高盛維持快手買入評級，看好可靈長期價值。Pre-IPO 輪估值 180 億美元，計劃 2027 年赴港 IPO。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">字節跳動</span>
+      <h3>Seedance 2.0 被評為視頻生成「奇點時刻」</h3>
+      <p>字節新一代視頻生成模型 Seedance 2.0 低調發布卻引爆全球創作圈——可從單一提示詞生成含多場景剪輯的完整視頻，<span class="highlight">清晰度高、一致性強、運鏡高級</span>，被定性為視頻生成領域的「奇點時刻」。影視颶風 Tim 等頭部創作者紛紛測試，認為其多鏡頭敘事能力已超越 Sora 2。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">Suno</span>
+      <h3>AI 音樂生成平台 Suno 完成 4 億美元 D 輪融資</h3>
+      <p>AI 音樂生成獨角獸 <span class="highlight">Suno 完成 4 億美元 D 輪融資</span>，由 BOND 領投。用戶可通過文字提示生成完整歌曲。此輪融資顯示投資者對消費級 AI 內容工具持續看好，儘管版權爭議和盈利模式仍存不確定性。AI 音樂正成為短視頻創作的核心工具鏈之一。</p>
+    </div>
+  </div>
+
+  <!-- 3. AI 漫劇 -->
+  <div class="category cat-drama">
+    <div class="category-header">
+      <span class="icon">📺</span>
+      <h2>AI 漫劇</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">安徽文旅</span>
+      <h3>「皖里繪山河」安徽首屆 AI 漫劇原創大賽啟動</h3>
+      <p>6 月 11 日，由安徽省委宣傳部、省文旅廳指導的「皖里繪山河」AI 漫劇原創大賽正式啟動。咪咕數媒開放 <span class="highlight">2 萬+ 小說全量改編權</span>，打造一站式 AI 短劇創作平台，較行業工具提效降本超 60%。2025 年 AI 漫劇市場規模近 200 億元，預計 2026 年突破 220 億元，用戶從 1.2 億激增至 2.8 億。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">New One Studio</span>
+      <h3>《盛世天下·女帝篇》反 AI 潮流：1000 分鐘真人實拍硬剛 AI 劇</h3>
+      <p>在 AI 浪潮席捲短劇行業之際，《隱形守護者》原班團隊 New One Studio 推出 <span class="highlight">1000 分鐘真人實拍</span>互動影游《盛世天下·女帝篇》，6 月 9 日全球同步上線。團隊以極致品質路線對抗 AI 量產趨勢，展現了傳統影視團隊的差異化策略——用沉浸式真人演出與分支敘事，回應 AI 漫劇的效率優勢。</p>
+    </div>
+  </div>
+
+  <!-- 4. 政府補貼 -->
+  <div class="category cat-govt">
+    <div class="category-header">
+      <span class="icon">💰</span>
+      <h2>政府補貼</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">香港特區政府</span>
+      <h3>香港撥款 5000 萬港元推「全民 AI 培訓」+ 3 億優化數碼轉型</h3>
+      <p>香港特區政府撥款 <span class="highlight">5000 萬港元</span>推行「全民 AI 培訓」，初期 5 萬人次受惠，舉辦超 200 場活動。數碼港負責學生及弱勢群體、科技園負責大專生及研究員、生產力局負責中小企及在職人士。另撥款 3 億港元優化「數碼轉型支持先導計劃」，扶助中小企引入 AI 及網安方案。「AI+ 與產業發展策略委員會」由陳茂波主持，聚焦生命健康與具身智能。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">香港 AI 資助計劃</span>
+      <h3>香港 30 億 AI 資助計劃已批出近 14 億港元</h3>
+      <p>數字政策辦公室數據：香港 30 億元人工智能資助計劃已批出近 <span class="highlight">14 億港元</span>，資助超過 30 個項目，涵蓋本地院校、研發機構及企業使用數碼港 AI 超算中心算力。香港 AI 研發院已於年初成立，下半年正式運作。InnoHK 已資助 16 間 AI 相關研發實驗室。紅磡海濱將運營機器人全自助零售店，標誌 AI 以生活化形態融入市民日常。</p>
+    </div>
+  </div>
+
+  <!-- 5. 行業動態 -->
+  <div class="category cat-industry">
+    <div class="category-header">
+      <span class="icon">🌐</span>
+      <h2>行業動態</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">SpaceX IPO</span>
+      <h3>SpaceX 史上最大 IPO 今日掛牌，AI 業務撐起 1.8 萬億估值</h3>
+      <p>SpaceX 以 SPCX 代碼在納達克上市，發行價 $135，市值 <span class="highlight">1.8 萬億美元</span>，募資 750 億。xAI 2030 年預測營收 3220 億美元（5 年百倍增長），支撐高估值。但晨星公允價值僅 $63（折價 53%），分析師警告 SpaceX、Anthropic、OpenAI 三大 AI 巨頭集中上市可能引發泡沫。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">融資追蹤</span>
+      <h3>6 月 AI 融資持續火熱：Ramp 7.5 億領跑，垂直 AI 成資本新寵</h3>
+      <p>6 月初 AI 融資一覽：<span class="highlight">Ramp $7.5 億</span>（AI 財務管理）、NewLimit $4.35 億 C 輪（長壽生物 AI）、Suno $4 億 D 輪（AI 音樂）、Generalist AI $4 億（通用 AI）、PhysicsX $3 億 C 輪（AI 物理模擬，淡馬錫領投）。趨勢：投資者從通用模型轉向垂直領域 AI 應用，AI 代理和工作流自動化持續吸金。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">Anthropic</span>
+      <h3>Claude API 6 月 15 日截止：模型字符串廢棄 + Agent SDK 計費變更</h3>
+      <p>6 月 15 日起 Claude API 兩個舊模型字符串停止響應：<span class="highlight">claude-sonnet-4-20250514 → claude-sonnet-4-6</span>、claude-opus-4-20250514 → claude-opus-4-8。同日 Agent SDK 計費從訂閱額度轉為獨立月度信用額度按 API 費率計費。Pro 約 $20/月、Max 5x 約 $100/月。運行夜間代理或 CI 管道的團隊需立即審核自動化使用量。</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>📡 AI 行業情報速遞 · 每日 13:00 自動生成</p>
+    <p>涵蓋國內·國外·香港三地 AI 動態 | 資料來源：36氪、量子位、TechCrunch、新浪財經、南華早報等</p>
+  </div>
+
+</div>
+</body>
+</html>
