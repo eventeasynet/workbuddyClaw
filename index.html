@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061206;
+  var CURRENT = 2026061207;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -143,6 +143,158 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 /* 強制 iframe 背景為白色 */
 iframe {
   background: #ffffff !important;
+}
+
+/* ===== 手機響應式（< 768px）===== */
+@media (max-width: 768px) {
+  /* Sidebar → 頂部 Tab Bar */
+  .sidebar {
+    width: 100% !important;
+    height: 56px !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    flex-direction: row !important;
+    z-index: 1000 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+  }
+
+  .sidebar-header {
+    display: none !important;
+  }
+
+  .sidebar-nav {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    padding: 0 !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+
+  .nav-item {
+    flex: 1 !important;
+    justify-content: center !important;
+    padding: 8px 4px !important;
+    border-left: none !important;
+    border-bottom: 3px solid transparent !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    min-width: 0 !important;
+  }
+
+  .nav-item span {
+    font-size: 18px !important;
+    margin-right: 4px !important;
+  }
+
+  .nav-item.active {
+    border-left: none !important;
+    border-bottom: 3px solid var(--accent) !important;
+    background: rgba(59, 130, 246, 0.2) !important;
+  }
+
+  /* 隱藏 Sidebar 入面的自動化面板（手機版改去底） */
+  .sidebar-footer {
+    display: none !important;
+  }
+
+  /* Main Content 調整 */
+  .main {
+    margin-left: 0 !important;
+    padding: 68px 12px 80px !important;
+    min-height: 100vh !important;
+  }
+
+  /* 日期 Tab 細啲 */
+  .date-tab {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .date-tab .tab-label {
+    font-size: 10px !important;
+  }
+
+  /* Content area iframe 高度調整 */
+  .content-area iframe {
+    height: calc(100vh - 200px) !important;
+  }
+
+  /* 月曆下拉位置調整 */
+  .cal-dropdown {
+    top: 56px !important;
+    right: 12px !important;
+  }
+}
+
+/* 超細螢幕（< 480px）額外調整 */
+@media (max-width: 480px) {
+  .nav-item {
+    font-size: 0 !important;  /* 只顯示 Icon */
+  }
+
+  .nav-item span {
+    font-size: 20px !important;
+    margin-right: 0 !important;
+  }
+
+  .date-tab {
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+  }
+
+  .main {
+    padding: 60px 8px 80px !important;
+  }
+}
+
+/* ===== 手機版底部自動化面板 ===== */
+.mobile-footer {
+  display: none;  /* 桌面版隱藏 */
+}
+
+@media (max-width: 768px) {
+  .mobile-footer {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: var(--sidebar-bg) !important;
+    color: #fff !important;
+    z-index: 1000 !important;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.3) !important;
+    font-size: 12px !important;
+  }
+
+  .mobile-footer-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 16px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    border-top: 1px solid #1e293b !important;
+  }
+
+  .mobile-footer-toggle:hover {
+    color: #94a3b8 !important;
+  }
+
+  .mobile-footer-content {
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height 0.3s ease !important;
+    padding: 0 16px !important;
+  }
+
+  .mobile-footer-content.open {
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    padding: 0 16px 10px !important;
+  }
 }
 </style>
 </head>
@@ -901,6 +1053,22 @@ function toggleAutoPanel() {
   arrow.classList.toggle('open');
 }
 
+// ===== 手機版底部自動化面板 =====
+function toggleMobileFooter() {
+  var content = document.getElementById('mobile-footer-content');
+  var arrow = document.getElementById('mobile-arrow');
+  if (!content || !arrow) return;
+  content.classList.toggle('open');
+  arrow.textContent = content.classList.contains('open') ? '▲' : '▼';
+}
+
+function populateMobileFooter() {
+  var src = document.getElementById('auto-list');
+  var dst = document.getElementById('mobile-footer-content');
+  if (!src || !dst) return;
+  dst.innerHTML = src.innerHTML;
+}
+
 // 載入自動化狀態
 function loadAutomationStatus() {
   try {
@@ -920,6 +1088,9 @@ function loadAutomationStatus() {
       });
       var activeCount = (data.automations || []).filter(function(a) { return a.status === 'ACTIVE'; }).length;
       document.getElementById('status-text').textContent = activeCount + ' 個自動化運行中';
+      var mobileStatus = document.getElementById('mobile-status-text');
+      if (mobileStatus) mobileStatus.textContent = activeCount + ' 個自動化運行中';
+      populateMobileFooter();
     });
   } catch(e) {}
 }
@@ -927,5 +1098,14 @@ function loadAutomationStatus() {
 loadAutomationStatus();
 setInterval(loadAutomationStatus, 300000);
 </script>
+<!-- 手機版底部自動化狀態列 -->
+<div class="mobile-footer" id="mobile-footer">
+  <div class="mobile-footer-toggle" onclick="toggleMobileFooter()">
+    <span>⚙ <span id="mobile-status-text">載入中...</span></span>
+    <span class="arrow" id="mobile-arrow">▼</span>
+  </div>
+  <div class="mobile-footer-content" id="mobile-footer-content"></div>
+</div>
+
 </body>
 </html>
