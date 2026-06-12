@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞撮要 — 2026年6月12日（星期五）</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', 'Heiti TC', sans-serif;
+    background: #f0f2f5;
+    color: #1a202c;
+    line-height: 1.7;
+    padding: 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    color: #fff;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+  .header .date {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  .header .meta {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+  .content { padding: 20px 24px; }
+
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a365d;
+    border-bottom: 3px solid #2c5282;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .icon { font-size: 1.3rem; }
+
+  .news-card {
+    background: #f7fafc;
+    border-left: 4px solid #2c5282;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .news-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .news-card.breaking {
+    border-left-color: #e53e3e;
+    background: #fff5f5;
+  }
+  .news-card.finance {
+    border-left-color: #2b6cb0;
+    background: #ebf4ff;
+  }
+  .news-card.tech {
+    border-left-color: #6b46c1;
+    background: #faf5ff;
+  }
+  .news-card.world {
+    border-left-color: #276749;
+    background: #f0fff4;
+  }
+  .news-card.society {
+    border-left-color: #c05621;
+    background: #fffaf0;
+  }
+  .news-card.weather {
+    border-left-color: #2b6cb0;
+    background: #ebf8ff;
+  }
+
+  .news-card .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-finance { background: #bee3f8; color: #2b6cb0; }
+  .tag-tech { background: #e9d8fd; color: #6b46c1; }
+  .tag-world { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #feebc8; color: #c05621; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-property { background: #e2e8f0; color: #4a5568; }
+  .tag-education { background: #fbb6ce; color: #97266d; }
+
+  .news-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 4px;
+  }
+  .news-card p {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 4px;
+  }
+  .news-card .source {
+    font-size: 0.75rem;
+    color: #a0aec0;
+    margin-top: 2px;
+  }
+  .news-card .source a {
+    color: #2c5282;
+    text-decoration: none;
+  }
+  .news-card .source a:hover { text-decoration: underline; }
+
+  .market-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .market-item {
+    flex: 1 1 140px;
+    min-width: 130px;
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .market-item .name {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-bottom: 2px;
+  }
+  .market-item .value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2d3748;
+  }
+  .market-item .change-up {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #e53e3e;
+  }
+  .market-item .change-down {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #38a169;
+  }
+
+  .divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 20px 0;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 0.75rem;
+    color: #a0aec0;
+    border-top: 1px solid #e2e8f0;
+  }
+  .footer a {
+    color: #2c5282;
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 8px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3rem; }
+    .content { padding: 14px 16px; }
+    .market-bar { gap: 6px; }
+    .market-item { flex: 1 1 100px; min-width: 100px; padding: 8px; }
+    .market-item .value { font-size: 0.95rem; }
+    .section-title { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📰 上午新聞撮要</h1>
+  <div class="date">2026年6月12日（星期五）· 香港</div>
+  <div class="meta">每日 08:00 自動生成 · 10:00 推播 · 資料截至今日凌晨</div>
+</div>
+
+<div class="content">
+
+<!-- 環球市場概覽 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span> 環球市場概覽（6月11日收市）</div>
+  <div class="market-bar">
+    <div class="market-item">
+      <div class="name">🇭🇰 恒生指數</div>
+      <div class="value">24,249</div>
+      <div class="change-down">-159 (−0.65%)</div>
+    </div>
+    <div class="market-item">
+      <div class="name">🇺🇸 道瓊斯</div>
+      <div class="value">50,849</div>
+      <div class="change-up">+930 (+1.9%)</div>
+    </div>
+    <div class="market-item">
+      <div class="name">📈 納斯達克</div>
+      <div class="value">25,800</div>
+      <div class="change-up">+2.5%</div>
+    </div>
+    <div class="market-item">
+      <div class="name">📊 標普500</div>
+      <div class="value">7,398</div>
+      <div class="change-up">+1.8%</div>
+    </div>
+    <div class="market-item">
+      <div class="name">🇨🇳 上證指數</div>
+      <div class="value">3,987</div>
+      <div class="change-down">−0.16%</div>
+    </div>
+  </div>
+  <p style="font-size:0.82rem;color:#718096;text-align:center;">美股全線反彈：美伊和談預期帶動三大指數創三週最大單日漲幅 · 道指飆升930點</p>
+</div>
+
+<!-- 🚨 突發 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🚨</span> 突發焦點</div>
+
+  <div class="news-card breaking">
+    <span class="tag tag-breaking">🚨 突發</span>
+    <h3>特朗普取消對伊朗空襲 · 稱和平協議「最快本週末簽署」</h3>
+    <p>美國總統特朗普在橢圓形辦公室宣布，取消原定對伊朗的「非常猛烈」打擊計劃，稱美伊雙方已達成「非常有力的諒解備忘錄」，正式公告將很快公布。副總統萬斯將代表美方出席歐洲和談簽署儀式。然而，伊朗外交部隨即否認：「沒有任何內容已經最終敲定」。</p>
+    <div class="source">來源：The Independent · <a href="https://www.independent.co.uk/news/world/middle-east/iran-us-war-live-trump-attack-kuwait-israel-hormuz-b2993690.html" target="_blank">原文連結</a></div>
+  </div>
+
+  <div class="news-card breaking">
+    <span class="tag tag-breaking">🚨 突發</span>
+    <h3>五角大樓緊急封鎖 · 疑似有害接觸事件</h3>
+    <p>美國五角大樓於6月11日晚突發緊急封鎖，官方正在調查現場是否存在有害接觸風險，相關調查結果尚未公布。</p>
+    <div class="source">來源：News24</div>
+  </div>
+</div>
+
+<!-- 🕊️ 國際 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🕊️</span> 國際要聞</div>
+
+  <div class="news-card world">
+    <span class="tag tag-world">🕊️ 國際</span>
+    <h3>美伊衝突回顧：49枚戰斧導彈後雙方互打 · 停火協議岌岌可危</h3>
+    <p>本週三美軍向伊朗發射49枚戰斧導彈，週四雙方連續第二天互相發動打擊。伊朗向海灣18個美軍基地發動反擊，科威特關閉領空，巴林拉響防空警報。霍爾木茲海峽近乎關閉，僅2艘船隻通行。印度報告阿曼附近海域第三起船隻事件，3名印度水手死亡。</p>
+    <div class="source">來源：The Independent</div>
+  </div>
+
+  <div class="news-card world">
+    <span class="tag tag-world">🕊️ 國際</span>
+    <h3>以色列總理內塔尼亞胡與特朗普商討對伊和談</h3>
+    <p>內塔尼亞胡辦公室確認已與特朗普通話，以方認為最終協議應包含移除伊朗濃縮鈾、終止伊朗對地區恐怖代理人的支持等條款。</p>
+    <div class="source">來源：The Independent</div>
+  </div>
+
+  <div class="news-card world">
+    <span class="tag tag-world">🏆 世界盃</span>
+    <h3>2026世界盃今日三地開幕 · 揭幕戰墨西哥2-0南非</h3>
+    <p>美加墨世界盃於6月12日正式開幕，墨西哥城、多倫多、洛杉磯三地各自舉辦開幕典禮。夏奇拉、Katy Perry、Andrea Bocelli等巨星獻演。揭幕戰墨西哥2-0擊敗南非，全場出現3張紅牌，兩隊分別以10人、9人應戰，紅牌數量搶盡風頭。</p>
+    <div class="source">來源：FIFA · Sporting News · News24</div>
+  </div>
+
+  <div class="news-card world">
+    <span class="tag tag-world">🕊️ 國際</span>
+    <h3>印度25+邦迎來強降雨雷暴 · 多條新高速即將通車</h3>
+    <p>印度氣象局預報全國超過25個邦將出現強降雨及雷暴天氣。與此同時，德里至齋浦爾86公里綠道高速（投資200億盧比）及巴雷利-哈爾德瓦尼高速即將通車，德里至奈尼塔爾僅需3小時。</p>
+    <div class="source">來源：News24</div>
+  </div>
+</div>
+
+<!-- 📉 財經 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📉</span> 財經焦點</div>
+
+  <div class="news-card finance">
+    <span class="tag tag-finance">📉 財經</span>
+    <h3>美股全線大反彈：納指+2.5% 道指飆930點 · 美伊和談預期點燃風險偏好</h3>
+    <p>受特朗普宣布取消對伊空襲、和平協議預期升溫帶動，美股三大指數6月11日創三週最大單日漲幅。科技股領漲，英特爾+9%（美銀上調至買入），費城半導體指數大升。然而標普500仍未收復6月1日收市水平（7,599）。</p>
+    <div class="source">來源：Investopedia · TheStreet · 東方財富</div>
+  </div>
+
+  <div class="news-card finance">
+    <span class="tag tag-finance">🚀 SpaceX</span>
+    <h3>SpaceX今日登陸納斯達克！史上最大IPO · 代號SPCX · 募資750億美元</h3>
+    <p>Elon Musk旗下SpaceX於6月12日在納斯達克掛牌，股票代碼SPCX，發行價每股135美元，發行5.556億股，公司估值1.75萬億美元。此次IPO募資750億美元為美國史上最大。認購於6月7-11日進行，配額6月11-12日確定，代幣化股份今日起在Bybit現貨市場交易。</p>
+    <div class="source">來源：新浪財經 · 騰訊新聞 · SpaceX S-1</div>
+  </div>
+
+  <div class="news-card finance">
+    <span class="tag tag-finance">📉 財經</span>
+    <h3>港股連跌三日 · 恒指收24,249 (−0.65%) · 科指走弱</h3>
+    <p>受中東局勢升級、隔夜美股大跌影響，港股6月11日三大指數集體低開，恒指最終收報24,249點，跌159點（−0.65%），恒生科技指數跌0.2%。科網股普遍走低，市場觀望美伊和談進展及SpaceX IPO資金分流效應。</p>
+    <div class="source">來源：點新聞 · 匯豐 · HSBC</div>
+  </div>
+
+  <div class="news-card finance">
+    <span class="tag tag-finance">📉 財經</span>
+    <h3>港交所：首5個月19間公司A+H上市 · 已達去年全年總和</h3>
+    <p>港交所透露2026年前5個月已有19家企業完成A+H上市，數量已達到2025年全年總和。相關上市機制檢討諮詢預計年內公布結果。A股方面，今日（6月12日）有兩隻新股發行：臻寶科技（787797）、惠科股份（001399）。</p>
+    <div class="source">來源：點新聞 · 百度財經</div>
+  </div>
+
+  <div class="news-card finance">
+    <span class="tag tag-finance">📉 財經</span>
+    <h3>北京約談淘寶京東等5大電商 · 通報「百億補貼」促銷亂象</h3>
+    <p>北京市市場監管局約談淘寶、京東、拼多多、抖音、小紅書5大電商平台，通報其存在促銷虛假宣傳、補貼規則不透明、商家信息未公示等問題，要求限期整改。此舉適逢618購物節前夕，引發市場關注。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card finance">
+    <span class="tag tag-finance">📉 財經</span>
+    <h3>脫歐衝擊10周年：萬億英債市場為下一場動盪做準備</h3>
+    <p>英國脫歐公投10周年之際，規模達萬億英鎊的英國債券市場正面臨新一輪動盪風險，市場關注通脹、利率及財政政策走向。</p>
+    <div class="source">來源：東方財富</div>
+  </div>
+</div>
+
+<!-- 🤖 科技 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🤖</span> 科技快訊</div>
+
+  <div class="news-card tech">
+    <span class="tag tag-tech">🤖 科技</span>
+    <h3>NVIDIA夥拍Abridge開發醫療AI模型 · 年內投入使用</h3>
+    <p>英偉達宣布與醫療AI公司Abridge合作開發新一代醫療AI模型，預計今年稍後投入使用，瞄準臨床文檔自動化市場。</p>
+    <div class="source">來源：東方財富</div>
+  </div>
+
+  <div class="news-card tech">
+    <span class="tag tag-tech">🤖 科技</span>
+    <h3>貝索斯駁斥「AI搶飯碗」論：未來十年將迎多個黃金時代</h3>
+    <p>亞馬遜創始人貝索斯公開反駁AI導致大規模失業的觀點，稱未來十年將迎來多個「黃金時代」，AI將創造比消滅更多的工作機會。</p>
+    <div class="source">來源：東方財富</div>
+  </div>
+
+  <div class="news-card tech">
+    <span class="tag tag-tech">🤖 科技</span>
+    <h3>Apple WWDC 2026進行中（6月9-13日）· Siri AI整合成焦點</h3>
+    <p>蘋果全球開發者大會正在進行，市場聚焦Siri與Gemini的AI整合、iOS 20及visionOS新功能。此前WWDC發布後蘋果股價短暫受壓。</p>
+    <div class="source">來源：Apple · 百度財經</div>
+  </div>
+</div>
+
+<!-- 👶 本港社會 -->
+<div class="section">
+  <div class="section-title"><span class="icon">👶</span> 本港社會</div>
+
+  <div class="news-card society">
+    <span class="tag tag-society">👶 社會</span>
+    <h3>太古城母女先後墮亡 · 悲劇引發社會對家庭教育與心理健康反思</h3>
+    <p>6月10日港島太古城發生倫常慘案，48歲母親疑與12歲女兒因教育問題爭執後先後墮樓身亡。涉事女童就讀優才（楊殷有娣）書院六年級，校方已啟動「危機處理小組」，為受影響師生提供心理輔導。心理專家呼籲：求助並非示弱。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card society">
+    <span class="tag tag-society">👶 社會</span>
+    <h3>明愛實習醫生未經授權瀏覽病人資料遭停職</h3>
+    <p>明愛醫院一名實習醫生被揭發擅自登入醫療系統瀏覽病人資料，同時牽涉此前未經授權使用醫院器材、找他人代做醫療檢查等違規行為。醫生議員林哲玄指涉誠信問題，就算畢業亦無法執業。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card society">
+    <span class="tag tag-society">👶 社會</span>
+    <h3>宏利夥港鐵送1.8萬張免費車飛 · 指定3日即可領取</h3>
+    <p>宏利與港鐵合作推出免費車票推廣，6月指定3日期間用戶可通過簡單步驟領取，總共送出1.8萬張免費車票。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card society">
+    <span class="tag tag-society">🏆 世界盃</span>
+    <h3>世界盃開鑼打工仔「射波」潮 · 專家：歷屆請假率升三成</h3>
+    <p>2026世界盃於今日凌晨開鑼，受時差影響不少賽事在香港凌晨至上午時段舉行。人力資源專家表示往屆世界盃期間員工請假率上升兩三成，建議僱主採取彈性工作安排。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+</div>
+
+<!-- 🏘️ 地產與施政 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🏘️</span> 地產與施政</div>
+
+  <div class="news-card">
+    <span class="tag tag-property">🏘️ 地產</span>
+    <h3>李家超談北都大學城：用城區概念規劃 · 規模可擴大好幾倍</h3>
+    <p>行政長官李家超表示，北都大學城應以城區概念規劃而非單一校園佈局，成功的「大學城」需包含教育、科技、人才、產業與城市建設五大核心元素。教育局局長蔡若蓮透露已收到19份本地院校發展意向書，多間內地及海外頂尖高校亦表達進駐意願。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card">
+    <span class="tag tag-property">🏘️ 施政</span>
+    <h3>李家超總結四年施政：使命、擔當、憂患意識</h3>
+    <p>李家超接受媒體專訪，以「使命、擔當、憂患意識」八個字總結四年施政歷程，強調始終以「結果為目標」推動香港發展，目標形成「南金融、北創科」格局。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card">
+    <span class="tag tag-property">🏘️ 經濟</span>
+    <h3>立法會通過大宗商品交易生態圈議案 · 推動實物交割樞紐建設</h3>
+    <p>立法會6月11日通過進出口界議員鍾奇峰動議的「推動大宗商品交易生態圈建設」議案，多局聯動推動香港成為大宗商品實物交割樞紐。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+</div>
+
+<!-- 活動與文化 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🎭</span> 活動與文化</div>
+
+  <div class="news-card">
+    <span class="tag tag-education">📚 文化</span>
+    <h3>《小王子》出版80周年 · 港大6.26辦特展探索作者多面人生</h3>
+    <p>香港大學將於6月26日至10月18日舉辦「小王子與飛行員」特展，作為法國五月藝術節壓軸活動，展示《小王子》作者聖修伯里的多元人生經歷。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-card">
+    <span class="tag tag-education">🎢 消閒</span>
+    <h3>迪士尼Pixar Summer Fest今日登場 · 雙人遊$499起</h3>
+    <p>香港迪士尼樂園6月12日至8月31日推出Pixar主題夏日活動，本地居民可享雙人套票優惠（$499起），同時配套餐飲折扣等福利。</p>
+    <div class="source">來源：點新聞</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<p style="text-align:center; font-size:0.82rem; color:#718096;">
+  📌 本報告由 WorkBuddy 自動生成 · 每日 08:00 執行 · 10:00 推播<br>
+  資料來源：點新聞、The Independent、News24、東方財富、Investopedia、FIFA、新浪財經等<br>
+  <strong>下一更新：今日 17:00（下午新聞撮要）</strong>
+</p>
+
+</div><!-- content -->
+
+<div class="footer">
+  Powered by <a href="https://eventeasynet.github.io/workbuddyClaw/" target="_blank">WorkBuddy Claw</a> · 
+  <a href="https://github.com/eventeasynet/workbuddyClaw" target="_blank">GitHub</a> · 
+  備份於 Google Drive
+</div>
+
+</div><!-- container -->
+</body>
+</html>
