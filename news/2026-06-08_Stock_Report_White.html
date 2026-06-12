@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美股分析報告 - 2026年6月8日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans HK', 'PingFang HK', -apple-system, sans-serif; background: #ffffff; color: #1a1a2e; line-height: 1.7; padding: 0; }
+  .container { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+  .header { text-align: center; padding: 36px 20px 28px; background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; border-radius: 0 0 16px 16px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .header h1 { font-size: 1.8em; font-weight: 700; margin-bottom: 6px; }
+  .header .date { font-size: 0.95em; opacity: 0.9; }
+  .header .badge { display: inline-block; margin-top: 10px; padding: 5px 16px; background: rgba(255,255,255,0.2); color: white; border-radius: 20px; font-size: 0.82em; font-weight: 600; }
+  .alert { background: #fef2f2; border: 1px solid #fca5a5; border-left: 4px solid #ef4444; border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .alert .title { font-weight: 700; color: #dc2626; font-size: 1.05em; margin-bottom: 6px; }
+  .alert .desc { color: #7f1d1d; font-size: 0.92em; line-height: 1.8; }
+  .stock-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 640px) { .stock-grid { grid-template-columns: 1fr; } }
+  .stock-card { background: #f8fafc; border-radius: 14px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .stock-symbol { font-size: 1.4em; font-weight: 700; color: #0f172a; }
+  .stock-name { font-size: 0.85em; color: #64748b; margin-bottom: 12px; }
+  .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+  .price { font-size: 2em; font-weight: 700; }
+  .price.up { color: #16a34a; } .price.down { color: #dc2626; }
+  .change { font-size: 0.95em; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .change.up { background: #dcfce7; color: #16a34a; } .change.down { background: #fee2e2; color: #dc2626; }
+  .after-hours { font-size: 0.8em; color: #64748b; margin-bottom: 4px; }
+  .after-hours span.down { color: #dc2626; font-weight: 600; } .after-hours span.up { color: #16a34a; font-weight: 600; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; margin-top: 14px; font-size: 0.84em; }
+  .meta-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #e2e8f0; }
+  .meta-label { color: #64748b; font-weight: 500; } .meta-value { color: #0f172a; font-weight: 600; } .meta-value.highlight { color: #059669; }
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 1.15em; font-weight: 700; color: #0f172a; padding-bottom: 8px; border-bottom: 2px solid #059669; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .info-card { background: #f8fafc; border-radius: 12px; padding: 18px 20px; border: 1px solid #e2e8f0; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+  .info-card h3 { font-size: 1em; font-weight: 600; color: #0f172a; margin-bottom: 10px; }
+  .info-card p, .info-card li { font-size: 0.9em; color: #334155; line-height: 1.8; }
+  .info-card ul { padding-left: 18px; margin-top: 8px; } .info-card ul li { margin-bottom: 6px; } .info-card strong { color: #059669; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 0.78em; font-weight: 600; margin-right: 4px; }
+  .tag-buy { background: #dcfce7; color: #16a34a; } .tag-neutral { background: #fef9c3; color: #a16207; } .tag-sell { background: #fee2e2; color: #dc2626; }
+  .analyst-table { width: 100%; border-collapse: collapse; font-size: 0.85em; margin-top: 10px; }
+  .analyst-table th { text-align: left; padding: 10px 12px; background: #f8fafc; color: #64748b; font-weight: 700; font-size: 0.8em; border-bottom: 2px solid #e2e8f0; }
+  .analyst-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+  .consensus-card { background: #ffffff; border: 2px solid #059669; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(5,150,105,0.08); }
+  .consensus-card h2 { font-size: 1.2em; font-weight: 700; color: #059669; margin-bottom: 18px; }
+  .consensus-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin-bottom: 18px; }
+  .consensus-table th { text-align: left; padding: 10px 14px; background: #f0fdf4; color: #059669; font-weight: 700; font-size: 0.82em; border-bottom: 2px solid #bbf7d0; }
+  .consensus-table td { padding: 12px 14px; border-bottom: 1px solid #e2e8f0; color: #334155; vertical-align: top; font-size: 0.92em; }
+  .consensus-table tr:last-child td { border-bottom: none; }
+  .bullish { color: #16a34a; font-weight: 600; } .neutral-view { color: #a16207; font-weight: 600; } .bearish { color: #dc2626; font-weight: 600; }
+  .bar-group { margin-bottom: 18px; } .bar-label { display: flex; justify-content: space-between; font-size: 0.85em; margin-bottom: 5px; }
+  .bar-track { height: 28px; background: #f1f5f9; border-radius: 14px; overflow: hidden; display: flex; }
+  .bar-bullish { background: linear-gradient(90deg, #16a34a, #22c55e); height: 100%; border-radius: 14px 0 0 14px; }
+  .bar-neutral-bar { background: linear-gradient(90deg, #ca8a04, #eab308); height: 100%; }
+  .bar-bearish { background: linear-gradient(90deg, #dc2626, #ef4444); height: 100%; border-radius: 0 14px 14px 0; }
+  .consensus-summary { background: #f0fdf4; border-radius: 10px; padding: 14px 18px; font-size: 0.88em; color: #166534; line-height: 1.8; border: 1px solid #bbf7d0; }
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+  .summary-table tr { border-bottom: 1px solid #e2e8f0; } .summary-table tr:last-child { border-bottom: none; }
+  .summary-table td { padding: 12px 0; vertical-align: top; }
+  .summary-table td:first-child { color: #64748b; width: 140px; font-weight: 500; } .summary-table td:last-child { color: #1a1a2e; font-weight: 500; }
+  .footer { text-align: center; padding: 24px 20px; color: #64748b; font-size: 0.8em; border-top: 2px solid #e2e8f0; margin-top: 40px; background: #f8fafc; border-radius: 12px; }
+  .footer a { color: #059669; text-decoration: none; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📈 美股分析報告</h1>
+  <div class="date">2026年6月8日 · 星期一 · 收盤分析</div>
+  <div class="badge">監管執行倒數 · 律所調查啟動</div>
+</div>
+
+<div class="container">
+
+<div class="alert">
+  <div class="title">⚠️ 6/12 整改倒數4日 · Kahn律所啟動投資者調查</div>
+  <div class="desc">Kahn Swick &amp; Foti 律師事務所（6/8）宣布對富途進行投資者損失調查。同日，三家跨境券商確認6/12起暫停境內買入。2年過渡期內境內投資者須清倉離場，衝擊規模待確認。</div>
+</div>
+
+<div class="stock-grid">
+  <div class="stock-card">
+    <div class="stock-symbol">FUTU <span style="font-size: 0.55em; color: #64748b;">NASDAQ</span></div>
+    <div class="stock-name">富途控股 · Futu Holdings Ltd.</div>
+    <div class="price-row">
+      <span class="price down">$92.33</span>
+      <span class="change down">▼ -3.45 (-3.60%)</span>
+    </div>
+    <div class="after-hours">盤後：<span class="down">$90.89 (-1.56%)</span></div>
+    <div class="meta-grid">
+      <div class="meta-item"><span class="meta-label">PE</span><span class="meta-value">10.21</span></div>
+      <div class="meta-item"><span class="meta-label">遠期 PE</span><span class="meta-value">6.35</span></div>
+      <div class="meta-item"><span class="meta-label">市值</span><span class="meta-value">$129.4億</span></div>
+      <div class="meta-item"><span class="meta-label">52週低-高</span><span class="meta-value">$80.50 - $202.53</span></div>
+      <div class="meta-item"><span class="meta-label">分析師</span><span class="meta-value">19位 · 強烈買入</span></div>
+      <div class="meta-item"><span class="meta-label">目標價</span><span class="meta-value highlight">$162.80 (+76.3%)</span></div>
+    </div>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-symbol">TIGR <span style="font-size: 0.55em; color: #64748b;">NASDAQ</span></div>
+    <div class="stock-name">向上融科（老虎證券）· UP Fintech</div>
+    <div class="price-row">
+      <span class="price down">$4.48</span>
+      <span class="change down">▼ -0.28 (-5.88%)</span>
+    </div>
+    <div class="after-hours">盤後：<span class="down">$4.46 (-0.45%)</span></div>
+    <div class="meta-grid">
+      <div class="meta-item"><span class="meta-label">PE</span><span class="meta-value">7.14</span></div>
+      <div class="meta-item"><span class="meta-label">遠期 PE</span><span class="meta-value">7.26</span></div>
+      <div class="meta-item"><span class="meta-label">市值</span><span class="meta-value">$7.97億</span></div>
+      <div class="meta-item"><span class="meta-label">52週低-高</span><span class="meta-value">$4.00 - $13.55</span></div>
+      <div class="meta-item"><span class="meta-label">分析師</span><span class="meta-value">10位 · 買入</span></div>
+      <div class="meta-item"><span class="meta-label">目標價</span><span class="meta-value highlight">$8.01 (+78.8%)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block;"></span>富途控股（FUTU）深度分析</div>
+  <div class="info-card">
+    <h3>🔍 週一市場動向</h3>
+    <ul>
+      <li>盤前 $90.89（-1.56%）開盤承壓，市場對6/12越來越謹慎</li>
+      <li><strong>Kahn Swick &amp; Foti 律所（6/8）</strong>啟動投資者索賠調查，增加法律風險</li>
+      <li>華爾街分析師共識10位（Moderate Buy），平均目標 $162.80（+76.3%）</li>
+      <li>FUTU 年初至今跌 -46.1%，近一個月跌 -38.3%</li>
+    </ul>
+  </div>
+  <div class="info-card">
+    <h3>📊 分析師評級更新</h3>
+    <table class="analyst-table">
+      <thead><tr><th>機構</th><th>評級</th><th>目標價</th></tr></thead>
+      <tbody>
+        <tr><td>Jefferies</td><td><span class="tag tag-buy">買入</span></td><td>$170.50</td></tr>
+        <tr><td>美銀 BofA</td><td><span class="tag tag-buy">買入</span></td><td>$200.00</td></tr>
+        <tr><td>巴克萊</td><td><span class="tag tag-buy">增持</span></td><td>$200.00</td></tr>
+        <tr><td>高盛</td><td><span class="tag tag-neutral">中性</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top: 12px; font-size: 0.84em; background: #f0fdf4; padding: 10px 14px; border-radius: 8px; color: #334155;">
+      <strong>10位共識：</strong><span style="color:#16a34a;">溫和買入</span> · 平均目標 $162.80（+76.3%）· 最高 $200 · 最低 $87
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>向上融科（TIGR）深度分析</div>
+  <div class="info-card">
+    <h3>⚠️ 週一警示</h3>
+    <ul>
+      <li>盤前 $4.46（-0.45%），繼續逼近 $4.00 生死線</li>
+      <li>市值僅 $7.97億，較52週高峰 $13.55 跌幅64%</li>
+      <li>Put 期權 5月下旬至6月初多次超預期 4-13 倍，空頭情緒濃厚</li>
+      <li>花旗大幅砍目標 $16.80 → $7.10（仍維持買入）</li>
+    </ul>
+  </div>
+  <div class="info-card">
+    <h3>📊 分析師評級</h3>
+    <table class="analyst-table">
+      <thead><tr><th>機構</th><th>評級</th><th>目標價</th></tr></thead>
+      <tbody>
+        <tr><td>美銀 BofA</td><td><span class="tag tag-buy">買入</span></td><td>$8.01</td></tr>
+        <tr><td>花旗</td><td><span class="tag tag-buy">買入</span></td><td>$7.10（↓ 從$16.80）</td></tr>
+        <tr><td>高盛</td><td><span class="tag tag-sell">賣出</span></td><td>$4.73</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="consensus-card">
+  <h2>📡 百家撮要 — 6月8日市場觀點</h2>
+  <h3 style="font-size:1.05em;color:#0f172a;margin-bottom:14px;">富途控股 FUTU</h3>
+  <table class="consensus-table">
+    <thead><tr><th>立場</th><th>佔比</th><th>核心觀點</th></tr></thead>
+    <tbody>
+      <tr><td class="bullish">看多</td><td style="font-weight:700;color:#16a34a;">40%</td><td>估值極度低估（PE 10.21，遠期6.35）；溫和買入共識；巴克萊目標$200；Q1剔除罰款後盈利強勁</td></tr>
+      <tr><td class="neutral-view">中立</td><td style="font-weight:700;color:#a16207;">35%</td><td>6/12落地後需觀察2-3季才能量化境內流失影響；高盛/JPM維持中性；回購提供下行支撐</td></tr>
+      <tr><td class="bearish">看淡</td><td style="font-weight:700;color:#dc2626;">25%</td><td>Kahn律所調查新增法律風險；境內流失規模未知；盤前持續下跌；TIGR $4.00生死線岌岌可危</td></tr>
+    </tbody>
+  </table>
+  <div class="bar-group">
+    <div class="bar-label"><span>看多 40%</span><span style="color:#16a34a;font-weight:700;">40%</span></div>
+    <div class="bar-track">
+      <div class="bar-bullish" style="width:40%;"></div>
+      <div class="bar-neutral-bar" style="width:35%;"></div>
+      <div class="bar-bearish" style="width:25%;"></div>
+    </div>
+  </div>
+  <div class="consensus-summary"><strong>FUTU 週一共識：</strong>Kahn律所調查為新增不確定因素，但分析師目標價未下調。6/12是最後一個已知利空，投資者分為「等落地再買」和「等Q2財報確認」兩派，建議觀望為主。</div>
+</div>
+
+<div class="section">
+  <div class="section-title"><span style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;display:inline-block;"></span>綜合投資要點</div>
+  <div class="info-card">
+    <table class="summary-table">
+      <tr><td>倒數日期</td><td style="color:#dc2626;font-weight:600;">6/12（距今4日）· Kahn律所投資者調查啟動</td></tr>
+      <tr><td>FUTU</td><td>$92.33 · 盤前 $90.89 · PE 10.21 · 目標$162.80（+76.3%）</td></tr>
+      <tr><td>TIGR</td><td style="color:#dc2626;font-weight:600;">$4.48 · 盤前 $4.46 · $4.00 生死線告急</td></tr>
+      <tr><td>法律風險</td><td>Kahn律所啟動投資者索賠調查（6/8）</td></tr>
+      <tr><td>策略建議</td><td style="color:#a16207;font-weight:600;">6/12前觀望為主，整改落地後評估境內流失規模再行動</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <p>本報告由 AI 自動生成 · 2026年6月8日 19:00 · 僅供參考，不構成投資建議</p>
+  <p style="margin-top:6px;">資料來源：StockAnalysis · MarketWatch · 富途牛牛 · 新浪財經</p>
+  <p style="margin-top:6px;"><a href="https://dash.vigoradv.com" target="_blank">📊 返回 Dashboard</a></p>
+</div>
+
+</div>
+</body>
+</html>

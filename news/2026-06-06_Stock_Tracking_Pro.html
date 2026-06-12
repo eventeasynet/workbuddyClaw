@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 板塊追蹤 - 6月6日</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif; background: #ffffff; color: #1a1a2e; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.header h1 { font-size: 24px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.header .meta { font-size: 13px; opacity: 0.9; margin-top: 8px; }
+.section { margin-bottom: 32px; background: #f9fafb; border-radius: 12px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.section-title { font-size: 18px; font-weight: 700; color: #059669; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #059669; display: flex; align-items: center; gap: 8px; }
+.stock-card { background: white; border-radius: 10px; padding: 16px; margin-bottom: 16px; border: 1px solid #e5e7eb; transition: all 0.3s; }
+.stock-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+.stock-name { font-size: 16px; font-weight: 700; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+.stock-symbol { background: #059669; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.stock-price { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.up { color: #16a34a; } .down { color: #dc2626; }
+.price-change { font-size: 14px; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+.price-change.up { background: #dcfce7; color: #16a34a; } .price-change.down { background: #fee2e2; color: #dc2626; }
+.stock-chart { width: 100%; height: 200px; margin: 16px 0; background: #f9fafb; border-radius: 8px; padding: 12px; }
+.stock-summary { font-size: 14px; color: #4b5563; line-height: 1.8; margin: 12px 0; }
+.analyst-rating { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+.rating-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.rating-badge.buy { background: #dcfce7; color: #16a34a; } .rating-badge.hold { background: #fef3c7; color: #d97706; } .rating-badge.sell { background: #fee2e2; color: #dc2626; }
+.target-price { font-size: 13px; color: #6b7280; margin: 8px 0; }
+.target-price strong { color: #059669; font-size: 15px; }
+.source-link { display: inline-flex; align-items: center; gap: 4px; color: #059669; text-decoration: none; font-size: 13px; margin-top: 8px; padding: 4px 8px; border-radius: 4px; background: #f0fdf4; }
+.footer { margin-top: 40px; padding: 20px; background: #f3f4f6; border-radius: 12px; text-align: center; font-size: 13px; color: #6b7280; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.tag { background: #f0fdf4; color: #059669; padding: 4px 10px; border-radius: 20px; font-size: 12px; }
+@media (max-width: 768px) { .stock-header { flex-direction: column; align-items: flex-start; } .stock-price { font-size: 18px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 板塊追蹤 — 6月6日</h1>
+  <div class="meta">EventEasy 美股追蹤 · 富途/老虎/AI/動漫板塊 · 2026-06-06</div>
+</div>
+
+<div class="section">
+  <div class="section-title">💰 板塊一：富途·老虎每日動向</div>
+  
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">🏦 富途控股 (FUTU) <span class="stock-symbol">FUTU</span></div>
+      <div class="stock-price down">$92.33 <span class="price-change down">-3.60%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="futu-chart"></canvas></div>
+    <div class="stock-summary"><strong>週末回顧（數據截至6/5）：</strong>5/22監管事件後FUTU持續下跌，週跌-38.3%，盤後$90.99。標普重申投資級評級。ARK基金逆勢買入19,400股。Moomoo×Kalshi預測市場合作（6/4）拓展業務。6/12境內買入暫停執行在即，市場觀望情緒濃厚。</div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">強烈買入</span><span class="rating-badge buy">買入</span><span class="rating-badge hold">持有</span>
+    </div>
+    <div class="target-price"><strong>分析師目標價：</strong>$167.02（共識強烈買入，上漲空間79.7%）</div>
+    <a href="https://stockanalysis.com/stocks/futu/" target="_blank" class="source-link">🔗 StockAnalysis</a>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">🏦 老虎證券 (TIGR) <span class="stock-symbol">TIGR</span></div>
+      <div class="stock-price down">$4.48 <span class="price-change down">-5.88%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="tigr-chart"></canvas></div>
+    <div class="stock-summary"><strong>週末回顧（數據截至6/5）：</strong>Q1罰款$6,000萬致淨虧損，但核心營運穩健。花旗目標砍至$7.10，美銀維持$8.01，均維持買入。$5,000萬回購計劃啟動展現信心。Put期權異常活躍，$4.00是技術關鍵支撐。</div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入</span><span class="rating-badge hold">持有</span>
+    </div>
+    <div class="target-price"><strong>分析師目標價：</strong>$8.58（10位分析師，上漲空間77.6%）</div>
+    <a href="https://stockanalysis.com/stocks/tigr/" target="_blank" class="source-link">🔗 StockAnalysis</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🤖 板塊二：AI 產業股票行情</div>
+  
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">💎 NVIDIA (NVDA) <span class="stock-symbol">NVDA</span></div>
+      <div class="stock-price down">$143.56 <span class="price-change down">-2.54%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="nvda-chart"></canvas></div>
+    <div class="stock-summary"><strong>AI晶片市場動態：</strong>AI基礎設施需求持續強勁，NVDA主導數據中心GPU市場。OpenAI洽談租賃10GW數據中心，NVDA提供融資支持。Barrons指出NVDA估值已低於標普500，多家機構維持強烈買入。</div>
+    <div class="analyst-rating"><span class="rating-badge buy">強烈買入</span></div>
+    <div class="target-price"><strong>分析師目標價：</strong>$298.42（62位分析師強烈買入）</div>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">🔥 AMD (超微) <span class="stock-symbol">AMD</span></div>
+      <div class="stock-price down">$134.52 <span class="price-change down">-1.21%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="amd-chart"></canvas></div>
+    <div class="stock-summary"><strong>AI晶片競爭格局：</strong>TensorWave完成3.5億美元B輪融資，建立全AMD AI雲平台。AMD承諾5年投資英國20億英鎊。UBS指NVDA領先差距仍大，AMD積極布局推理端市場。</div>
+    <div class="analyst-rating"><span class="rating-badge buy">強烈買入</span></div>
+    <div class="target-price"><strong>分析師目標價：</strong>$482.69（51位分析師）</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">🎬 板塊三：動漫·微短劇產業</div>
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">📺 嗶哩嗶哩 (BILI) <span class="stock-symbol">BILI</span></div>
+      <div class="stock-price up">$18.08 <span class="price-change up">+2.67%</span></div>
+    </div>
+    <div class="stock-summary"><strong>Q1 業績出色：</strong>調整淨利同比+63.4%，廣告收入連續13季增長超30%，DAU達1.152億。Macquarie上調目標至$30。</div>
+    <div class="analyst-rating"><span class="rating-badge buy">強烈買入</span></div>
+    <div class="target-price"><strong>分析師目標價：</strong>$29.55（31位分析師，上漲空間63.4%）</div>
+  </div>
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">🎭 愛奇藝 (IQ) <span class="stock-symbol">IQ</span></div>
+      <div class="stock-price down">$1.03 <span class="price-change down">-0.96%</span></div>
+    </div>
+    <div class="stock-summary"><strong>AI短劇全面爆發：</strong>Q1全國上線微短劇約12.8萬部，AI短劇佔比超95%。愛奇藝AI智能體Nadou Pro創作者突破1萬人，已申請港交所上市。</div>
+    <div class="analyst-rating"><span class="rating-badge hold">持有</span></div>
+    <div class="target-price"><strong>分析師目標價：</strong>$1.50（摩根士丹利）</div>
+  </div>
+</div>
+
+<div class="footer">
+  <div style="margin-bottom: 8px;">#EventEasy美股追蹤 #AI晶片 #動漫微短劇</div>
+  EventEasy.net 每日追蹤美股 AI、動漫及微短劇板塊！
+  <div style="margin-top: 8px; font-size: 12px; color: #9ca3af;">生成時間：2026-06-06 | 數據來源：StockAnalysis, 新浪新聞</div>
+</div>
+
+<script>
+function makeChart(id, labels, data, color) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  new Chart(ctx.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{ label: id, data: data, borderColor: color, backgroundColor: color.replace(')', ', 0.1)').replace('rgb', 'rgba'), borderWidth: 2, fill: true, tension: 0.4 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#e5e7eb' } }, x: { grid: { display: false } } } }
+  });
+}
+makeChart('futu-chart', ['5/22','5/26','5/27','5/28','5/29','6/1','6/5'], [148.18, 130.17, 120.78, 99.95, 96.26, 95.78, 92.33], 'rgb(220, 38, 38)');
+makeChart('tigr-chart', ['5/22','5/26','5/27','5/28','5/29','6/1','6/5'], [7.37, 5.96, 5.56, 5.25, 4.91, 4.71, 4.48], 'rgb(220, 38, 38)');
+makeChart('nvda-chart', ['5/22','5/27','6/1','6/5','6/8'], [135.28, 145.88, 150.42, 143.56, 143.56], 'rgb(220, 38, 38)');
+makeChart('amd-chart', ['5/22','5/27','6/1','6/5','6/8'], [118.40, 125.30, 131.80, 134.52, 134.52], 'rgb(220, 38, 38)');
+</script>
+</body>
+</html>

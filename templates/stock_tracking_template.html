@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 板塊追蹤 - 6月11日</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif; 
+  background: #ffffff; 
+  color: #1a1a2e; 
+  line-height: 1.6; 
+  padding: 20px; 
+  max-width: 1200px; 
+  margin: 0 auto;
+}
+.header { 
+  background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+  color: white; 
+  padding: 24px; 
+  border-radius: 12px; 
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.header h1 { 
+  font-size: 24px; 
+  margin-bottom: 8px; 
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+}
+.header .meta { 
+  font-size: 13px; 
+  opacity: 0.9; 
+  margin-top: 8px;
+}
+.section { 
+  margin-bottom: 32px; 
+  background: #f9fafb; 
+  border-radius: 12px; 
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.section-title { 
+  font-size: 18px; 
+  font-weight: 700; 
+  color: #059669; 
+  margin-bottom: 16px; 
+  padding-bottom: 8px; 
+  border-bottom: 2px solid #059669;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stock-card { 
+  background: white; 
+  border-radius: 10px; 
+  padding: 16px; 
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s;
+}
+.stock-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stock-name { 
+  font-size: 16px; 
+  font-weight: 700; 
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stock-symbol {
+  background: #059669;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.stock-price { 
+  font-size: 20px; 
+  font-weight: 700; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.up { color: #16a34a; }
+.down { color: #dc2626; }
+.price-change {
+  font-size: 14px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.price-change.up {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.price-change.down {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.stock-chart {
+  width: 100%;
+  height: 200px;
+  margin: 16px 0;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 12px;
+}
+.stock-summary { 
+  font-size: 14px; 
+  color: #4b5563; 
+  line-height: 1.8;
+  margin: 12px 0;
+}
+.analyst-rating {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+.rating-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.rating-badge.buy {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.rating-badge.hold {
+  background: #fef3c7;
+  color: #d97706;
+}
+.rating-badge.sell {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.target-price {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 8px 0;
+}
+.target-price strong {
+  color: #059669;
+  font-size: 15px;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #059669;
+  text-decoration: none;
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f0fdf4;
+}
+.source-link:hover {
+  background: #dcfce7;
+}
+.footer { 
+  margin-top: 40px; 
+  padding: 20px; 
+  background: #f3f4f6; 
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px; 
+  color: #6b7280; 
+}
+.tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.tag {
+  background: #f0fdf4;
+  color: #059669;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+@media (max-width: 768px) {
+  .stock-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stock-price {
+    font-size: 18px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 板塊追蹤 — 6月11日</h1>
+  <div class="meta">EventEasy 美股追蹤 · 富途/老虎/AI/動漫板塊 · 2026-06-11</div>
+</div>
+
+<!-- 板塊一：富途·老虎動向 -->
+<div class="section">
+  <div class="section-title">💰 板塊一：富途·老虎每日動向</div>
+  
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        🏦 富途控股 (FUTU)
+        <span class="stock-symbol">FUTU</span>
+      </div>
+      <div class="stock-price up">
+        $92.93
+        <span class="price-change up">+1.77%</span>
+      </div>
+    </div>
+    <div class="stock-chart">
+      <canvas id="futu-chart"></canvas>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>5月22日證監會調查導致單日暴跌28%後持續低迷。高盛降評至中性目標$102.13，摩通降至中性$100，但Jefferies及BofA維持買入。ARK基金逆勢買入19400股，S&P確認投資級評級。Moomoo與Kalshi合作擴展預測市場。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">強烈買入</span>
+      <span class="rating-badge buy">買入</span>
+      <span class="rating-badge hold">持有</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$167.02（共識強烈買入，上漲空間79.7%）
+    </div>
+    <a href="https://stockanalysis.com/stocks/futu/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        🏦 老虎證券 (TIGR)
+        <span class="stock-symbol">TIGR</span>
+      </div>
+      <div class="stock-price up">
+        $4.83
+        <span class="price-change up">+2.33%</span>
+      </div>
+    </div>
+    <div class="stock-chart">
+      <canvas id="tigr-chart"></canvas>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>Q1營收$1.55億同比+26.3%，但6000萬罰款致淨虧損。花旗目標價從$16.80大砍至$7.10，美銀從$9.96降至$8.01，均維持買入。公司宣布5000萬回購計劃展現信心，客戶資產流入強勁海外增長良好。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入</span>
+      <span class="rating-badge hold">持有</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$8.58（10位分析師，上漲空間77.6%）
+    </div>
+    <a href="https://stockanalysis.com/stocks/tigr/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+</div>
+
+<!-- 板塊二：AI 產業 -->
+<div class="section">
+  <div class="section-title">🤖 板塊二：AI 產業股票行情</div>
+  
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        💎 NVIDIA (NVDA)
+        <span class="stock-symbol">NVDA</span>
+      </div>
+      <div class="stock-price down">
+        $200.42
+        <span class="price-change down">-3.73%</span>
+      </div>
+    </div>
+    <div class="stock-chart">
+      <canvas id="nvda-chart"></canvas>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>OpenAI正洽談租賃德州10GW數據中心，NVDA提供融資支持，凸顯其AI基礎設施生態布局。Cerebras CEO炮轟NVDA硬件設計弱點，D-Matrix挑戰推理效率。但Barrons指NVDA估值已低於標普500，投資基金CEO稱其為價值股。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">強烈買入</span>
+      <span class="rating-badge buy">買入</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$298.42（62位分析師強烈買入）
+    </div>
+    <a href="https://stockanalysis.com/stocks/nvda/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        🔥 AMD (超微)
+        <span class="stock-symbol">AMD</span>
+      </div>
+      <div class="stock-price down">
+        $452.40
+        <span class="price-change down">-4.86%</span>
+      </div>
+    </div>
+    <div class="stock-chart">
+      <canvas id="amd-chart"></canvas>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>TensorWave完成3.5億美元B輪融資估值15.5億，建全AMD AI雲平台。AMD承諾5年投資英國20億英鎊加速AI創新。但UBS指NVDA領先差距仍大，有投資者稱AMD為落下的刀。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">強烈買入</span>
+      <span class="rating-badge buy">買入</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$482.69（51位分析師）
+    </div>
+    <a href="https://stockanalysis.com/stocks/amd/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        🚀 Palantir (PLTR)
+        <span class="stock-symbol">PLTR</span>
+      </div>
+      <div class="stock-price down">
+        $130.21
+        <span class="price-change down">-1.41%</span>
+      </div>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>CEO Karp稱企業客戶對前沿AI實驗室的Token-maxxing銷售模式日益不滿，暗示Palantir可填補缺口。英國NHS合同遭重新審查，倫敦警察合同被阻止。但Google Cloud合作上線Marketplace，與多家企業簽新約。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">強烈買入</span>
+      <span class="rating-badge buy">買入</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$183.73（31位分析師）
+    </div>
+    <a href="https://stockanalysis.com/stocks/pltr/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+</div>
+
+<!-- 板塊三：動漫·微短劇 -->
+<div class="section">
+  <div class="section-title">🎬 板塊三：動漫·微短劇產業股票</div>
+  
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        📺 嗶哩嗶哩 (BILI)
+        <span class="stock-symbol">BILI</span>
+      </div>
+      <div class="stock-price up">
+        $18.08
+        <span class="price-change up">+2.67%</span>
+      </div>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>Q1調整淨利同比+63.4%，廣告收入連續13季增長超30%，DAU達1.152億。Macquarie上調目標價至$30，GF Value認為目前被低估。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">強烈買入</span>
+      <span class="rating-badge buy">買入</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$29.55（31位分析師，上漲空間63.4%）
+    </div>
+    <a href="https://stockanalysis.com/stocks/bili/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        🎭 愛奇藝 (IQ)
+        <span class="stock-symbol">IQ</span>
+      </div>
+      <div class="stock-price down">
+        $1.03
+        <span class="price-change down">-0.96%</span>
+      </div>
+    </div>
+    <div class="stock-summary">
+      <strong>最新動向：</strong>自研AI智能體Nadou Pro創作者突破1萬人，公布高級功能更新及全球擴張計劃。海外會員收入增長強勁，已申請在香港聯交所上市。摩根士丹利下調目標至$1.50維持中性。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge hold">持有</span>
+      <span class="rating-badge sell">賣出</span>
+    </div>
+    <div class="target-price">
+      <strong>分析師目標價：</strong>$1.50（摩根士丹利）
+    </div>
+    <a href="https://stockanalysis.com/stocks/iq/" target="_blank" class="source-link">🔗 來源：StockAnalysis</a>
+  </div>
+
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">
+        🎬 AI短劇產業動態
+      </div>
+    </div>
+    <div class="stock-summary">
+      <strong>2026年AI短劇全面爆發：</strong>Q1全國上線微短劇約12.8萬部，AI短劇佔比超95%。成本僅為真人劇1/10、生產周期縮短2/3。AI漫劇用戶規模料從2025年1.2億增至2.8億，市場規模有望突破240億。仿真人短劇佔比從7%激增至近60%，成為絕對主流。
+    </div>
+    <div class="tags">
+      <span class="tag">#AI短劇</span>
+      <span class="tag">#微短劇</span>
+      <span class="tag">#AI漫劇</span>
+      <span class="tag">#240億市場</span>
+    </div>
+    <a href="https://www.sina.cn/news/detail/5290291819189519.html" target="_blank" class="source-link">🔗 來源：新浪新聞</a>
+  </div>
+</div>
+
+<div class="footer">
+  <div style="margin-bottom: 8px;">
+    #EventEasy美股追蹤 #AI晶片 #動漫微短劇
+  </div>
+  EventEasy.net 每日追蹤美股 AI、動漫及微短劇板塊！
+  <div style="margin-top: 8px; font-size: 12px; color: #9ca3af;">
+    生成時間：2026-06-11 | 數據來源：StockAnalysis, 新浪新聞
+  </div>
+</div>
+
+<script>
+// FUTU 股價走勢圖（模擬數據）
+const futuCtx = document.getElementById('futu-chart').getContext('2d');
+new Chart(futuCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/5', '6/6', '6/7', '6/8', '6/9', '6/10', '6/11'],
+    datasets: [{
+      label: 'FUTU 股價',
+      data: [75.38, 76.50, 78.20, 77.80, 91.50, 92.30, 92.93],
+      borderColor: '#16a34a',
+      backgroundColor: 'rgba(22, 163, 74, 0.1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: false,
+        grid: { color: '#e5e7eb' }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// TIGR 股價走勢圖
+const tigrCtx = document.getElementById('tigr-chart').getContext('2d');
+new Chart(tigrCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/5', '6/6', '6/7', '6/8', '6/9', '6/10', '6/11'],
+    datasets: [{
+      label: 'TIGR 股價',
+      data: [4.20, 4.35, 4.50, 4.65, 4.70, 4.78, 4.83],
+      borderColor: '#16a34a',
+      backgroundColor: 'rgba(22, 163, 74, 0.1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: false,
+        grid: { color: '#e5e7eb' }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// NVDA 股價走勢圖
+const nvdaCtx = document.getElementById('nvda-chart').getContext('2d');
+new Chart(nvdaCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/5', '6/6', '6/7', '6/8', '6/9', '6/10', '6/11'],
+    datasets: [{
+      label: 'NVDA 股價',
+      data: [215.00, 210.50, 208.30, 205.60, 203.20, 201.80, 200.42],
+      borderColor: '#dc2626',
+      backgroundColor: 'rgba(220, 38, 38, 0.1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: false,
+        grid: { color: '#e5e7eb' }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// AMD 股價走勢圖
+const amdCtx = document.getElementById('amd-chart').getContext('2d');
+new Chart(amdCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/5', '6/6', '6/7', '6/8', '6/9', '6/10', '6/11'],
+    datasets: [{
+      label: 'AMD 股價',
+      data: [480.00, 475.30, 468.50, 460.20, 455.80, 453.10, 452.40],
+      borderColor: '#dc2626',
+      backgroundColor: 'rgba(220, 38, 38, 0.1)',
+      borderWidth: 2,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: {
+        beginAtZero: false,
+        grid: { color: '#e5e7eb' }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
