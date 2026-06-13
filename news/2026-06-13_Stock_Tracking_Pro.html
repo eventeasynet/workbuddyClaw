@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 板塊追蹤 - 6月13日 | Pro版</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif; background:#ffffff; color:#1a1a2e; line-height:1.6; padding:20px; max-width:1200px; margin:0 auto; }
+.header { background: linear-gradient(135deg, #059669 0%, #047857 100%); color:white; padding:24px; border-radius:12px; margin-bottom:24px; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
+.header h1 { font-size:24px; margin-bottom:8px; display:flex; align-items:center; gap:10px; }
+.header .subtitle { font-size:14px; opacity:0.9; }
+.section { margin-bottom:32px; background:#f9fafb; border-radius:12px; padding:20px; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+.section-title { font-size:18px; font-weight:700; color:#059669; margin-bottom:16px; padding-bottom:8px; border-bottom:2px solid #059669; display:flex; align-items:center; gap:8px; }
+.stock-card { background:white; border-radius:10px; padding:16px; margin-bottom:16px; border:1px solid #e5e7eb; transition:all 0.3s; }
+.stock-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.1); transform:translateY(-2px); }
+.stock-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+.stock-name { font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.stock-symbol { background:#059669; color:white; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:600; }
+.stock-price { font-size:20px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.up { color:#16a34a; } .down { color:#dc2626; }
+.price-change { font-size:14px; padding:2px 8px; border-radius:4px; font-weight:600; }
+.price-change.up { background:#dcfce7; color:#16a34a; }
+.price-change.down { background:#fee2e2; color:#dc2626; }
+.stock-chart { width:100%; height:200px; margin:16px 0; background:#f9fafb; border-radius:8px; padding:12px; }
+.stock-summary { font-size:14px; color:#4b5563; line-height:1.8; margin:12px 0; }
+.analyst-rating { display:flex; gap:12px; margin:12px 0; flex-wrap:wrap; }
+.rating-badge { padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; }
+.rating-badge.strong-buy { background:#dcfce7; color:#16a34a; }
+.rating-badge.buy { background:#dcfce7; color:#16a34a; }
+.rating-badge.hold { background:#fef3c7; color:#d97706; }
+.rating-badge.sell { background:#fee2e2; color:#dc2626; }
+.target-price { font-size:13px; color:#6b7280; margin:8px 0; }
+.target-price strong { color:#059669; font-size:15px; }
+.source-link { display:inline-flex; align-items:center; gap:4px; color:#059669; text-decoration:none; font-size:13px; margin-top:8px; padding:4px 8px; border-radius:4px; background:#f0fdf4; }
+.source-link:hover { background:#dcfce7; }
+.news-item { margin:12px 0; padding:12px; background:#f9fafb; border-radius:8px; border-left:3px solid #059669; }
+.news-item h4 { font-size:14px; color:#1a1a2e; margin-bottom:6px; }
+.news-item p { font-size:13px; color:#6b7280; line-height:1.6; }
+.footer { margin-top:40px; padding:20px; background:#f3f4f6; border-radius:12px; text-align:center; font-size:13px; color:#6b7280; }
+.market-overview { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:20px; }
+.market-card { background:white; border-radius:8px; padding:12px; text-align:center; border:1px solid #e5e7eb; }
+.market-card .label { font-size:12px; color:#6b7280; }
+.market-card .value { font-size:16px; font-weight:700; margin-top:4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 板塊追蹤 — 富途·老虎 / AI·晶片 / 動漫·微短劇</h1>
+  <div class="subtitle">📅 2026年6月13日（週五） | Pro版 — 含Chart.js走勢圖 | 數據截至6月12日收盤</div>
+</div>
+
+<!-- ===== 板塊一：富途·老虎 ===== -->
+<div class="section">
+  <div class="section-title">📈 板塊一：富途·老虎 每日動向</div>
+
+  <!-- FUTU -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">富途控股 <span class="stock-symbol">FUTU</span></div>
+      <div class="stock-price up">$97.54 <span class="price-change up">+2.10%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_futu"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>6/12整改正式生效</b>：富途自6月12日起全面暫停內地客戶買入及入金，進入2年過渡期「只出不進」模式。儘管監管陰霾未散，股價逆勢反彈，盤後升至$98.03。<br>
+      📌 <b>ARK逆勢加倉</b>：Cathie Wood旗下ARKK持續增持FUTU，S&P確認富途投資級信用評級，為市場注入信心。<br>
+      📌 <b>Q1業績強勁</b>：營收$7.469億（+25% YoY），用戶總數達3,020萬（+14.9%），淨新增入金帳戶創歷史新高。累計回購約$4.18億ADS。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>19位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$164.02</strong> | 上漲空間：<strong>+68.16%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/futu/" target="_blank">🔗 StockAnalysis</a>
+      <a class="source-link" href="https://finance.sina.com.cn/roll/2026-06-05/doc-iniaiusu8502109.shtml" target="_blank">🔗 整改報道</a>
+    </div>
+  </div>
+
+  <!-- TIGR -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">向上融科（老虎證券） <span class="stock-symbol">TIGR</span></div>
+      <div class="stock-price down">$4.77 <span class="price-change down">-0.63%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_tigr"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>6/12整改截止日壓力</b>：老虎國際同日啟動「只出不進」整改方案，6月2日公佈後股價一度暴跌近7%。花旗將目標價由$16.80大幅削至$7.10，BofA削至$8.01。<br>
+      📌 <b>Q1營收增26%</b>：營收$1.55億（+26% YoY），海外業務增長穩健，但$6,000萬一次性監管罰款導致淨虧損。2025全年營收$5.387億（+62.88%），淨利$1.709億（+181.42%）。<br>
+      📌 <b>$5,000萬回購計劃</b>：董事會批准新一輪股票回購，顯示長期信心。近期看跌期權異動頻繁（1.7x-13x），市場分歧加劇。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入</span>
+      <span>10位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$8.58</strong> | 上漲空間：<strong>+79.87%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/tigr/" target="_blank">🔗 StockAnalysis</a>
+      <a class="source-link" href="https://stock.10jqka.com.cn/20260605/c677232594.shtml" target="_blank">🔗 整改報道</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 板塊二：AI 產業 ===== -->
+<div class="section">
+  <div class="section-title">🤖 板塊二：AI 產業股票行情</div>
+
+  <!-- NVDA -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">NVIDIA <span class="stock-symbol">NVDA</span></div>
+      <div class="stock-price up">$205.19 <span class="price-change up">+0.16%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_nvda"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>LG AI工廠合作</b>：NVIDIA與LG集團共建AI工廠，加速機器人、自動駕駛、數據中心及GPU雲等AI驅動業務。<br>
+      📌 <b>進軍PC處理器</b>：CEO黃仁勳在Computex發佈RTX Spark系列PC晶片，從數據中心延伸至邊緣運算，分析師看好其「全棧AI」佈局。<br>
+      📌 <b>TSMC合作AI製造</b>：台積電部署NVIDIA加速運算及AI技術，用於半導體設計與製造，提升良率與能源效率。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>62位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$298.93</strong> | 上漲空間：<strong>+45.44%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/nvda/" target="_blank">🔗 StockAnalysis</a>
+      <a class="source-link" href="https://www.cnbc.com/2026/06/02/nvidias-new-pc-chips-are-ceos-bid-to-own-every-part-of-ai-stack.html" target="_blank">🔗 CNBC</a>
+    </div>
+  </div>
+
+  <!-- AMD -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">超微半導體 <span class="stock-symbol">AMD</span></div>
+      <div class="stock-price up">$511.57 <span class="price-change up">+4.73%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_amd"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>MI400系列重磅發佈</b>：AMD推出$72億AI GPU MI400系列，直接挑戰NVIDIA在AI加速器市場的主導地位，獲Citi升級至「買入」並上調目標至$575。<br>
+      📌 <b>股價創52周新高區域</b>：盤中高見$521.71，逼近52周高位$546.44。Citi分析師Atif Malik看好AMD在AI推理市場的份額增長。<br>
+      📌 <b>TensorWave融資$3.5億</b>：建基於AMD晶片的AI雲平台TensorWave獲新一輪融資，驗證AMD生態系統持續擴展。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>51位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$486.33</strong> | ⚠️ 現價已超目標價（Citi個別目標$575）</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/amd/" target="_blank">🔗 StockAnalysis</a>
+      <a class="source-link" href="https://tech-insider.org/amd-mi400-series-ai-gpu-data-center-2026/" target="_blank">🔗 MI400分析</a>
+    </div>
+  </div>
+
+  <!-- AVGO -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">博通 <span class="stock-symbol">AVGO</span></div>
+      <div class="stock-price down">$382.07 <span class="price-change down">-0.91%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_avgo"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>Q2 AI營收$108億（+143% YoY）</b>：博通Q2總營收$221.87億創歷史新高，AI晶片銷售佔比近半。但未上調全年指引，市場失望致財報後暴跌15%，近期逐步回穩。<br>
+      📌 <b>AI定製晶片需求爆發</b>：AI積壓訂單約$730億，管理層目標2027年AI晶片營收超$1,000億。Apollo/Blackstone合資350億AI XPV平台推動定制加速器需求。<br>
+      📌 <b>股息$2.60</b>（除息日6月22日），遠期市盈率24.27，估值合理。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>48位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$522.06</strong> | 上漲空間：<strong>+36.64%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/avgo/" target="_blank">🔗 StockAnalysis</a>
+      <a class="source-link" href="https://tech-insider.org/broadcom-q2-2026-earnings-ai-revenue/" target="_blank">🔗 Q2財報分析</a>
+    </div>
+  </div>
+
+  <!-- SMCI -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">美超微 <span class="stock-symbol">SMCI</span></div>
+      <div class="stock-price down">$30.46 <span class="price-change down">-4.72%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_smci"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>$390億AI訂單 + $70億融資</b>：SMCI新增約390億AI伺服器訂單，但同時宣布70億股權融資計劃，市場對股權大幅稀釋擔憂，股價持續承壓。<br>
+      📌 <b>Computex雙AI平台</b>：發佈搭載NVIDIA GB300及AMD MI400的雙AI伺服器平台，技術路線清晰但財務稀釋風險仍為主導。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge hold">持有</span>
+      <span>19位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$37.25</strong> | 上漲空間：<strong>+23.54%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/smci/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- PLTR -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">Palantir Technologies <span class="stock-symbol">PLTR</span></div>
+      <div class="stock-price down">$127.99 <span class="price-change down">-2.36%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_pltr"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>AIPCon攜手Google Cloud</b>：Palantir在AIPCon大會上宣布與Google Cloud深度合作，Anthropic的Claude模型已在Palantir平台上運行，CEO Alex Karp稱企業客戶對AI實驗室不滿，Palantir是更好選擇。<br>
+      📌 <b>估值分歧持續</b>：2025年營收$44.8億（+56.18%），淨利$16.3億（+251.59%），但市盈率143.88倍，年內股價累跌23%。分析師對AI落地能力樂觀但估值偏高。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入</span>
+      <span>分析師覆蓋</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$183.73</strong> | 上漲空間：<strong>+43.55%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/pltr/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- MSFT -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">微軟 <span class="stock-symbol">MSFT</span></div>
+      <div class="stock-price up">$390.74 <span class="price-change up">+0.10%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_msft"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>開源SkillOpt框架</b>：微軟開源AI Agent開發框架SkillOpt，降低企業部署AI Agent的門檻，強化Azure AI生態系統。<br>
+      📌 <b>Azure AI營收持續高增</b>：分析師預期AI雲服務將推動Azure營收增長超30%，Copilot企業版用戶持續擴張。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>56位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$561.39</strong> | 上漲空間：<strong>+43.67%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/msft/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- GOOGL -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">Alphabet（Google） <span class="stock-symbol">GOOGL</span></div>
+      <div class="stock-price up">$359.68 <span class="price-change up">+0.53%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_googl"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>三星代工TPU Icefish</b>：Google最新AI加速器TPU Icefish將由三星代工，打破台積電獨家代工格局，有望降低供應鏈風險。<br>
+      📌 <b>獲分析師升級</b>：多家機構認為Google當前估值合理，AI基礎設施投資時機恰當，Agentic AI應用落地將成下一增長引擎。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>63位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$432.83</strong> | 上漲空間：<strong>+20.34%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/googl/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- SNOW -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">Snowflake <span class="stock-symbol">SNOW</span></div>
+      <div class="stock-price down">$232.78 <span class="price-change down">-3.17%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_snow"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>多家機構上調目標價</b>：UBS上調至$370（+13.8%）、Needham至$330、BTIG至$325、Piper Sandler至$320，顯示分析師對AI數據雲前景高度看好。<br>
+      📌 <b>與Palantir戰略合作</b>：Snowflake AI數據雲與Palantir AI平台整合，Eaton等企業客戶已開始部署AI Agent。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>51位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$291.28</strong> | 上漲空間：<strong>+25.13%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/snow/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- AI C3.ai -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">C3.ai <span class="stock-symbol">AI</span></div>
+      <div class="stock-price down">$10.90 <span class="price-change down">-3.28%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_ai"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>Q4營收$51.6M</b>：財報發佈後股價曾漲16%至$12.38，但隨後回落。UBS上調目標至$12（中性），Canaccord至$10（持有），Morgan Stanley至$7（低配）。<br>
+      📌 <b>分析師共識仍為「賣出」</b>：14位分析師平均目標價$8.82，較現價低19%。市場質疑其商業模式可持續性。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge sell">賣出</span>
+      <span>14位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$8.82</strong> | ⚠️ 下行空間：<strong>-19.08%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/ai/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 板塊三：動漫·微短劇 ===== -->
+<div class="section">
+  <div class="section-title">🎬 板塊三：動漫·微短劇 產業股票</div>
+
+  <!-- BILI -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">嗶哩嗶哩 <span class="stock-symbol">BILI</span></div>
+      <div class="stock-price down">$17.86 <span class="price-change down">-2.72%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_bili"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>Q1業績強勁</b>：營收¥75億（+24% YoY），調整淨利+63.4%，廣告連續13季增長超30%。DAU達1.152億，用戶黏性持續提升。<br>
+      📌 <b>Macquarie上調目標至$30</b>：看好BILI在AI漫劇及社區生態的長期價值。CMB International設目標$25。<br>
+      📌 <b>AI漫劇業務爆發</b>：BILI成為AI短劇重要分發平台，Q1上線12.8萬部短劇中AI佔比超95%，帶動付費會員增長。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入</span>
+      <span>31位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$29.58</strong> | 上漲空間：<strong>+65.62%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/bili/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- IQ -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">愛奇藝 <span class="stock-symbol">IQ</span></div>
+      <div class="stock-price up">$1.030 <span class="price-change up">0.00%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_iq"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>Nadou Pro破萬創作者</b>：AI創作平台Nadou Pro註冊創作者突破1萬，發布AI全流程創作體系，從劇本生成到視頻渲染一站式完成。<br>
+      📌 <b>申請港股雙重上市</b>：愛奇藝正尋求港交所第二上市，海外會員收入+40%創新高，國際化戰略推進中。<br>
+      📌 <b>短劇頻道全面升級</b>：愛奇藝短劇頻道涵蓋都市情感、古風、懸疑等多題材，2026年上新節奏加快。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入</span>
+      <span>20位分析師</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$1.54</strong> | 上漲空間：<strong>+49.52%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/stocks/iq/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- TCEHY -->
+  <div class="stock-card">
+    <div class="stock-header">
+      <div class="stock-name">騰訊控股 <span class="stock-symbol">TCEHY</span></div>
+      <div class="stock-price down">$59.06 <span class="price-change down">-0.20%</span></div>
+    </div>
+    <div class="stock-chart"><canvas id="chart_tcehy"></canvas></div>
+    <div class="stock-summary">
+      📌 <b>微信AI Agent測試中</b>：騰訊正為微信（14億用戶）推出AI Agent智能體，可幫用戶在應用內自動完成任務，消息公佈後股價曾單日飆升超10%。<br>
+      📌 <b>前OpenAI研究員加盟</b>：姚順雨離開OpenAI加入騰訊任首席AI科學家，領導AGI模型開發。騰訊同時投資DeepSeek（$74億融資，估值$600億）。<br>
+      📌 <b>$45億債券融資</b>：騰訊啟動45億美元債券發行，超額認購60億+，融資主要用於AI投資。<br>
+      ⚠️ <b>美國防部清單風險</b>：五角大樓將騰訊列入「中國軍事企業」清單，地緣政治風險仍存。
+    </div>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入</span>
+      <span>分析師覆蓋</span>
+    </div>
+    <div class="target-price">🎯 目標價：<strong>$97.45</strong> | 上漲空間：<strong>+65.0%</strong></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <a class="source-link" href="https://stockanalysis.com/quote/otc/TCEHY/" target="_blank">🔗 StockAnalysis</a>
+    </div>
+  </div>
+
+  <!-- 行業趨勢 -->
+  <div class="stock-card" style="border-left:4px solid #059669;">
+    <div class="stock-header">
+      <div class="stock-name">🎬 動漫·微短劇產業趨勢</div>
+    </div>
+    <div class="stock-summary">
+      📌 <b>AI短劇進入產業成熟期</b>：2026年Q1上線12.8萬部短劇，AI佔比超95%，月滲透率達36.8%。廣電總局推動微短劇精品化計劃，規範行業發展。<br>
+      📌 <b>AniShort近億元融資</b>：AI短劇平台AniShort完成近億元融資，創行業紀錄。Nadou Pro等創作工具降低製作門檻，日產短劇數千部。<br>
+      📌 <b>PayPal接入微信支付</b>：騰訊與PayPal合作打通支付場景，有利內容付費及海外變現。愛奇藝海外會員收入+40%印證國際化趨勢。
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  📊 板塊追蹤 Pro版 | 2026年6月13日 | 數據截至6月12日收盤 | ⚠️ 以上內容僅供參考，不構成投資建議<br>
+  📈 Chart.js走勢圖基於近期收盤價模擬 | 實際走勢請以券商數據為準
+</div>
+
+<script>
+// 7-day chart data (simulated based on recent closing prices)
+const labels7d = ['6/6','6/7','6/8','6/9','6/10','6/11','6/12'];
+
+const chartConfigs = {
+  futu:  { label:'FUTU',  data:[92.33,91.08,93.50,92.93,94.20,95.53,97.54], color:'#16a34a' },
+  tigr:  { label:'TIGR',  data:[4.50,4.67,4.55,4.83,4.70,4.80,4.77], color:'#dc2626' },
+  nvda:  { label:'NVDA',  data:[208.64,204.87,207.30,200.42,203.15,204.87,205.19], color:'#16a34a' },
+  amd:   { label:'AMD',   data:[452.40,488.45,470.20,475.30,488.45,495.60,511.57], color:'#16a34a' },
+  avgo:  { label:'AVGO',  data:[396.60,385.57,388.20,392.10,385.57,383.50,382.07], color:'#dc2626' },
+  smci:  { label:'SMCI',  data:[40.64,31.97,33.50,32.80,31.97,31.20,30.46], color:'#dc2626' },
+  pltr:  { label:'PLTR',  data:[136.47,131.08,133.50,130.21,129.80,131.08,127.99], color:'#dc2626' },
+  msft:  { label:'MSFT',  data:[390.34,385.20,388.50,392.10,387.60,390.34,390.74], color:'#16a34a' },
+  googl: { label:'GOOGL', data:[357.77,359.20,362.50,355.80,358.40,357.77,359.68], color:'#16a34a' },
+  snow:  { label:'SNOW',  data:[245.30,240.20,238.50,235.80,238.40,240.60,232.78], color:'#dc2626' },
+  ai:    { label:'AI',     data:[12.38,11.80,11.50,11.20,11.30,11.27,10.90], color:'#dc2626' },
+  bili:  { label:'BILI',  data:[17.96,18.36,18.10,18.08,18.20,18.36,17.86], color:'#dc2626' },
+  iq:    { label:'IQ',    data:[1.05,1.03,1.04,1.03,1.03,1.03,1.03], color:'#16a34a' },
+  tcehy: { label:'TCEHY', data:[59.18,58.80,59.50,59.30,59.10,59.18,59.06], color:'#dc2626' },
+};
+
+Object.keys(chartConfigs).forEach(key => {
+  const cfg = chartConfigs[key];
+  const canvas = document.getElementById('chart_' + key);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const lastVal = cfg.data[cfg.data.length - 1];
+  const prevVal = cfg.data[cfg.data.length - 2];
+  const isUp = lastVal >= prevVal;
+  const lineColor = isUp ? '#16a34a' : '#dc2626';
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels7d,
+      datasets: [{
+        label: cfg.label,
+        data: cfg.data,
+        borderColor: lineColor,
+        backgroundColor: isUp ? 'rgba(22,163,74,0.08)' : 'rgba(220,38,38,0.08)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: lineColor,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(c) { return cfg.label + ': $' + c.parsed.y.toFixed(2); }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 11 }, callback: v => '$' + v }
+        }
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>
