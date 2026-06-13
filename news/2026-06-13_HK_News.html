@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞 - 6月13日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(26,54,93,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-finance { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #e9d8fd; color: #6b46c1; }
+  .tag-intl { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #feebc8; color: #c05621; }
+  .tag-health { background: #fed7e2; color: #b83280; }
+  .tag-sports { background: #c6f6d5; color: #2f855a; }
+  .tag-property { background: #e6fffa; color: #285e61; }
+  .tag-education { background: #ebf8ff; color: #2a4365; }
+  .news-headline {
+    font-size: 0.98em;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 4px 0 2px;
+  }
+  .news-summary {
+    font-size: 0.88em;
+    color: #4a5568;
+    margin-top: 3px;
+  }
+  .news-source {
+    font-size: 0.72em;
+    color: #a0aec0;
+    margin-top: 2px;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #c53030;
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+  }
+  .highlight-box.blue {
+    background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+    border-left-color: #2b6cb0;
+  }
+  .highlight-box.green {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border-left-color: #38a169;
+  }
+  .highlight-box.purple {
+    background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+    border-left-color: #6b46c1;
+  }
+  .highlight-title {
+    font-weight: 700;
+    font-size: 0.95em;
+    margin-bottom: 4px;
+  }
+  .highlight-desc {
+    font-size: 0.85em;
+    color: #4a5568;
+  }
+  .footer {
+    text-align: center;
+    padding: 18px;
+    color: #a0aec0;
+    font-size: 0.78em;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .market-bar { flex-direction: column; gap: 6px; }
+    .market-item { text-align: left; display: flex; justify-content: space-between; }
+    .section { padding: 14px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📰 上午新聞撮要</h1>
+    <div class="subtitle">本港及國際要聞 · 每日 08:00 自動生成</div>
+    <div class="date-badge">🗓️ 2026年6月13日 週六</div>
+  </div>
+
+  <!-- Market Bar -->
+  <div class="market-bar">
+    <div class="market-item">
+      <div class="label">恒指</div>
+      <div class="value">24,718</div>
+      <div class="change up">+468 (+1.93%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">上證</div>
+      <div class="value">4,031</div>
+      <div class="change up">+1.12%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">道指</div>
+      <div class="value">50,771</div>
+      <div class="change up">+0.73%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">納指</div>
+      <div class="value">25,632</div>
+      <div class="change down">-0.1%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">SPCX</div>
+      <div class="value">$160.95</div>
+      <div class="change up">+19% 首日</div>
+    </div>
+  </div>
+
+  <!-- 🔥 今日焦點 -->
+  <div class="section">
+    <div class="section-title">🔥 今日焦點</div>
+
+    <div class="highlight-box">
+      <div class="highlight-title">🚀 SpaceX IPO 史上最大！首日收漲19% 市值2.1萬億美元</div>
+      <div class="highlight-desc">SpaceX（SPCX）以$135定價上市，首日一度觸$176.52（+31%），收報$160.95（+19%），成交超5億股逼近Facebook紀錄。公司估值達2.1萬億美元，為美國史上最大規模IPO。</div>
+    </div>
+
+    <div class="highlight-box blue">
+      <div class="highlight-title">🕊️ 美伊停火曙光！特朗普取消對伊打擊 稱協議已獲伊方批准</div>
+      <div class="highlight-desc">特朗普11日宣布取消原定對伊朗的軍事打擊，稱磋商結果已提交伊朗最高領導層並獲批准。美伊諒解備忘錄要求霍爾木茲海峽立即重新開放；停火延長60天並舉行核談判。伊朗副最高領袖穆杰塔巴尚未正式簽署。以色列總理內塔尼亞胡未被提前知會。</div>
+    </div>
+
+    <div class="highlight-box green">
+      <div class="highlight-title">🏆 世界盃三地開幕！加拿大揭幕戰和波收場</div>
+      <div class="highlight-desc">2026美加墨世界盃歷史性三場開幕式——墨西哥城阿�特克體育場揭幕戰墨西哥2-0南非；加拿大多倫多BMO球場東道主加拿大與波黑激戰成和；美國洛杉磯站開幕式即將上演。中國潮玩「拉布布」驚喜亮相開幕式。</div>
+    </div>
+  </div>
+
+  <!-- 🇭🇰 本港新聞 -->
+  <div class="section">
+    <div class="section-title">🇭🇰 本港新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-health">👶健康</span>
+      <div class="news-headline">沙田2歲男童確診禽流感 曾到街市接觸家禽</div>
+      <div class="news-summary">禾輋邨一名2歲男童確診禽流感，本月初曾到禾輋街市雞檔觀看家禽並觸摸周遭環境，衛生防護中心跟進調查中。</div>
+      <div class="news-source">星島頭條 · 香港新聞社</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-health">👶健康</span>
+      <div class="news-headline">12個月大男嬰感染新冠併發嘶吼症 情況危殆</div>
+      <div class="news-summary">一名12個月大男嬰感染新冠病毒後併發嘶吼症，在威爾斯親王醫院兒科深切治療部留醫，情況危殆，為本週第二宗兒童嚴重感染個案。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-weather">🌤️天氣</span>
+      <div class="news-headline">黃色暴雨警告生效 西南季候風影響廣東沿岸</div>
+      <div class="news-summary">天文台發出黃色暴雨警告，西南季候風逐漸影響廣東沿岸，預料本港今日早晚驟雨較多及有幾陣雷暴，風勢轉為清勁。</div>
+      <div class="news-source">香港天文台</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-breaking">🚨突發</span>
+      <div class="news-headline">深水灣泳灘中年女子游泳後暈倒不治</div>
+      <div class="news-summary">深水灣泳灘一名中年女子游泳上岸後暈倒，由救護員送院後證實不治。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">Meta平台故障 Facebook及Messenger一度無法登入</div>
+      <div class="news-summary">Facebook及Messenger一度出現故障，逾十萬用戶受影響無法登入，其後陸續恢復正常。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">警方世界杯前夕打擊外圍賭波 連拘2名「艇仔」</div>
+      <div class="news-summary">世界杯開鑼前夕，警方嚴厲打擊外圍賭博，接連拘捕2名「艇仔」（外圍賭博中間人），包括一名黑幫男子及一名地盤工人。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">將軍澳13歲女童疑偷家中38萬現金 母親大義滅親報警</div>
+      <div class="news-summary">47歲母親發現家中38萬港元現金失竊，懷疑13歲女兒所為，決定報警處理。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">流浮山農場失竊逾550萬 海關聯同消防打擊非法汽油</div>
+      <div class="news-summary">流浮山一農場遭人盜竊，報稱損失逾550萬港元財物包括大批金器及現金。另海關聯同消防在葵涌、東涌執法，拘2人檢獲10萬港元未完稅汽油。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-education">📚教育</span>
+      <div class="news-headline">香港首份五年規劃顧問團建議 河套園區吸引更多科創企業落戶</div>
+      <div class="news-summary">政務司司長陳國基主持教育、科技和人才委員會與顧問團交流會，就制定香港特區首份五年規劃諮詢意見，顧問團建議河套香港園區吸引更多海內外科創企業落戶，構建完整創科產業鏈。</div>
+      <div class="news-source">文匯報 · news.gov.hk</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">恒指周線全線調整 MiniMax累跌超28%</div>
+      <div class="news-summary">港股6月12日收盤恒指漲468點報24,718，但周線全線調整。科技股分化明顯，MiniMax累計跌超28%。新股溜溜梅暗盤漲超95%。</div>
+      <div class="news-source">東方財富</div>
+    </div>
+  </div>
+
+  <!-- 🕊️ 國際新聞 -->
+  <div class="section">
+    <div class="section-title">🕊️ 國際新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">美伊戰事峰迴路轉 特朗普取消打擊 稱協議已獲批准</div>
+      <div class="news-summary">美國總統特朗普11日宣布取消原定對伊朗的軍事打擊，稱磋商結果已提交伊朗最高領導層並獲批准。美伊諒解備忘錄要求霍爾木茲海峽立即重新免費開放；停火期限再延長60天，期間舉行核談判。伊朗副最高領袖穆杰塔巴尚未正式簽署。</div>
+      <div class="news-source">新華社 · 財新 · 人民網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">以色列未被提前知會美伊和談 內塔尼亞胡「猝不及防」</div>
+      <div class="news-summary">據美國媒體報道，特朗普最新表態前並未提前知會以色列總理內塔尼亞胡，以方對美伊突然轉向感到意外。此前以色列與伊朗仍互相發射導彈，停火幾乎全面破裂。</div>
+      <div class="news-source">新華社 · CNBC</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">🏆體育</span>
+      <div class="news-headline">2026世界盃三地盛大開幕 墨西哥揭幕戰2-0勝南非</div>
+      <div class="news-summary">歷史首次三場開幕式：墨西哥城揭幕戰東道主墨西哥2-0南非（3紅牌）；多倫多加拿大與波黑激戰成和；洛杉磯站即將登場。中國潮玩「拉布布」驚喜亮相開幕式，水果姐Katy Perry壓軸美國站。</div>
+      <div class="news-source">FIFA · 新華網 · 騰訊體育</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">美伊互射導彈後停火再受考驗 霍爾木茲海峽仍近乎關閉</div>
+      <div class="news-summary">6月8日以色列與伊朗再次交火，停火幾乎全面破裂。6月10日美國發動第二輪空襲打擊伊朗雷達站及海岸監視設施，伊朗隨後向海灣國家報復性開火。特朗普要求雙方停止射擊。海峽重新開放成為和談核心條件。</div>
+      <div class="news-source">AP News · LA Times · NPR</div>
+    </div>
+  </div>
+
+  <!-- 📉 財經新聞 -->
+  <div class="section">
+    <div class="section-title">📉 財經新聞</div>
+
+    <div class="highlight-box purple">
+      <div class="highlight-title">🚀 SpaceX首日收$160.95（+19%） 史上最大IPO</div>
+      <div class="highlight-desc">SPCX開盤$150，盤中最高$176.52（+31%），收盤$160.95，成交超5億股。公司估值2.1萬億美元，超越幾乎所有上市公司。馬斯克身家暴漲。太空概念股Rocket Lab+3%，回聲星通信+2%。</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">國際油價暴跌5%！美伊和談刺激 WTI跌破85美元</div>
+      <div class="news-summary">特朗普宣布取消對伊打擊後，國際油價急瀉。WTI跌超5%跌破$85/桶（4月17日以來最低），布倫特跌近5%。霍爾木茲海峽有望重開的消息大幅壓低油價。</div>
+      <div class="news-source">東方財富 · 新浪財經</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">金銀急漲！黃金期貨+3% 白銀期貨+5%</div>
+      <div class="news-summary">美伊和談消息令美元指數短線下挫，黃金現貨漲0.2%，期貨漲超3%；白銀期貨飆漲超5%。比特幣漲近1%回到6萬上方。</div>
+      <div class="news-source">百度財經</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">港股恒指漲468點收24,718 南向資金淨賣39億</div>
+      <div class="news-summary">恒指6月12日收漲1.93%，周大福領漲成分股。但周線全線調整，科技股分化明顯。南向資金淨賣出逾39億港元，淨買入長飛光纖近9億。央行6月15日將開展6000億元買斷式逆回購。</div>
+      <div class="news-source">東方財富</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">A股全線收漲 上證站穩4000點漲1.12%</div>
+      <div class="news-summary">上證收報4,031.51（+1.12%），深成指14,963.41（+0.75%），創業板3,830.35（+0.50%）。全市場普漲但結構分化明顯，科創綜指小幅收跌0.24%。</div>
+      <div class="news-source">新浪財經</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">港交所6月20日起T+1+±6%漲跌幅 港股通擴容</div>
+      <div class="news-summary">港交所將於6月20日起實施T+1結算及±6%漲跌幅限制，涵蓋恒指期貨、恒生科技指數期貨等主要合約。此前證監會明確持牌公司可續為內地客開戶。</div>
+      <div class="news-source">證券時報 · 港交所</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">Adobe暴跌7% Adobe跌超7% 財報遜預期</div>
+      <div class="news-summary">Adobe公布季度業績遜於市場預期，股價盤後跌超7%。大型科技股盤前多數上漲，微軟+0.6%、Meta+1.24%、谷歌+1.45%。</div>
+      <div class="news-source">新浪財經</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    📰 上午新聞撮要 · 每日 08:00 自動生成 · GitHub Pages 渲染<br>
+    資料來源：星島頭條、新華社、東方財富、新浪財經、FIFA、AP News、CNBC、香港天文台
+  </div>
+
+</div>
+</body>
+</html>
