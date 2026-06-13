@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌇 下午新聞撮要 - 2026年6月13日</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #6b3a1f 0%, #c05621 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 1.6em; font-weight: 700; margin-bottom: 6px; }
+  .header .date { font-size: 0.95em; opacity: 0.85; }
+  .header .time-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.82em;
+    margin-top: 8px;
+  }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #1a365d;
+    border-left: 4px solid #c05621;
+    padding-left: 12px;
+    margin-bottom: 14px;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #edf2f7;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-item .headline {
+    font-size: 1.02em;
+    font-weight: 600;
+    color: #1a365d;
+    margin-bottom: 4px;
+  }
+  .news-item .summary {
+    font-size: 0.92em;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 0.78em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-finance { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #e9d8fd; color: #6b46c1; }
+  .tag-property { background: #e2e8f0; color: #4a5568; }
+  .tag-intl { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #feebc8; color: #c05621; }
+  .tag-education { background: #fed7e2; color: #97266d; }
+  .tag-sports { background: #b2f5ea; color: #285e61; }
+  .market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .market-card {
+    background: #f7fafc;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .market-card .name { font-size: 0.82em; color: #718096; margin-bottom: 2px; }
+  .market-card .value { font-size: 1.05em; font-weight: 700; color: #1a365d; }
+  .market-card .change { font-size: 0.85em; font-weight: 600; }
+  .change-down { color: #16a34a; }
+  .change-up { color: #dc2626; }
+  .alert-box {
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .alert-box .alert-title { color: #c53030; font-weight: 700; font-size: 0.95em; margin-bottom: 4px; }
+  .alert-box .alert-text { color: #9b2c2c; font-size: 0.9em; }
+  .source { font-size: 0.78em; color: #a0aec0; margin-top: 3px; }
+  .footer {
+    text-align: center;
+    font-size: 0.8em;
+    color: #a0aec0;
+    padding: 20px 0;
+  }
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.3em; }
+    .market-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🌇 下午新聞撮要</h1>
+    <div class="date">2026年6月13日（星期六）</div>
+    <div class="time-badge">🕓 17:00 生成 · 每日自動播報</div>
+  </div>
+
+  <!-- 突發警示 -->
+  <div class="alert-box">
+    <div class="alert-title">🚨 突發：美國政府強制 Anthropic 全球下架 Fable 5 / Mythos 5 — AI 模型首被列「軍火級」出口管制</div>
+    <div class="alert-text">美國商務部 6 月 12 日下午 5:21 向 Anthropic CEO 發出出口管制指令，要求暫停所有外國用戶（包括外籍員工）對 Claude Fable 5 及 Mythos 5 的訪問。Anthropic 雖公開反對稱「這是一場誤解」，但已全球關閉兩款模型。史上首次 AI 大模型被視同「雙重用途技術」實施出口管制，行業震動。美伊協議現重大進展：伊朗同意停核交出濃縮鈾，但以色列威脅武力阻核。阿聯酋同意解凍伊朗數十億美元資產。</div>
+  </div>
+
+  <!-- 市場速覽 -->
+  <div class="section">
+    <div class="section-title">📊 市場速覽（6月12日 收市）</div>
+    <div class="market-grid">
+      <div class="market-card">
+        <div class="name">恆生指數</div>
+        <div class="value">24,718</div>
+        <div class="change change-up">▲ +1.93%</div>
+      </div>
+      <div class="market-card">
+        <div class="name">國企指數</div>
+        <div class="value">8,374</div>
+        <div class="change change-up">▲ +1.91%</div>
+      </div>
+      <div class="market-card">
+        <div class="name">恆生科技</div>
+        <div class="value">4,705</div>
+        <div class="change change-up">▲ +1.06%</div>
+      </div>
+      <div class="market-card">
+        <div class="name">道瓊斯</div>
+        <div class="value">51,238</div>
+        <div class="change change-up">▲ +0.77%</div>
+      </div>
+      <div class="market-card">
+        <div class="name">納斯達克</div>
+        <div class="value">25,876</div>
+        <div class="change change-up">▲ +0.26%</div>
+      </div>
+      <div class="market-card">
+        <div class="name">標普500</div>
+        <div class="value">7,427</div>
+        <div class="change change-up">▲ +0.45%</div>
+      </div>
+      <div class="market-card">
+        <div class="name">SPCX(SpaceX)</div>
+        <div class="value">$135 IPO</div>
+        <div class="change change-up">史上最大IPO</div>
+      </div>
+      <div class="market-card">
+        <div class="name">美元/港元</div>
+        <div class="value">7.8095</div>
+        <div class="change">—</div>
+      </div>
+    </div>
+    <div class="source">數據來源：HSI、富途牛牛、HSBC、TradingEconomics · 今日港股休市（星期六）</div>
+  </div>
+
+  <!-- 突發新聞 -->
+  <div class="section">
+    <div class="section-title">🚨 突發新聞</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-breaking">🚨突發</span> 美國政府強制 Anthropic 全球下架 Fable 5 和 Mythos 5 — AI 模型出口管制首例</div>
+      <div class="summary">美國商務部長 Lutnick 於 6 月 12 日下午 5:21 ET 向 Anthropic CEO Dario Amodei 發出出口管制指令，依據《出口管理条例》將 Claude Fable 5 及 Mythos 5 認定為「雙重用途技術」，要求暫停所有外國國民（含 Anthropic 外籍員工）對兩款模型的訪問。政府聲稱發現一種可繞過 Fable 5 安全防護的「越獄」方法。Anthropic 公開反對，稱已完成數千小時紅隊測試，至今未發現「通用越獄」，認為是「誤解」。因無法在 API 層面驗證用戶國籍，公司決定對所有用戶全面關閉。Opus 4.8、Sonnet 4.6、Haiku 4.5 仍正常可用。此為史上首次 AI 大模型被列為出口管制技術，行業先例意義重大，理論上同樣權力可適用於 GPT-5.5、Gemini、Grok 等。</div>
+      <div class="source">AIToolsRecap、新智元、財聯社、Anthropic 官方聲明</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-breaking">🚨突發</span> 明愛醫院 KOL 女實習醫生 Angel 獲准保釋</div>
+      <div class="summary">明愛醫院 24 歲 KOL 女實習醫生 Angel 早前被揭發違規，通宵扣查後今午獲准保釋候查，將於七月上旬向警方報到。據悉她今早偕同探員返回醫院搜證。案件引發社會對醫療專業操守及 KOL 文化的廣泛討論。</div>
+      <div class="source">星島頭條、香港文匯網</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-breaking">🚨突發</span> 跨境遊戲平台招攬年輕人販毒 油尖警區拘 4 人</div>
+      <div class="summary">油尖警區搗破毒品分銷中心，拘捕 4 名男子（包括 2 名內地人）。販毒集團利用兩岸跨境網絡遊戲平台招攬年輕人管理毒品工場，手法新穎隱蔽。警方正追查集團上線及資金流向。</div>
+      <div class="source">星島頭條</div>
+    </div>
+  </div>
+
+  <!-- 國際新聞 -->
+  <div class="section">
+    <div class="section-title">🕊️ 國際新聞</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-intl">🕊️國際</span> 美伊新協議：伊朗同意停核計劃並交出濃縮鈾</div>
+      <div class="summary">美國方面確認伊朗已同意新協議，包括停止核計劃及放棄已濃縮的鈾。伊朗外長阿拉格齊表示與美國的協議「從未如此接近」。但美國副總統萬斯明確表態，即使伊朗同意協議也不會釋放資金。特朗普此前宣稱協議要點已獲各方批准，但伊朗否認最終敲定，稱正由決策機構審查中。</div>
+      <div class="source">The National、路透社、Livemint</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-intl">🕊️國際</span> 阿聯酋同意解凍伊朗數十億美元資產 確保霍爾木茲海峽通行</div>
+      <div class="summary">路透社引述四名消息人士報導，阿聯酋已同意解凍伊朗數十億美元資產，此舉「直接關係到確保霍爾木茲海峽的安全通行」。這是繼 3 月 1 日伊朗襲擊迪拜傑貝阿里港後的重大戰略轉向，旨在通過經濟手段緩解地區緊張局勢。</div>
+      <div class="source">路透社、The National、海灣新聞</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-intl">🕊️國際</span> 美軍擊落霍爾木茲海峽伊朗無人機 以色列對黎巴嫩 20 城鎮發撤離令</div>
+      <div class="summary">美軍在霍爾木茲海峽擊落多架瞄準船隻的伊朗無人機。同時，以色列對黎巴嫩南部 20 個城鎮及村莊發布強制撤離命令。以色列國防部長卡茨警告，以色列可能動用武力阻止伊朗獲得核武器，內塔尼亞胡重申「只要我是總理，伊朗絕不能擁有核武器」。印度因船隻遇襲第二次召見美國特使抗議。</div>
+      <div class="source">The National、路透社</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-intl">🕊️國際</span> 美國制裁 9 家中港個人和實體 外交部回應</div>
+      <div class="summary">美國宣布制裁 9 家中國及中國香港個人和實體，中國外交部作出回應，稱將採取必要措施維護中方合法權益。此為近期中美關係再度緊張的信號之一。</div>
+      <div class="source">香港新聞社</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-sports">🏆體育</span> 世界盃：加拿大 1-1 波斯尼亞 東道主取史上首分</div>
+      <div class="summary">2026 世界盃小組賽繼續進行，聯合東道主加拿大在多倫多主場 1-1 戰平波斯尼亞和黑塞哥維那。南安普頓前鋒 Cyle Larin 下半場扳平比分，為加拿大取得世界盃歷史上首個積分。此前揭幕戰墨西哥 2-0 勝南非，韓國 2-1 逆轉捷克。</div>
+      <div class="source">FIFA 官方、Sky Sports、Independent</div>
+    </div>
+  </div>
+
+  <!-- 財經新聞 -->
+  <div class="section">
+    <div class="section-title">📉 財經新聞</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-finance">📉財經</span> 港股週五強勢收市 恒指升 469 點報 24,718</div>
+      <div class="summary">恒指週五收市報 24,718 點，升 468 點或 1.93%，全日高位 24,771。國指升 1.91% 報 8,374，恒生科技指數升 1.06% 報 4,705。港股個股漲多跌少，黃金等板塊領漲。機構建議關注互聯網 AI、高股息、周期資源及創新藥方向，短期或震盪但四季度有望迎來雙重修復。今日港股休市。</div>
+      <div class="source">HSI、HSBC、東方財富</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-finance">📉財經</span> 美股三大指數造好 道指 51,238 點 SpaceX 掛牌首日成焦點</div>
+      <div class="summary">美股週四收市：道指 51,238 點升 0.77%，納指 25,876 點升 0.26%，標普 7,427 點升 0.45%。SpaceX（SPCX）以每股 135 美元登陸納斯達克，估值約 1.77 萬億美元，為史上最大 IPO，超越沙特阿美 2019 年紀錄。公司業務已從單一火箭製造擴展至發射服務、星鏈衛星互聯網及 xAI/Grok AI 平台。馬斯克個人持股價值逾 7,000 億美元。</div>
+      <div class="source">富途牛牛、新浪財經、Reuters</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-finance">📉財經</span> Anthropic IPO 前景蒙陰 Fable 5 出口管制衝擊估值</div>
+      <div class="summary">Anthropic 原計劃 2026 年 10 月以 9,650 億美元估值 IPO，但此次出口管制事件為上市前景蒙上重大陰影。機構投資者將重新評估前沿 AI 公司的監管風險定價。Axios 指出 Anthropic 同時被五角大樓列為「對政府使用過於危險」和被商務部列為「對外國使用過於危險」，在商業 AI 公司中前所未有。</div>
+      <div class="source">AIToolsRecap、Axios</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-finance">📉財經</span> 恒生指數公司調整季度檢討時間表 9 月生效</div>
+      <div class="summary">恒生指數公司公告，為優化指數管理，季度調整時間表將從調整月首個星期五改為第二個星期五收市後進行。此更新將於截至 2026 年 6 月 30 日之指數檢討開始採用，2026 年 9 月的季度調整將於 9 月 14 日生效。</div>
+      <div class="source">恒生指數公司、新浪財經</div>
+    </div>
+  </div>
+
+  <!-- 科技新聞 -->
+  <div class="section">
+    <div class="section-title">🤖 科技新聞</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-tech">🤖科技</span> 美國出口管制 AI 模型首例：Fable 5 / Mythos 5 全球下架</div>
+      <div class="summary">美國商務部依據《出口管理條例》將 Anthropic 的 Claude Fable 5 和 Mythos 5 認定為「雙重用途技術」，6 月 12 日下午 5:21 ET 發出指令要求全球暫停外國用戶訪問。政府稱發現一種可繞過安全防護的「越獄」方法，但未提供具體細節。Anthropic 反駁稱至今未發現「通用越獄」，已完成數千小時紅隊測試（含美國政府、英國 AISI 合作）。因無法在 API 層面驗證用戶國籍，公司對所有用戶全面關閉。Claude Opus 4.8、Sonnet 4.6、Haiku 4.5 正常可用。恢復時間無明確時間表，可能需數天至數週。</div>
+      <div class="source">AIToolsRecap、新智元、Anthropic 官方聲明</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-tech">🤖科技</span> 李家超：推動全港由「+AI」轉向「AI+」 讓科技賦能產業與民生</div>
+      <div class="summary">行政長官李家超強調香港將從「+AI」（AI 附加）轉向「AI+」（AI 主導）的戰略方向，讓科技賦能產業與民生。政府帶頭推動 AI 產業升級與民生應用，包括智慧醫療、智能交通及數字政務等領域。此為香港應對全球 AI 浪潮的頂層戰略部署。</div>
+      <div class="source">香港新聞社</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-tech">🤖科技</span> 人形機器人天工 3.0 下半年量產交付 數字人獲首張「藝人卡」</div>
+      <div class="summary">人形機器人天工 3.0 確認下半年量產交付，標誌中國人形機器人從實驗室走向商業化。全國首張「數字藝人卡」正式簽發，數字人也可開商演，為虛擬偶像行業打開新空間。</div>
+      <div class="source">香港新聞社</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-tech">🤖科技</span> SpaceX 上市首日：四大業務板塊 + AI 期權價值</div>
+      <div class="summary">SpaceX 以 SPCX 代碼登陸納斯達克，公司已從火箭製造商演變為綜合性科技平台，涵蓋四大板塊：發射服務（Falcon 9/Heavy/Starship）、星鏈（最大收入來源）、xAI/Grok（含 Colossus 2 訓練集群 20 萬塊 GPU）及 AI 期權（2026 年底前可選擇以 600 億美元收購 Cursor 母公司 Anysphere）。首次公開財報預計 2026 年 11 月發布。</div>
+      <div class="source">andrew.ooo、新浪財經</div>
+    </div>
+  </div>
+
+  <!-- 天氣 -->
+  <div class="section">
+    <div class="section-title">🌤️ 天氣</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-weather">🌤️天氣</span> 黃色暴雨警告下午取消 未來兩日累積雨量可達 200 毫米</div>
+      <div class="summary">天文台今日凌晨 4:30 發出特別天氣提示，指廣泛地區可能受大雨影響；黃色暴雨警告信號於下午 3:40 取消，歷時逾一小時。西南季候風逐漸影響廣東沿岸，今日間中有驟雨及雷暴，初時雨勢頗大。低壓槽將於週日及週一（14-15 日）在廣東沿岸徘徊，雨勢有時頗大及有狂風雷暴，預料未來一兩日累積雨量可達 200 毫米。</div>
+      <div class="source">香港天文台、香港經濟日報、MET WARN</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-weather">🌤️天氣</span> 沙田賽馬會泳池遭雷劈 二號跳台石屎崩裂</div>
+      <div class="summary">沙田賽馬會游泳池今日遭雷電擊中，二號跳台石屎崩裂，康文署宣布主池暫時停止開放，待工程人員檢查維修後方會重開。今日雷暴警告生效期間，市民應遠離空曠地帶及水上活動。</div>
+      <div class="source">星島頭條</div>
+    </div>
+  </div>
+
+  <!-- 地產 -->
+  <div class="section">
+    <div class="section-title">🏘️ 地產</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-property">🏘️地產</span> 屯門友愛邨公屋違規改動 房署發嚴厲警告否則收樓</div>
+      <div class="summary">屯門友愛邨有公屋住戶打穿外牆硬塞冷氣機，另有誇張違規改動露台。房屋署發出嚴厲警告，要求限期恢復原狀，否則收回單位。此為近期公屋違規改動的典型案例，反映部分住戶對公屋規定的忽視。</div>
+      <div class="source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-property">🏘️地產</span> 宏福苑業主大會爭議 350 戶聯署要求召開特別大會</div>
+      <div class="summary">宏福苑業主聯署要求法團管理人合安管理有限公司舉辦可容納不少於 1,000 人、為期至少 6 小時的業主特別大會。管理人透過「一戶一社工」聯絡 350 戶，正就土審處判詞進行研究，盼盡快促成業主大會。</div>
+      <div class="source">星島頭條</div>
+    </div>
+  </div>
+
+  <!-- 社會新聞 -->
+  <div class="section">
+    <div class="section-title">👶 社會新聞</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 禾輋街市兩歲男童感染 H9 禽流感 曾到活雞檔逗留</div>
+      <div class="summary">一名兩歲男童確診 H9 禽流感，曾於沙田禾輋街市活雞檔逗留。衛生防護中心呼籲家長避免帶幼童前往活禽環境。涉事雞檔如常營業但生意明顯受影響。此為近期本港首宗人類感染禽流感個案。</div>
+      <div class="source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 港珠澳大橋「無感 e 道」6.25 試行 鄧炳強實測 5 秒過關</div>
+      <div class="summary">港珠澳大橋香港口岸 6 月 25 日起啟用「無感通關」系統，保安局局長鄧炳強親自實測，5 秒直行直過，毋須出示證件及按指紋。此為香港口岸通關效率的重大升級。</div>
+      <div class="source">星島頭條、中聯辦官網</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 13 歲女童偷家中 38 萬現金打賞小紅書</div>
+      <div class="summary">將軍澳一名 13 歲女童偷取家中 38 萬元現金，款項全部用作小紅書打賞。案件再次引發社會對未成年人網絡消費及直播打賞監管的關注。</div>
+      <div class="source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 海關查獲 1.6 萬元瀕危活龍藏於襪子內</div>
+      <div class="summary">海關查驗美國抵港空運貨物時，揭發 1.6 萬元瀕危活龜藏於襪子內，企圖走私進口。案件已交由相關部門跟進處理。</div>
+      <div class="source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 近 500 名海峽兩岸暨港澳青年在港交流融合發展</div>
+      <div class="summary">近 500 名海峽兩岸暨港澳青年在香港暢談融合發展。台灣中華青年通過與大陸和港澳青年交流，認識到自身在民族大家庭中的角色。活動促進了各地青年的相互了解和文化認同。</div>
+      <div class="source">香港新聞社</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 假冒 WhatsApp 同事借錢騙案 港女機智識破</div>
+      <div class="summary">新型「呃錢黨」騙案：騙徒假冒同事透過 WhatsApp 借錢，一名港女機智識破，「教科書式神對答」曝光。網民笑稱「轉數快變轉速快」。警方呼籲市民收到借錢訊息時务必致電確認對方身份。</div>
+      <div class="source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-society">👶社會</span> 丘應樺中亞訪問簽訂 96 份合作備忘錄創新高</div>
+      <div class="summary">商務及經濟發展局局長丘應樺中亞訪問取得豐碩成果，簽訂 96 份合作備忘錄創歷史新高，冀邀兩國參與「一帶一路論壇」拓展商機。</div>
+      <div class="source">星島頭條</div>
+    </div>
+  </div>
+
+  <!-- 教育新聞 -->
+  <div class="section">
+    <div class="section-title">📚 教育</div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-education">📚教育</span> 教大與汶萊大學共建聯合中心 推動課程與教育創新</div>
+      <div class="summary">香港教育大學與汶萊達魯薩蘭大學共建「課程、教學法與評估教育發展聯合中心」，於 6 月 9 日在汶萊舉行的首屆國際教育發展研討會上正式成立。中心將推動兩地在課程設計、教學法創新及評估方法等領域的深度合作。</div>
+      <div class="source">香港新聞社</div>
+    </div>
+
+    <div class="news-item">
+      <div class="headline"><span class="tag tag-education">📚教育</span> 資歷評審局委任康慶祥為總幹事 6 月 15 日生效</div>
+      <div class="summary">香港學術及職業資歷評審局宣布委任康慶祥為下一任總幹事，任期由 2026 年 6 月 15 日起生效，接替離任的周慶邦。此為資歷架構體系的重要人事變動。</div>
+      <div class="source">香港文匯網</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    由 WorkBuddy 自動生成 · 下午新聞撮要 · 每日 17:00<br>
+    GitHub Pages 渲染 · Google Drive 備份<br>
+    資料來源：星島頭條、RTHK、香港新聞社、香港文匯網、The National、Livemint、路透社等
+  </div>
+
+</div>
+</body>
+</html>
