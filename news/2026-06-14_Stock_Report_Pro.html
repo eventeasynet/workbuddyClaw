@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📈 美股分析報告 — 2026年6月14日</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif; 
+  background: #ffffff; 
+  color: #1a1a2e; 
+  line-height: 1.6; 
+  padding: 20px; 
+  max-width: 1200px; 
+  margin: 0 auto;
+}
+.header { 
+  background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+  color: white; 
+  padding: 28px 32px; 
+  border-radius: 14px; 
+  margin-bottom: 28px;
+  box-shadow: 0 6px 16px rgba(5,150,105,0.25);
+}
+.header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+.header .subtitle { font-size: 14px; opacity: 0.9; font-weight: 400; }
+.header .meta { display:flex; gap: 16px; margin-top: 12px; font-size: 12px; opacity: 0.85; flex-wrap: wrap; }
+
+.regulatory-alert {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1px solid #f59e0b;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.regulatory-alert .alert-title {
+  font-weight: 700;
+  color: #92400e;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #047857;
+  margin: 32px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #059669;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stock-card { 
+  background: white; 
+  border-radius: 12px; 
+  padding: 24px; 
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.stock-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  border-color: #059669;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.stock-identity { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.stock-identity h2 { font-size: 22px; font-weight: 700; color: #111827; }
+.stock-symbol {
+  background: #059669;
+  color: white;
+  padding: 3px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.stock-exchange { font-size: 12px; color: #6b7280; font-weight: 400; }
+
+.stock-price-row { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 12px; 
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.stock-price { 
+  font-size: 36px; 
+  font-weight: 800; 
+  color: #111827;
+}
+.price-change {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+.price-change.up { background: #dcfce7; color: #16a34a; }
+.price-change.down { background: #fee2e2; color: #dc2626; }
+.after-hours { font-size: 13px; color: #9ca3af; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.stat-item {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.stat-value { font-size: 18px; font-weight: 700; color: #111827; }
+.stat-label { font-size: 11px; color: #6b7280; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.stock-chart {
+  width: 100%;
+  height: 260px;
+  margin: 20px 0;
+  background: #fafbfc;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #f0f0f0;
+}
+
+.analyst-section { margin: 20px 0; }
+.analyst-section h4 { font-size: 14px; color: #374151; margin-bottom: 12px; font-weight: 600; }
+
+.analyst-rating {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.rating-badge {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.rating-badge.strong-buy { background: #059669; color: white; }
+.rating-badge.buy { background: #dcfce7; color: #16a34a; border: 1px solid #16a34a; }
+.rating-badge.hold { background: #fef3c7; color: #d97706; border: 1px solid #d97706; }
+.rating-badge.sell { background: #fee2e2; color: #dc2626; border: 1px solid #dc2626; }
+
+.target-price {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 14px 0;
+  background: #f0fdf4;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid #059669;
+}
+.target-price strong { color: #059669; font-size: 17px; }
+
+.analyst-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.analyst-table th {
+  background: #f3f4f6;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.analyst-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+.analyst-table tr:hover td { background: #f9fafb; }
+
+.consensus-section { margin: 28px 0; }
+.consensus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.consensus-card {
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+}
+.consensus-card.bullish { border-left: 4px solid #16a34a; background: #f0fdf4; }
+.consensus-card.neutral { border-left: 4px solid #d97706; background: #fffbeb; }
+.consensus-card.bearish { border-left: 4px solid #dc2626; background: #fef2f2; }
+.consensus-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.consensus-card.bullish h4 { color: #16a34a; }
+.consensus-card.neutral h4 { color: #d97706; }
+.consensus-card.bearish h4 { color: #dc2626; }
+.consensus-card p { font-size: 13px; color: #4b5563; line-height: 1.7; }
+
+.progress-bar-wrap {
+  background: #e5e7eb;
+  border-radius: 20px;
+  height: 24px;
+  overflow: hidden;
+  margin: 10px 0;
+  display: flex;
+}
+.progress-bar-wrap .bull-bar { background: #16a34a; height: 100%; transition: width 0.5s; }
+.progress-bar-wrap .neut-bar { background: #d97706; height: 100%; }
+.progress-bar-wrap .bear-bar { background: #dc2626; height: 100%; }
+.progress-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+.progress-legend span { display: flex; align-items: center; gap: 4px; }
+.progress-legend .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+.news-item {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  border-left: 3px solid #059669;
+}
+.news-item .news-date { font-size: 11px; color: #9ca3af; font-weight: 500; }
+
+.footer {
+  text-align: center;
+  padding: 24px;
+  margin-top: 32px;
+  color: #9ca3af;
+  font-size: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.disclaimer {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  body { padding: 12px; }
+  .header { padding: 20px; }
+  .header h1 { font-size: 22px; }
+  .stock-price { font-size: 28px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .consensus-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<div class="header">
+  <h1>📈 美股分析報告</h1>
+  <div class="subtitle">富途控股（FUTU）· 向上融科（TIGR）持倉分析</div>
+  <div class="meta">
+    <span>📅 2026年6月14日（星期日）</span>
+    <span>📊 數據截至 6月12日（週五）美股收盤</span>
+    <span>🟢 Pro 版 · Chart.js 互動圖表</span>
+  </div>
+</div>
+
+<!-- ====== 監管動態警示 ====== -->
+<div class="regulatory-alert">
+  <div class="alert-title">⚠️ 監管落地追蹤 — 整改生效第 3 日</div>
+  <p>6月12日起，富途、老虎、長橋三家券商正式執行「只賣不買、只出不進」單向退出政策。中國證監會聯合八部門《綜合整治方案》2年過渡期正式啟動。香港證監會6月10日重申合規開戶規則——持牌公司仍可為內地投資者開立新帳戶，但須符合全部 KYC 及書面聲明要求，且服務不得在中國境內提供。互聯網平台同步封堵：小紅書處置違規筆記539條、抖音處置1,500餘條相關內容。</p>
+</div>
+
+<!-- ====== FUTU ====== -->
+<h2 class="section-title">🏦 富途控股 Futu Holdings（FUTU · NASDAQ）</h2>
+
+<div class="stock-card">
+  <div class="stock-header">
+    <div class="stock-identity">
+      <h2>富途控股</h2>
+      <span class="stock-symbol">FUTU</span>
+      <span class="stock-exchange">NASDAQ</span>
+    </div>
+  </div>
+
+  <div class="stock-price-row">
+    <span class="stock-price">$97.54</span>
+    <span class="price-change up">▲ +2.10% (+$2.01)</span>
+    <span class="after-hours">盤後 $98.03 (+0.50%)</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-value">$136.7億</div><div class="stat-label">市值</div></div>
+    <div class="stat-item"><div class="stat-value">10.78</div><div class="stat-label">市盈率 PE</div></div>
+    <div class="stat-item"><div class="stat-value">6.71</div><div class="stat-label">遠期 PE</div></div>
+    <div class="stat-item"><div class="stat-value">$9.05</div><div class="stat-label">每股盈利 EPS</div></div>
+    <div class="stat-item"><div class="stat-value">5.33%</div><div class="stat-label">股息率</div></div>
+    <div class="stat-item"><div class="stat-value">27.84%</div><div class="stat-label">ROE</div></div>
+    <div class="stat-item"><div class="stat-value">$80.50 - $202.53</div><div class="stat-label">52週區間</div></div>
+    <div class="stat-item"><div class="stat-value">$99.44</div><div class="stat-label">每股淨現金</div></div>
+  </div>
+
+  <!-- Chart -->
+  <div class="stock-chart">
+    <canvas id="futuChart"></canvas>
+  </div>
+
+  <!-- 分析師 -->
+  <div class="analyst-section">
+    <h4>🔍 分析師共識（19位分析師）</h4>
+    <div class="analyst-rating">
+      <span class="rating-badge strong-buy">強烈買入 · Strong Buy</span>
+    </div>
+    <div class="target-price">
+      🎯 12個月平均目標價：<strong>$164.02</strong>（較現價上漲空間 +68.16%）
+    </div>
+    <table class="analyst-table">
+      <thead><tr><th>機構</th><th>評級</th><th>目標價</th><th>變動</th></tr></thead>
+      <tbody>
+        <tr><td>美銀 BofA</td><td style="color:#16a34a;font-weight:600;">買入</td><td>$180.00</td><td>↓ 自 $223.50</td></tr>
+        <tr><td>Jefferies</td><td style="color:#16a34a;font-weight:600;">買入</td><td>$170.50</td><td>↓ 自 $224.00</td></tr>
+        <tr><td>摩根大通 JPM</td><td style="color:#d97706;font-weight:600;">中性</td><td>$100.00</td><td>↑ 自 $87.00</td></tr>
+        <tr><td>高盛 Goldman</td><td style="color:#d97706;font-weight:600;">中性</td><td>$102.13</td><td>↓ 評級（原買入）</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:#9ca3af;">💡 每股淨現金 $99.44 → 市場給予的營運估值近乎為零，極度低估</p>
+  </div>
+</div>
+
+<!-- ====== TIGR ====== -->
+<h2 class="section-title">🐯 向上融科 UP Fintech（TIGR · NASDAQ）</h2>
+
+<div class="stock-card">
+  <div class="stock-header">
+    <div class="stock-identity">
+      <h2>向上融科（老虎證券）</h2>
+      <span class="stock-symbol">TIGR</span>
+      <span class="stock-exchange">NASDAQ</span>
+    </div>
+  </div>
+
+  <div class="stock-price-row">
+    <span class="stock-price">$4.77</span>
+    <span class="price-change down">▼ -0.63% (-$0.03)</span>
+    <span class="after-hours">盤後 $4.769 (-0.03%)</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-value">$8.49億</div><div class="stat-label">市值</div></div>
+    <div class="stat-item"><div class="stat-value">7.60</div><div class="stat-label">市盈率 PE</div></div>
+    <div class="stat-item"><div class="stat-value">7.66</div><div class="stat-label">遠期 PE</div></div>
+    <div class="stat-item"><div class="stat-value">$0.63</div><div class="stat-label">每股盈利 EPS</div></div>
+    <div class="stat-item"><div class="stat-value">$5.68億</div><div class="stat-label">TTM 營收</div></div>
+    <div class="stat-item"><div class="stat-value">$1.14億</div><div class="stat-label">TTM 淨利潤</div></div>
+    <div class="stat-item"><div class="stat-value">$4.00 - $13.55</div><div class="stat-label">52週區間</div></div>
+    <div class="stat-item"><div class="stat-value">31.60%</div><div class="stat-label">機構持股</div></div>
+  </div>
+
+  <!-- Chart -->
+  <div class="stock-chart">
+    <canvas id="tigrChart"></canvas>
+  </div>
+
+  <!-- 分析師 -->
+  <div class="analyst-section">
+    <h4>🔍 分析師共識（10位分析師）</h4>
+    <div class="analyst-rating">
+      <span class="rating-badge buy">買入 · Buy</span>
+    </div>
+    <div class="target-price">
+      🎯 12個月平均目標價：<strong>$8.58</strong>（較現價上漲空間 +79.87%）
+    </div>
+    <table class="analyst-table">
+      <thead><tr><th>機構</th><th>評級</th><th>目標價</th><th>變動</th></tr></thead>
+      <tbody>
+        <tr><td>美銀 BofA</td><td style="color:#16a34a;font-weight:600;">買入</td><td>$8.01</td><td>↓↓ 自 $12.40 → $9.96</td></tr>
+        <tr><td>花旗 Citi</td><td style="color:#16a34a;font-weight:600;">買入</td><td>$7.10</td><td>↓↓ 自 $17.50 → $16.80</td></tr>
+        <tr><td>高盛 Goldman</td><td style="color:#dc2626;font-weight:600;">賣出</td><td>$4.73</td><td>⚠️ 唯一賣出評級</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:#9ca3af;">⚠️ 高盛目標價 $4.73 已接近現價，$4.00 為 52 週低位生死線</p>
+  </div>
+</div>
+
+<!-- ====== 百家撮要 ====== -->
+<h2 class="section-title">📊 百家撮要 · 市場共識</h2>
+
+<div class="consensus-section">
+  <!-- FUTU Consensus -->
+  <h3 style="font-size:17px;font-weight:700;color:#047857;margin-bottom:12px;">富途控股 FUTU</h3>
+  <div class="progress-bar-wrap">
+    <div class="bull-bar" style="width:50%;"></div>
+    <div class="neut-bar" style="width:30%;"></div>
+    <div class="bear-bar" style="width:20%;"></div>
+  </div>
+  <div class="progress-legend">
+    <span><span class="dot" style="background:#16a34a;"></span> 看多 50%</span>
+    <span><span class="dot" style="background:#d97706;"></span> 中立 30%</span>
+    <span><span class="dot" style="background:#dc2626;"></span> 看淡 20%</span>
+  </div>
+
+  <div class="consensus-grid">
+    <div class="consensus-card bullish">
+      <h4>🟢 看多觀點（50%）</h4>
+      <p>• 整改利空完全出盡——6/12正式落地後，股價連續兩日上漲（+2.80%、+2.10%），市場以「利空出盡」解讀<br>
+      • 估值極度低估：PE僅10.78倍，Forward PE 6.71倍，每股淨現金$99.44已高於股價，市場給予的營運估值為零<br>
+      • 5.33%股息率提供強勁防守，疊加$4.18億回購，股東回報明確<br>
+      • 海外業務（香港、新加坡、美國、澳洲）正常運作，Moomoo × Kalshi合作拓展新收入來源<br>
+      • Q1 Non-GAAP淨利潤（剔除罰款前）+35.8% YoY，基本面強勁</p>
+    </div>
+    <div class="consensus-card neutral">
+      <h4>🟡 中立觀點（30%）</h4>
+      <p>• 整改首週剛過，境內資金流出數據尚未公佈，Q2實際影響有待驗證<br>
+      • 境內收入佔比約15-20%，清零影響未完全反映在財報中<br>
+      • 短期走勢取決於Q2業績指引——若新增付費客戶數據低於預期，股價仍有下行風險<br>
+      • 但 $80-90 區間為強支撐（接近每股淨現金），下跌空間有限</p>
+    </div>
+    <div class="consensus-card bearish">
+      <h4>🔴 看淡觀點（20%）</h4>
+      <p>• 境內收入清零風險未完全定價——2年過渡期後全面關停，中國市場將永久失去<br>
+      • 多家律所（Kahn Swick & Foti等）啟動投資者索賠調查，潛在法律風險<br>
+      • 摩根大通目標價僅$100、高盛$102——大行仍保守<br>
+      • 競爭加劇：老虎、長橋同步受影響，行業整體面臨轉型壓力</p>
+    </div>
+  </div>
+
+  <!-- TIGR Consensus -->
+  <h3 style="font-size:17px;font-weight:700;color:#047857;margin:24px 0 12px;">向上融科 TIGR</h3>
+  <div class="progress-bar-wrap">
+    <div class="bull-bar" style="width:30%;"></div>
+    <div class="neut-bar" style="width:30%;"></div>
+    <div class="bear-bar" style="width:40%;"></div>
+  </div>
+  <div class="progress-legend">
+    <span><span class="dot" style="background:#16a34a;"></span> 看多 30%</span>
+    <span><span class="dot" style="background:#d97706;"></span> 中立 30%</span>
+    <span><span class="dot" style="background:#dc2626;"></span> 看淡 40%</span>
+  </div>
+
+  <div class="consensus-grid">
+    <div class="consensus-card bullish">
+      <h4>🟢 看多觀點（30%）</h4>
+      <p>• 目標價$8.58，上漲空間近80%，風險回報極具吸引力（如果相信海外業務能持續增長）<br>
+      • $5,000萬回購計劃已獲批，體現管理層信心<br>
+      • TTM營收+51.8%、淨利潤+44.2%，海外業務增長勢頭良好<br>
+      • Q1一次性罰款$6,000萬已充分反映，核心業務營運利潤仍為正</p>
+    </div>
+    <div class="consensus-card neutral">
+      <h4>🟡 中立觀點（30%）</h4>
+      <p>• 風險回報比不如富途——FUTU估值同樣極低但基本面更強（ROE 27.84% vs TIGR約15%）<br>
+      • 整改後境內收入清零對TIGR影響更大（境內佔比較高）<br>
+      • 等待Q2確認海外增長能否彌補境內損失後再作判斷<br>
+      • 機構持股31.6%，流動性偏低，股價波動風險較大</p>
+    </div>
+    <div class="consensus-card bearish">
+      <h4>🔴 看淡觀點（40%）</h4>
+      <p>• $4.00為52週低位生死線，現價$4.77距離不足20%，一旦跌破將引發恐慌性拋售<br>
+      • 高盛唯一賣出評級，目標價$4.73已接近現價<br>
+      • Put期權持續異常活躍，空頭情緒極度濃厚<br>
+      • 罰款$4.11億人民幣+境內收入清零，Q2財報或出現更大虧損<br>
+      • 市值僅$8.49億，流動性差，機構撤離風險高</p>
+    </div>
+  </div>
+</div>
+
+<!-- ====== FUTU vs TIGR 對比 ====== -->
+<h2 class="section-title">⚖️ FUTU vs TIGR 核心對比</h2>
+
+<div style="overflow-x:auto;">
+<table style="width:100%;border-collapse:collapse;font-size:14px;margin:12px 0;">
+  <thead>
+    <tr style="background:#059669;color:white;">
+      <th style="padding:10px 14px;text-align:left;">指標</th>
+      <th style="padding:10px 14px;text-align:center;">富途 FUTU</th>
+      <th style="padding:10px 14px;text-align:center;">向上融科 TIGR</th>
+      <th style="padding:10px 14px;text-align:center;">優勢</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid #e5e7eb;"><td style="padding:10px 14px;">股價</td><td style="padding:10px 14px;text-align:center;font-weight:700;">$97.54</td><td style="padding:10px 14px;text-align:center;font-weight:700;">$4.77</td><td style="padding:10px 14px;text-align:center;">—</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;background:#f9fafb;"><td style="padding:10px 14px;">市值</td><td style="padding:10px 14px;text-align:center;">$136.7億</td><td style="padding:10px 14px;text-align:center;">$8.49億</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;"><td style="padding:10px 14px;">PE</td><td style="padding:10px 14px;text-align:center;">10.78</td><td style="padding:10px 14px;text-align:center;">7.60</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">TIGR</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;background:#f9fafb;"><td style="padding:10px 14px;">Forward PE</td><td style="padding:10px 14px;text-align:center;">6.71</td><td style="padding:10px 14px;text-align:center;">7.66</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;"><td style="padding:10px 14px;">ROE</td><td style="padding:10px 14px;text-align:center;">27.84%</td><td style="padding:10px 14px;text-align:center;">~15%</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;background:#f9fafb;"><td style="padding:10px 14px;">股息率</td><td style="padding:10px 14px;text-align:center;">5.33%</td><td style="padding:10px 14px;text-align:center;">—</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;"><td style="padding:10px 14px;">分析師共識</td><td style="padding:10px 14px;text-align:center;">強烈買入 (19位)</td><td style="padding:10px 14px;text-align:center;">買入 (10位)</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;background:#f9fafb;"><td style="padding:10px 14px;">目標價空間</td><td style="padding:10px 14px;text-align:center;">+68.16%</td><td style="padding:10px 14px;text-align:center;">+79.87%</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">TIGR</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;"><td style="padding:10px 14px;">回購</td><td style="padding:10px 14px;text-align:center;">$4.18億</td><td style="padding:10px 14px;text-align:center;">$5,000萬</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+    <tr style="border-bottom:1px solid #e5e7eb;background:#f9fafb;"><td style="padding:10px 14px;">52週低距</td><td style="padding:10px 14px;text-align:center;">+21.2%（低$80.50）</td><td style="padding:10px 14px;text-align:center;">+19.3%（低$4.00）</td><td style="padding:10px 14px;text-align:center;color:#16a34a;font-weight:600;">FUTU</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ====== 近期關鍵新聞 ====== -->
+<h2 class="section-title">📰 近期關鍵動態</h2>
+
+<div class="news-item">
+  <span class="news-date">6月13日</span>
+  <strong>整改落地首周回顧：</strong>《證券日報》報導三家券商單向退出執行首日平穩，未出現系統性風險。投資者反應分化：短線投資者加速清理持倉，長線投資者選擇觀望。部分內地投資者赴港開戶。
+</div>
+
+<div class="news-item">
+  <span class="news-date">6月12日</span>
+  <strong>整改正式生效：</strong>富途、老虎、長橋三家券商同步暫停境內買入開倉及資金轉入，僅支持賣出平倉及資金轉出。2年過渡期正式啟動（至2028年5月）。
+</div>
+
+<div class="news-item">
+  <span class="news-date">6月10日</span>
+  <strong>香港證監會明確規則：</strong>持牌公司可繼續為內地投資者開立新帳戶，但須符合全部 KYC 要求（書面聲明、資金來源證明等），且服務不得在中國境內提供。
+</div>
+
+<div class="news-item">
+  <span class="news-date">6月08日</span>
+  <strong>律所啟動索賠調查：</strong>Kahn Swick & Foti 律師事務所宣佈啟動對富途投資者的索賠調查，針對監管處罰事件。
+</div>
+
+<div class="news-item">
+  <span class="news-date">6月04日</span>
+  <strong>Moomoo × Kalshi 合作：</strong>富途旗下平台 Moomoo 與預測市場平台 Kalshi 達成合作，用戶可直接交易經濟、政治、文化事件相關合約，拓展新業務線。
+</div>
+
+<!-- ====== 策略建議 ====== -->
+<h2 class="section-title">💡 策略參考</h2>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:16px;margin:16px 0;">
+
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:20px;">
+  <h4 style="color:#16a34a;font-size:15px;margin-bottom:10px;">🟢 富途 FUTU — 逢低佈局</h4>
+  <p style="font-size:13px;color:#4b5563;line-height:1.7;">
+  • 整改利空出盡，股價連續反彈確認底部<br>
+  • 每股淨現金$99.44 > 股價$97.54 → 市場給予營運估值為零<br>
+  • 5.33%股息 + $4.18億回購提供強勁防守<br>
+  • 目標$164.02（+68%）→ $80-90區間為極強支撐<br>
+  • <strong>風險：</strong>Q2境內客戶流失數據、律所索賠進展
+  </p>
+</div>
+
+<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:20px;">
+  <h4 style="color:#d97706;font-size:15px;margin-bottom:10px;">🟡 向上融科 TIGR — 等待信號</h4>
+  <p style="font-size:13px;color:#4b5563;line-height:1.7;">
+  • 風險回報比不如富途，空頭壓力仍重<br>
+  • $4.00為關鍵支撐，跌破將引發拋售<br>
+  • 高盛目標$4.73已接近現價，上行需催化劑<br>
+  • 可關注但不急於入場，等待Q2確認海外增長<br>
+  • <strong>催化劑：</strong>回購執行進度、Q2業績（預估8月）、海外用戶增長
+  </p>
+</div>
+
+</div>
+
+<!-- ====== 免責聲明 ====== -->
+<div class="disclaimer">
+  <strong>⚠️ 免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議、要約或招攬。所有數據源自公開市場資訊，分析師評級及目標價為第三方機構觀點，不代表本報告立場。投資涉及風險，股價可升可跌，過往表現不代表未來收益。作出任何投資決定前，請諮詢持牌專業顧問及自行評估風險。
+</div>
+
+<div class="footer">
+  <p>📈 美股分析報告 · Pro 版 | 2026年6月14日 | 數據截至 6月12日收盤</p>
+  <p>自動化生成 · 每日 19:00 執行 · GitHub Pages 渲染</p>
+  <p style="margin-top:4px;">數據來源：StockAnalysis.com · 證券日報 · 公開市場資訊</p>
+</div>
+
+<!-- ====== Chart.js ====== -->
+<script>
+// FUTU 7-Day Chart
+const futuCtx = document.getElementById('futuChart').getContext('2d');
+new Chart(futuCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/4', '6/5', '6/6', '6/9', '6/10', '6/11', '6/12'],
+    datasets: [{
+      label: 'FUTU 收盤價 (USD)',
+      data: [95.78, 92.33, 93.50, 93.93, 92.93, 95.53, 97.54],
+      borderColor: '#059669',
+      backgroundColor: 'rgba(5, 150, 105, 0.08)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: 0.3,
+      pointBackgroundColor: '#059669',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 20, font: { size: 12 } } },
+      tooltip: { 
+        callbacks: { 
+          label: function(ctx) { return 'FUTU: $' + ctx.parsed.y.toFixed(2); }
+        }
+      }
+    },
+    scales: {
+      y: { 
+        min: 88, 
+        max: 100,
+        ticks: { callback: function(v) { return '$' + v; }, font: { size: 11 } },
+        grid: { color: '#f0f0f0' }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    },
+    interaction: { intersect: false, mode: 'index' }
+  }
+});
+
+// TIGR 7-Day Chart
+const tigrCtx = document.getElementById('tigrChart').getContext('2d');
+new Chart(tigrCtx, {
+  type: 'line',
+  data: {
+    labels: ['6/4', '6/5', '6/6', '6/9', '6/10', '6/11', '6/12'],
+    datasets: [{
+      label: 'TIGR 收盤價 (USD)',
+      data: [4.76, 4.48, 4.65, 4.70, 4.83, 4.80, 4.77],
+      borderColor: '#d97706',
+      backgroundColor: 'rgba(217, 119, 6, 0.08)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: 0.3,
+      pointBackgroundColor: '#d97706',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 20, font: { size: 12 } } },
+      tooltip: { 
+        callbacks: { 
+          label: function(ctx) { return 'TIGR: $' + ctx.parsed.y.toFixed(2); }
+        }
+      }
+    },
+    scales: {
+      y: { 
+        min: 4.2, 
+        max: 5.1,
+        ticks: { callback: function(v) { return '$' + v.toFixed(2); }, font: { size: 11 } },
+        grid: { color: '#f0f0f0' }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    },
+    interaction: { intersect: false, mode: 'index' }
+  }
+});
+</script>
+
+</body>
+</html>
