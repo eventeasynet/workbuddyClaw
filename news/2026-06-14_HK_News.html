@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞 - 6月14日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(26,54,93,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-finance { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #e9d8fd; color: #6b46c1; }
+  .tag-intl { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #feebc8; color: #c05621; }
+  .tag-health { background: #fed7e2; color: #b83280; }
+  .tag-sports { background: #c6f6d5; color: #2f855a; }
+  .tag-property { background: #e6fffa; color: #285e61; }
+  .tag-education { background: #ebf8ff; color: #2a4365; }
+  .news-headline {
+    font-size: 0.98em;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 4px 0 2px;
+  }
+  .news-summary {
+    font-size: 0.88em;
+    color: #4a5568;
+    margin-top: 3px;
+  }
+  .news-source {
+    font-size: 0.72em;
+    color: #a0aec0;
+    margin-top: 2px;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #c53030;
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+  }
+  .highlight-box.blue {
+    background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+    border-left-color: #2b6cb0;
+  }
+  .highlight-box.green {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border-left-color: #38a169;
+  }
+  .highlight-box.purple {
+    background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+    border-left-color: #6b46c1;
+  }
+  .highlight-title {
+    font-weight: 700;
+    font-size: 0.95em;
+    margin-bottom: 4px;
+  }
+  .highlight-desc {
+    font-size: 0.85em;
+    color: #4a5568;
+  }
+  .footer {
+    text-align: center;
+    padding: 18px;
+    color: #a0aec0;
+    font-size: 0.78em;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .market-bar { flex-direction: column; gap: 6px; }
+    .market-item { text-align: left; display: flex; justify-content: space-between; }
+    .section { padding: 14px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📰 上午新聞撮要</h1>
+    <div class="subtitle">本港及國際要聞 · 每日 08:00 自動生成</div>
+    <div class="date-badge">🗓️ 2026年6月14日 週日</div>
+  </div>
+
+  <!-- Market Bar -->
+  <div class="market-bar">
+    <div class="market-item">
+      <div class="label">恒指(週五)</div>
+      <div class="value">24,718</div>
+      <div class="change up">+468 (+1.93%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">國企指數</div>
+      <div class="value">8,374</div>
+      <div class="change up">+1.91%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">科指</div>
+      <div class="value">4,705</div>
+      <div class="change up">+1.06%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">道指(週)</div>
+      <div class="value">51,202</div>
+      <div class="change up">+0.66%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">標普(週)</div>
+      <div class="value">7,431</div>
+      <div class="change up">+0.65%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">納指(週)</div>
+      <div class="value">25,888</div>
+      <div class="change up">+0.70%</div>
+    </div>
+  </div>
+
+  <!-- 🔥 今日焦點 -->
+  <div class="section">
+    <div class="section-title">🔥 今日焦點</div>
+
+    <div class="highlight-box blue">
+      <div class="highlight-title">🕊️ 美伊諒解備忘錄草案曝光！巴方證實雙方已就最終文本達成一致</div>
+      <div class="highlight-desc">巴基斯坦總理確認美伊已就協議最終文本達成一致，伊朗外長披露伊美諒解備忘錄草案部分內容——備忘錄聚焦結束戰事，現階段暫不討論核問題。停火延長60天並舉行核談判，霍爾木茲海峽有望重開。</div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-title">🚀 SpaceX 將納入恒生港美科技指數！6月29日生效</div>
+      <div class="highlight-desc">恒生指數公司宣布 SpaceX（SPCX）將被納入恒生港美科技指數美國上市成份股名單（與科技七巨頭並列）。8隻美股成份股將於6月23日（第7個交易日）重新計算為等權重，6月29日正式生效。</div>
+    </div>
+
+    <div class="highlight-box green">
+      <div class="highlight-title">📈 港股週五強勁反彈 科網股領漲 京東+3.4% 阿里百度齊升2%</div>
+      <div class="highlight-desc">港股週五放量反彈，恆指+1.93%收24,718，國企指數+1.91%，科指+1.06%。京東+3.4%領漲科網股，阿里巴巴、百度齊升逾2%，騰訊、小米齊齊飄紅。全週成交3,164億港元，沽空比率12.33%仍偏高。</div>
+    </div>
+
+    <div class="highlight-box purple">
+      <div class="highlight-title">🏆 世界盃三地開幕後續賽事今日開打 多支勁旅登場</div>
+      <div class="highlight-desc">世界盃歷史性三地開幕（墨西哥2-0南非、加拿大和波黑）後，今日續有多場分組賽上演，東道主美國隊將在洛杉磯站亮相。中國潮玩「拉布布」意外亮相開幕式，秘魯警方更扮成吉祥物拘捕毒販成熱話。</div>
+    </div>
+  </div>
+
+  <!-- 🇭🇰 本港新聞 -->
+  <div class="section">
+    <div class="section-title">🇭🇰 本港新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">港股週五強勁反彈 恆指收24,718 全週科網股領漲</div>
+      <div class="news-summary">受地緣局勢緩和及美股帶動，港股週五放量反彈。恆指+1.93%收24,718，國企指數+1.91%，科指+1.06%。科網股領漲修復，京東+3.4%居前，阿里、百度齊升逾2%，騰訊、小米齊飄紅。AI主線震盪但擾動減弱。</div>
+      <div class="news-source">華盛資訊 · 港股風向標</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">SpaceX納入恒生港美科技指數 6月29日生效</div>
+      <div class="news-summary">恒指公司宣布 SpaceX(SPCX.US) 將被新增至恒生港美科技指數美國上市成份股名單，與科技七巨頭並列。8隻成份股將於6月23日收市後重新計算為等權重，6月29日（第11個交易日）正式生效。</div>
+      <div class="news-source">人民財訊 · 智通財經</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">智譜與MiniMax 6月8日雙雙納入恒生科技指數</div>
+      <div class="news-summary">智譜（HK2513）與MiniMax 6月8日（週一）正式被納入恒生科技指數，這是兩家公司自2026年1月上市以來首次進入主流指數體系。消息公布當日智譜股價+26.93%、MiniMax+15.91%。</div>
+      <div class="news-source">同花順財經</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">AI半導體股週五走弱 全球銀行限制亞洲芯片製造商槓桿</div>
+      <div class="news-summary">AI硬件概念週五午後再度調整，存儲半導體股走低。消息面上全球多家銀行正限制對衝基金對SK海力士、三星電子等亞洲芯片製造商的槓桿押注。</div>
+      <div class="news-source">華盛資訊</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">港股週五沽空金額390億 騰訊阿里沽空居前</div>
+      <div class="news-summary">港股週五全日沽空金額390.25億港元，相當於恆指成交額的12.33%，沽空資金活躍度及佔比仍偏高。騰訊控股、阿里分別以16.79億、11.13億港元沽空額位列前茅。</div>
+      <div class="news-source">華盛資訊</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">大灣區內地9市前5月外貿同比增18.8%</div>
+      <div class="news-summary">央視報導，粵港澳大灣區內地9市今年1-5月外貿同比增長18.8%，顯示區域經濟動能持續釋放，跨境電商及高端制造貢獻突出。</div>
+      <div class="news-source">央視網</div>
+    </div>
+
+  </div>
+
+  <!-- 🕊️ 國際新聞 -->
+  <div class="section">
+    <div class="section-title">🕊️ 國際新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">巴基斯坦總理：美伊已就協議最終文本達成一致</div>
+      <div class="news-summary">巴基斯坦總理公開表示，美伊雙方已就協議最終文本達成一致，伊美諒解備忘錄聚焦於結束戰事。伊朗外交部發言人巴加埃稱現階段暫不討論核問題，市場憧憬霍爾木茲海峽重開。</div>
+      <div class="news-source">新華網 · 央視網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">歐盟將啟動烏克蘭和摩爾多瓦首階段入盟談判</div>
+      <div class="news-summary">歐盟正式宣布將啟動烏克蘭和摩爾多瓦首階段入盟談判。同日俄羅斯擊落多架烏克蘭無人機，烏克蘭打擊俄羅斯能源設施，戰場局勢未見降溫。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">習近平總書記對朝鮮進行國事訪問</div>
+      <div class="news-summary">習近平總書記對朝鮮進行國事訪問，《歲月共磨礪，同行寫新篇》相關報導引發廣泛關注，被視為中朝關係新一輪升溫的重要信號。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">美國宣布向波蘭提供40億美元軍事貸款</div>
+      <div class="news-summary">美國國務院正式宣布向波蘭提供40億美元軍事貸款，用於波蘭國防現代化及與北約盟國協同的軍事採購，強化東翼軍事部署。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">德國漢堡機場候機區因安全事件被疏散</div>
+      <div class="news-summary">德國漢堡機場候機區週五因安全事件被緊急疏散，後續調查進行中，事件未造成重大傷亡但一度令多班航班延誤。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">美國得州發生大規模槍擊事件 2死10傷</div>
+      <div class="news-summary">美國得克薩斯州發生大規模槍擊事件，造成至少2人死亡、10人受傷，槍手已被制服。事件再次引發美國國內槍枝管制爭議。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">加沙停火談判重啟 哈馬斯移交管理權成重點</div>
+      <div class="news-summary">加沙停火談判在卡塔爾斡旋下重啟，哈馬斯移交加沙管理權成為核心議題，聯合國及阿拉伯國家積極推動新一輪停火方案。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">日本自民黨擬建議政府進一步大幅增加防衛費</div>
+      <div class="news-summary">日本執政自民黨內部討論進一步大幅增加防衛費的方案，預計將於近期向政府提交建議，背景為地區安全環境持續趨緊。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">商務部回應美國防部將部分中企列入軍事企業清單</div>
+      <div class="news-summary">中國商務部新聞發言人就美國防部將部分中國企業列入「中國軍事企業清單」事答記者問，表示中方將採取必要措施維護自身正當權益。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+  </div>
+
+  <!-- 📈 財經新聞 -->
+  <div class="section">
+    <div class="section-title">📈 財經新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">美股本週震盪收漲 標普+0.65% 道指+0.66% 納指+0.70%</div>
+      <div class="news-summary">美股本週在地緣政治緊張與企業財報及SpaceX IPO交織中走出震盪行情。標普500週漲0.65%收7,431.46，道瓊+0.66%收51,202.26，納指+0.70%收25,888.84。伊朗與美國和平協議預期推動樂觀情緒，但特朗普強硬言論一度引發油價波動及市場恐慌。</div>
+      <div class="news-source">華盛資訊</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">6月13日人民幣中間價6.8109 美元指數99.80</div>
+      <div class="news-summary">6月13日人民幣兌美元中間價報6.8109，較前一日上調41點；在岸人民幣報6.7616（+157點），離岸人民幣報6.7605（+181點）。美元指數報99.8040，微升0.07%。</div>
+      <div class="news-source">東方財富網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">SpaceX上市吸金2,500億美元 週漲74% 太空主題ETF爆升</div>
+      <div class="news-summary">SpaceX（SPCX）IPO定價$135、首日收$160.95（+19%），市值2.1萬億美元創美國史上最大IPO紀錄，總認購需求超2,500億美元、超額認購近4倍。Defiance純太空每日2倍策略主動型ETF（$SPCL）週漲74.11%。</div>
+      <div class="news-source">新浪財經 · 華盛資訊</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">做多閃迪ETF週漲近60% 高盛力挺標普500年底劍指8,000點</div>
+      <div class="news-summary">本週做多閃迪的ETF週漲幅接近60%，市場資金明顯流向存儲芯片板塊。高盛重申看好美股後市，標普500年底目標價上看8,000點。</div>
+      <div class="news-source">華盛資訊</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉財經</span>
+      <div class="news-headline">6月大事表：美國通脹、SpaceX IPO、世界盃、長鑫科技</div>
+      <div class="news-summary">6月市場核心主線：美國通脹與利率決議定方向、SpaceX IPO定科技情緒、長鑫科技定A股半導體主線、世界盃/618提供消費主題輪動。市場並非單一主線，多線並進。</div>
+      <div class="news-source">格隆匯</div>
+    </div>
+
+  </div>
+
+  <!-- 🤖 科技快訊 -->
+  <div class="section">
+    <div class="section-title">🤖 科技快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">A 股商業航天板塊 6月12日衝高回落 個股分化</div>
+      <div class="news-summary">受 SpaceX 上市帶動，A 股商業航天板塊指數12日衝高回落，熱門個股表現明顯分化，龍頭股仍受資金青睞，概念跟風股回吐明顯。</div>
+      <div class="news-source">中國金融信息網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">蘋果延遲產品「上新」 歐委會拒絕「背鍋」</div>
+      <div class="news-summary">蘋果被指延遲歐洲產品發布源於歐盟監管，歐委會發言人正式拒絕「背鍋」，稱相關產品發布節奏由企業自主決定。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+  </div>
+
+  <!-- ⚽ 體育快訊 -->
+  <div class="section">
+    <div class="section-title">⚽ 體育快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽體育</span>
+      <div class="news-headline">世界盃三地開幕戰報：墨西哥2-0南非 加拿大和波黑</div>
+      <div class="news-summary">2026美加墨世界盃歷史性三場開幕式：墨西哥城阿茲特克體育場揭幕戰墨西哥2-0戰勝南非；多倫多BMO球場加拿大與波黑激戰成和；洛杉磯站美國隊即將登場。</div>
+      <div class="news-source">FIFA · 新浪體育</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽體育</span>
+      <div class="news-headline">秘魯警察扮世界盃吉祥物 智擒毒販成網絡熱話</div>
+      <div class="news-summary">世界盃期間秘魯警察突發奇想，身穿2026世界盃吉祥物服裝在利馬突襲，成功逮捕一名涉嫌販毒嫌疑人，相關視頻在社交媒體爆紅。</div>
+      <div class="news-source">LiveMint</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽體育</span>
+      <div class="news-headline">中國潮玩「拉布布」亮相世界盃開幕式</div>
+      <div class="news-summary">中國潮玩 IP「拉布布」（Labubu）驚喜亮相世界盃開幕式表演環節，引發海外觀眾廣泛關注，掀起新一輪中國 IP 出海熱議。</div>
+      <div class="news-source">FIFA</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    🛠️ 由 WorkBuddy 自動生成 · 每日 08:00 出街 · 10:00 推播<br>
+    📅 2026年6月14日 週日 · 數據截至發稿前
+  </div>
+
+</div>
+</body>
+</html>
