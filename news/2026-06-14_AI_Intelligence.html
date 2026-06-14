@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 AI 行業情報速遞 — 2026年6月14日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: linear-gradient(135deg, #f8f7ff 0%, #ede9fe 50%, #f8f7ff 100%);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e5e0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1e1b4b;
+    position: relative;
+    z-index: 1;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #5b21b6;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .hot-banner {
+    display: inline-block;
+    background: linear-gradient(90deg, #dc2626, #f59e0b);
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 0.78em;
+    margin-top: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Category Section */
+  .category { margin-bottom: 28px; }
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid;
+  }
+  .category-header .icon { font-size: 1.5em; }
+  .category-header h2 { font-size: 1.25em; font-weight: 700; }
+
+  /* Category Colors */
+  .cat-tech .category-header { border-color: #818cf8; color: #4338ca; }
+  .cat-tech .card { border-left: 4px solid #818cf8; }
+  .cat-video .category-header { border-color: #f472b6; color: #be185d; }
+  .cat-video .card { border-left: 4px solid #f472b6; }
+  .cat-drama .category-header { border-color: #fb923c; color: #c2410c; }
+  .cat-drama .card { border-left: 4px solid #fb923c; }
+  .cat-govt .category-header { border-color: #34d399; color: #047857; }
+  .cat-govt .card { border-left: 4px solid #34d399; }
+  .cat-industry .category-header { border-color: #60a5fa; color: #1d4ed8; }
+  .cat-industry .card { border-left: 4px solid #60a5fa; }
+
+  /* Card */
+  .card {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .card h3 { font-size: 1.05em; font-weight: 600; margin-bottom: 6px; color: #1e1b4b; }
+  .card .source {
+    display: inline-block;
+    font-size: 0.75em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .cat-tech .source { background: #eef2ff; color: #4338ca; }
+  .cat-video .source { background: #fdf2f8; color: #be185d; }
+  .cat-drama .source { background: #fff7ed; color: #c2410c; }
+  .cat-govt .source { background: #ecfdf5; color: #047857; }
+  .cat-industry .source { background: #eff6ff; color: #1d4ed8; }
+  .card p { font-size: 0.92em; color: #374151; line-height: 1.65; }
+  .card .highlight { font-weight: 600; color: #1e1b4b; }
+  .card .badge-urgent {
+    display: inline-block;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #9ca3af;
+    font-size: 0.8em;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  /* Summary Bar */
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #4b5563;
+  }
+  .summary-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .dot-tech { background: #818cf8; }
+  .dot-video { background: #f472b6; }
+  .dot-drama { background: #fb923c; }
+  .dot-govt { background: #34d399; }
+  .dot-industry { background: #60a5fa; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>📡 AI 行業情報速遞</h1>
+    <div class="date-badge">2026年6月14日（星期日）</div>
+    <div class="hot-banner">🔥 今日頭條：Anthropic Claude 5 遭美政府 72 小時全球下架</div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <div class="summary-item"><span class="dot dot-tech"></span>AI創作技術 3則</div>
+    <div class="summary-item"><span class="dot dot-video"></span>短視頻 2則</div>
+    <div class="summary-item"><span class="dot dot-drama"></span>AI漫劇 3則</div>
+    <div class="summary-item"><span class="dot dot-govt"></span>政府補貼 3則</div>
+    <div class="summary-item"><span class="dot dot-industry"></span>行業動態 3則</div>
+  </div>
+
+  <!-- 1. AI 創作技術 -->
+  <div class="category cat-tech">
+    <div class="category-header">
+      <span class="icon">🔬</span>
+      <h2>AI 創作技術</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">智源研究院</span>
+      <h3>悟界・Physis-v0.1 發布：全球首個通用世界基座模型，從「預測下一個詞」邁向「預測下一個物理狀態」</h3>
+      <p>6 月 12-13 日智源大會上，智源研究院發布<span class="highlight">悟界・Physis-v0.1</span>，標誌 AI 從語言預訓練範式躍遷到物理狀態預測新範式。同期發布原生多模態大模型<span class="highlight">悟界 Emu3.5</span>、AI 藥物發現模型<span class="highlight">悟界·OpenComplex</span>，以及國產 AI 基礎軟件棧 FlagOS 2.1。圖靈獎得主 Whitfield Diffie、Andrew Barto 與 200+ 頂尖學者現場對話，被視為中國 AI 機構在「世界模型 + 具身智能」前沿的系統性卡位。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">智譜 AI</span>
+      <h3>GLM-5.2 全量開放下週開源：1M 上下文、國產最強 Coding 模型</h3>
+      <p>6 月 13 日 17:21，智譜宣布<span class="highlight">GLM-5.2</span>向 GLM Coding Plan 全量用戶開放（Lite/Pro/Max/團隊版），支援真正可用的<span class="highlight">1M（百萬 token）上下文</span>，長程任務保持領先；官網 API 下週上線、同週開源，協議 MIT。同步推出 ZCode 3.0，深度適配 GLM-5.2，切換自研 ZCode Agent 內核、不再維護其他 Agent 適配。智譜官方定位「迄今能力最強的開源模型、最強的國產 Coding 模型」，是 Claude 5 下架後國產 Coding 賽道最強補位。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">月之暗面 / 小米</span>
+      <h3>MiMo Code 開源首日 5.1k Star 但 bug 不斷；Kimi K2.7-Code 登頂 HuggingFace</h3>
+      <p>小米基於 OpenCode 推出終端編程 Agent MiMo Code，<span class="highlight">5 人 2 週開發</span>、支援百萬 token 上下文、限時免費，開源首日登頂 GitHub Trending（5.1k Star / 200+ Issues），200+ 步任務勝率 65%。同期月之暗面發布 Kimi K2.7-Code：<span class="highlight">1.1T 參數 MoE、激活 32B、256K 上下文</span>，配備 MoonViT 400M 視覺編碼器，Kimi Code Bench v2 全面超越 K2.6、仍次於 GPT-5.5 與 Claude Opus 4.8。</p>
+    </div>
+  </div>
+
+  <!-- 2. 短視頻 -->
+  <div class="category cat-video">
+    <div class="category-header">
+      <span class="icon">🎬</span>
+      <h2>短視頻</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">36氪</span>
+      <h3>小雲雀 vs 萬鏡一刻：字節與阿里內容 Agent 正面交鋒，DAU 80 萬 vs 企業付費</h3>
+      <p>字節剪映孵化的<span class="highlight">「小雲雀」</span>依托 Seedance 2.0 支援 15-60 秒成片、數字人、連結拆解，DAU 超 80 萬；阿里 6 月 12 日發布全鏈路 AI 視頻創作平台<span class="highlight">「萬鏡一刻（WonderClip）」</span>，基於 Happy Horse + 萬相 Wan2.7 + Qwen-image。底層邏輯：「字節靠免費內容換抖音供給、阿里賭企業為流程付費」，但國內短劇月活 7.18 億已近上限，36氪 認為除字節外其他大廠做影視內容 Agent 「屬浪費算力」。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">新浪財經</span>
+      <h3>可靈 AI 分拆估值 180 億美元：ARR 翻 4 倍、Q1 營收 6.5 億，擬分拆 IPO</h3>
+      <p>快手旗下可靈 AI <span class="highlight">投前估值達 180 億美元</span>，相當於母公司市值約 67%。2026 Q1 營收超 6.5 億元，年化收入運行率（ARR）近 5 億美元，是去年同期 4 倍。可靈 3.0 系列模型（視頻 3.0 / Omni / 圖片 3.0）踐行 All-in-One 理念，物理模擬登峰造極、毛髮飄動、液體流動、布料褶皺——傳統 AI 視頻最易翻車的場景全部拿下。分拆 IPO 已提上日程，是國內互聯網罕見「子公司估值逼近母公司」案例。</p>
+    </div>
+  </div>
+
+  <!-- 3. AI 漫劇 -->
+  <div class="category cat-drama">
+    <div class="category-header">
+      <span class="icon">📺</span>
+      <h2>AI 漫劇</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">Data Eye</span>
+      <h3>AI 漫劇出海市場 2026 暴增 6 倍至 6.5 億美元，海外佔比從 2% 飆至 16%</h3>
+      <p>2025 年海外 AI 漫劇市場約 1 億美元，<span class="highlight">2026 預計達 6.5 億美元</span>（6 倍增長）。2026 Q1 海外短劇素材榜 TOP100 中 AI 劇/漫劇佔比由 1 月的 2% 飆升至 3 月的 16%，<span class="highlight">增長率 700%</span>。最吃力環節不是拍攝而是<span class="highlight">翻譯和本地化</span>——漫劇中少則三四個、多則七八個角色輪番配音，語種需求從東南亞擴至拉美。萬興《氣運三角洲》播放量超 2.3 億、紅果 2 月榜 6 部 AI 仿真人劇熱播。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">萬興科技</span>
+      <h3>萬興劇廠亮相華為 INSPIRE 2026：AI 漫劇全鏈路平台成焦點</h3>
+      <p>6 月 5-6 日華為雲 INSPIRE 2026 創想者大會上，萬興科技攬<span class="highlight">「從模型到成片」全棧能力</span>的萬興劇廠亮相。深度集成 Seedance 2.0、Kling 3.0 等主流大模型，構建 AI 原創劇本、資產創作到智能分鏡的全鏈路閉環。通過「佈局上游大模型 + 推創作工具 + 投內容製作方」組合拳卡位賽道，旗下靈漫快創出品的《氣運三角洲》播放量超 2.3 億。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">36氪</span>
+      <h3>AI 漫劇工具門檻驟降：AniShort 2026.3 發布，全流程可視化 + 團隊協同</h3>
+      <p>2026 年 3 月發布的 AniShort 為國內首款聚焦短劇創作全流程的 AI 智能體平台，以項目為核心實現<span class="highlight">全流程可視化管理</span>和實時團隊協同。3 月 30 日 36氪 報告指出：工具的提升讓越來越多的普通人接觸到 AI 漫劇，發行渠道也將從傳統視頻平台輻射到社媒自媒體賬號，門檻降低也讓 AI 漫劇的故事更豐富。紅果 2 月榜單 6 部 AI 仿真人劇已熱播、紅果 vs 火龍漫劇大廠角力白熱化。</p>
+    </div>
+  </div>
+
+  <!-- 4. 政府補貼 -->
+  <div class="category cat-govt">
+    <div class="category-header">
+      <span class="icon">💰</span>
+      <h2>政府補貼</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">海南省</span>
+      <h3>海南省 AI 服務平台正式上線：121 款大模型 + 44 個智能體，推「百萬億 Token 賦能計劃」</h3>
+      <p>6 月 13 日海南省人工智能服務平台正式上線，集聚<span class="highlight">121 款 AI 大模型、44 個垂直行業專業智能體</span>，搭建技術、資源、服務一體化支撐體系。同步推出「百萬億 Token 賦能計劃」「政企 AI 落地支持計劃」「信創 AI 雲端暢享計劃」三大專項行動，全面賦能海南本土企業智能化，是地方政府 AI 公共服務平台的標誌性落地。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">香港特區政府</span>
+      <h3>香港 30 億「人工智能資助計劃」+ 5000 萬「全民 AI 培訓」雙線推進</h3>
+      <p>政府撥款<span class="highlight">30 億港元</span>為期三年推動 AI 資助計劃，由數碼港 AI 超算中心提供算力，資助本地院校、研發機構、政府部門及企業；同時從 2026 財政預算案撥款<span class="highlight">5000 萬港元</span>推行「全民 AI 培訓計劃」，初期受惠 5 萬人次，創新科技局局長孫東明確表示 5000 萬僅為「試水溫」，後續會追加撥款。陳茂波網誌稱香港整體算力達 5000 PFlops、沙嶺數據園區 2032 年達 18 萬 PFlops（當前 36 倍）。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">海淀區 / 中關村</span>
+      <h3>北京海淀「OPC 八條」最高補貼 200 萬 + 海淀「模型券」補貼政策同步落地</h3>
+      <p>4 月 10 日 2026 中關村人工智能 OPC 生態大會上，海淀發布《關於全面打造 OPC 創業生態的若干措施》（「OPC 八條」），<span class="highlight">單項目最高補貼 200 萬元</span>，同步推出模型券補貼政策，覆蓋算力、模型調用、應用部署全鏈條。北京作為創新策源地，2025 年 AI 核心產業規模達 4500 億元，向河北工廠、天津港口、內蒙古牧場源源不斷輸送智力。</p>
+    </div>
+  </div>
+
+  <!-- 5. 行業動態 -->
+  <div class="category cat-industry">
+    <div class="category-header">
+      <span class="icon">🌐</span>
+      <h2>行業動態</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">新智元 / 51CTO <span class="badge-urgent">突發</span></span>
+      <h3>Claude Fable 5 / Mythos 5 上線 72 小時被美國政府禁令全球下架，連自家外籍員工也禁用</h3>
+      <p>6 月 9 日發布、6 月 11 日下午 5:21 收到美國政府信件、當晚全面停服——<span class="highlight">AI 史上首次商業大模型被政府強制召回</span>。美方引用「國家安全權限」發布出口管制指令，禁止所有外籍人士訪問，連 Anthropic 自家外籍員工也不許碰，禁令範圍涵蓋美國境內 + 境外。政府未提供具體細節，Anthropic 推測政府認為已掌握「越獄」Fable 5 的方法。Claude 其他型號暫不受影響，但事件直接推動智譜 GLM-5.2 加速開源、月之暗面等中國大模型估值集體重寫。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">騰訊財經 / ITBear</span>
+      <h3>宇樹科技科創板 IPO 過會：A 股人形機器人第一股誕生，擬募資 42 億</h3>
+      <p>6 月 1 日上交所 2026 年第 31 次審議會議，宇樹科技（Unitree）首發申請<span class="highlight">正式過會</span>，成為 A 股人形機器人第一股、具身智能第一股。擬募資 <span class="highlight">42.02 億元</span>，單款人形機器人累計下線近 1.1 萬台，2025 年出貨超 5500 台、營收增長 335% 至 17.1 億元。Q1 2026 淨利潤下降 52%，反映公司從硬件向具身智能 AI 戰略轉型；目標估值 70 億美元，與 EngineAI（4 月 2 億美元 B 輪、估值超 15 億美元）形成中國人形機器人 IPO 雙箭頭。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">港交所 / 智譜</span>
+      <h3>港股 AI 板塊累計集資 979 億港元、智譜衝刺 A+H 雙平台</h3>
+      <p>港交所表示，自 2025 年 12 月初以來，AI 價值鏈公司 IPO 集資總額達 <span class="highlight">979 億港元</span>（截至 5 月 31 日），約佔同期市場新股集資額 55%。港股一季度 40 家企業上市、募資約 1099 億港元、增長 500% 超越納斯達克。智譜 1 月 8 日登陸港交所（募資 48.962 億港元）後，6 月 2 日正式提議發行 A 股、衝刺科創板，從「港股 AI 大模型第一股」推進至「A+H」雙平台布局，上市半年內完成兩地資本運作。</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>📡 AI 行業情報速遞 · 每日 13:00 自動生成</p>
+    <p>資訊來源：新智元、51CTO、智源研究院、36氪、量子位、新浪財經、港交所、智譜、ITBear、海南省政府、香港數碼港、Data Eye、萬興科技</p>
+    <p style="margin-top: 6px;">由 EventEasy AI 自動化系統生成 · 2026年6月14日</p>
+  </div>
+
+</div>
+</body>
+</html>
