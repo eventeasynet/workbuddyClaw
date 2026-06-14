@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌇 下午新聞 - 6月14日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #744210 0%, #975a16 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(116,66,16,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-finance { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #e9d8fd; color: #6b46c1; }
+  .tag-intl { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #feebc8; color: #c05621; }
+  .tag-sports { background: #c6f6d5; color: #2f855a; }
+  .tag-property { background: #e6fffa; color: #285e61; }
+  .tag-education { background: #ebf8ff; color: #2a4365; }
+  .news-headline {
+    font-size: 0.98em;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 4px 0 2px;
+  }
+  .news-summary {
+    font-size: 0.88em;
+    color: #4a5568;
+    margin-top: 3px;
+  }
+  .news-source {
+    font-size: 0.72em;
+    color: #a0aec0;
+    margin-top: 2px;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #c53030;
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+  }
+  .highlight-box.blue {
+    background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+    border-left-color: #2b6cb0;
+  }
+  .highlight-box.green {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border-left-color: #38a169;
+  }
+  .highlight-box.purple {
+    background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+    border-left-color: #6b46c1;
+  }
+  .highlight-box.orange {
+    background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
+    border-left-color: #dd6b20;
+  }
+  .highlight-title {
+    font-weight: 700;
+    font-size: 0.95em;
+    margin-bottom: 4px;
+  }
+  .highlight-desc {
+    font-size: 0.85em;
+    color: #4a5568;
+  }
+  .footer {
+    text-align: center;
+    padding: 18px;
+    color: #a0aec0;
+    font-size: 0.78em;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .market-bar { flex-direction: column; gap: 6px; }
+    .market-item { text-align: left; display: flex; justify-content: space-between; }
+    .section { padding: 14px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🌇 下午新聞撮要</h1>
+    <div class="subtitle">本港及國際要聞 · 每日 17:00 自動生成</div>
+    <div class="date-badge">🗓️ 2026年6月14日 週日</div>
+  </div>
+
+  <!-- Market Bar -->
+  <div class="market-bar">
+    <div class="market-item">
+      <div class="label">恒指(週五收)</div>
+      <div class="value">24,718</div>
+      <div class="change up">+468 (+1.93%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">國企指數</div>
+      <div class="value">8,374</div>
+      <div class="change up">+1.91%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">科指</div>
+      <div class="value">4,705</div>
+      <div class="change up">+1.06%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">道指(週五)</div>
+      <div class="value">51,202</div>
+      <div class="change up">+0.66%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">標普(週五)</div>
+      <div class="value">7,431</div>
+      <div class="change up">+0.65%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">布蘭特原油</div>
+      <div class="value">$86.80</div>
+      <div class="change down">▼ 回落</div>
+    </div>
+  </div>
+
+  <!-- 🔥 今日焦點 -->
+  <div class="section">
+    <div class="section-title">🔥 下午焦點</div>
+
+    <div class="highlight-box">
+      <div class="highlight-title">🕊️ 特朗普宣稱美伊協議今日簽署 伊朗否認 以色列緊急開會</div>
+      <div class="highlight-desc">特朗普6月13日發文稱美伊定於今日（14日）簽署協議，霍爾木茲海峽將立即開放。伊朗外交部火速否認——「絕對不會在14日簽署」，但不排除未來幾天完成。以色列總理內塔尼亞胡宣布今晚召開安全內閣會議，以方官員指協議未涉及伊朗彈道導彈系統，核心關切未被納入。</div>
+    </div>
+
+    <div class="highlight-box blue">
+      <div class="highlight-title">🌧️ 天文台特別天氣提示：低壓槽逼近 今明兩日雨勢特大</div>
+      <div class="highlight-desc">天文台發出特別天氣提示，受活躍西南季候風及低壓槽影響，預料今晚至周二部分地區雨勢特大，兩日累積雨量可達200毫米。天文台表示有需要時會發出暴雨警告，呼籲市民上班上學前留意天氣提示。</div>
+    </div>
+
+    <div class="highlight-box green">
+      <div class="highlight-title">⚽ 世界盃第三日：德國今晚登場 澳洲爆冷2-0挫土耳其</div>
+      <div class="highlight-desc">世界盃小組賽第三日，德國vs庫拉索（休斯頓）、荷蘭vs日本（達拉斯）、科特迪瓦vs厄瓜多爾（費城）三場對決。昨日澳洲爆冷2-0擊敗土耳其、巴西1-1摩洛哥、瑞士1-1卡塔爾、蘇格蘭36年首勝1-0挫海地。觀塘APM直播逼爆多層商場，預計生意增一成。</div>
+    </div>
+
+    <div class="highlight-box purple">
+      <div class="highlight-title">🤖 SpaceX IPO點燃AI基建戰：75+數據中心項目被叫停</div>
+      <div class="highlight-desc">SpaceX IPO市值2.1萬億美元，不僅是史上最大IPO，更揭示AI基礎設施主導權爭奪戰白熱化。與此同時，美國兩黨聯合反對下，2026年頭幾個月已有超過75個AI數據中心項目（總值1,300億美元）被叫停，擔憂電力和用水成本飆升。</div>
+    </div>
+  </div>
+
+  <!-- 🚨 突發新聞 -->
+  <div class="section">
+    <div class="section-title">🚨 本港突發</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-breaking">🚨突發</span>
+      <div class="news-headline">旺角怪男大鬧商場 爬扶手電梯再街頭露械爆粗</div>
+      <div class="news-summary">昨日（13日）社交平台瘋傳多段影片，一名灰衫男子在旺角MOKO新世紀商場翻越玻璃欄杆，沿扶手電梯金屬蓋板行走，隨後在街頭裸露下體爆粗辱罵途人。警方正追查涉案男子身份。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-breaking">🚨突發</span>
+      <div class="news-headline">天頌苑4個月大男嬰家中昏迷 送院搶救不治</div>
+      <div class="news-summary">天水圍天頌苑頌浩閣一名4個月大男嬰被家人發現昏迷床上，急送屯門醫院搶救後證實不治。警方初步調查無發現可疑傷勢，死因有待驗屍確定。</div>
+      <div class="news-source">文匯報 · 星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-breaking">🚨突發</span>
+      <div class="news-headline">大帽山牛隻遭私家車撞飛 倒地不起路面遺血跡</div>
+      <div class="news-summary">凌晨約2時10分，一輛白色平治私家車在大帽山荃錦公路撞中一頭牛，牛隻受傷倒地，路面留有血跡，肇事車輛車頭損毀。警方及愛護動物協會到場處理。</div>
+      <div class="news-source">文匯報</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-breaking">🚨突發</span>
+      <div class="news-headline">北區醫院61歲男病人凌晨擅離病房 院方報警尋人</div>
+      <div class="news-summary">一名61歲男病人凌晨約1時30分擅自離開北區醫院骨科病房，院方已聯絡家屬及報警求助，並透過早期事故通報系統向醫管局報告，呼籲市民提供消息。</div>
+      <div class="news-source">文匯報 · 星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-breaking">🚨突發</span>
+      <div class="news-headline">火炭華翠園獨立屋遭爆竊 失逾75萬元鑽飾</div>
+      <div class="news-summary">火炭穗禾路華翠園一獨立屋被爆竊，69歲男戶主報案指主人房被盜走10條頸鏈、15隻戒指及6個胸針，總值約75.1萬元。睡房門被反鎖，警方列爆竊案調查。</div>
+      <div class="news-source">文匯報</div>
+    </div>
+  </div>
+
+  <!-- 🌤️ 天氣 -->
+  <div class="section">
+    <div class="section-title">🌤️ 天氣速報</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-weather">🌤️天氣</span>
+      <div class="news-headline">天文台：低壓槽逐漸靠近 今晚至周二部分地區雨勢特大</div>
+      <div class="news-summary">受活躍西南季候風及低壓槽共同影響，天文台預測今晚至周二部分地區雨勢特大，兩日累積雨量可達200毫米。有需要時會發出暴雨警告，未來數日天氣持續不穩定。今日大致多雲，有驟雨及狂風雷暴，氣溫26-29°C。</div>
+      <div class="news-source">香港天文台 · 經濟日報</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-weather">🌤️天氣</span>
+      <div class="news-headline">屯門蝴蝶灣泳灘現油污 康文署懸掛紅旗封閉</div>
+      <div class="news-summary">康文署宣布屯門蝴蝶灣泳灘發現油污，已暫時封閉並懸掛紅旗，提醒市民請勿在該處游泳，直至另行通告。</div>
+      <div class="news-source">文匯報</div>
+    </div>
+  </div>
+
+  <!-- 🕊️ 國際新聞 -->
+  <div class="section">
+    <div class="section-title">🕊️ 國際要聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">特朗普稱美伊今日簽協議 伊朗否認 巴方確認電子簽署儀式</div>
+      <div class="news-summary">特朗普13日發文稱美伊定於14日簽署諒解備忘錄，霍爾木茲海峽將立即開放、伊朗永久棄核。伊朗外交部發言人巴加埃火速否認——「絕對不會在14日簽署」，但不排除未來幾天。巴基斯坦外交部確認14日舉行電子簽署儀式。伊朗國家安全委員會副主席納博揚稱已看過14條備忘錄文本，版本「比之前的更好」。</div>
+      <div class="news-source">央視新聞 · 觀察者網 · 搜狐</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">以色列今晚召開安全內閣會議 應對美伊備忘錄</div>
+      <div class="news-summary">以色列總理內塔尼亞胡宣布6月14日晚間召開安全內閣會議討論美伊停火備忘錄。以方官員指協議未涉及伊朗彈道導彈系統，核活動要求被弱化，核心關切均未被納入。以色列國防部長卡茨此前聲明：不會從黎巴嫩、敘利亞及加沙安全區撤軍。</div>
+      <div class="news-source">央視新聞</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">美伊諒解備忘錄草案關鍵分歧：海峽收費、濃縮鈾、解凍資金</div>
+      <div class="news-summary">備忘錄四大核心分歧：(1)霍爾木茲海峽——美方要求不收費重開，伊方堅持調整管理機制並收費；(2)濃縮鈾——美方稱可在美境內處理，伊方堅持僅在伊朗境內稀釋；(3)資金——伊方要求先解凍240億美元一半，美方要求分批；(4)黎巴嫩——伊方要求以色列撤軍，以方拒絕。</div>
+      <div class="news-source">央視新聞 · 觀察者網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">歐盟啟動烏克蘭和摩爾多瓦首階段入盟談判</div>
+      <div class="news-summary">歐盟正式宣布啟動烏克蘭和摩爾多瓦首階段入盟談判，標誌兩國加入歐盟進程邁出關鍵一步。俄方強烈反對，稱此舉將進一步惡化地區局勢。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">美國得州大規模槍擊 2死10傷 槍手被制服</div>
+      <div class="news-summary">美國得克薩斯州發生大規模槍擊事件，造成至少2人死亡、10人受傷，槍手已被警方制服。事件再次引爆全國槍枝管制爭議。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">日本自民黨擬建議政府進一步大幅增加防衛費</div>
+      <div class="news-summary">日本執政自民黨內部討論進一步大幅增加防衛費的方案，預計近期向政府提交建議。背景為地區安全環境持續趨緊及美日同盟強化需求。</div>
+      <div class="news-source">新華網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️國際</span>
+      <div class="news-headline">秘魯警察扮世界盃吉祥物智擒毒販 網絡爆紅</div>
+      <div class="news-summary">世界盃期間秘魯警察突發奇想，穿上2026世界盃吉祥物服裝在利馬市中心突襲，成功逮捕一名涉嫌販毒嫌疑人。相關視頻在社交媒體瘋傳，全球網友熱議。</div>
+      <div class="news-source">LiveMint</div>
+    </div>
+  </div>
+
+  <!-- 👶 社會新聞 -->
+  <div class="section">
+    <div class="section-title">👶 社會民生</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">公務員劃一加薪2% 工會批變相減薪 楊何蓓茵：長遠加幅已跑贏通脹</div>
+      <div class="news-summary">公務員事務局宣布公務員劃一加薪2%，多個公務員工會批評加幅遠低於薪酬趨勢淨指標（高層5.32%、中層5.61%、低層5.08%），屬「變相減薪」。楊何蓓茵回應指調薪非純追通脹，長遠累計加幅已跑贏物價。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">陳茂波：五年規劃公眾諮詢明展開 市民將有更多優質就業機會</div>
+      <div class="news-summary">財政司司長陳茂波宣布香港首個五年規劃公眾諮詢明日展開，將通過多個渠道廣納社會意見。他指規劃旨在凝聚共識、增強發展力量，為經濟、科技及社會普惠包容帶來更大動能。國家正值「十五五」開局之年，香港應抓緊AI新時代契機。</div>
+      <div class="news-source">文匯報 · 星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">太子道西劏房爆租務糾紛 管理人與租客互淋液體同被捕</div>
+      <div class="news-summary">太子道西一劏房單位發生租務糾紛，男管理人與男租客因租務問題爭執，期間互相淋潑不明液體，雙方報稱不適後同被警方拘捕帶署調查。</div>
+      <div class="news-source">文匯報 · 星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">元朗少年踩電動單車「3人行」過路 網民：遲早出事</div>
+      <div class="news-summary">網上流傳片段，元朗有少年三人同踩一輛電動單車在馬路穿梭，險象環生。網民擔憂安全問題，直言「遲早出事」。警方表示會跟進調查。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">世界盃熱潮 警銅鑼灣2小時拘兩酒駕司機</div>
+      <div class="news-summary">港島總區交通部特遣隊在世界盃期間加強巡查，在銅鑼灣耀華街及勿地臣街交界兩小時內截查兩名未能通過酒精呼氣測試的司機，均涉嫌「酒後駕駛」被捕。</div>
+      <div class="news-source">文匯報</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">8000萬六合彩端午金多寶今晚開售 6.18攪珠</div>
+      <div class="news-summary">六合彩端午金多寶今晚開售，頭獎獨中估計可獲高達8,000萬港元，將於6月18日（週四）攪珠。馬會公布最旺號碼及幸運投注站供市民參考。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">海關機場檢8隻懷疑瀕危活龜 市值約1.6萬元</div>
+      <div class="news-summary">海關在香港國際機場檢查一批由美國進口、報稱載有衣物及電腦設備的空運貨物時，在紙箱內發現8隻被襪子收藏的懷疑瀕危活龜，案件轉交漁護署跟進。</div>
+      <div class="news-source">文匯報</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👶社會</span>
+      <div class="news-headline">關日華籲慎防世界盃群聚感染 警告新冠疫苗迎「空窗期」</div>
+      <div class="news-summary">隨世界盃賽事步入高潮，大批市民聚集商場及食肆觀賽。港大兒童及青少年科學系講座教授關日華呼籲市民及兒童盡快接種疫苗，警告新冠疫苗將迎來「空窗期」，高危群聚可能引發新一輪感染潮。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+  </div>
+
+  <!-- 🤖 科技新聞 -->
+  <div class="section">
+    <div class="section-title">🤖 科技快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">SpaceX IPO點燃AI基建戰：75+數據中心項目被叫停 涉1,300億美元</div>
+      <div class="news-summary">SpaceX歷史性IPO（市值2.1萬億美元）揭示AI物理基礎設施主導權爭奪戰升級。與此同時，美國兩黨聯合反對下，2026年頭幾個月超過75個AI數據中心項目被叫停，總值1,300億美元，擔憂電力及用水成本飆升。</div>
+      <div class="news-source">Creati.ai</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">OpenAI面臨多州檢察長聯合調查 涉版權訴訟及ChatGPT危害</div>
+      <div class="news-summary">多名州檢察長對OpenAI發起聯合調查，背景為持續的版權侵權訴訟及ChatGPT相關危害指控。OpenAI確認配合調查，這是繼Anthropic被政府禁模型後又一重大監管行動。</div>
+      <div class="news-source">Creati.ai · AI Daily Post</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">美國政府命令Anthropic全球禁用Claude Fable 5及Mythos 5模型</div>
+      <div class="news-summary">美國政府以國家安全為由，命令Anthropic在全球範圍內禁用其旗艦AI模型Claude Fable 5和Mythos 5。此前Fable 5剛在FrontierMath tier-4測試中以13分優勢擊敗GPT-5.5，此舉被視為AI出口管制重大升級。</div>
+      <div class="news-source">AI Daily Post</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">德國法院裁定Google對虛假AI生成摘要承擔法律責任</div>
+      <div class="news-summary">德國法院作出里程碑裁決，裁定Google須對其AI生成的虛假搜尋摘要承擔法律責任。此案被視為全球AI內容監管的重要先例，可能引發各國跟進立法。</div>
+      <div class="news-source">AI Daily Post</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">神舟二十三號：香港載荷專家黎家盈太空三周最新畫面曝光</div>
+      <div class="news-summary">神舟二十三號任務中，香港載荷專家黎家盈上太空三周的最新畫面公開，影片展示其身體出現「發福」現象（太空微重力導致體液轉移），引發公眾對航天醫學的關注。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖科技</span>
+      <div class="news-headline">Gemini-SQL2 在BIRD基準測試中以80.04%執行準確率領先</div>
+      <div class="news-summary">Google DeepMind的Gemini-SQL2在BIRD（文本到SQL基準）測試中以80.04%執行準確率創下新紀錄，大幅領先前任最佳成績，被視為自然語言數據庫查詢的重大突破。</div>
+      <div class="news-source">AI Daily Post</div>
+    </div>
+  </div>
+
+  <!-- ⚽ 世界盃 -->
+  <div class="section">
+    <div class="section-title">⚽ 世界盃速報</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽體育</span>
+      <div class="news-headline">第三日賽程：德國vs庫拉索今晚登場 荷蘭vs日本深夜開打</div>
+      <div class="news-summary">6月14日（週日）三場小組賽：德國vs庫拉索（休斯頓NRG體育場）、荷蘭vs日本（達拉斯AT&T體育場）、科特迪瓦vs厄瓜多爾（費城林肯金融體育場）。德國與荷蘭兩支傳統勁旅同日亮相。</div>
+      <div class="news-source">FIFA · 世界盃官網</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽體育</span>
+      <div class="news-headline">6月13日賽果：瑞士1-1卡塔爾 巴西1-1摩洛哥 澳洲2-0土耳其</div>
+      <div class="news-summary">第三比賽日四場賽果——瑞士1-1卡塔爾（卡塔爾最後時刻絕平）；巴西1-1摩洛哥（維尼修斯精彩扳平）；海地0-1蘇格蘭（蘇格蘭時隔36年世界盃首勝）；澳洲2-0土耳其（伊蘭昆達、梅特卡夫建功，當日最大冷門）。</div>
+      <div class="news-source">FIFA · Yahoo Sports</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽體育</span>
+      <div class="news-headline">觀塘APM直播逼爆多層商場 料生意增一成</div>
+      <div class="news-summary">世界盃賽事開鑼，觀塘APM商場設有大型直播屏幕，吸引大量市民聚集多層商場觀賽，氣氛熱烈。商場預計世界盃期間生意額將增加約一成，餐飲商戶最受惠。</div>
+      <div class="news-source">星島頭條</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    🛠️ 由 WorkBuddy 自動生成 · 每日 17:00 出街<br>
+    📅 2026年6月14日 週日 · 數據截至 16:55 HKT
+  </div>
+
+</div>
+</body>
+</html>
