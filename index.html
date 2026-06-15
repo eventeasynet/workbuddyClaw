@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061602;
+  var CURRENT = 2026061603;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -47,6 +47,7 @@
   --angel-accent: #d97706;
   --tender-accent: #0891b2;
   --event-accent: #ec4899;
+  --lead-accent: #f97316;
 }
 body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
 
@@ -96,6 +97,7 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .date-tab.active-angel { background:var(--angel-accent); color:#fff; border-color:var(--angel-accent); }
 .date-tab.active-tender { background:var(--tender-accent); color:#fff; border-color:var(--tender-accent); }
 .date-tab.active-event { background:var(--event-accent); color:#fff; border-color:var(--event-accent); }
+.date-tab.active-lead { background:var(--lead-accent); color:#fff; border-color:var(--lead-accent); }
 .date-tab.no-data { opacity:0.45; cursor:default; }
 .date-tab .tab-label { display:block; font-size:11px; color:var(--text-muted); font-weight:400; margin-top:1px; }
 .date-tab.active .tab-label, .date-tab.active-ai .tab-label, .date-tab.active-stock .tab-label, .date-tab.active-angel .tab-label, .date-tab.active-tender .tab-label, .date-tab.active-event .tab-label { color:rgba(255,255,255,0.8); }
@@ -109,6 +111,7 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .sub-tab.active-angel { background:var(--angel-accent); color:#fff; border-color:var(--angel-accent); }
 .sub-tab.active-tender { background:var(--tender-accent); color:#fff; border-color:var(--tender-accent); }
 .sub-tab.active-event { background:var(--event-accent); color:#fff; border-color:var(--event-accent); }
+.sub-tab.active-lead { background:var(--lead-accent); color:#fff; border-color:var(--lead-accent); }
 
 /* Content area */
 .content-area { background:var(--card-bg); border-radius:12px; border:1px solid var(--border); overflow:hidden; min-height:500px; }
@@ -322,6 +325,7 @@ iframe {
     <a class="nav-item" data-section="angel" onclick="showSection('angel');return false;"><span>👼</span> 天使投資</a>
     <a class="nav-item" data-section="tender" onclick="showSection('tender');return false;"><span>📋</span> 各界標書</a>
     <a class="nav-item" data-section="event" onclick="showSection('event');return false;"><span>🎪</span> 香港及世界活動</a>
+    <a class="nav-item" data-section="lead" onclick="showSection('lead');return false;"><span>🎯</span> 潛在客戶情報</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
@@ -503,6 +507,22 @@ iframe {
     <div id="event-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無活動情報<br><small>每日 09:00 自動生成</small></div>
   </div>
 
+  <!-- 潛在客戶情報 -->
+  <div id="sec-lead" class="section">
+    <div id="lead-loading" class="loading">🎯 載入潛在客戶情報中...</div>
+    <div id="lead-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="date-tabs" id="lead-date-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="lead-cal-toggle" onclick="toggleCalendar('lead')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="lead-cal-dropdown"></div>
+        </div>
+      </div>
+      <div id="lead-content-area" class="content-area"></div>
+    </div>
+    <div id="lead-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無潛在客戶情報<br><small>每日 08:30 自動生成</small></div>
+  </div>
+
 </div>
 
 <script>
@@ -647,15 +667,17 @@ var aiDateGroups = {};
 var angelDateGroups = {};
 var tenderDateGroups = {};
 var eventDateGroups = {};
+var leadDateGroups = {};
 var stockActiveDK = '';  // 當前選中日期 (dateKey)
 var newsActiveDK = '';
 var aiActiveDK = '';
 var angelActiveDK = '';
 var tenderActiveDK = '';
 var eventActiveDK = '';
+var leadActiveDK = '';
 var stockActiveSub = 0;  // 子 Tab 索引 (0=持股分析, 1=板塊追蹤)
 var newsActiveSub = 0;   // 子 Tab 索引 (0=上午, 1=下午)
-var calState = { stock: null, news: null, ai: null, angel: null, tender: null, event: null };
+var calState = { stock: null, news: null, ai: null, angel: null, tender: null, event: null, lead: null };
 
 // ===== 5 天日期 Tab 邏輯 =====
 // 規則：選中日期在中間（第 3 格），最新日期在最左
@@ -673,14 +695,14 @@ function renderDateTabs(prefix, groups) {
   if (!tabsDiv) return;
   tabsDiv.innerHTML = '';
 
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : newsActiveDK))));
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : (prefix === 'lead' ? leadActiveDK : newsActiveDK)))));
   var tabDates = get5DayTabs(activeDK);
 
   tabDates.forEach(function(dk) {
     var btn = document.createElement('button');
     btn.className = 'date-tab';
     if (dk === activeDK) {
-      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : (prefix === 'angel' ? 'active-angel' : (prefix === 'tender' ? 'active-tender' : (prefix === 'event' ? 'active-event' : 'active')))));
+      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : (prefix === 'angel' ? 'active-angel' : (prefix === 'tender' ? 'active-tender' : (prefix === 'event' ? 'active-event' : (prefix === 'lead' ? 'active-lead' : 'active')))))));
     }
     if (!groups[dk]) {
       btn.classList.add('no-data');
@@ -709,6 +731,9 @@ function renderDateTabs(prefix, groups) {
         } else if (prefix === 'event') {
           eventActiveDK = dateKey;
           renderEventContent();
+        } else if (prefix === 'lead') {
+          leadActiveDK = dateKey;
+          renderLeadContent();
         } else {
           newsActiveDK = dateKey;
           renderNewsContent();
@@ -874,6 +899,12 @@ function renderEventContent() {
   var reports = eventDateGroups[eventActiveDK] || [];
   var target = reports[0] || null;
   renderReport('event-content-area', target);
+}
+
+function renderLeadContent() {
+  var reports = leadDateGroups[leadActiveDK] || [];
+  var target = reports[0] || null;
+  renderReport('lead-content-area', target);
 }
 
 // ===== 整合渲染 =====
@@ -1047,6 +1078,32 @@ function loadEvent() {
   });
 }
 
+function loadLead() {
+  document.getElementById('lead-loading').style.display = 'block';
+  document.getElementById('lead-viewer').style.display = 'none';
+  document.getElementById('lead-empty').style.display = 'none';
+
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) {
+      return i.type && i.type.indexOf('潛在客戶') >= 0;
+    });
+    leadDateGroups = groupByDate(items);
+    document.getElementById('lead-loading').style.display = 'none';
+
+    if (items.length === 0) {
+      document.getElementById('lead-empty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('lead-viewer').style.display = 'block';
+    var dates = Object.keys(leadDateGroups).sort().reverse();
+    leadActiveDK = dates[0] || todayKey();
+    renderLeadContent();
+    renderDateTabs('lead', leadDateGroups);
+    renderCalendar('lead-cal-dropdown', leadDateGroups, leadActiveDK, 'lead');
+  });
+}
+
 // ===== 月曆 =====
 function getCalState(prefix) {
   if (!calState[prefix]) {
@@ -1061,8 +1118,8 @@ function changeMonth(prefix, delta) {
   st.m += delta;
   if (st.m > 11) { st.m = 0; st.y++; }
   if (st.m < 0)  { st.m = 11; st.y--; }
-  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : newsDateGroups))));
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : newsActiveDK))));
+  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : (prefix === 'lead' ? leadDateGroups : newsDateGroups)))));
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : (prefix === 'lead' ? leadActiveDK : newsActiveDK)))));
   renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
 }
 
@@ -1146,6 +1203,10 @@ function renderCalendar(cntId, groups, activeDK, prefix) {
           eventActiveDK = dateKey;
           renderEventContent();
           renderDateTabs('event', eventDateGroups);
+        } else if (prefix === 'lead') {
+          leadActiveDK = dateKey;
+          renderLeadContent();
+          renderDateTabs('lead', leadDateGroups);
         } else {
           aiActiveDK = dateKey;
           renderAIContent();
@@ -1169,8 +1230,8 @@ function toggleCalendar(prefix) {
   document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
   document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
   if (!isOpen) {
-    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : newsDateGroups))));
-    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : newsActiveDK))));
+    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : (prefix === 'lead' ? leadDateGroups : newsDateGroups)))));
+    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : (prefix === 'lead' ? leadActiveDK : newsActiveDK)))));
     renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
     dd.classList.add('show');
     btn.classList.add('active');
@@ -1192,7 +1253,7 @@ function showSection(name) {
       history.replaceState(null, '', '#' + name);
     }
 
-    ['news', 'ai', 'stock', 'angel', 'tender', 'event'].forEach(function(n) {
+    ['news', 'ai', 'stock', 'angel', 'tender', 'event', 'lead'].forEach(function(n) {
       var el = document.getElementById('sec-' + n);
       if (el) el.classList.remove('active');
     });
@@ -1211,6 +1272,7 @@ function showSection(name) {
     if (name === 'angel') loadAngel();
     if (name === 'tender') loadTender();
     if (name === 'event') loadEvent();
+    if (name === 'lead') loadLead();
   } catch(e) {
     console.error('showSection error:', e);
   }
@@ -1243,7 +1305,7 @@ function showSection(name) {
 (function() {
   function initSection() {
     var hash = window.location.hash.replace('#', '');
-    var valid = ['news', 'ai', 'stock', 'angel', 'tender', 'event'];
+    var valid = ['news', 'ai', 'stock', 'angel', 'tender', 'event', 'lead'];
     var sec = (hash && valid.indexOf(hash) >= 0) ? hash : 'news';
     showSection(sec);
   }
