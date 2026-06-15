@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061605;
+  var CURRENT = 2026061606;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -1126,6 +1126,14 @@ function loadLead() {
     var items = (data.items || []).filter(function(i) {
       return i.type && i.type.indexOf('潛在客戶') >= 0;
     });
+
+    // 如果 GAS 記錄為空，嘗試從 news/index.json 加載
+    if (items.length === 0) {
+      console.log('[loadLead] GAS 記錄為空，嘗試從 news/index.json 加載');
+      loadLeadFromIndexJson();
+      return;
+    }
+
     leadDateGroups = groupByDate(items);
     document.getElementById('lead-loading').style.display = 'none';
 
@@ -1141,6 +1149,83 @@ function loadLead() {
     renderDateTabs('lead', leadDateGroups);
     renderCalendar('lead-cal-dropdown', leadDateGroups, leadActiveDK, 'lead');
   });
+}
+
+// 從 news/index.json 加載潛在客戶情報
+function loadLeadFromIndexJson() {
+  var jsonUrl = 'https://dash.vigoradv.com/news/index.json';
+  var fallbackUrl = 'https://eventeasynet.github.io/workbuddyClaw/news/index.json';
+
+  fetch(jsonUrl)
+    .then(function(response) {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    })
+    .then(function(data) {
+      var items = data.map(function(entry) {
+        return {
+          id: 'json-' + entry.date,
+          type: entry.type || '潛在客戶',
+          title: entry.title || '',
+          driveUrl: 'https://dash.vigoradv.com/news/' + entry.file,
+          status: '已確認',
+          createdAt: entry.createdAt || entry.date + 'T00:00:00+08:00'
+        };
+      });
+
+      leadDateGroups = groupByDate(items);
+      document.getElementById('lead-loading').style.display = 'none';
+
+      if (items.length === 0) {
+        document.getElementById('lead-empty').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('lead-viewer').style.display = 'block';
+      var dates = Object.keys(leadDateGroups).sort().reverse();
+      leadActiveDK = dates[0] || todayKey();
+      renderLeadContent();
+      renderDateTabs('lead', leadDateGroups);
+      renderCalendar('lead-cal-dropdown', leadDateGroups, leadActiveDK, 'lead');
+    })
+    .catch(function(error) {
+      console.error('[loadLeadFromIndexJson] 錯誤:', error);
+      // 嘗試 fallback URL
+      fetch(fallbackUrl)
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+          var items = data.map(function(entry) {
+            return {
+              id: 'json-' + entry.date,
+              type: entry.type || '潛在客戶',
+              title: entry.title || '',
+              driveUrl: 'https://dash.vigoradv.com/news/' + entry.file,
+              status: '已確認',
+              createdAt: entry.createdAt || entry.date + 'T00:00:00+08:00'
+            };
+          });
+
+          leadDateGroups = groupByDate(items);
+          document.getElementById('lead-loading').style.display = 'none';
+
+          if (items.length === 0) {
+            document.getElementById('lead-empty').style.display = 'block';
+            return;
+          }
+
+          document.getElementById('lead-viewer').style.display = 'block';
+          var dates = Object.keys(leadDateGroups).sort().reverse();
+          leadActiveDK = dates[0] || todayKey();
+          renderLeadContent();
+          renderDateTabs('lead', leadDateGroups);
+          renderCalendar('lead-cal-dropdown', leadDateGroups, leadActiveDK, 'lead');
+        })
+        .catch(function(error2) {
+          console.error('[loadLeadFromIndexJson] Fallback 也失敗:', error2);
+          document.getElementById('lead-loading').style.display = 'none';
+          document.getElementById('lead-empty').style.display = 'block';
+        });
+    });
 }
 
 // ===== 月曆 =====
