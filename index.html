@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061207;
+  var CURRENT = 2026061507;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -44,6 +44,7 @@
   --yellow: #eab308;
   --ai-accent: #7c3aed;
   --stock-accent: #059669;
+  --angel-accent: #d97706;
 }
 body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
 
@@ -90,9 +91,10 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .date-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 .date-tab.active-ai { background:var(--ai-accent); color:#fff; border-color:var(--ai-accent); }
 .date-tab.active-stock { background:var(--stock-accent); color:#fff; border-color:var(--stock-accent); }
+.date-tab.active-angel { background:var(--angel-accent); color:#fff; border-color:var(--angel-accent); }
 .date-tab.no-data { opacity:0.45; cursor:default; }
 .date-tab .tab-label { display:block; font-size:11px; color:var(--text-muted); font-weight:400; margin-top:1px; }
-.date-tab.active .tab-label, .date-tab.active-ai .tab-label, .date-tab.active-stock .tab-label { color:rgba(255,255,255,0.8); }
+.date-tab.active .tab-label, .date-tab.active-ai .tab-label, .date-tab.active-stock .tab-label, .date-tab.active-angel .tab-label { color:rgba(255,255,255,0.8); }
 
 /* Sub tabs */
 .sub-tabs { display:flex; gap:8px; margin-bottom:16px; }
@@ -100,6 +102,7 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .sub-tab:hover { border-color:var(--accent); color:var(--accent); }
 .sub-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 .sub-tab.active-stock { background:var(--stock-accent); color:#fff; border-color:var(--stock-accent); }
+.sub-tab.active-angel { background:var(--angel-accent); color:#fff; border-color:var(--angel-accent); }
 
 /* Content area */
 .content-area { background:var(--card-bg); border-radius:12px; border:1px solid var(--border); overflow:hidden; min-height:500px; }
@@ -310,11 +313,12 @@ iframe {
     <a class="nav-item active" data-section="news" onclick="showSection('news');return false;"><span>📰</span> 每日新聞撮要</a>
     <a class="nav-item" data-section="ai" onclick="showSection('ai');return false;"><span>📡</span> AI 情報</a>
     <a class="nav-item" data-section="stock" onclick="showSection('stock');return false;"><span>📈</span> 股票分析報告</a>
+    <a class="nav-item" data-section="angel" onclick="showSection('angel');return false;"><span>👼</span> 天使投資</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
       <div class="automation-toggle" onclick="toggleAutoPanel()">
-        <span>⚡ <span id="status-text">5 個自動化運行中</span></span>
+        <span>⚡ <span id="status-text">6 個自動化運行中</span></span>
         <span class="arrow" id="auto-arrow">▶</span>
       </div>
       <div class="automation-list" id="auto-list">
@@ -349,6 +353,14 @@ iframe {
             <div class="auto-time">19:00 生成 → 21:00 出街</div>
           </div>
           <span class="auto-status auto-status-active" id="auto-status-1780253895980">運行中</span>
+        </div>
+        <div class="automation-item">
+          <span class="auto-icon">👼</span>
+          <div class="auto-info">
+            <div class="auto-name">天使投資情報</div>
+            <div class="auto-time">11:00 生成 → 11:30 出街</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-angel">運行中</span>
         </div>
         <div class="automation-item">
           <span class="auto-icon">🌙</span>
@@ -417,6 +429,22 @@ iframe {
       <div id="stock-content-area" class="content-area"></div>
     </div>
     <div id="stock-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無股票報告<br><small>每晚 19:00 自動生成</small></div>
+  </div>
+
+  <!-- 天使投資 -->
+  <div id="sec-angel" class="section">
+    <div id="angel-loading" class="loading">👼 載入天使投資情報中...</div>
+    <div id="angel-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="date-tabs" id="angel-date-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="angel-cal-toggle" onclick="toggleCalendar('angel')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="angel-cal-dropdown"></div>
+        </div>
+      </div>
+      <div id="angel-content-area" class="content-area"></div>
+    </div>
+    <div id="angel-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無天使投資情報<br><small>每日 11:00 自動生成</small></div>
   </div>
 
 </div>
@@ -560,12 +588,14 @@ function escHtml(s) {
 var stockDateGroups = {};
 var newsDateGroups = {};
 var aiDateGroups = {};
+var angelDateGroups = {};
 var stockActiveDK = '';  // 當前選中日期 (dateKey)
 var newsActiveDK = '';
 var aiActiveDK = '';
+var angelActiveDK = '';
 var stockActiveSub = 0;  // 子 Tab 索引 (0=持股分析, 1=板塊追蹤)
 var newsActiveSub = 0;   // 子 Tab 索引 (0=上午, 1=下午)
-var calState = { stock: null, news: null, ai: null };
+var calState = { stock: null, news: null, ai: null, angel: null };
 
 // ===== 5 天日期 Tab 邏輯 =====
 // 規則：選中日期在中間（第 3 格），最新日期在最左
@@ -583,14 +613,14 @@ function renderDateTabs(prefix, groups) {
   if (!tabsDiv) return;
   tabsDiv.innerHTML = '';
 
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : newsActiveDK);
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : newsActiveDK));
   var tabDates = get5DayTabs(activeDK);
 
   tabDates.forEach(function(dk) {
     var btn = document.createElement('button');
     btn.className = 'date-tab';
     if (dk === activeDK) {
-      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : 'active'));
+      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : (prefix === 'angel' ? 'active-angel' : 'active')));
     }
     if (!groups[dk]) {
       btn.classList.add('no-data');
@@ -607,12 +637,15 @@ function renderDateTabs(prefix, groups) {
         if (prefix === 'stock') {
           stockActiveDK = dateKey;
           renderStockContent();
-        } else if (prefix === 'news') {
-          newsActiveDK = dateKey;
-          renderNewsContent();
-        } else {
+        } else if (prefix === 'ai') {
           aiActiveDK = dateKey;
           renderAIContent();
+        } else if (prefix === 'angel') {
+          angelActiveDK = dateKey;
+          renderAngelContent();
+        } else {
+          newsActiveDK = dateKey;
+          renderNewsContent();
         }
         renderDateTabs(prefix, groups);
         renderCalendar(prefix + '-cal-dropdown', groups, dateKey, prefix);
@@ -759,6 +792,12 @@ function renderAIContent() {
   renderReport('ai-content-area', target);
 }
 
+function renderAngelContent() {
+  var reports = angelDateGroups[angelActiveDK] || [];
+  var target = reports[0] || null;
+  renderReport('angel-content-area', target);
+}
+
 // ===== 整合渲染 =====
 function renderNewsContent() {
   renderDateTabs('news', newsDateGroups);
@@ -852,6 +891,32 @@ function loadStock() {
   });
 }
 
+function loadAngel() {
+  document.getElementById('angel-loading').style.display = 'block';
+  document.getElementById('angel-viewer').style.display = 'none';
+  document.getElementById('angel-empty').style.display = 'none';
+
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) {
+      return i.type && i.type.indexOf('天使投資') >= 0;
+    });
+    angelDateGroups = groupByDate(items);
+    document.getElementById('angel-loading').style.display = 'none';
+
+    if (items.length === 0) {
+      document.getElementById('angel-empty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('angel-viewer').style.display = 'block';
+    var dates = Object.keys(angelDateGroups).sort().reverse();
+    angelActiveDK = dates[0] || todayKey();
+    renderAngelContent();
+    renderDateTabs('angel', angelDateGroups);
+    renderCalendar('angel-cal-dropdown', angelDateGroups, angelActiveDK, 'angel');
+  });
+}
+
 // ===== 月曆 =====
 function getCalState(prefix) {
   if (!calState[prefix]) {
@@ -866,8 +931,8 @@ function changeMonth(prefix, delta) {
   st.m += delta;
   if (st.m > 11) { st.m = 0; st.y++; }
   if (st.m < 0)  { st.m = 11; st.y--; }
-  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : newsDateGroups);
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : newsActiveDK);
+  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : newsDateGroups));
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : newsActiveDK));
   renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
 }
 
@@ -939,6 +1004,10 @@ function renderCalendar(cntId, groups, activeDK, prefix) {
         } else if (prefix === 'news') {
           newsActiveDK = dateKey;
           renderNewsContent();
+        } else if (prefix === 'angel') {
+          angelActiveDK = dateKey;
+          renderAngelContent();
+          renderDateTabs('angel', angelDateGroups);
         } else {
           aiActiveDK = dateKey;
           renderAIContent();
@@ -962,8 +1031,8 @@ function toggleCalendar(prefix) {
   document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
   document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
   if (!isOpen) {
-    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : newsDateGroups);
-    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : newsActiveDK);
+    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : newsDateGroups));
+    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : newsActiveDK));
     renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
     dd.classList.add('show');
     btn.classList.add('active');
@@ -985,7 +1054,7 @@ function showSection(name) {
       history.replaceState(null, '', '#' + name);
     }
 
-    ['news', 'ai', 'stock'].forEach(function(n) {
+    ['news', 'ai', 'stock', 'angel'].forEach(function(n) {
       var el = document.getElementById('sec-' + n);
       if (el) el.classList.remove('active');
     });
@@ -1001,6 +1070,7 @@ function showSection(name) {
     if (name === 'news') loadNews();
     if (name === 'ai') loadAI();
     if (name === 'stock') loadStock();
+    if (name === 'angel') loadAngel();
   } catch(e) {
     console.error('showSection error:', e);
   }
@@ -1033,7 +1103,7 @@ function showSection(name) {
 (function() {
   function initSection() {
     var hash = window.location.hash.replace('#', '');
-    var valid = ['news', 'ai', 'stock'];
+    var valid = ['news', 'ai', 'stock', 'angel'];
     var sec = (hash && valid.indexOf(hash) >= 0) ? hash : 'news';
     showSection(sec);
   }
