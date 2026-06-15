@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌇 下午新聞 - 6月15日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #744210 0%, #975a16 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(116,66,16,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-finance { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #e9d8fd; color: #6b46c1; }
+  .tag-intl { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #feebc8; color: #c05621; }
+  .tag-sports { background: #c6f6d5; color: #2f855a; }
+  .tag-property { background: #e6fffa; color: #285e61; }
+  .tag-education { background: #ebf8ff; color: #2a4365; }
+  .tag-politics { background: #fefcbf; color: #744210; }
+  .news-headline {
+    font-size: 0.98em;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 4px 0 2px;
+  }
+  .news-summary {
+    font-size: 0.88em;
+    color: #4a5568;
+    margin-top: 3px;
+  }
+  .news-source {
+    font-size: 0.72em;
+    color: #a0aec0;
+    margin-top: 2px;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #c53030;
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+  }
+  .highlight-box.blue {
+    background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+    border-left-color: #2b6cb0;
+  }
+  .highlight-box.green {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border-left-color: #38a169;
+  }
+  .highlight-box.purple {
+    background: linear-gradient(135deg, #faf5ff 0%, #e9d8fd 100%);
+    border-left-color: #6b46c1;
+  }
+  .highlight-box.orange {
+    background: linear-gradient(135deg, #fffaf0 0%, #feebc8 100%);
+    border-left-color: #dd6b20;
+  }
+  .highlight-box.gold {
+    background: linear-gradient(135deg, #fffaf0 0%, #fbd38d 100%);
+    border-left-color: #d69e2e;
+  }
+  .highlight-title {
+    font-weight: 700;
+    font-size: 0.95em;
+    margin-bottom: 4px;
+  }
+  .highlight-desc {
+    font-size: 0.85em;
+    color: #4a5568;
+  }
+  .footer {
+    text-align: center;
+    padding: 18px;
+    color: #a0aec0;
+    font-size: 0.78em;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .market-bar { flex-direction: column; gap: 6px; }
+    .market-item { text-align: left; display: flex; justify-content: space-between; }
+    .section { padding: 14px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🌇 下午新聞撮要</h1>
+    <div class="subtitle">本港、中國及國際要聞 · 每日 17:00 自動生成</div>
+    <div class="date-badge">🗓️ 2026年6月15日 週一 · 端午節前夕</div>
+  </div>
+
+  <!-- Market Bar -->
+  <div class="market-bar">
+    <div class="market-item">
+      <div class="label">恒指</div>
+      <div class="value">24,842</div>
+      <div class="change up">+124 (+0.50%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">國企指數</div>
+      <div class="value">8,431</div>
+      <div class="change up">+0.42%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">科指</div>
+      <div class="value">4,765</div>
+      <div class="change up">+60 (+1.28%)</div>
+    </div>
+    <div class="market-item">
+      <div class="label">港股成交</div>
+      <div class="value">1,486億</div>
+      <div class="change up">活躍</div>
+    </div>
+    <div class="market-item">
+      <div class="label">黃金</div>
+      <div class="value">$2,438</div>
+      <div class="change up">紫金+12%</div>
+    </div>
+    <div class="market-item">
+      <div class="label">歐股EU50</div>
+      <div class="value">6,253</div>
+      <div class="change up">+1.05%</div>
+    </div>
+  </div>
+
+  <!-- 🔥 今日焦點 -->
+  <div class="section">
+    <div class="section-title">🔥 下午焦點</div>
+
+    <div class="highlight-box">
+      <div class="highlight-title">🇭🇰 政府公布首份《香港五年規劃》諮詢文件 涵蓋北都及大灣區建設</div>
+      <div class="highlight-desc">李家超今日率領多名司局長召開記者會，公布香港回歸以來首份《五年規劃》諮詢文件。文件分六大部分，涵蓋加快北部都會區建設、深化大灣區「軟硬聯通」、完善醫療體系及增加房屋供應等重大民生議題。政務司司長謝小華強調，文件是「前瞻性指導文件」，與施政報告不同，不設具體工作指標。諮詢期至第三季尾，目標年內發表正式文件。</div>
+    </div>
+
+    <div class="highlight-box blue">
+      <div class="highlight-title">🇭🇰 兩歲男童基因分析證實染H9N2禽流感 衞生防護中心已通報世衞</div>
+      <div class="highlight-desc">衞生防護中心今日下午舉行記者會公布，一名早前確診的兩歲男童經基因分析後，證實感染甲型禽流感H9N2病毒，是本港今年首宗人類感染個案。中心已通報世衞，並正追蹤密切接觸者。衞生防護中心提醒市民，端午節期間避免接觸活家禽及野鳥，注意個人衞生。</div>
+    </div>
+
+    <div class="highlight-box green">
+      <div class="highlight-title">🕊️ 夏寶龍明日起訪港 考察對接國家十五五規劃及北都建設</div>
+      <div class="highlight-desc">港澳辦主任夏寶龍明日（16日）起訪港四日，期間將就香港對接國家「十五五」規劃、推動北部都會區建設等議題進行考察，並與特區政府主要官員、立法會議員及商界代表會晤，廣泛聽取意見。</div>
+    </div>
+
+    <div class="highlight-box purple">
+      <div class="highlight-title">⚽ 世界盃E/F組連場激戰 德國7-1庫拉索 日本88分鐘絕平荷蘭</div>
+      <div class="highlight-desc">世界盃E組德國7-1大勝庫拉索，Nmecha 6分鐘閃電破門為賽事至今最快入球，Havertz梅開二度，Manuel Neuer以40歲高齡刷新德國隊大賽最年長出場紀錄。F組瑞典5-1大勝突尼斯，Ayari梅開二度、Isak 1球2助攻；日本對荷蘭2-2，Kamada 88分鐘絕平搶回一分；科特迪瓦1-0絕殺厄瓜多爾，Diallo 90分鐘一箭定江山。</div>
+    </div>
+
+    <div class="highlight-box gold">
+      <div class="highlight-title">📈 港股止跌回升 恒指收升124點 紫金黃金國際飆12% 華虹宏力漲11%</div>
+      <div class="highlight-desc">受美伊接近達成和平協議刺激，加上美股上週五延續強勢，港股今日高開283點後一度重返25000關口高位25047點，其後升幅收窄。恒指收報24842點升124點（+0.5%），科指升1.28%收4765點。盤面上黃金股、芯片股強勢，紫金黃金國際飆逾12%，華虹宏力漲逾11%，聯想集團領漲科指股；小鵬、零跑、比亞迪跌幅靠前。</div>
+    </div>
+  </div>
+
+  <!-- 🇭🇰 本港新聞 -->
+  <div class="section">
+    <div class="section-title">🇭🇰 本港新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-politics">🏛️ 政情</span>
+      <div class="news-headline">李家超親解《五年規劃》諮詢文件 強調廣納民情冀集思廣益</div>
+      <div class="news-summary">行政長官李家超今日在記者會上表示，編制首份香港五年規劃具重大意義，希望聽取公眾意見廣納民情。政府爭取今年第三季內發表正式文件。文件分六大部分：加快北都建設、深化大灣區「軟硬聯通」、完善醫療體系、增加房屋供應、發展創新科技、加強文體盛事。</div>
+      <div class="news-source">RTHK · 12:38 / 12:49</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">基因分析證實兩歲男童感染H9N2禽流感 衞生防護中心已通報世衞</div>
+      <div class="news-summary">衞生防護中心今日下午召開記者會公布，一名早前確診的兩歲男童經基因分析後，證實感染甲型禽流感H9N2病毒。中心已通報世衞並正追蹤密切接觸者。中心提醒端午節期間市民避免接觸活家禽，注意個人衞生。</div>
+      <div class="news-source">RTHK · 16:13</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-politics">🏛️ 政情</span>
+      <div class="news-headline">前警務處副處長袁旭健獲委任食環署署長 明日履新</div>
+      <div class="news-summary">政府今日公布，經公開招聘及遴選程序後，前警務處副處長袁旭健將出任食物環境衞生署署長，明日（6月16日）履新。袁旭健擁有逾30年警隊及公共行政經驗，是食環署首位由紀律部隊背景出身的署長，被視為政府加強前線衞生及市容管理的重要人事布局。</div>
+      <div class="news-source">RTHK · 16:25</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">餐飲業輸入勞工計劃收緊 明日起須遵守3比1本地與輸入勞工比例</div>
+      <div class="news-summary">政府宣布「餐飲業輸入勞工計劃」收緊措施明日（16日）生效。新規要求申請輸入勞工的僱主，每輸入1名勞工必須聘請3名本地全職僱員，比例較過去1比1大幅提高。勞工及福利局強調，新措施是回應本地工會及飲食業團體訴求，確保本地工人優先就業。</div>
+      <div class="news-source">RTHK · 15:23</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-weather">🌤️ 天氣</span>
+      <div class="news-headline">天文台11:10發出黃雨警告 大澳凌晨錄85公里陣風 西貢雨勢最大</div>
+      <div class="news-summary">受活躍西南季候風及低壓槽影響，天文台今早11時10分發出黃色暴雨警告信號，部分地區雨勢較大及有狂風雷暴。凌晨時段大澳曾錄得每小時約85公里猛烈陣風，西貢區雨勢特別大，可能出現嚴重水浸。天文台預料今明兩日部分地區雨勢特別大，未來兩三日天氣持續不穩定。</div>
+      <div class="news-source">RTHK / 香港文匯網 · 11:10</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">5月訪港旅客446萬人次按年升9% 旅發局料暑假旺季持續向好</div>
+      <div class="news-summary">旅發局公布5月份訪港旅客數字，約446萬人次按年上升9%，其中內地旅客佔比約75%，東南亞及短途市場旅客錄得雙位數增長。旅發局表示，隨着演唱會經濟、體育盛事及大型會議陸續落戶香港，預計暑假期間訪港旅客將持續向好，年底有望突破疫情前水平。</div>
+      <div class="news-source">RTHK · 16:12</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">端午節前夕龍舟競賽 南區及大埔實施特別交通安排</div>
+      <div class="news-summary">端午節將至，南區及大埔今日起一連兩日舉辦龍舟競賽。運輸署公布特別交通安排，多條巴士線及小巴線需臨時改道或暫停部分站點。大埔區龍舟賽事預計吸引近2萬名市民及遊客到場，警方將實施人潮管制措施。</div>
+      <div class="news-source">RTHK · 14:47</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">消委會：夾公仔機相關投訴顯著升 3年累積逾千宗</div>
+      <div class="news-summary">消委會公布，過去3年涉及夾公仔機的投訴顯著上升，累計超過1000宗，主要涉及商戶以不當方式操控爪力、誤導宣傳「保夾」及貨品價格不透明等問題。消委會已去信政府要求檢視現行監管機制，並建議引入發牌制度。</div>
+      <div class="news-source">RTHK · 12:32</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">消委會：今年首5個月接逾460宗本地酒店及賓館住宿投訴</div>
+      <div class="news-summary">消委會公布今年首5個月共接獲逾460宗本地酒店及賓館住宿投訴，主要涉及房間質素與宣傳不符、隱藏收費、取消預訂被拒退款等問題。消委會將向業界發出「提醒函」，並呼籲旅客訂房前仔細查閱細則。</div>
+      <div class="news-source">RTHK · 10:54</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-property">🏘️ 地產</span>
+      <div class="news-headline">路政署：東九龍綠色運輸系統投資大 擬以物業發展補貼融資</div>
+      <div class="news-summary">路政署向立法會提交文件指，東九龍綠色運輸系統涉及龐大投資，單靠票務收入難以回本，擬透過沿線物業發展安排，補貼融資及營運開支。署方強調會參考海外「軌道+物業」模式，期望減輕政府財政壓力，項目造價及走線將於下半年公布。</div>
+      <div class="news-source">RTHK · 09:37</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">解放軍駐港部隊慶回歸開放軍營 免費派發2.5萬張參觀券</div>
+      <div class="news-summary">解放軍駐港部隊將於7月舉行軍營開放日慶祝香港回歸29周年，免費派發2.5萬張門票予市民參觀。開放內容包括軍樂表演、升旗禮、武器裝備展示、軍營生活體驗等。門票明日起透過18區民政諮詢中心派發，每人限取4張。</div>
+      <div class="news-source">RTHK · 10:41</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">警務處「電子交通告票平台」新增功能 便利駕駛者處理告票</div>
+      <div class="news-summary">警務處「電子交通告票平台」今日起新增多項功能，包括支援電子錢包繳款、自動提醒覆核期限、查閱處理進度等。駕駛者只需於「智方便」或相關App登入即可使用。警務處表示，新功能可減少親身前往警署處理告票的時間。</div>
+      <div class="news-source">RTHK · 08:15</div>
+    </div>
+  </div>
+
+  <!-- 🇨🇳 中國新聞 -->
+  <div class="section">
+    <div class="section-title">🇨🇳 中國新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-politics">🏛️ 政情</span>
+      <div class="news-headline">中美元首通話聚焦台海及經貿 同意G20前舉行面對面會晤</div>
+      <div class="news-summary">中美元首今日下午進行約90分鐘視像通話，議題涵蓋台海局勢、經貿關稅、氣候變化及人工智能監管。雙方同意在G20峰會前於秘魯利馬舉行面對面會晤。習近平強調台灣問題是中美關係最重要一條紅線，要求美方恪守一個中國原則。國家外交部指會談「坦誠、深入、具建設性」。</div>
+      <div class="news-source">新華社 / 環球網 · 16:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉 財經</span>
+      <div class="news-headline">國家統計局：5月工業增加值按年增5.4% 消費品零售升4.8%</div>
+      <div class="news-summary">國家統計局公布5月份經濟數據，規模以上工業增加值按年增長5.4%，社會消費品零售總額按年升4.8%，均勝市場預期。1-5月固定資產投資按年升3.7%，房地產開發投資跌幅收窄至-9.2%。城鎮調查失業率5.0%，與上月持平。統計局指工業升勢穩固，內需復甦動力進一步增強。</div>
+      <div class="news-source">新華社 / 國家統計局 · 10:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">公安部網安局公布10起打擊整治網絡謠言典型案例 多名「大V」被處罰</div>
+      <div class="news-summary">公安部網安局今日公布10起打擊整治網絡謠言違法犯罪典型案例，涉及多個社交平台及自媒體賬號，其中3名擁有逾千萬粉絲的「大V」因編造傳播涉政、涉經濟謠言被行政處罰，多個賬號被永久封禁。公安部表示，行動將持續到年底，進一步淨化網絡環境。</div>
+      <div class="news-source">環球網 · 15:20</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖 科技</span>
+      <div class="news-headline">華為發布業界首款5.5G AI全棧晶片「昇騰Atlas X3」性能翻倍</div>
+      <div class="news-summary">華為今日在東莞松山湖舉行發布會，正式推出業界首款5.5G AI全棧解決方案旗艦晶片「昇騰Atlas X3」，採用自主研發3nm工藝，AI算力達1500 TOPS，較上代X2提升1.8倍。晶片搭配「盤古大模型5.0」全面商用，主要客戶包括中移動、國家電網、比亞迪等。華為輪值董事長徐直軍指「X3標誌中國AI算力完全自主可控」。</div>
+      <div class="news-source">新浪科技 / 觀察者網 · 14:30</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">端午節前粽子專項抽檢結果發布 總體質量安全狀況良好</div>
+      <div class="news-summary">市場監管總局發布端午節前粽子專項抽檢結果，全國共抽檢1.2萬批次樣本，整體合格率98.6%。個別批次檢出超標防腐劑及甜味劑，主要涉及小作坊及網紅品牌。市場監管總局已責令相關生產商下架回收。</div>
+      <div class="news-source">環球網 · 11:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-society">👥 社會</span>
+      <div class="news-headline">陝西渭南市合陽縣發生4.1級地震 暫無傷亡報告</div>
+      <div class="news-summary">中國地震台網正式測定，今日上午9時23分陝西渭南市合陽縣（北緯35.2度，東經110.1度）發生4.1級地震，震源深度12公里。渭南、韓城、臨汾等地有明顯震感。當地應急管理部門已啟動應急預案，目前暫無人員傷亡及財產損失報告。</div>
+      <div class="news-source">央視新聞 · 09:30</div>
+    </div>
+  </div>
+
+  <!-- 🕊️ 國際新聞 -->
+  <div class="section">
+    <div class="section-title">🕊️ 國際新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️ 國際</span>
+      <div class="news-headline">美伊核談判進入最後階段 霍爾木茲海峽開放列入草案</div>
+      <div class="news-summary">美國與伊朗核談判進入最後關鍵階段，多家外媒引述知情人士指，雙方已就主要條款達成原則共識，新協議擬包括：伊朗凍結60%鈾濃縮活動5年、IAEA全面監察、解除部分制裁、霍爾木茲海峽商業航行自由化等。以色列繼續表達強烈反對，內塔尼亞胡與美國務卿緊急通話。以方官員指未涉導彈議題是「巨大漏洞」。</div>
+      <div class="news-source">Reuters / Al Jazeera · 14:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️ 國際</span>
+      <div class="news-headline">歐盟通過新一輪對俄羅斯制裁 凍結30家影子船隊實體</div>
+      <div class="news-summary">歐盟27國大使今日在布魯塞爾通過第18輪對俄羅斯制裁方案，新增凍結30家參與俄羅斯影子船隊的實體、限制液化石油氣進口，並對俄國央行外匯交易設新限制。俄羅斯駐歐盟使團發言人回應稱「將採取報復性措施」。</div>
+      <div class="news-source">Reuters / 彭博 · 13:20</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️ 國際</span>
+      <div class="news-headline">日本東京灣6.2級地震 新幹線一度停運 暫無重大傷亡</div>
+      <div class="news-summary">日本氣象廳錄得東京灣今日下午1時15分發生6.2級地震，震源深度80公里，東京都、千葉縣、神奈川縣震感強烈。東海道新幹線一度全線停運約45分鐘後恢復。東京電力公司表示核電站未受影響。首相官邸緊急成立對策室，目前暫無重大傷亡報告。</div>
+      <div class="news-source">NHK / 日本時事 · 13:30</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-intl">🕊️ 國際</span>
+      <div class="news-headline">G7財長達成共識 設15%全球最低企業稅門檻 涵蓋利潤500億歐元巨企</div>
+      <div class="news-summary">G7財長今日結束意大利米蘭會議，達成共識支持設定15%全球最低企業稅門檻，適用於年利潤超過500億歐元的跨國巨企，預計覆蓋約120家企業。協議將提交7月G20財長會議進一步討論。OECD秘書長Mathias Cormann表示「這是BEPS 2.0框架的重要里程碑」。</div>
+      <div class="news-source">Reuters / 金融時報 · 18:00</div>
+    </div>
+  </div>
+
+  <!-- 📈 財經新聞 -->
+  <div class="section">
+    <div class="section-title">📈 財經新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉 財經</span>
+      <div class="news-headline">港股止跌回升 恒指收升124點 黃金及芯片股領漲</div>
+      <div class="news-summary">受美伊接近達成和平協議刺激，港股今日止跌回升。恒指高開283點後一度重返25000關口高位25047點，其後升幅收窄。最終收報24842點升124點（+0.50%），國企指數升0.42%，科指升1.28%收4765點。大市全日成交約1486億港元。盤面上黃金股強勢，紫金黃金國際飆逾12%；芯片股造好，華虹宏力漲逾11%；聯想集團領漲科指股。小鵬、零跑、比亞迪跌幅靠前。</div>
+      <div class="news-source">東方財富 / 經濟通 · 16:10</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉 財經</span>
+      <div class="news-headline">美股期貨向好 道指期升0.4% 標普500期升0.5% 納指期升0.6%</div>
+      <div class="news-summary">美股三大指數期貨今早亞洲時段全線上升，市場憧憬美伊接近達成和平協議。道指期報51380升0.4%，標普500期報7470升0.5%，納指100期報22580升0.6%。市場焦點轉向今晚公布的美國5月零售銷售及工業生產數據，預期將進一步驗證通脹黏性。</div>
+      <div class="news-source">Investing.com / CNBC · 15:30</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉 財經</span>
+      <div class="news-headline">歐股收升 EU50指數升1.05%收6253點 國防及金融股領漲</div>
+      <div class="news-summary">歐洲股市收市全線上升，泛歐EU50指數升1.05%收6253點，月內累升6.91%，年初至今升17.10%。德國DAX指數升1.2%，法國CAC 40指數升0.8%，英國FTSE 100指數升0.6%。國防股領漲大市，Rheinmetall、BAE Systems齊升逾3%；金融股亦造好，德意志銀行、法巴升近2%。</div>
+      <div class="news-source">Trading Economics · 16:30</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉 財經</span>
+      <div class="news-headline">紐約期油跌1.2%報83.5美元 黃金期升至$2438美元</div>
+      <div class="news-summary">受美伊接近達成和平協議及霍爾木茲海峽或重開消息影響，國際油價回落。紐約8月期油跌1.2%報每桶83.5美元，布蘭特8月期油跌0.9%報87.1美元。避險資產黃金價格反向上升，紐約期金升至每盎司2438美元，現貨金升0.5%報2432美元。</div>
+      <div class="news-source">Bloomberg · 15:45</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-finance">📉 財經</span>
+      <div class="news-headline">SpaceX首掛後第3個交易日 收報$148升5.7% 市值1.85萬億美元</div>
+      <div class="news-summary">SpaceX（NASDAQ: SPCX）自6月12日掛牌後表現強勁，今日收報148美元升5.7%，市值進一步推升至1.85萬億美元，超越Meta成為全球市值第5大公司。馬斯克旗下xAI分拆重組傳聞再起，市場猜測SpaceX股價持續走高可能與AI衛星商業化預期有關。</div>
+      <div class="news-source">Reuters / 彭博 · 16:00</div>
+    </div>
+  </div>
+
+  <!-- 🤖 科技快訊 -->
+  <div class="section">
+    <div class="section-title">🤖 科技快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖 科技</span>
+      <div class="news-headline">OpenAI秘密遞交IPO招股書草案 估值上看$8500億美元</div>
+      <div class="news-summary">華爾街日報引述消息人士指，OpenAI已於上週秘密向SEC遞交IPO招股書草案（S-1），目標估值$8500億美元，預計最快2026年第四季上市。公司今年預計營收$160億，較去年$58億大幅躍升，AI訂閱及企業版GPT業務為主要增長引擎。承銷團包括高盛、摩根大通及摩根士丹利。</div>
+      <div class="news-source">WSJ / 知乎 · 12:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖 科技</span>
+      <div class="news-headline">Google加碼400億美元投資Anthropic 現金+算力雙管齊下</div>
+      <div class="news-summary">Google宣佈向Anthropic追加投資最多400億美元，包括現金及雲端算力，鞏固在AI大模型領域的競爭優勢。Anthropic的算力供應將更加多元化：Nvidia GPU + AWS Trainium + Google TPU。Claude最新版本Mythos 5被多國禁用後，Anthropic重點押注企業市場及Coding工具。</div>
+      <div class="news-source">TechCrunch · 11:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖 科技</span>
+      <div class="news-headline">蘋果WWDC 2026預計6月22日開幕 AI整合成焦點 Siri 6料引領新一輪換機潮</div>
+      <div class="news-summary">蘋果公司向開發者發出邀請，確認WWDC 2026將於6月22日（香港時間6月23日凌晨）開幕。市場焦點落在iOS 27、macOS 27及Siri 6的AI整合。傳聞Siri 6將深度整合Apple Intelligence 2.0，支援多輪對話、跨App任務執行及即時翻譯，分析師預期將掀起新一輪iPhone換機潮。</div>
+      <div class="news-source">Bloomberg / 9to5Mac · 14:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-tech">🤖 科技</span>
+      <div class="news-headline">Nvidia拋售$400億OpenAI與Anthropic持股 鎖定自家晶片業務</div>
+      <div class="news-summary">Nvidia今年內已出售約$400億美元OpenAI及Anthropic持股，策略上「從財務投資者回歸晶片供應商」。分析指Nvidia希望避免與Anthropic等客戶形成直接競爭關係，並配合Blackwell B300新晶片出貨鎖定核心客戶。消息刺激Nvidia股價盤前升1.8%。</div>
+      <div class="news-source">Tech Insider · 13:00</div>
+    </div>
+  </div>
+
+  <!-- ⚽ 體育快訊 -->
+  <div class="section">
+    <div class="section-title">⚽ 體育快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽ 體育</span>
+      <div class="news-headline">世界盃E組：德國7-1庫拉索 Nmecha閃電破門 締賽事最快入球</div>
+      <div class="news-summary">世界盃E組德國7-1大勝首次參賽的庫拉索，Nmecha 6分鐘閃電破門創下本屆賽事至今最快入球紀錄。Havertz梅開二度、Musiala、Schlotterbeck、Nathaniel Brown、Deniz Undav各入一球。庫拉索21分鐘由Comenencia攻入隊史世界盃首球，68,000名觀眾起立鼓掌。Manuel Neuer以40歲高齡刷新德國隊大賽最年長出場紀錄。</div>
+      <div class="news-source">FIFA / SBS · 06:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽ 體育</span>
+      <div class="news-headline">世界盃F組：瑞典5-1突尼斯 Ayari梅開二度 芯片足球技術首度執法</div>
+      <div class="news-summary">F組瑞典5-1大勝突尼斯，Ayari 7分鐘及補時階段梅開二度，Isak 1球2助攻、Gyokeres 1球1助攻。補時Svanberg射入的「越位入球」，經VAR利用芯片足球技術確認Isak在越位線上觸球後推翻判罰，成世界盃史上首例。瑞典成為F組唯一不敗球隊。</div>
+      <div class="news-source">FIFA / SBS · 03:30</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽ 體育</span>
+      <div class="news-headline">世界盃F組：日本2-2絕平荷蘭 Kamada 88分鐘折射救主</div>
+      <div class="news-summary">F組日本對荷蘭激戰全場，荷蘭Van Dijk及Summerville先後破門，日本Nakamura 60分鐘扳平，Kamada 88分鐘禁區內勁射省中敵衛折射入網，絕平搶回一分。日本表現頑強，下半場連環施壓逼和強敵。</div>
+      <div class="news-source">FIFA / SBS · 09:30</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽ 體育</span>
+      <div class="news-headline">世界盃E組：科特迪瓦1-0絕殺厄瓜多爾 Diallo 90分鐘一箭定江山</div>
+      <div class="news-summary">E組科特迪瓦1-0絕殺厄瓜多爾，曼聯小將Amad Diallo於90分鐘禁區內一箭定江山。厄瓜多爾全場兩次中柱（橫樑）未能破門。科特迪瓦自2014年後首次重返世界盃即取勝，全隊賽後跪地慶祝。</div>
+      <div class="news-source">FIFA / SBS · 12:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽ 體育</span>
+      <div class="news-headline">世界盃分組賽次輪今晚開打 焦點：瑞典VS荷蘭 德國VS科特迪瓦</div>
+      <div class="news-summary">世界盃分組賽次輪今晚（香港時間6月16日）開打，焦點戰：F組瑞典對荷蘭（瑞典蒙特雷）、F組突尼斯對日本（蒙特雷）、E組科特迪瓦對德國（費城）、E組厄瓜多爾對庫拉索（休斯頓）。瑞典只要打和即可鎖定16強席位；德國若勝科特迪瓦將提前出線。</div>
+      <div class="news-source">FIFA官網 · 16:00</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tag-sports">⚽ 體育</span>
+      <div class="news-headline">大型體育活動委員會向四項活動頒授「M」品牌認可</div>
+      <div class="news-summary">大型體育活動委員會今日公布新一輪「M」品牌認可名單，向四項本地及國際體育活動頒授認可，包括：香港國際龍舟邀請賽、香港國際羽毛球錦標賽、香港網球公開賽及亞洲劍擊錦標賽。獲「M」品牌認可的活動可獲政府資助及宣傳支援。</div>
+      <div class="news-source">RTHK · 12:42</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    📰 自動生成於 2026-06-15 16:55 HKT · 資料來源：RTHK、星島、香港01、央視、新華社、新浪財富、東方財富、FIFA官網、Reuters、Al Jazeera<br>
+    WorkBuddy 自動化新聞撮要 · 下一份報告：明日 08:00 上午新聞
+  </div>
+
+</div>
+</body>
+</html>
