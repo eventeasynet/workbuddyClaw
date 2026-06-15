@@ -536,15 +536,50 @@ The EventEasy.net Team
     }
 
     function copyEmail(id) {
-      var zh = document.querySelector('#email-' + id + ' pre[data-email-zh]').textContent;
-      var en = document.querySelector('#email-' + id + ' pre[data-email-en]').textContent;
+      var zhEl = document.querySelector('#email-' + id + ' pre[data-email-zh]');
+      var enEl = document.querySelector('#email-' + id + ' pre[data-email-en]');
+      
+      if (!zhEl || !enEl) {
+        alert('❌ 找不到電郵內容，請手動複製');
+        return;
+      }
+      
+      var zh = zhEl.textContent || zhEl.innerText || '';
+      var en = enEl.textContent || enEl.innerText || '';
       var fullText = '【繁體中文版本】\n\n' + zh + '\n\n---\n\n【英文版本】\n\n' + en;
       
-      navigator.clipboard.writeText(fullText).then(function() {
-        alert('✅ 電郵已複製到剪貼簿！\n\n你可以：\n1. 打開 Gmail/Outlook\n2. 按 Ctrl+V 貼上\n3. 修改內容（如有需要）\n4. 按「發送」');
-      }, function() {
-        alert('❌ 複製失敗，請手動複製');
-      });
+      // 方法 1: navigator.clipboard (HTTPS 需要)
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullText).then(function() {
+          alert('✅ 電郵已複製到剪貼簿！\n\n你可以：\n1. 打開 Gmail/Outlook\n2. 按 Ctrl+V 貼上\n3. 修改內容（如有需要）\n4. 按「發送」');
+        }, function(err) {
+          console.error('Clipboard API 失敗:', err);
+          fallbackCopy(fullText);
+        });
+      } else {
+        // 方法 2: Fallback (舊瀏覽器)
+        fallbackCopy(fullText);
+      }
+    }
+    
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        var ok = document.execCommand('copy');
+        if (ok) {
+          alert('✅ 電郵已複製到剪貼簿！\n\n你可以：\n1. 打開 Gmail/Outlook\n2. 按 Ctrl+V 貼上\n3. 修改內容（如有需要）\n4. 按「發送」');
+        } else {
+          alert('❌ 複製失敗，請手動選取文字後按 Ctrl+C');
+        }
+      } catch(e) {
+        alert('❌ 複製失敗，請手動選取文字後按 Ctrl+C');
+      }
+      document.body.removeChild(ta);
     }
   </script>
 </body>
