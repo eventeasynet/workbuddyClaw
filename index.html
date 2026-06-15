@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061604;
+  var CURRENT = 2026061605;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -822,7 +822,25 @@ function renderReport(areaId, item) {
     return;
   }
 
-  var url = fixDriveUrl(item.driveUrl) || '';
+  // Fix: construct driveUrl from createdAt if empty
+  var rawUrl = item.driveUrl || '';
+  if (!rawUrl && item.createdAt && item.type) {
+    var dateMatch = (item.createdAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (dateMatch) {
+      var year = dateMatch[1];
+      var month = dateMatch[2];
+      var day = dateMatch[3];
+      // 根據 type 推測檔案名稱
+      if (item.type.indexOf('潛在客戶') >= 0) {
+        rawUrl = 'https://dash.vigoradv.com/news/' + year + '-' + month + '-' + day + '_Lead_Intelligence.html';
+      } else if (item.type.indexOf('活動花絮') >= 0) {
+        rawUrl = 'https://dash.vigoradv.com/news/' + year + '-' + month + '-' + day + '_Event_Report.html';
+      } else if (item.type.indexOf('新聞') >= 0) {
+        rawUrl = 'https://dash.vigoradv.com/news/' + year + '-' + month + '-' + day + '_News_Summary.html';
+      }
+    }
+  }
+  var url = fixDriveUrl(rawUrl) || '';
   var title = item.title || '';
 
   if (url) {
