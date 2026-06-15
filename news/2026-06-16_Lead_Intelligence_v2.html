@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 潛在客戶情報 - 6月16日</title>
+  <style>
+    * { margin:0; padding:0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; max-width: 960px; margin:0 auto; padding: 20px; background: #fff7ed; color: #1e293b; line-height: 1.6; }
+    .header { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(249,115,22,0.3); }
+    .header h1 { font-size: 28px; margin-bottom: 8px; }
+    .header p { opacity: 0.9; font-size: 14px; }
+    .summary { display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap; }
+    .summary-item { flex: 1; min-width: 120px; background: white; padding: 16px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .summary-item .num { font-size: 24px; font-weight: 700; color: #f97316; }
+    .summary-item .label { font-size: 12px; color: #64748b; margin-top: 4px; }
+    .section-title { font-size: 18px; font-weight: 700; margin: 24px 0 16px; padding: 8px 16px; border-radius: 8px; }
+    .section-high { background: #fef2f2; color: #dc2626; border-left: 4px solid #ef4444; }
+    .section-mid { background: #fefce8; color: #a16207; border-left: 4px solid #eab308; }
+    .section-low { background: #f0fdf4; color: #15803d; border-left: 4px solid #22c55e; }
+    .lead-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative; }
+    .score-high { border-left: 4px solid #ef4444; }
+    .score-mid { border-left: 4px solid #eab308; }
+    .score-low { border-left: 4px solid #22c55e; }
+    .lead-score { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .score-high .lead-score { background: #fef2f2; color: #ef4444; }
+    .score-mid .lead-score { background: #fefce8; color: #a16207; }
+    .score-low .lead-score { background: #f0fdf4; color: #15803d; }
+    .lead-card h3 { font-size: 16px; margin-bottom: 8px; color: #1e293b; }
+    .lead-card p { font-size: 14px; color: #475569; margin-bottom: 6px; }
+    .lead-contact { background: #fff7ed; padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-family: monospace; font-size: 13px; color: #ea580c; }
+    .email-btn { background: #f97316; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 13px; font-weight: 600; margin-right: 8px; }
+    .email-btn:hover { background: #ea580c; }
+    .email-box { display: none; margin-top: 12px; padding: 16px; background: #fff7ed; border-radius: 8px; font-size: 13px; }
+    .email-box h4 { margin-bottom: 8px; color: #ea580c; }
+    .email-textarea { width: 100%; min-height: 200px; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 12px; line-height: 1.8; font-family: 'Noto Sans TC', sans-serif; resize: vertical; }
+    .email-textarea:focus { outline: none; border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+    .btn-group { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .save-btn { background: #22c55e; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .save-btn:hover { background: #16a34a; }
+    .ai-btn { background: #6366f1; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .ai-btn:hover { background: #4f46e5; }
+    .ai-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    .send-btn { background: #ea580c; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .send-btn:hover { background: #c2410c; }
+    .copy-btn { background: #64748b; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .copy-btn:hover { background: #475569; }
+    .footer { text-align: center; padding: 20px; color: #94a3b8; font-size: 12px; margin-top: 40px; }
+    .loading { display: inline-block; width: 12px; height: 12px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🎯 潛在客戶情報</h1>
+    <p>2026年6月16日 生成 | 共搵到 5 個潛在客戶</p>
+  </div>
+
+  <div class="summary">
+    <div class="summary-item">
+      <div class="num">5</div>
+      <div class="label">潛在客戶總數</div>
+    </div>
+    <div class="summary-item">
+      <div class="num" style="color:#ef4444;">2</div>
+      <div class="label">🔥 高優先</div>
+    </div>
+    <div class="summary-item">
+      <div class="num" style="color:#eab308;">1</div>
+      <div class="label">⚡ 中優先</div>
+    </div>
+    <div class="summary-item">
+      <div class="num" style="color:#22c55e;">2</div>
+      <div class="label">📝 低優先</div>
+    </div>
+  </div>
+
+  <!-- 🔥 高優先 -->
+  <div class="section-title section-high">🔥 高優先</div>
+
+  <div class="lead-card score-high">
+    <div class="lead-score">🔥 高優先</div>
+    <h3>🎓 香港大學 (HKU) - 2026 年畢業典禮</h3>
+    <p><strong>活動日期：</strong>2026 年 11 月（確實日期待大學公布）</p>
+    <p><strong>活動類型：</strong>大學畢業典禮</p>
+    <p><strong>推廣重點：</strong>處理大量參與者的網上報名、確認出席、收集飲食偏好、自動發放證書</p>
+    <div class="lead-contact">✉️ 聯絡電郵：cedars@hku.hk（學生事務處）| cpao@hku.hk（傳訊及公共事務處）</div>
+    <button class="email-btn" onclick="showEmail('lead1')">📧 查看推廣電郵</button>
+    <div id="email-lead1" class="email-box">
+      <h4>【繁體中文版本】<button class="copy-btn" onclick="copyText('email-zh-lead1')">📋 複製中文</button></h4>
+      <textarea id="email-zh-lead1" class="email-textarea" data-original="標題：關於香港大學 2026 年畢業典禮的網上報名系統建議
+
+香港大學 學生事務處 你好，
+
+我係 EventEasy.net 的團隊成員。我哋提供專為活動主辦方設計的一站式管理平台，可以幫你輕鬆處理畢業典禮的網上報名、嘉賓管理、現場簽到、互動遊戲等全流程。
+
+EventEasy.net 點解適合你哋？
+
+✅ 智能報名系統
+- 自定義報名表單（42 個可選字段）
+- 支援早鳥價、VIP 價、會員價等多種票種
+- 多種收款方式（現場付款、銀行轉賬、PayMe、FPS、微信、支付寶）
+
+✅ 嘉賓管理同簽到
+- 批量導入/導出嘉賓名單
+- 每位嘉賓自動生成專屬簽到二維碼
+- 支援「+1 同行者」管理
+
+✅ 提升活動互動性
+- 12 款互動遊戲（抽獎、拼圖、投票、賓果等）
+- 智能分組、分組討論功能
+
+✅ 座位安排（可選）
+- 手動拖放或智能分配座位
+- 上傳場地平面圖作為背景
+
+✅ AI 數據分析（可選）
+- 自動生成報名趨勢、票種分佈、性別/年齡分佈
+- 由騰訊混元模型生成活動優化建議
+
+我哋的定價好彈性：按模塊、按人數付費，毋須為不需要的功能買單。20 人以下活動完全免費！
+
+如果你哋有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘），示範點樣用 EventEasy.net 處理你哋的活動。
+
+祝 工作順利！
+
+EventEasy.net 團隊
+📧 eventeasynet@gmail.com
+🌐 https://eventeasy.net">標題：關於香港大學 2026 年畢業典禮的網上報名系統建議
+
+香港大學 學生事務處 你好，
+
+我係 EventEasy.net 的團隊成員。我哋提供專為活動主辦方設計的一站式管理平台，可以幫你輕鬆處理畢業典禮的網上報名、嘉賓管理、現場簽到、互動遊戲等全流程。
+
+EventEasy.net 點解適合你哋？
+
+✅ 智能報名系統
+- 自定義報名表單（42 個可選字段）
+- 支援早鳥價、VIP 價、會員價等多種票種
+- 多種收款方式（現場付款、銀行轉賬、PayMe、FPS、微信、支付寶）
+
+✅ 嘉賓管理同簽到
+- 批量導入/導出嘉賓名單
+- 每位嘉賓自動生成專屬簽到二維碼
+- 支援「+1 同行者」管理
+
+✅ 提升活動互動性
+- 12 款互動遊戲（抽獎、拼圖、投票、賓果等）
+- 智能分組、分組討論功能
+
+✅ 座位安排（可選）
+- 手動拖放或智能分配座位
+- 上傳場地平面圖作為背景
+
+✅ AI 數據分析（可選）
+- 自動生成報名趨勢、票種分佈、性別/年齡分佈
+- 由騰訊混元模型生成活動優化建議
+
+我哋的定價好彈性：按模塊、按人數付費，毋須為不需要的功能買單。20 人以下活動完全免費！
+
+如果你哋有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘），示範點樣用 EventEasy.net 處理你哋的活動。
+
+祝 工作順利！
+
+EventEasy.net 團隊
+📧 eventeasynet@gmail.com
+🌐 https://eventeasy.net</textarea>
+      <div class="btn-group">
+        <button class="save-btn" onclick="saveEmail('lead1', 'zh')">💾 保存中文</button>
+        <button class="ai-btn" onclick="translateEmail('lead1', this)">🤖 AI 重新生成英文</button>
+      </div>
+      <h4 style="margin-top: 16px;">【英文版本】<button class="copy-btn" onclick="copyText('email-en-lead1')">📋 複製英文</button></h4>
+      <textarea id="email-en-lead1" class="email-textarea" data-original="Subject: Online Registration Platform Proposal for HKU 2026 Congregation
+
+Dear HKU Student Affairs Office,
+
+I am writing to you from the EventEasy.net team. We provide an all-in-one event management platform designed for event organizers, helping you easily handle online registration, guest management, on-site check-in, interactive games, and more for your congregation.
+
+Why EventEasy.net is suitable for you:
+
+✅ Smart Registration System
+- Customizable registration forms (42 optional fields)
+- Support for early-bird, VIP, member pricing
+- Multiple payment methods (on-site, bank transfer, PayMe, FPS, WeChat Pay, Alipay)
+
+✅ Guest Management & Check-in
+- Batch import/export guest list
+- Automatic generation of unique check-in QR code for each guest
+- Support for "+1 companion" management
+
+✅ Enhance Event Interaction
+- 12 interactive games (lucky draw, puzzle, voting, bingo, etc.)
+- Smart grouping and group discussion features
+
+✅ Seat Arrangement (Optional)
+- Manual drag-and-drop or smart allocation
+- Upload venue floor plan as background
+
+✅ AI Data Analytics (Optional)
+- Automatically generate registration trends, ticket distribution, demographic analysis
+- Activity optimization suggestions powered by Tencent Hunyuan model
+
+Our pricing is flexible: pay by module and by number of attendees. No need to pay for features you don't need. Events with fewer than 20 attendees are completely FREE!
+
+If you are interested in learning more, I can arrange a free 20-minute demo to show you how EventEasy.net can handle your event.
+
+Best regards,
+
+The EventEasy.net Team
+📧 eventeasynet@gmail.com
+🌐 https://eventeasy.net">Subject: Online Registration Platform Proposal for HKU 2026 Congregation
+
+Dear HKU Student Affairs Office,
+
+I am writing to you from the EventEasy.net team. We provide an all-in-one event management platform designed for event organizers, helping you easily handle online registration, guest management, on-site check-in, interactive games, and more for your congregation.
+
+Why EventEasy.net is suitable for you:
+
+✅ Smart Registration System
+- Customizable registration forms (42 optional fields)
+- Support for early-bird, VIP, member pricing
+- Multiple payment methods (on-site, bank transfer, PayMe, FPS, WeChat Pay, Alipay)
+
+✅ Guest Management & Check-in
+- Batch import/export guest list
+- Automatic generation of unique check-in QR code for each guest
+- Support for "+1 companion" management
+
+✅ Enhance Event Interaction
+- 12 interactive games (lucky draw, puzzle, voting, bingo, etc.)
+- Smart grouping and group discussion features
+
+✅ Seat Arrangement (Optional)
+- Manual drag-and-drop or smart allocation
+- Upload venue floor plan as background
+
+✅ AI Data Analytics (Optional)
+- Automatically generate registration trends, ticket distribution, demographic analysis
+- Activity optimization suggestions powered by Tencent Hunyuan model
+
+Our pricing is flexible: pay by module and by number of attendees. No need to pay for features you don't need. Events with fewer than 20 attendees are completely FREE!
+
+If you are interested in learning more, I can arrange a free 20-minute demo to show you how EventEasy.net can handle your event.
+
+Best regards,
+
+The EventEasy.net Team
+📧 eventeasynet@gmail.com
+🌐 https://eventeasy.net</textarea>
+      <div class="btn-group">
+        <button class="save-btn" onclick="saveEmail('lead1', 'en')">💾 保存英文</button>
+        <button class="send-btn" onclick="sendEmail('lead1', 'cedars@hku.hk')">📨 發送電郵</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 更多 lead cards... -->
+
+  <div class="footer">
+    由 WorkBuddy 自動生成 | EventEasy.net 團隊
+  </div>
+
+  <script>
+    function showEmail(id) {
+      var el = document.getElementById('email-' + id);
+      if (el.style.display === 'none' || el.style.display === '') {
+        el.style.display = 'block';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
+    function saveEmail(id, lang) {
+      var textarea = document.getElementById('email-' + lang + '-' + id);
+      var key = 'email_' + lang + '_' + id;
+      localStorage.setItem(key, textarea.value);
+      alert('✅ ' + (lang === 'zh' ? '中文' : '英文') + '電郵已保存到本地！');
+    }
+
+    function translateEmail(id, btn) {
+      var zhText = document.getElementById('email-zh-' + id).value;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span> AI 生成中...';
+
+      // 呼叫 GAS API 進行翻譯
+      var apiUrl = 'https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec';
+      var params = 'action=translate&chineseText=' + encodeURIComponent(zhText) + '&context=' + encodeURIComponent('香港大學 2026 年畢業典禮');
+
+      fetch(apiUrl + '?' + params)
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+          btn.disabled = false;
+          btn.innerHTML = '🤖 AI 重新生成英文';
+          
+          if (data.success) {
+            document.getElementById('email-en-' + id).value = data.englishText;
+            alert('✅ 英文版本已重新生成！');
+          } else {
+            alert('❌ 生成失敗：' + data.error);
+          }
+        })
+        .catch(function(error) {
+          btn.disabled = false;
+          btn.innerHTML = '🤖 AI 重新生成英文';
+          alert('❌ 網絡錯誤：' + error);
+        });
+    }
+
+    function sendEmail(id, recipient) {
+      var zhText = document.getElementById('email-zh-' + id).value;
+      var enText = document.getElementById('email-en-' + id).value;
+      
+      // 生成 mailto: 鏈接（打開 Gmail）
+      var subject = 'Online Registration Platform Proposal';
+      var body = '=== 繁體中文版本 ===\n\n' + zhText + '\n\n=== English Version ===\n\n' + enText;
+      var mailtoUrl = 'mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      
+      // 打開默認郵件客戶端
+      window.location.href = mailtoUrl;
+    }
+
+    function copyText(textareaId) {
+      var textarea = document.getElementById(textareaId);
+      textarea.select();
+      try {
+        var ok = document.execCommand('copy');
+        if (ok) {
+          alert('✅ 已複製到剪貼簿！');
+        } else {
+          alert('❌ 複製失敗，請手動選取文字後按 Ctrl+C');
+        }
+      } catch(e) {
+        alert('❌ 複製失敗，請手動選取文字後按 Ctrl+C');
+      }
+    }
+  </script>
+</body>
+</html>
