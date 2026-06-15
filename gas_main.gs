@@ -70,7 +70,7 @@ function doGet(e) {
     return jsonResponse({ success: true, id: id, message: "Item added via GET" });
   }
   
-  // 翻譯 API：中文 → 英文（用 Gemini API）
+  // 翻譯 API：中文 → 英文（用 LanguageApp.translate()）
   if (action === "translate") {
     const chineseText = e.parameter.chineseText || "";
     const context = e.parameter.context || ""; // 額外上下文（例如：機構名稱、活動名稱）
@@ -80,7 +80,7 @@ function doGet(e) {
     }
     
     try {
-      const englishText = translateChineseToEnglish(chineseText, context);
+      const englishText = translateToEnglish(chineseText, context);
       return jsonResponse({ success: true, englishText: englishText });
     } catch (err) {
       return jsonResponse({ success: false, error: err.toString() });
@@ -218,77 +218,32 @@ function jsonResponse(obj) {
 }
 
 /**
- * 翻譯函數：中文 → 英文（用 Gemini API）
- * 注意：需要在 Google Apps Script 編輯器中設置 Script Property：GEMINI_API_KEY
+ * 翻譯函數：中文 → 英文（用 LanguageApp.translate()）
+ * 注意：LanguageApp.translate() 是 Google Apps Script 內置的免費翻譯服務
+ * 缺點：只是「翻譯」，不是「重新生成英文版本」（質量較差）
+ * 優點：免費，不需要 API key，香港可以用
  */
-function translateChineseToEnglish(chineseText, context) {
-  // 從 Script Properties 讀取 API key
-  const apiKey = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
-  
-  if (!apiKey) {
-    throw new Error('Missing GEMINI_API_KEY. Please set it in Script Properties.');
+function translateToEnglish(chineseText, context) {
+  if (!chineseText) {
+    throw new Error('Missing chineseText');
   }
-  
-  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey;
-  
-  const prompt = `你是一個專業的英文商務郵件撰寫助手。請將以下繁體中文郵件內容翻譯並改寫為專業的英文商務郵件。
-
-${context ? '上下文：' + context : ''}
-
-要求：
-1. 保持專業、禮貌的商務語氣
-2. 準確傳達中文內容的所有要點
-3. 使用正确的英文商務郵件格式
-4. 署名使用 "The EventEasy.net Team"
-
-中文內容：
-${chineseText}
-
-請只返回英文郵件內容，不要加入任何解釋或註釋。`;
-  
-  const payload = {
-    contents: [{
-      parts: [{
-        text: prompt
-      }]
-    }],
-    generationConfig: {
-      temperature: 0.7,
-      maxOutputTokens: 1024
-    }
-  };
-  
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    payload: JSON.stringify(payload)
-  };
   
   try {
-    const response = UrlFetchApp.fetch(url, options);
-    const data = JSON.parse(response.getContentText());
+    // 用 LanguageApp.translate() 進行翻譯
+    var translatedText = LanguageApp.translate(chineseText, 'zh-TW', 'en');
     
-    if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-      return data.candidates[0].content.parts[0].text;
-    } else {
-      throw new Error('Invalid API response: ' + JSON.stringify(data));
+    // 如果用戶提供了上下文，嘗試改寫（簡單的後處理）
+    if (context) {
+      // 在翻譯後的內容前面加入上下文提示
+      translatedText = 'Subject: ' + context + '\n\n' + translatedText;
     }
+    
+    return translatedText;
   } catch (err) {
-    throw new Error('Gemini API error: ' + err.toString());
+    throw new Error('LanguageApp.translate() error: ' + err.toString());
   }
 }
 
-/**
- * 輔助函數：設置 GEMINI_API_KEY（第一次用手動 run 一次）
- * 使用方法：在 Google Apps Script 編輯器中，選擇 setGeminiApiKey，然後按「執行」
- */
-function setGeminiApiKey() {
-  const apiKey = 'YOUR_GEMINI_API_KEY_HERE'; // ← 在呢度填入你的 Gemini API key
-  PropertiesService.getScriptProperties().setProperty('GEMINI_API_KEY', apiKey);
-  return 'GEMINI_API_KEY set successfully';
-}
 function sendConfirmationEmail(id, data) {
   // 如果想確認後自動 send email 通知，可以在呢度加
   // MailApp.sendEmail("你的 email", "WorkBuddy - 項目已確認", "ID: " + id);
