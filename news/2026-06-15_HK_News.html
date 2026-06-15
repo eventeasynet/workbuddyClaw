@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞撮要 — 2026年6月15日（週一）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    color: #fff;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .header h1 { font-size: 1.6em; margin-bottom: 4px; }
+  .header .date { font-size: 0.95em; opacity: 0.85; }
+  .header .meta { font-size: 0.8em; opacity: 0.65; margin-top: 6px; }
+  .section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #1a365d;
+    border-bottom: 3px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f5;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-item .tag {
+    display: inline-block;
+    font-size: 0.75em;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+    background: #edf2f7;
+    color: #4a5568;
+  }
+  .tag.breaking { background: #fed7d7; color: #c53030; }
+  .tag.weather { background: #bee3f8; color: #2b6cb0; }
+  .tag.finance { background: #c6f6d5; color: #276749; }
+  .tag.tech { background: #e9d8fd; color: #6b46c1; }
+  .tag.international { background: #fefcbf; color: #975a16; }
+  .tag.social { background: #fed7e2; color: #97266d; }
+  .tag.property { background: #e2e8f0; color: #2d3748; }
+  .tag.education { background: #c4f1f9; color: #086f83; }
+  .news-item .title {
+    font-size: 1.02em;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 4px 0;
+  }
+  .news-item .summary {
+    font-size: 0.9em;
+    color: #718096;
+    margin-top: 2px;
+  }
+  .news-item .source {
+    font-size: 0.78em;
+    color: #a0aec0;
+    margin-top: 3px;
+  }
+  .news-item .source a {
+    color: #3182ce;
+    text-decoration: none;
+  }
+  .stock-ticker {
+    background: #f7fafc;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    font-size: 0.88em;
+  }
+  .stock-ticker .idx {
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    text-align: center;
+    min-width: 100px;
+  }
+  .stock-ticker .idx .name { font-weight: 700; color: #1a365d; }
+  .stock-ticker .idx .val { font-size: 1.1em; font-weight: 700; margin: 2px 0; }
+  .stock-ticker .idx .up { color: #e53e3e; }
+  .stock-ticker .idx .down { color: #38a169; }
+  .highlight-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #e53e3e;
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 0.92em;
+  }
+  .highlight-box.green {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border-left-color: #38a169;
+  }
+  .info-bar {
+    text-align: center;
+    font-size: 0.78em;
+    color: #a0aec0;
+    padding: 16px 0 8px;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .section { padding: 14px 16px; }
+    .stock-ticker { gap: 6px; }
+    .stock-ticker .idx { min-width: 80px; padding: 6px 10px; font-size: 0.8em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>📰 上午新聞撮要</h1>
+  <div class="date">2026年6月15日（週一）</div>
+  <div class="meta">每日 08:00 自動生成 · 來源：多個新聞及財經媒體</div>
+</div>
+
+<!-- 市場概覽 -->
+<div class="stock-ticker">
+  <div class="idx">
+    <div class="name">🇭🇰 恆生指數</div>
+    <div class="val up">24,824 <span style="font-size:0.7em">+0.43%</span></div>
+  </div>
+  <div class="idx">
+    <div class="name">🇭🇰 恆生科指</div>
+    <div class="val up">+1.78%</div>
+  </div>
+  <div class="idx">
+    <div class="name">🇨🇳 上證綜指</div>
+    <div class="val up">+0.55%</div>
+  </div>
+  <div class="idx">
+    <div class="name">🇨🇳 創業板指</div>
+    <div class="val up">+1.72%</div>
+  </div>
+  <div class="idx">
+    <div class="name">🇺🇸 道指（週五）</div>
+    <div class="val up">50,771 <span style="font-size:0.7em">+0.73%</span></div>
+  </div>
+  <div class="idx">
+    <div class="name">🇺🇸 納指（週五）</div>
+    <div class="val up">25,632 <span style="font-size:0.7em">+0.70%</span></div>
+  </div>
+</div>
+
+<!-- 🚨 今日頭條 -->
+<div class="section">
+  <div class="section-title">🚨 今日頭條</div>
+  
+  <div class="news-item">
+    <span class="tag breaking">🚨 突發</span>
+    <div class="title">美伊達成歷史性和平協議！14項條款諒解備忘錄，霍爾木茲海峽即將重開</div>
+    <div class="summary">美國總統特朗普宣布與伊朗達成諒解備忘錄，共14項條款，定於6月19日在瑞士正式簽署。協議後霍爾木茲海峽將立即開放，全球航運恢復正常。伊朗副外長已確認備忘錄達成一致。美防長赫格塞思稱14日仍有望簽署。消息公佈後油價跳水、黃金白銀拉昇、全球股市全線反彈。</div>
+    <div class="source">來源：央視新聞 · 東方財富 · 格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag breaking">🚨 突發</span>
+    <div class="title">🚀 SpaceX 上市首日飆19%！市值破2萬億美元，馬斯克成全球首位萬億美元富豪</div>
+    <div class="summary">SpaceX（Nasdaq: SPCX）6月12日登陸納斯達克，IPO定價$135，首日收報$160.95（+19%），市值突破2萬億美元，超越沙特阿美成史上最大IPO（$750億）。馬斯克身家隨之突破1萬億美元，成全球首位萬億美元富豪。「木頭姐」Cathie Wood賣出AMD買入SpaceX。華爾街對SpaceX看法極端兩極分化。</div>
+    <div class="source">來源：CNN · 格隆匯 · StockTitan</div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>⚠️ 以色列警告：</strong>以色列對美伊協議突然發出警告，稱協議條款存在重大變數，中東局勢仍存不確定性。
+  </div>
+</div>
+
+<!-- 🌤️ 天氣 -->
+<div class="section">
+  <div class="section-title">🌤️ 本港天氣</div>
+  <div class="news-item">
+    <span class="tag weather">🌤️ 天氣</span>
+    <div class="title">多雲有驟雨及狂風雷暴 · 26-29°C</div>
+    <div class="summary">天文台預測今日多雲，間中有驟雨及狂風雷暴，雨勢有時頗大。部分地區有機會出現水浸，市民應採取適當預防措施。吹和緩至清勁偏南風。</div>
+    <div class="source">來源：香港天文台 · 地下天文台</div>
+  </div>
+</div>
+
+<!-- 🇭🇰 本港新聞 -->
+<div class="section">
+  <div class="section-title">🇭🇰 本港新聞</div>
+  
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">港股強勢高開！恆指+1.15% 科指+1.78%，智譜飆15%領漲</div>
+    <div class="summary">受美伊和平協議及SpaceX上市帶動，港股6月15日全線高開。智譜開盤漲近15%，MiniMax漲超5%，中芯國際漲超3%，聯想控股、藍思科技漲超4%。上週五恆指收報24,718（+1.93%），今日延續升勢。</div>
+    <div class="source">來源：騰訊新聞 · 財聯社</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">🍬 溜溜梅（HK6658）今日港交所上市！暗盤已飆逾110%</div>
+    <div class="summary">中國知名青梅零食品牌溜溜梅今日正式登陸港交所，發售價每股43.58港元。暗盤交易已漲超110%，市場反應熱烈。公司擬全球發售1,146萬股H股。</div>
+    <div class="source">來源：同花順 · 新浪財經</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tech">🤖 科技</span>
+    <div class="title">🖐️ 港珠澳大橋6月25日啟用「無感e-道」！5秒極速通關</div>
+    <div class="summary">入境事務處公布本月25日在港珠澳大橋香港口岸推出兩條「無感e-道」，通關速度提升至5秒，預計5萬人受惠。此為智慧口岸計劃的重要里程碑。</div>
+    <div class="source">來源：香港文匯網 · 香港新聞社</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag social">👶 社會</span>
+    <div class="title">李家超：五年規劃正式文本有望提前至第三季末出爐</div>
+    <div class="summary">行政長官李家超接受大公文匯傳媒集團專訪透露，香港五年規劃正式文本有望提前至今年第三季末出爐。此前已完成多輪公眾諮詢，涵蓋經濟轉型、房屋、創科等重點領域。</div>
+    <div class="source">來源：香港文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">香港製造業Q1生產指數同比升3.1% · 生產者價格指數升17.7%</div>
+    <div class="summary">政府統計處公布，2026年第一季度整體製造業工業生產指數同比上升3.1%，生產者價格指數同比上升17.7%，反映本地製造業持續復甦。</div>
+    <div class="source">來源：政府統計處</div>
+  </div>
+</div>
+
+<!-- 🕊️ 國際新聞 -->
+<div class="section">
+  <div class="section-title">🕊️ 國際新聞</div>
+
+  <div class="news-item">
+    <span class="tag international">🕊️ 國際</span>
+    <div class="title">🔥 美伊和平協議：霍爾木茲海峽即將重開，全球航運迎來轉機</div>
+    <div class="summary">美伊達成的14項條款諒解備忘錄涵蓋結束戰事、解除封鎖、恢復外交關係等。巴基斯坦總理證實雙方已就最終文本達成一致。協議簽署後海峽立即開放，全球油輪航運有望恢復正常，VLCC或將「一船難求」。</div>
+    <div class="source">來源：CCTV · 東方財富</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag international">🕊️ 國際</span>
+    <div class="title">日韓股市暴漲觸發熔斷！亞太市場全線狂飆</div>
+    <div class="summary">美伊和談消息帶動亞太股市周一大幅高開。韓國KOSPI啟動熔斷機制，日經指數大幅上漲。A股三大指數集體高開，全市場120股漲停。創業板指、科創50指數漲逾3.6%。</div>
+    <div class="source">來源：東方財富</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag international">🕊️ 國際</span>
+    <div class="title">🚀 SpaceX效應擴散：鎧俠超越豐田成日本市值第一 · SK海力士8月納斯達克上市</div>
+    <div class="summary">受SpaceX上市激勵，全球科技IPO熱潮持續。鎧俠（Kioxia）超越豐田首次成為日本市值最高公司。SK海力士傳計劃8月在納斯達克上市，募資高達140億美元。華爾街對科技股熱情高漲。</div>
+    <div class="source">來源：格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag international">🕊️ 國際</span>
+    <div class="title">💥 巴西蹦極悲劇：安全繩未連接致21歲女子身亡</div>
+    <div class="summary">一名21歲女子在巴西參加蹦極活動時，組織者未將安全繩連接到她身上便讓她從橋上跳下，當場身亡。警方已拘留多名涉案人員，調查正在進行中。</div>
+    <div class="source">來源：LiveMint</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag international">🕊️ 國際</span>
+    <div class="title">✈️ 密蘇里州飛機墜毀12人全數罹難 · 美戰機墜毀引山火</div>
+    <div class="summary">美國密蘇里州巴特勒紀念機場附近發生小型飛機墜毀事故，機上12人全部遇難。另有一架美國海軍陸戰隊F/A-18大黃蜂戰機在華盛頓州墜毀，引發山火。</div>
+    <div class="source">來源：LiveMint · 今日頭條</div>
+  </div>
+</div>
+
+<!-- 📉 財經焦點 -->
+<div class="section">
+  <div class="section-title">📉 財經焦點</div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">🛢️ 油價跳水！美伊協議觸發商品市場劇震</div>
+    <div class="summary">美伊和平協議消息公佈後，國際油價大幅低開，WTI期油周一低開逾3%。與此同時黃金、白銀因避險需求重整而波動。分析指霍爾木茲海峽重開將令全球原油供應回復正常，油價短期面臨下行壓力。</div>
+    <div class="source">來源：格隆匯 · 東方財富</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">🏦 中國央行開展6,000億元買斷式逆回購 · 5月社融2.03萬億</div>
+    <div class="summary">人民銀行6月15日開展6,000億元買斷式逆回購操作，期限6個月。5月金融數據出爐：新增社融2.03萬億元，新增人民幣貸款5,200億元，M2同比增長8.6%。但住戶貸款減少1,412億元，反映消費信貸需求偏弱。</div>
+    <div class="source">來源：格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tech">🤖 科技</span>
+    <div class="title">💻 長鑫科技科創板IPO獲批 · 燧原科技今日上會擬募60億</div>
+    <div class="summary">證監會同意長鑫科技科創板IPO註冊申請。上海燧原科技今日（6月15日）上會，擬募資60億元用於AI芯片研發。中國半導體IPO浪潮持續，AI產業鏈全面擴張。</div>
+    <div class="source">來源：同花順 · 格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tech">🤖 科技</span>
+    <div class="title">🔬 中國突破硅基量子芯片關鍵材料 · 三維多層片上電容問世</div>
+    <div class="summary">中國科研團隊成功攻克硅基量子芯片關鍵材料「純硅」技術。同時，三維多層片上電容技術取得突破，可直接應用於AI/GPU芯片及高性能處理器，為高端芯片自主化鋪路。</div>
+    <div class="source">來源：東方財富 · 格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag tech">🤖 科技</span>
+    <div class="title">🤖 美國限制Anthropic最強AI模型 · 智譜GLM5.2全量開放</div>
+    <div class="summary">美國政府禁止外國用戶使用Anthropic最強大AI模型。作為回應，中國智譜宣布GLM5.2全量開放，填補市場空缺。金山雲AI算力相關服務同步漲價15%-50%。</div>
+    <div class="source">來源：格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">🔋 碳酸鋰期貨重上17萬元 · 高盛料Q4鋰價上探25萬</div>
+    <div class="summary">碳酸鋰期貨價格重回17萬元/噸關口。高盛預計四季度鋰價或上探至25萬元/噸。基金經理認為當前鋰電供需已實現階段性反轉，2026年儲能或成鋰電池第一增長引擎。</div>
+    <div class="source">來源：格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">📋 本週焦點前瞻：聯儲局利率決議 · 沃什首秀 · 日本央行或加息至1%</div>
+    <div class="summary">本週全球市場聚焦：美聯儲利率決議（沃什首次主持）、日本央行或上調政策利率至1%、中國5月一系列重磅宏觀經濟數據將公布。市場預期聯儲局維持利率3.50-3.75%不變。</div>
+    <div class="source">來源：格隆匯</div>
+  </div>
+
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">🚛 11部門聯合推動新能源重卡 · 製冷劑價格創10年新高</div>
+    <div class="summary">11部門聯合發文推動新能源重卡應用，政策持續加碼新能源交通。同時製冷劑市場一劑難求，價格同比去年漲超30%，創近10年同期新高。</div>
+    <div class="source">來源：格隆匯</div>
+  </div>
+</div>
+
+<!-- 💡 機構觀點 -->
+<div class="section">
+  <div class="section-title">💡 券商及機構觀點</div>
+  
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">十大券商：「魚尾行情」有望重啟，科技高景氣賽道仍是中長期配置主線</div>
+    <div class="source">來源：東方財富</div>
+  </div>
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">中信證券：2026年下半年有望迎來房地產市場長周期底部</div>
+    <div class="source">來源：東方財富</div>
+  </div>
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">華泰證券：關注動力電池和氫能產業鏈投資機會</div>
+    <div class="source">來源：東方財富</div>
+  </div>
+  <div class="news-item">
+    <span class="tag finance">📉 財經</span>
+    <div class="title">外資巨頭：AI超級周期未結束，重新審視避險資產</div>
+    <div class="source">來源：東方財富</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="info-bar">
+  每日 08:00 自動生成 · 由 WorkBuddy AI 整理 · 資料僅供參考，不構成投資建議<br>
+  GitHub Pages: <a href="https://eventeasynet.github.io/workbuddyClaw/news/2026-06-15_HK_News.html">eventeasynet.github.io/workbuddyClaw</a>
+</div>
+
+</div>
+</body>
+</html>
