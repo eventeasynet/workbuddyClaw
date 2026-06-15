@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 AI 行業情報速遞 — 2026年6月15日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+
+  .header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: linear-gradient(135deg, #f8f7ff 0%, #ede9fe 50%, #f8f7ff 100%);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e5e0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1e1b4b;
+    position: relative;
+    z-index: 1;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #5b21b6;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .hot-banner {
+    display: inline-block;
+    background: linear-gradient(90deg, #dc2626, #f59e0b);
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 0.78em;
+    margin-top: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  .category { margin-bottom: 28px; }
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid;
+  }
+  .category-header .icon { font-size: 1.5em; }
+  .category-header h2 { font-size: 1.25em; font-weight: 700; }
+
+  .cat-tech .category-header { border-color: #818cf8; color: #4338ca; }
+  .cat-tech .card { border-left: 4px solid #818cf8; }
+  .cat-video .category-header { border-color: #f472b6; color: #be185d; }
+  .cat-video .card { border-left: 4px solid #f472b6; }
+  .cat-drama .category-header { border-color: #fb923c; color: #c2410c; }
+  .cat-drama .card { border-left: 4px solid #fb923c; }
+  .cat-govt .category-header { border-color: #34d399; color: #047857; }
+  .cat-govt .card { border-left: 4px solid #34d399; }
+  .cat-industry .category-header { border-color: #60a5fa; color: #1d4ed8; }
+  .cat-industry .card { border-left: 4px solid #60a5fa; }
+
+  .card {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .card h3 { font-size: 1.05em; font-weight: 600; margin-bottom: 6px; color: #1e1b4b; }
+  .card .source {
+    display: inline-block;
+    font-size: 0.75em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .cat-tech .source { background: #eef2ff; color: #4338ca; }
+  .cat-video .source { background: #fdf2f8; color: #be185d; }
+  .cat-drama .source { background: #fff7ed; color: #c2410c; }
+  .cat-govt .source { background: #ecfdf5; color: #047857; }
+  .cat-industry .source { background: #eff6ff; color: #1d4ed8; }
+  .card p { font-size: 0.92em; color: #374151; line-height: 1.65; }
+  .card .highlight { font-weight: 600; color: #1e1b4b; }
+  .card .badge-urgent {
+    display: inline-block;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #9ca3af;
+    font-size: 0.8em;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #4b5563;
+  }
+  .summary-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .dot-tech { background: #818cf8; }
+  .dot-video { background: #f472b6; }
+  .dot-drama { background: #fb923c; }
+  .dot-govt { background: #34d399; }
+  .dot-industry { background: #60a5fa; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📡 AI 行業情報速遞</h1>
+    <div class="date-badge">2026年6月15日（星期一）</div>
+    <div class="hot-banner">🔥 今日頭條：DeepMind 發布 ASI 路線圖 宣告「AGI 過時」</div>
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-item"><span class="dot dot-tech"></span>AI創作技術 3則</div>
+    <div class="summary-item"><span class="dot dot-video"></span>短視頻 2則</div>
+    <div class="summary-item"><span class="dot dot-drama"></span>AI漫劇 3則</div>
+    <div class="summary-item"><span class="dot dot-govt"></span>政府補貼 3則</div>
+    <div class="summary-item"><span class="dot dot-industry"></span>行業動態 4則</div>
+  </div>
+
+  <!-- 1. AI 創作技術 -->
+  <div class="category cat-tech">
+    <div class="category-header">
+      <span class="icon">🔬</span>
+      <h2>AI 創作技術</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">谷歌 DeepMind <span class="badge-urgent">路線圖</span></span>
+      <h3>DeepMind 發布 ASI 路線圖：宣告「AGI 過時」，1 億 AI 實例可湧現超萬專家能力</h3>
+      <p>6 月 15 日谷歌 DeepMind 在最新研究報告中宣告 <span class="highlight">「AGI 概念已過時」</span>，提出 ASI（超級智能）新定義。核心觀點：即使 AI 停留在人類水平，只要疊加 <span class="highlight">1 億個 AI 實例協同</span>，即可湧現出超越數萬名頂級專家的超級智能能力。DeepMind 認為未來 5-10 年將進入「ASI 群體智能」新範式，重新定義 AGI Roadmap。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">月之暗面 / 智東西</span>
+      <h3>Kimi K2.7 Code 開源：1.1T 參數 MoE、思考 Token 降 30%，成本僅為 GPT-5.5 三分之一</h3>
+      <p>6 月 12 日月之暗面發布並開源 <span class="highlight">Kimi K2.7 Code 編程大模型</span>，延續 K2.6 萬億參數 MoE 架構，<span class="highlight">1.1T 總參數、激活 32B、256K 上下文</span>。最大亮點：思考 Token 用量減少 30%、部分任務表現接近 GPT-5.5、<span class="highlight">成本僅其三分之一</span>，可不到 5 分鐘復刻《我的世界》遊戲，自建基準測試成本約 6.99 元。下週一將推出 6 倍高速模式。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">華為 / 高校聯合</span>
+      <h3>華為 SpaceMind 空間智能模型：純 RGB 輸入刷新 VSI-Bench 70.6 分，逼近人類水平</h3>
+      <p>華為與高校聯合團隊發布空間智能模型 <span class="highlight">SpaceMind</span>，僅用純 RGB 圖像輸入，在<span class="highlight">李飛飛團隊 VSI-Bench 榜單上以 70.6 分刷新紀錄</span>，接近人類 79% 平均水平。SpaceMind 從純 2D 圖像中推導 3D 空間結構與物理規律，被視為具身智能 + 自動駕駛的底層技術突破，<span class="highlight">成果已被 CVPR 2026 接收</span>。同期清華 + 北師大 UniCM 統一氣候預測模型在《Nature Machine Intelligence》發表，ENSO 有效預期提升至 19 個月。</p>
+    </div>
+  </div>
+
+  <!-- 2. 短視頻 -->
+  <div class="category cat-video">
+    <div class="category-header">
+      <span class="icon">🎬</span>
+      <h2>短視頻</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">Artificial Analysis / Sora2u</span>
+      <h3>6 月 AI 視頻模型榜單：HappyHorse 1,415 Elo 登頂，可靈 Omni Pro 1,299 緊追</h3>
+      <p>Artificial Analysis 最新 6 月榜單：<span class="highlight">HappyHorse-1.0 以 1,415 Elo 登頂圖生視頻榜</span>，Kling 3.0 Omni Pro 1,299 排名第二，Seedance 2.0 領跑音視頻榜（1,213 Elo）。Veo 3.1、Runway Gen-4.5、海螺 2.3 緊隨其後。可靈 3.0 連續 3 個月雙榜奪冠，物理模擬、毛髮飄動、液體流動、布料褶皺四大難題全部攻克。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">Seede.ai / 36氪</span>
+      <h3>Seede.ai 龍翊獲 300 萬美元天使輪：AI 自動生成海報 + 微信小程序代碼 + PSD</h3>
+      <p>6 月 15 日 Seede.ai 創始人龍翊獲 300 萬美元天使投資，其 AI 工具可<span class="highlight">自動生成海報等設計物料</span>，支持導出微信小程序代碼和 PSD 文件，按用量計費、單張海報僅需幾毛錢。同期字節剪映「小雲雀」DAU 超 80 萬、阿里「萬鏡一刻」基於 Happy Horse + 萬相 Wan2.7 發布企業版，國內 AI 短視頻工具市場進入「免費內容 vs 企業付費」雙線路徑之爭。</p>
+    </div>
+  </div>
+
+  <!-- 3. AI 漫劇 -->
+  <div class="category cat-drama">
+    <div class="category-header">
+      <span class="icon">📺</span>
+      <h2>AI 漫劇</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">DataEye / 界面新聞</span>
+      <h3>AI 漫劇出海 2026 暴增 6 倍至 6.5 億美元，《波斯復仇記》72 小時 GMV 50 萬美元</h3>
+      <p>DataEye 數據：2025 年全球 AI 短劇（含漫劇）市場約 1 億美元，<span class="highlight">2026 預計達 6.5 億美元、增長 6 倍</span>。標誌性案例：成本僅 3000 元的 AI 短劇《波斯復仇記》在海外平台 72 小時 GMV 達 50 萬美元、<span class="highlight">營收倍率 1200 倍</span>。美國 Holy Water 旗下 MyMuse 純 AI 短劇、MyDrama 真人版雙線推進，旗下《Young Elite》單季收入超 900 萬美元。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">澎湃新聞 / 艾媒諮詢</span>
+      <h3>AI 漫劇 2026 國內市場 240 億、千分之一爆款率、80% 投流成本，資本軍備競賽警鐘</h3>
+      <p>艾媒諮詢數據：2025 年 AI 漫劇市場規模 189.8 億元、<span class="highlight">2026 預計破 240 億元</span>。但澎湃新聞尖銳指出：<span class="highlight">千分之一爆款率、80-90% 投流成本、日均 1300 部產能過剩</span>——「這不是一個健康行業，是資本驅動的軍備競賽」。印度 DashReels A 輪融資後 3 天即上線 AI 漫劇《Raftaar》觀看量破百萬，海外市場仍是國產 AI 漫劇主要增量。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">雲蝠智能 / 36氪</span>
+      <h3>AI 漫劇工業化鏈條成型：從劇本、資產到分鏡全閉環，紅果 6 部 AI 仿真人劇熱播</h3>
+      <p>36氪 報告：2026 年 AI 漫劇已從「單點工具」進化為「<span class="highlight">全鏈路工業化</span>」。以萬興劇廠為代表，深度集成 Seedance 2.0、Kling 3.0、Happy Horse、Wan2.7 等主流大模型，構建 AI 原創劇本 → 資產創作 → 智能分鏡全閉環。紅果 2 月榜 6 部 AI 仿真人劇已熱播，紅果 vs 火龍漫劇大廠角力白熱化，AniShort 2026.3 以「全流程可視化 + 團隊協同」成為短劇團隊標配。</p>
+    </div>
+  </div>
+
+  <!-- 4. 政府補貼 -->
+  <div class="category cat-govt">
+    <div class="category-header">
+      <span class="icon">💰</span>
+      <h2>政府補貼</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">香港數碼港 / 數字政策辦公室</span>
+      <h3>香港 30 億「AI 資助計劃」+ 沙嶺數據園區招標：算力基建將大規模提升</h3>
+      <p>香港特區政府 30 億港元「AI 資助計劃」持續推進，由<span class="highlight">數碼港 AI 超算中心提供算力</span>，資助本地院校、研發機構、政府部門及企業。創新科技及工業局局長孫東 2 月 26 日表示，<span class="highlight">沙嶺數據園區成立後香港算力基建將大規模提升</span>，預計 2032 年達 18 萬 PFlops（當前 36 倍），新一輪招標結果短期內公布，將吸引內地與國際 AI 機構落戶。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">上海市經信委</span>
+      <h3>上海發布「AI 模塑申城」2026 行動方案：最高 5000 萬元項目補貼，聚焦具身智能 + 機器人</h3>
+      <p>6 月 13 日上海市經信委發布《「AI 模塑申城」2026 行動方案》，<span class="highlight">單項目最高補貼 5000 萬元</span>，重點支持具身智能、機器人、AI 芯片、量子計算等前沿方向。同時設立 100 億元規模的「上海人工智能產業母基金」，對入駐徐匯、閔行、臨港 AI 產業園的初創企業提供 3 年免租 + 算力券補貼。與海淀「OPC 八條」最高 200 萬補貼形成「南北雙高地」格局。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">國家發改委 / 工信部</span>
+      <h3>國家發改委 2026 「東數西算」二期啟動：西部算力樞紐補貼標準翻倍，AI 訓練成本再降 30%</h3>
+      <p>6 月 14 日國家發改委宣布「東數西算」二期工程全面啟動，<span class="highlight">西部 8 大算力樞紐補貼標準翻倍</span>，貴州、內蒙古、甘肅、寧夏節點對 AI 訓練任務給予 0.2-0.5 元/卡時補貼。配合工信部「萬兆光網 + 智算專線」計劃，<span class="highlight">預計 AI 訓練綜合成本再降 30%</span>。疊加三大運營商 5G-A 智算專網，西部算力已成為大模型公司訓練首選地。</p>
+    </div>
+  </div>
+
+  <!-- 5. 行業動態 -->
+  <div class="category cat-industry">
+    <div class="category-header">
+      <span class="icon">🌐</span>
+      <h2>行業動態</h2>
+    </div>
+
+    <div class="card">
+      <span class="source">新智元 / 鳳凰科技 <span class="badge-urgent">突發</span></span>
+      <h3>Claude Fable 5 / Mythos 5 全球退款啟動：Anthropic 6/20 截止，「最強 AI」 風光僅 4 天</h3>
+      <p>6 月 10 日 Claude Fable 5 / Mythos 5 發布、6 月 11 日晚美國政府以「國家安全權限」一紙禁令全球下架、6 月 15 日 Anthropic 啟動<span class="highlight">退款流程，截止 6 月 20 日</span>。事件鏈條：Fable 5 被曝「秘密降智」→ 與微軟數據政策衝突 → 美方啟動國家安全審查 + 出口管制 → 連 Anthropic 自家外籍科學家 Andrej Karpathy 級別都被禁用。<span class="highlight">AI 史上首次商業大模型被政府強制召回 + 退款</span>，CEO 以「其他模型也存在同類問題」拒絕修復漏洞，衝擊其「AI 安全第一」定位。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">OpenAI / 紐約時報</span>
+      <h3>OpenAI 遭多州總檢察長聯合傳票調查：涉數據隱私、未成年人保護、廣告政策三大領域</h3>
+      <p>6 月 15 日美國<span class="highlight">紐約州、加州、伊利諾伊州、得州等 8 州總檢察長組成聯合調查聯盟</span>，對 OpenAI 發出正式傳票，調查範圍涵蓋數據隱私、未成年人保護、廣告政策及模型輸出行為（含 model sycophancy 拍馬屁現象）。這是 AI 監管壓力<span class="highlight">首次從聯邦層面擴散到州級地方</span>。同期 OpenAI 已秘密遞交 SEC 招股書，IPO 與監管調查並存。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">36氪 / 雷峰網</span>
+      <h3>SpaceX 正式並入 xAI：完成「航天-算力-AI」業務閉環，啟動萬億級 IPO</h3>
+      <p>6 月 15 日 SpaceX 正式並入埃隆·馬斯克的 xAI，<span class="highlight">完成「航天-算力-人工智能」業務閉環</span>。xAI 將獲得 SpaceX 旗下龐大衛星互聯網 + 火箭算力 + 數據中心資源，構建從天基到地面的全棧 AI 基礎設施。SpaceX 即將啟動的 IPO 是<span class="highlight">萬億級資本敘事</span>，預計估值 $1.8-2.5 萬億，並配套核心工程師的財富兌付安排，馬斯克身家有望突破 1 萬億美元。</p>
+    </div>
+
+    <div class="card">
+      <span class="source">高特佳投資 / 雷峰網</span>
+      <h3>AI4S 賽道融資潮：津渡生科近億元 A 輪 + 極佳視界 10 億 B2 輪衝擊百億估值</h3>
+      <p>6 月 15 日 AI4S 賽道再現融資潮：<span class="highlight">津渡生科完成近億元 A 輪融資</span>，高特佳投資領投，指數資本任獨家財務顧問，資金用於物理 AI 研發、BioFord Agent 平台升級及全球市場拓展；<span class="highlight">極佳視界完成 10 億元 B2 輪融資</span>，三個月內累計融資 35 億元，<span class="highlight">估值突破百億元</span>，成為國內首個世界模型百億獨角獸，專注物理 AGI 研發與產業落地。AI4S 從冷門賽道晉升 2026 一級市場最熱方向。</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>📡 AI 行業情報速遞 · 每日 13:00 自動生成</p>
+    <p>資訊來源：AI內參、AITNT News、新智元、鳳凰科技、36氪、雷峰網、DataEye、界面新聞、澎湃新聞、香港數碼港、國家發改委、艾媒諮詢、智東西、太平洋科技快訊、Artificial Analysis</p>
+    <p style="margin-top: 6px;">由 EventEasy AI 自動化系統生成 · 2026年6月15日</p>
+  </div>
+
+</div>
+</body>
+</html>
