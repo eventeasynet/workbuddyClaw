@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061603;
+  var CURRENT = 2026061604;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -679,6 +679,27 @@ var stockActiveSub = 0;  // 子 Tab 索引 (0=持股分析, 1=板塊追蹤)
 var newsActiveSub = 0;   // 子 Tab 索引 (0=上午, 1=下午)
 var calState = { stock: null, news: null, ai: null, angel: null, tender: null, event: null, lead: null };
 
+  // Helpers (avoid nested ternary parenthesis bugs)
+  var _clsMap = {'stock':'active-stock','ai':'active-ai','angel':'active-angel','tender':'active-tender','event':'active-event','lead':'active-lead'};
+  function _getGroups(p) {
+    if (p==='stock') return stockDateGroups;
+    if (p==='ai') return aiDateGroups;
+    if (p==='angel') return angelDateGroups;
+    if (p==='tender') return tenderDateGroups;
+    if (p==='event') return eventDateGroups;
+    if (p==='lead') return leadDateGroups;
+    return newsDateGroups;
+  }
+  function _getActiveDK(p) {
+    if (p==='stock') return stockActiveDK;
+    if (p==='ai') return aiActiveDK;
+    if (p==='angel') return angelActiveDK;
+    if (p==='tender') return tenderActiveDK;
+    if (p==='event') return eventActiveDK;
+    if (p==='lead') return leadActiveDK;
+    return newsActiveDK;
+  }
+
 // ===== 5 天日期 Tab 邏輯 =====
 // 規則：選中日期在中間（第 3 格），最新日期在最左
 // 排列：[center+2, center+1, center, center-1, center-2]
@@ -695,14 +716,14 @@ function renderDateTabs(prefix, groups) {
   if (!tabsDiv) return;
   tabsDiv.innerHTML = '';
 
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : (prefix === 'lead' ? leadActiveDK : newsActiveDK)))));
+  var activeDK = _getActiveDK(prefix);
   var tabDates = get5DayTabs(activeDK);
 
   tabDates.forEach(function(dk) {
     var btn = document.createElement('button');
     btn.className = 'date-tab';
     if (dk === activeDK) {
-      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : (prefix === 'angel' ? 'active-angel' : (prefix === 'tender' ? 'active-tender' : (prefix === 'event' ? 'active-event' : (prefix === 'lead' ? 'active-lead' : 'active')))))));
+      btn.classList.add(_clsMap[prefix] || 'active');
     }
     if (!groups[dk]) {
       btn.classList.add('no-data');
@@ -1118,8 +1139,8 @@ function changeMonth(prefix, delta) {
   st.m += delta;
   if (st.m > 11) { st.m = 0; st.y++; }
   if (st.m < 0)  { st.m = 11; st.y--; }
-  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : (prefix === 'lead' ? leadDateGroups : newsDateGroups)))));
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : (prefix === 'lead' ? leadActiveDK : newsActiveDK)))));
+  var groups = _getGroups(prefix);
+  var activeDK = _getActiveDK(prefix);
   renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
 }
 
@@ -1230,8 +1251,8 @@ function toggleCalendar(prefix) {
   document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
   document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
   if (!isOpen) {
-    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : (prefix === 'lead' ? leadDateGroups : newsDateGroups)))));
-    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : (prefix === 'lead' ? leadActiveDK : newsActiveDK)))));
+    var groups = _getGroups(prefix);
+    var activeDK = _getActiveDK(prefix);
     renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
     dd.classList.add('show');
     btn.classList.add('active');
