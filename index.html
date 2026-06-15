@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061601;
+  var CURRENT = 2026061602;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -46,6 +46,7 @@
   --stock-accent: #059669;
   --angel-accent: #d97706;
   --tender-accent: #0891b2;
+  --event-accent: #ec4899;
 }
 body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; display:flex; min-height:100vh; background:var(--bg); color:var(--text); }
 
@@ -94,9 +95,10 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .date-tab.active-stock { background:var(--stock-accent); color:#fff; border-color:var(--stock-accent); }
 .date-tab.active-angel { background:var(--angel-accent); color:#fff; border-color:var(--angel-accent); }
 .date-tab.active-tender { background:var(--tender-accent); color:#fff; border-color:var(--tender-accent); }
+.date-tab.active-event { background:var(--event-accent); color:#fff; border-color:var(--event-accent); }
 .date-tab.no-data { opacity:0.45; cursor:default; }
 .date-tab .tab-label { display:block; font-size:11px; color:var(--text-muted); font-weight:400; margin-top:1px; }
-.date-tab.active .tab-label, .date-tab.active-ai .tab-label, .date-tab.active-stock .tab-label, .date-tab.active-angel .tab-label, .date-tab.active-tender .tab-label { color:rgba(255,255,255,0.8); }
+.date-tab.active .tab-label, .date-tab.active-ai .tab-label, .date-tab.active-stock .tab-label, .date-tab.active-angel .tab-label, .date-tab.active-tender .tab-label, .date-tab.active-event .tab-label { color:rgba(255,255,255,0.8); }
 
 /* Sub tabs */
 .sub-tabs { display:flex; gap:8px; margin-bottom:16px; }
@@ -106,6 +108,7 @@ body { font-family: 'Noto Sans TC', 'PingFang HK', system-ui, sans-serif; displa
 .sub-tab.active-stock { background:var(--stock-accent); color:#fff; border-color:var(--stock-accent); }
 .sub-tab.active-angel { background:var(--angel-accent); color:#fff; border-color:var(--angel-accent); }
 .sub-tab.active-tender { background:var(--tender-accent); color:#fff; border-color:var(--tender-accent); }
+.sub-tab.active-event { background:var(--event-accent); color:#fff; border-color:var(--event-accent); }
 
 /* Content area */
 .content-area { background:var(--card-bg); border-radius:12px; border:1px solid var(--border); overflow:hidden; min-height:500px; }
@@ -318,11 +321,12 @@ iframe {
     <a class="nav-item" data-section="stock" onclick="showSection('stock');return false;"><span>📈</span> 股票分析報告</a>
     <a class="nav-item" data-section="angel" onclick="showSection('angel');return false;"><span>👼</span> 天使投資</a>
     <a class="nav-item" data-section="tender" onclick="showSection('tender');return false;"><span>📋</span> 各界標書</a>
+    <a class="nav-item" data-section="event" onclick="showSection('event');return false;"><span>🎪</span> 香港及世界活動</a>
   </nav>
   <div class="sidebar-footer">
     <div class="automation-panel" id="automation-panel">
       <div class="automation-toggle" onclick="toggleAutoPanel()">
-        <span>⚡ <span id="status-text">7 個自動化運行中</span></span>
+        <span>⚡ <span id="status-text">8 個自動化運行中</span></span>
         <span class="arrow" id="auto-arrow">▶</span>
       </div>
       <div class="automation-list" id="auto-list">
@@ -373,6 +377,14 @@ iframe {
             <div class="auto-time">10:00 生成 → 10:30 出街</div>
           </div>
           <span class="auto-status auto-status-active" id="auto-status-tender">運行中</span>
+        </div>
+        <div class="automation-item">
+          <span class="auto-icon">🎪</span>
+          <div class="auto-info">
+            <div class="auto-name">香港及世界活動</div>
+            <div class="auto-time">09:00 生成 → 09:30 出街</div>
+          </div>
+          <span class="auto-status auto-status-active" id="auto-status-event">運行中</span>
         </div>
         <div class="automation-item">
           <span class="auto-icon">🌙</span>
@@ -473,6 +485,22 @@ iframe {
       <div id="tender-content-area" class="content-area"></div>
     </div>
     <div id="tender-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無標書情報<br><small>每日 10:00 自動生成</small></div>
+  </div>
+
+  <!-- 香港及世界活動 -->
+  <div id="sec-event" class="section">
+    <div id="event-loading" class="loading">🎪 載入活動情報中...</div>
+    <div id="event-viewer" style="display:none;">
+      <div class="content-toolbar">
+        <div class="date-tabs" id="event-date-tabs"></div>
+        <div class="cal-wrapper">
+          <button class="cal-toggle" id="event-cal-toggle" onclick="toggleCalendar('event')">📅 月曆 ▾</button>
+          <div class="cal-dropdown" id="event-cal-dropdown"></div>
+        </div>
+      </div>
+      <div id="event-content-area" class="content-area"></div>
+    </div>
+    <div id="event-empty" style="display:none; text-align:center; padding:60px 20px; color:var(--text-muted);">📭 暫無活動情報<br><small>每日 09:00 自動生成</small></div>
   </div>
 
 </div>
@@ -618,14 +646,16 @@ var newsDateGroups = {};
 var aiDateGroups = {};
 var angelDateGroups = {};
 var tenderDateGroups = {};
+var eventDateGroups = {};
 var stockActiveDK = '';  // 當前選中日期 (dateKey)
 var newsActiveDK = '';
 var aiActiveDK = '';
 var angelActiveDK = '';
 var tenderActiveDK = '';
+var eventActiveDK = '';
 var stockActiveSub = 0;  // 子 Tab 索引 (0=持股分析, 1=板塊追蹤)
 var newsActiveSub = 0;   // 子 Tab 索引 (0=上午, 1=下午)
-var calState = { stock: null, news: null, ai: null, angel: null, tender: null };
+var calState = { stock: null, news: null, ai: null, angel: null, tender: null, event: null };
 
 // ===== 5 天日期 Tab 邏輯 =====
 // 規則：選中日期在中間（第 3 格），最新日期在最左
@@ -643,14 +673,14 @@ function renderDateTabs(prefix, groups) {
   if (!tabsDiv) return;
   tabsDiv.innerHTML = '';
 
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : newsActiveDK)));
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : newsActiveDK))));
   var tabDates = get5DayTabs(activeDK);
 
   tabDates.forEach(function(dk) {
     var btn = document.createElement('button');
     btn.className = 'date-tab';
     if (dk === activeDK) {
-      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : (prefix === 'angel' ? 'active-angel' : (prefix === 'tender' ? 'active-tender' : 'active'))));
+      btn.classList.add(prefix === 'stock' ? 'active-stock' : (prefix === 'ai' ? 'active-ai' : (prefix === 'angel' ? 'active-angel' : (prefix === 'tender' ? 'active-tender' : (prefix === 'event' ? 'active-event' : 'active')))));
     }
     if (!groups[dk]) {
       btn.classList.add('no-data');
@@ -676,6 +706,9 @@ function renderDateTabs(prefix, groups) {
         } else if (prefix === 'tender') {
           tenderActiveDK = dateKey;
           renderTenderContent();
+        } else if (prefix === 'event') {
+          eventActiveDK = dateKey;
+          renderEventContent();
         } else {
           newsActiveDK = dateKey;
           renderNewsContent();
@@ -837,6 +870,12 @@ function renderTenderContent() {
   renderReport('tender-content-area', target);
 }
 
+function renderEventContent() {
+  var reports = eventDateGroups[eventActiveDK] || [];
+  var target = reports[0] || null;
+  renderReport('event-content-area', target);
+}
+
 // ===== 整合渲染 =====
 function renderNewsContent() {
   renderDateTabs('news', newsDateGroups);
@@ -982,6 +1021,32 @@ function loadTender() {
   });
 }
 
+function loadEvent() {
+  document.getElementById('event-loading').style.display = 'block';
+  document.getElementById('event-viewer').style.display = 'none';
+  document.getElementById('event-empty').style.display = 'none';
+
+  apiCall({ action: 'list', status: '已確認' }, function(data) {
+    var items = (data.items || []).filter(function(i) {
+      return i.type && i.type.indexOf('活動') >= 0;
+    });
+    eventDateGroups = groupByDate(items);
+    document.getElementById('event-loading').style.display = 'none';
+
+    if (items.length === 0) {
+      document.getElementById('event-empty').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('event-viewer').style.display = 'block';
+    var dates = Object.keys(eventDateGroups).sort().reverse();
+    eventActiveDK = dates[0] || todayKey();
+    renderEventContent();
+    renderDateTabs('event', eventDateGroups);
+    renderCalendar('event-cal-dropdown', eventDateGroups, eventActiveDK, 'event');
+  });
+}
+
 // ===== 月曆 =====
 function getCalState(prefix) {
   if (!calState[prefix]) {
@@ -996,8 +1061,8 @@ function changeMonth(prefix, delta) {
   st.m += delta;
   if (st.m > 11) { st.m = 0; st.y++; }
   if (st.m < 0)  { st.m = 11; st.y--; }
-  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : newsDateGroups)));
-  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : newsActiveDK)));
+  var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : newsDateGroups))));
+  var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : newsActiveDK))));
   renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
 }
 
@@ -1077,6 +1142,10 @@ function renderCalendar(cntId, groups, activeDK, prefix) {
           tenderActiveDK = dateKey;
           renderTenderContent();
           renderDateTabs('tender', tenderDateGroups);
+        } else if (prefix === 'event') {
+          eventActiveDK = dateKey;
+          renderEventContent();
+          renderDateTabs('event', eventDateGroups);
         } else {
           aiActiveDK = dateKey;
           renderAIContent();
@@ -1100,8 +1169,8 @@ function toggleCalendar(prefix) {
   document.querySelectorAll('.cal-dropdown').forEach(function(el) { el.classList.remove('show'); });
   document.querySelectorAll('.cal-toggle').forEach(function(el) { el.classList.remove('active'); });
   if (!isOpen) {
-    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : newsDateGroups)));
-    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : newsActiveDK)));
+    var groups = prefix === 'stock' ? stockDateGroups : (prefix === 'ai' ? aiDateGroups : (prefix === 'angel' ? angelDateGroups : (prefix === 'tender' ? tenderDateGroups : (prefix === 'event' ? eventDateGroups : newsDateGroups))));
+    var activeDK = prefix === 'stock' ? stockActiveDK : (prefix === 'ai' ? aiActiveDK : (prefix === 'angel' ? angelActiveDK : (prefix === 'tender' ? tenderActiveDK : (prefix === 'event' ? eventActiveDK : newsActiveDK))));
     renderCalendar(prefix + '-cal-dropdown', groups, activeDK, prefix);
     dd.classList.add('show');
     btn.classList.add('active');
@@ -1123,7 +1192,7 @@ function showSection(name) {
       history.replaceState(null, '', '#' + name);
     }
 
-    ['news', 'ai', 'stock', 'angel', 'tender'].forEach(function(n) {
+    ['news', 'ai', 'stock', 'angel', 'tender', 'event'].forEach(function(n) {
       var el = document.getElementById('sec-' + n);
       if (el) el.classList.remove('active');
     });
@@ -1141,6 +1210,7 @@ function showSection(name) {
     if (name === 'stock') loadStock();
     if (name === 'angel') loadAngel();
     if (name === 'tender') loadTender();
+    if (name === 'event') loadEvent();
   } catch(e) {
     console.error('showSection error:', e);
   }
@@ -1173,7 +1243,7 @@ function showSection(name) {
 (function() {
   function initSection() {
     var hash = window.location.hash.replace('#', '');
-    var valid = ['news', 'ai', 'stock', 'angel', 'tender'];
+    var valid = ['news', 'ai', 'stock', 'angel', 'tender', 'event'];
     var sec = (hash && valid.indexOf(hash) >= 0) ? hash : 'news';
     showSection(sec);
   }

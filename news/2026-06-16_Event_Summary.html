@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎪 香港及世界活動 - 6月16日</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: #1a1a2e;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.header {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; opacity: 0.85; }
+.header .date-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.section {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #ec4899;
+}
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #db2777;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f9a8d4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.event-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s;
+}
+.event-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.event-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.event-tag {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.event-tag.chamber { background: #dbeafe; color: #1d4ed8; }
+.event-tag.gala { background: #fef3c7; color: #b45309; }
+.event-tag.wedding { background: #fce7f3; color: #db2777; }
+.event-tag.concert { background: #ede9fe; color: #7c3aed; }
+.event-tag.outdoor { background: #dcfce7; color: #16a34a; }
+.event-tag.indoor { background: #e0e7ff; color: #4338ca; }
+.event-tag.graduation { background: #fef9c3; color: #a16207; }
+.event-date {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ec4899;
+}
+.event-detail {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+.event-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  flex-wrap: wrap;
+}
+.event-contact {
+  background: #fdf2f8;
+  border: 1px solid #f9a8d4;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.event-contact .label {
+  font-weight: 700;
+  color: #db2777;
+  margin-bottom: 4px;
+}
+.highlight-box {
+  background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid #f9a8d4;
+}
+.highlight-box .title {
+  font-weight: 700;
+  color: #db2777;
+  margin-bottom: 8px;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #ec4899;
+  text-decoration: none;
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #fdf2f8;
+}
+.source-link:hover { background: #fce7f3; }
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+}
+.no-events {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎪 香港及世界活動情報</h1>
+  <div class="subtitle">搜羅香港及世界各地即將舉辦的活動，助您發掘潛在客戶機會</div>
+  <div class="date-badge">📅 2026年6月16日</div>
+</div>
+
+<!-- 商會聚會 -->
+<div class="section">
+  <div class="section-title">🏢 商會聚會</div>
+  
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">香港中華總商會會員活動</div>
+      <div class="event-tag chamber">商會</div>
+    </div>
+    <div class="event-date">📅 持續活動</div>
+    <div class="event-detail">
+      香港中華總商會（中總）持續舉辦各類商會活動，包括論壇、晚宴、交流會等。近日舉辦了「中總論壇2026」，主題為「對接『十五五』 共迎新機遇」，聚焦香港經濟前景及國家規劃帶來的發展新局。
+      <br><br>
+      <strong>潛在機會：</strong>商會活動通常需要活動報名系統、現場签到、問卷調查等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港</span>
+      <span>🏢 香港中華總商會</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.cgcc.org.hk" target="_blank">www.cgcc.org.hk</a><br>
+      建議：可電郵介紹 EventEasy.net 給商會，提供活動管理解決方案
+    </div>
+    <a href="https://www.cgcc.org.hk" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">香港大中華中小企業商會活動</div>
+      <div class="event-tag chamber">商會</div>
+    </div>
+    <div class="event-date">📅 定期活動</div>
+    <div class="event-detail">
+      香港大中華中小企業商會持續舉辦會員活動，包括新春團拜、研討會、交流會等。商會致力促進中小企業之間的合作與聯繫。
+      <br><br>
+      <strong>潛在機會：</strong>中小企業商會活動通常需要簡單易用的報名系統，EventEasy.net 的簡單操作介面非常適合中小企業使用。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港</span>
+      <span>🏢 香港大中華中小企業商會</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://greaterchinasme.com" target="_blank">greaterchinasme.com</a>
+    </div>
+    <a href="https://greaterchinasme.com" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 戶內活動 -->
+<div class="section">
+  <div class="section-title">🏢 戶內活動</div>
+  
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">Jewellery & Gem ASIA Hong Kong 2026</div>
+      <div class="event-tag indoor">戶內展覽</div>
+    </div>
+    <div class="event-date">📅 2026年6月18-21日</div>
+    <div class="event-detail">
+      香港國際珠寶展是亞洲最具規模的珠寶商貿展覽之一，匯聚全球珠寶商、設計師、買家。展覽涵蓋鑽石、寶石、珍珠、珠寶設計等多個領域。
+      <br><br>
+      <strong>潛在機會：</strong>大型商貿展覽需要參展商報名、買家預登記、活動日程管理等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港會議展覽中心</span>
+      <span>🏢 Informa Markets Asia Limited</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      📞 +852 3709 4992<br>
+      ✉️ visitjgf-hk@informa.com
+    </div>
+    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">Learning & Teaching Expo 2026</div>
+      <div class="event-tag indoor">戶內展覽</div>
+    </div>
+    <div class="event-date">📅 2026年6月25-27日</div>
+    <div class="event-detail">
+      教育及職業博覽，匯聚教育機構、培訓機構、教育科技企業等。是香港教育界年度盛事之一。
+      <br><br>
+      <strong>潛在機會：</strong>教育展需要參展商報名、研討會報名、會議日程管理等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港會議展覽中心</span>
+      <span>🏢 Smart City Consortium Limited</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      📞 +852 3480 4230<br>
+      ✉️ info@smartcity.org.hk
+    </div>
+    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">In-Home Expo 2026</div>
+      <div class="event-tag indoor">戶內展覽</div>
+    </div>
+    <div class="event-date">📅 2026年6月25-28日</div>
+    <div class="event-detail">
+      家居博覽，展示最新家居產品、室內設計、智能家居等。適合家庭觀眾參觀。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港會議展覽中心</span>
+      <span>🏢 Exhibition Group Limited</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      📞 +852 2466 9663<br>
+      ✉️ marketing@exhibitiongroup.com.hk
+    </div>
+    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 演唱會/表演 -->
+<div class="section">
+  <div class="section-title">🎤 演唱會/表演</div>
+  
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">香港迪士尼樂園「Pixar Summer Fest」</div>
+      <div class="event-tag concert">主題活動</div>
+    </div>
+    <div class="event-date">📅 2026年6月12日至8月31日</div>
+    <div class="event-detail">
+      香港迪士尼首個以皮克斯為主題的夏季限定活動，包含主題遊樂設施、舞台演出、巡遊表演、角色互動，以及全新夜間匯演「Pixar 好友星空匯演」。匯演結合無人機表演、躍動噴泉、投影效果和大型充氣裝置。
+      <br><br>
+      <strong>潛在機會：</strong>主題公園活動需要門票管理、快速通關系統、活動日程管理等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港迪士尼樂園</span>
+      <span>🏢 香港迪士尼樂園度假區</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.hongkongdisneyland.com" target="_blank">www.hongkongdisneyland.com</a>
+    </div>
+    <a href="https://www.timeout.com.hk" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">PolyU Fashion Show 2026（理大時裝展 2026）</div>
+      <div class="event-tag concert">時裝展演</div>
+    </div>
+    <div class="event-date">📅 2026年7月3日</div>
+    <div class="event-detail">
+      香港理工大學時裝展，展示畢業生設計作品。是香港時裝界年度盛事之一。
+      <br><br>
+      <strong>潛在機會：</strong>時裝展需要模特兒報名、觀眾報名、座位安排等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港理工大學</span>
+      <span>🏢 香港理工大學</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      📞 +852 2766 6500<br>
+      ✉️ sft.info@polyu.edu.hk
+    </div>
+    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 戶外活動 -->
+<div class="section">
+  <div class="section-title">🌳 戶外活動</div>
+  
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">2026 世界盃觀賽活動</div>
+      <div class="event-tag outdoor">戶外觀賽</div>
+    </div>
+    <div class="event-date">📅 2026年6月（世界盃期間）</div>
+    <div class="event-detail">
+      2026年世界盃賽事大多為香港時間凌晨時段，香港多個場地提供免費直播，部分場地24小時開放。商場、酒吧及食肆均設有直播活動。
+      <br><br>
+      <strong>潛在機會：</strong>世界盃觀賽活動需要報名管理、座位安排、食物訂購等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港多個場地</span>
+      <span>🏢 各大商場、酒吧、食肆</span>
+    </div>
+    <a href="https://www.timeout.com.hk" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">元朗信芯園向日葵花田觀賞</div>
+      <div class="event-tag outdoor">戶外觀光</div>
+    </div>
+    <div class="event-date">📅 2026年夏季（6月盛放期）</div>
+    <div class="event-detail">
+      萬呎向日葵花田進入盛放期，遊客可自由漫步花田，近距離觀賞向日葵。園內設有紫藤花隧道、日本鳥居、荷蘭風車屋等多個打卡位。
+    </div>
+    <div class="event-meta">
+      <span>📍 元朗新田信芯園農莊</span>
+      <span>🏢 信芯園農莊</span>
+    </div>
+    <a href="https://www.timeout.com.hk" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 畢業相關活動 -->
+<div class="section">
+  <div class="section-title">🎓 畢業相關活動</div>
+  
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">香港大學學位頒授典禮（畢業典禮）</div>
+      <div class="event-tag graduation">畢業典禮</div>
+    </div>
+    <div class="event-date">📅 2026年11-12月（第215屆）</div>
+    <div class="event-detail">
+      香港大學每年舉辦兩次學位頒授典禮，夏季（11-12月）和冬季。第215屆學位頒授典禮計劃於11月和12月舉行。
+      <br><br>
+      <strong>潛在機會：</strong>大學畢業典禮需要賓客報名、座位安排、紀念品訂購等，EventEasy.net 可提供完整解決方案。建議提前3-4個月聯絡各大學。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港大學</span>
+      <span>🏢 香港大學</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.hku.hk/congregation-information/c_index.html" target="_blank">HKU Congregation Information</a>
+    </div>
+    <a href="https://www.hku.hk/congregation-information/c_index.html" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="no-events">
+    📭 其他大學畢業典禮資訊持續更新中，建議提前關注各大學官網
+  </div>
+</div>
+
+<!-- 婚禮相關 -->
+<div class="section">
+  <div class="section-title">💒 婚禮相關</div>
+  
+  <div class="highlight-box">
+    <div class="title">💡 潛在商機</div>
+    婚禮相關活動（婚紗展、婚禮博覽）通常需要強大的報名系統、供應商管理、新人配對等功能。EventEasy.net 可針對婚禮行業開發專屬功能模組，建議主動聯絡婚禮展主辦機構。
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">婚禮展覽/婚紗展（持續關注中）</div>
+      <div class="event-tag wedding">婚禮</div>
+    </div>
+    <div class="event-detail">
+      香港每年有多場婚禮展覽和婚紗展，包括香港婚紗展、Wedding Expo 等。這些活動通常需要強大的報名系統和供應商管理功能。
+      <br><br>
+      <strong>建議行動：</strong>主動搜尋香港婚禮展主辦機構，電郵介紹 EventEasy.net 的婚禮行業專屬功能。
+    </div>
+  </div>
+</div>
+
+<!-- 晚會/慶典 -->
+<div class="section">
+  <div class="section-title">🎉 晚會/慶典</div>
+  
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">獅‧友好聲音之(獅子山下, 為善高歌)慈善歌唱比賽</div>
+      <div class="event-tag gala">慈善活動</div>
+    </div>
+    <div class="event-date">📅 2026年6月19日</div>
+    <div class="event-detail">
+      慈善歌唱比賽，僅限受邀參加。活動旨在籌款和推廣慈善事業。
+      <br><br>
+      <strong>潛在機會：</strong>慈善活動需要捐款管理、參加者報名、票務管理等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港</span>
+      <span>🏢 Evermind Marketing and Production Ltd</span>
+    </div>
+    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="event-header">
+      <div class="event-name">理大時裝展 2026（時裝界盛事）</div>
+      <div class="event-tag gala">時裝展演</div>
+    </div>
+    <div class="event-date">📅 2026年7月3日</div>
+    <div class="event-detail">
+      香港理工大學時裝展是香港時裝界年度盛事，展示畢業生設計作品。邀請業界人士、媒體、校友參加。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港理工大學</span>
+      <span>🏢 香港理工大學</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      ✉️ sft.info@polyu.edu.hk
+    </div>
+    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 重點推廣 -->
+<div class="highlight-box">
+  <div class="title">🎯 本週重點推廣機會</div>
+  <div style="font-size:14px; line-height:1.8;">
+    <p><strong>1. Jewellery & Gem ASIA Hong Kong（6月18-21日）</strong><br>
+    聯絡：visitjgf-hk@informa.com / +852 3709 4992<br>
+    大型商貿展覽，需要參展商報名、買家預登記系統</p>
+    
+    <p><strong>2. Learning & Teaching Expo 2026（6月25-27日）</strong><br>
+    聯絡：info@smartcity.org.hk / +852 3480 4230<br>
+    教育展，需要參展商報名、研討會報名系統</p>
+    
+    <p><strong>3. 香港各大學畢業典禮（11-12月）</strong><br>
+    建議提前3-4個月聯絡各大學，提供畢業典禮報名解決方案</p>
+    
+    <p><strong>4. 香港中華總商會</strong><br>
+    網站：www.cgcc.org.hk<br>
+    持續舉辦商會活動，可提供活動管理解決方案</p>
+  </div>
+</div>
+
+<div class="footer">
+  <p>🎪 香港及世界活動情報 · 每日 09:00 自動生成</p>
+  <p style="margin-top:8px;">💡 如發現有興趣的活動，歡迎將 EventEasy.net 介紹給主辦機構！</p>
+  <p style="margin-top:8px; font-size:11px; color:#9ca3af;">本報告由 WorkBuddy AI 自動生成 · 2026年6月16日</p>
+</div>
+
+</body>
+</html>
