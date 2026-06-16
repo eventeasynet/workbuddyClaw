@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞 - 6月16日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(26,54,93,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: #1a365d;
+    border-left: 5px solid #3182ce;
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #edf2f7;
+  }
+  .news-item:last-child {
+    border-bottom: none;
+  }
+  .news-tag {
+    display: inline-block;
+    background: #ebf4ff;
+    color: #2c5282;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.72em;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .news-tag.finance { background: #fff5f5; color: #c53030; }
+  .news-tag.tech { background: #f0fff4; color: #276749; }
+  .news-tag.world { background: #faf5ff; color: #553c9a; }
+  .news-tag.weather { background: #fffaf0; color: #b7791f; }
+  .news-tag.society { background: #fef5e7; color: #d69e2e; }
+  .news-tag.policy { background: #e6fffa; color: #234e52; }
+  .news-tag.space { background: #eef2ff; color: #434190; }
+  .news-title {
+    font-weight: 700;
+    font-size: 1.02em;
+    color: #1a202c;
+    margin: 6px 0 4px;
+  }
+  .news-desc {
+    font-size: 0.9em;
+    color: #4a5568;
+    line-height: 1.65;
+  }
+  .news-source {
+    font-size: 0.75em;
+    color: #718096;
+    margin-top: 4px;
+  }
+  .news-source a {
+    color: #3182ce;
+    text-decoration: none;
+  }
+  .news-source a:hover {
+    text-decoration: underline;
+  }
+  .footer {
+    text-align: center;
+    color: #718096;
+    font-size: 0.78em;
+    padding: 20px 0 10px;
+  }
+  .alert-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 5px solid #c53030;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+  }
+  .alert-box .alert-title {
+    color: #c53030;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .alert-box .alert-text {
+    font-size: 0.9em;
+    color: #742a2a;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📰 上午新聞撮要</h1>
+    <div class="subtitle">本港 · 中國 · 國際 · 財經 · 科技 · 體育</div>
+    <div class="date-badge">2026年6月16日（週二）· 農曆五月十一 · 上午 08:00 發布</div>
+  </div>
+
+  <div class="market-bar">
+    <div class="market-item">
+      <div class="label">恆生指數</div>
+      <div class="value">24,842</div>
+      <div class="change up">+0.50% ↑</div>
+    </div>
+    <div class="market-item">
+      <div class="label">恒生科技</div>
+      <div class="value">5,427</div>
+      <div class="change up">+1.28% ↑</div>
+    </div>
+    <div class="market-item">
+      <div class="label">道指（週五）</div>
+      <div class="value">51,202</div>
+      <div class="change up">+0.70% ↑</div>
+    </div>
+    <div class="market-item">
+      <div class="label">納指（週五）</div>
+      <div class="value">25,888</div>
+      <div class="change up">+0.31% ↑</div>
+    </div>
+    <div class="market-item">
+      <div class="label">標普500</div>
+      <div class="value">7,431</div>
+      <div class="change up">+0.50% ↑</div>
+    </div>
+    <div class="market-item">
+      <div class="label">WTI 油價</div>
+      <div class="value">$80.99</div>
+      <div class="change down">-3.7% ↓</div>
+    </div>
+  </div>
+
+  <div class="alert-box">
+    <div class="alert-title">🚨 今日焦點</div>
+    <div class="alert-text">
+      夏寶龍6/16-17訪港考察北部都會區及五年規劃對接｜美聯儲新主席沃什首次議息會議（6/16-17）｜端午節（6/19）前本港多區有龍舟預熱活動｜歐洲央行6/11近三年來首次加息25基點
+    </div>
+  </div>
+
+  <!-- 1. 本港新聞 -->
+  <div class="section">
+    <div class="section-title">🇭🇰 本港新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag policy">🏛️ 政情</span>
+      <div class="news-title">夏寶龍明起一連兩日訪港 考察北部都會區及五年規劃對接</div>
+      <div class="news-desc">中央港澳工作辦公室主任、國務院港澳事務辦公室主任夏寶龍將於6月16日至17日來港，就香港對接國家「十五五」規劃及推動北部都會區建設進行考察調研。行政長官李家超將會晤，立法會主席李慧琼表示適逢夏主任來訪，香港五年規劃公眾諮詢已於6月15日展開，為期兩個月，8月14日結束。</div>
+      <div class="news-source">來源：<a href="https://www.news.gov.hk/chi/2026/06/20260615/202606150102007_355.html" target="_blank">香港政府新聞網</a> · <a href="https://www.stheadline.com/zh-hans/loadnext/1/3583086" target="_blank">星島頭條</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag policy">🏛️ 政情</span>
+      <div class="news-title">香港首份「五年規劃」啟動公眾諮詢 8月14日截止</div>
+      <div class="news-desc">特區政府就香港特別行政區經濟和社會發展第一個五年規劃（2026至2030）展開公眾諮詢，爭取2026年第三季內發表正式文件。立法會主席李慧琼強調，五年規劃是「歷史性一步」，對接國家「十五五」規劃。</div>
+      <div class="news-source">來源：<a href="https://www.info.gov.hk/gia/general/202606/15/P2026061500223.htm" target="_blank">香港政府新聞網</a> · <a href="https://www.guancha.cn/politics/2026_06_15_820585.shtml" target="_blank">觀察者網</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">👥 社會民生</span>
+      <div class="news-title">Carousell假鏈結騙案 女子放售200元嬰兒孭帶失130萬</div>
+      <div class="news-desc">一名女士在二手交易平台Carousell放售價值200港元的嬰兒背帶，被騙徒誘導點擊虛假付款鏈結，最終損失130萬港元。警方提醒市民二手交易時需核實鏈結真偽，切勿隨意向陌生賬戶轉賬。</div>
+      <div class="news-source">來源：<a href="https://www.stheadline.com/news/%E6%B8%AF%E8%81%9E" target="_blank">星島頭條</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">👥 社會民生</span>
+      <div class="news-title">流浮山19歲青年遭3漢持刀及硬物襲擊 頸胸背受傷</div>
+      <div class="news-desc">流浮山發生持械襲擊案，一名19歲青年遭3名男子持刀及硬物襲擊，頸部、胸部及背部受傷，已送院救治情況穩定。警方正追緝涉案兇徒，案件列作傷人案跟進。</div>
+      <div class="news-source">來源：<a href="https://www.hk01.com/zone/1/" target="_blank">香港01</a> · <a href="https://www.stheadline.com/news/%E6%B8%AF%E8%81%9E" target="_blank">星島頭條</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">👥 社會民生</span>
+      <div class="news-title">MIRROR演唱會工傷致癱 阿Mo李啟言獲賠629.1萬</div>
+      <div class="news-desc">2022年MIRROR演唱會事故中受重傷導致癱瘓的舞蹈員李啟言（阿Mo），其工傷賠償案有最新進展，法庭裁定其前僱主舞館有限公司需向他賠償629.1萬港元。</div>
+      <div class="news-source">來源：<a href="https://www.hk01.com/zone/1/" target="_blank">香港01</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag weather">🌤️ 天氣</span>
+      <div class="news-title">天文台取消黃雨 6/19端午節天氣將轉好</div>
+      <div class="news-desc">天文台早前發出的黃色暴雨警告已取消，預計今日（6月16日）雨勢有時頗大，氣溫25至29度，間中有驟雨及狂風雷暴；到端午節（6月19日）及周末天氣將轉好，適宜外出活動及觀賞龍舟賽事。粉嶺公路往上水方向因輕型貨車翻側一度全線封閉，目前正逐步恢復通車。</div>
+      <div class="news-source">來源：<a href="https://www.stheadline.com/news/%E6%B8%AF%E8%81%9E" target="_blank">星島頭條</a> · 香港天文台</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">港股週一強勢反彈 恆指收24,842升0.5% 智譜領漲</div>
+      <div class="news-desc">港股週一放量上漲，恆指收24,842點升0.50%、國企指數升0.91%、恒生科技指數升1.28%，大模型概念股走勢強勁；京東、阿里、百度等大型科技股齊升2-3%。</div>
+      <div class="news-source">來源：<a href="https://quote.eastmoney.com/gb/zsHSTECHN.html" target="_blank">東方財富</a> · 匯豐網理財</div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag policy">🏛️ 政情</span>
+      <div class="news-title">陳美寶：粵車南下已平衡交通承載 料下半年就「黑玻璃」諮詢立會</div>
+      <div class="news-desc">運輸及物流局局長陳美寶表示，粵車南下政策已充分平衡本港交通承受能力，相關配套正逐步完善，預計今年下半年就粵車「黑玻璃」相關規管問題諮詢立法會。</div>
+      <div class="news-source">來源：<a href="https://www.stheadline.com/news/%E6%B8%AF%E8%81%9E" target="_blank">星島頭條</a></div>
+    </div>
+  </div>
+
+  <!-- 2. 中國新聞 -->
+  <div class="section">
+    <div class="section-title">🇨🇳 中國新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag policy">🏛️ 政策</span>
+      <div class="news-title">《求是》雜誌發表習近平重要文章《一體推進教育科技人才發展》</div>
+      <div class="news-desc">6月16日出版的第12期《求是》雜誌將發表中共中央總書記、國家主席、中央軍委主席習近平的重要文章《一體推進教育科技人才發展》，強調教育、科技、人才是全面建設社會主義現代化國家的基礎性、戰略性支撐。</div>
+      <div class="news-source">來源：<a href="https://so.html5.qq.com/page/real/search_news?docid=70000021_1296a30793b82252" target="_blank">新華社</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">5月金融數據亮點 M2同比增8.6% 社融增量穩中有升</div>
+      <div class="news-desc">央行6月12日發布數據，5月末廣義貨幣（M2）餘額353.67萬億元同比增長8.6%，M1餘額114.89萬億元同比增長5.5%。5月新增貸款增速換擋，信貸結構持續優化，社融規模存量同比增長保持高位。</div>
+      <div class="news-source">來源：<a href="https://finance.huanqiu.com/article/4RxVvTU2Xyu" target="_blank">環球網</a> · <a href="https://www.bjnews.com.cn/detail/1781255856129558.html" target="_blank">新京報</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag policy">🏛️ 政策</span>
+      <div class="news-title">國家發改委等五部門啟動九大重點行業節能降碳改造攻堅三年行動</div>
+      <div class="news-desc">日前國家發改委等五部門啟動鋼鐵、電解鋁、水泥、平板玻璃、煉油、乙烯、合成氨、甲醇、煤電九大重點行業節能降碳改造攻堅三年行動，開展全面改造。</div>
+      <div class="news-source">來源：<a href="https://so.html5.qq.com/page/real/search_news?docid=70000021_7306a30832a19752" target="_blank">央廣網</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">👥 社會民生</span>
+      <div class="news-title">市場監管總局約談山姆總部 擬優先制定修訂45項食品安全國家標準</div>
+      <div class="news-desc">針對多發食品安全問題，市場監管總局約談山姆總部，並發布計劃（徵求意見稿）擬優先制定、修訂風險防控和產業急需的食品安全國家標準45項，公開徵求意見截至6月22日。</div>
+      <div class="news-source">來源：<a href="https://so.html5.qq.com/page/real/search_news?docid=70000021_5456a3077d536552" target="_blank">人民健康</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">👥 民生</span>
+      <div class="news-title">中組部劃撥4.27億元黨費 用於「七一」前夕走訪慰問</div>
+      <div class="news-desc">日前中央組織部從代中央管理黨費中劃撥4.27億元，用於「七一」前夕開展走訪慰問活動，體現黨組織對基層黨員的關懷。</div>
+      <div class="news-source">來源：<a href="https://so.html5.qq.com/page/real/search_news?docid=70000021_7306a30832a19752" target="_blank">新華社</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tech">🤖 科技</span>
+      <div class="news-title">國家能源局：鼓勵中深層地熱能長距離輸熱 探索與傳統供熱耦合</div>
+      <div class="news-desc">國家能源局綜合司印發《關於組織開展地熱能高質量開發利用試點工作的通知》，鼓勵中深層地熱能大規模開發利用，大力提升在城市供熱中的比例，優先替代天然氣供暖。</div>
+      <div class="news-source">來源：<a href="https://so.html5.qq.com/page/real/search_news?docid=70000021_6066a307a7a00252" target="_blank">人民日報</a></div>
+    </div>
+  </div>
+
+  <!-- 3. 國際新聞 -->
+  <div class="section">
+    <div class="section-title">🕊️ 國際新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag world">🕊️ 國際</span>
+      <div class="news-title">美聯儲新主席沃什首次議息會議今日（6/16）召開 維持利率不變概率98.5%</div>
+      <div class="news-desc">6月16-17日FOMC議息會議由新任主席凱文·沃什主持，CME「美聯儲觀察」顯示6月維持利率不變概率高達98.5%，但美國5月通脹數據反彈，市場對年內加息預期升溫，12月前加息概率已升至57%。</div>
+      <div class="news-source">來源：<a href="https://guba.eastmoney.com/news_futures,forpmxau,1726430915.html" target="_blank">東方財富</a> · <a href="https://baijiahao.baidu.com/s?id=1867500785838417085" target="_blank">百度</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">歐洲央行6/11近三年來首次加息25基點 通脹預期3%</div>
+      <div class="news-desc">歐洲央行11日宣布將三大關鍵利率上調25基點至2.25%/2.40%/2.65%，是2023年9月以來首次加息。預計2026年通脹3.0%、2027年2.3%、2028年2.0%，同時下調2026年經濟增長預期至0.8%。</div>
+      <div class="news-source">來源：<a href="https://fec.mofcom.gov.cn/article/xwdt/xwdtqtzx/xwzcdt/202606/6269.html" target="_blank">商務部</a> · <a href="https://news.cri.cn/20260612/9dde204e-3a7d-21b9-5ab5-3f2420df1afd.html" target="_blank">國際在線</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag world">🕊️ 國際</span>
+      <div class="news-title">美伊和談推進 霍爾木茲海峽封鎖持續近兩日僅3艘船通過</div>
+      <div class="news-desc">受中東地緣衝突、美伊對立影響，近期海峽局勢持續緊張，近兩日僅3艘船穿越海峽，通行量為封鎖前的1.20%。市場密切關注美伊6/19瑞士協議簽署進展。</div>
+      <div class="news-source">來源：<a href="https://sinanews.sina.cn/2026_middle_east_situation.d.html" target="_blank">新浪新聞</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag world">🕊️ 國際</span>
+      <div class="news-title">蘋果WWDC 2026 6/8開幕 Siri AI由Gemini 1.2萬億參數驅動</div>
+      <div class="news-desc">WWDC 2026 6/8正式開幕，Siri AI以15年來最大規模改版登場，蘋果與Google Gemini達成每年10億美元AI合作，macOS 27「Golden Gate」正式告別Intel Mac，Tim Cook以CEO身份完成最後一場主題演講（9/1卸任）。</div>
+      <div class="news-source">來源：<a href="https://ai-stack.ai/zh-hant/wwdc-2026-apple-siri-ai" target="_blank">ai-stack.ai</a> · <a href="https://macgpu.com/zh/blog/2026-0615-wwdc-wanzheng-zongjie-siri-ai.html" target="_blank">macgpu</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag world">🕊️ 國際</span>
+      <div class="news-title">OPEC+ 6月再增產18.8萬桶/日 連續第三個月加碼</div>
+      <div class="news-desc">沙特、俄羅斯、伊拉克等七大OPEC+核心成員國6月起日均增產18.8萬桶，連續第三個月加碼。阿聯酋正式退出後的首次政策落地，9月底前計劃完成165萬桶/日減產中約三分之二的恢復。</div>
+      <div class="news-source">來源：<a href="https://baijiahao.baidu.com/s?id=1865713549789561043" target="_blank">百度</a> · <a href="https://news.cri.cn/2026-05-03/92a65ff8-9a13-4dd6-93ab-1e6ef7082cdd.html" target="_blank">國際在線</a></div>
+    </div>
+  </div>
+
+  <!-- 4. 財經新聞 -->
+  <div class="section">
+    <div class="section-title">📈 財經新聞</div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">SpaceX（SPCX）上市首日收$160.95大漲19% 市值破2.1萬億美元</div>
+      <div class="news-desc">SpaceX 6/12在納斯達克掛牌，發行價$135、發行5.556億股、募資750億美元。首日開盤$150漲11.1%，收$160.95漲19.22%，市值$2.1萬億美元，IPO獲4倍超額認購。馬斯克身價破$1萬億，成為美國第六大公司。</div>
+      <div class="news-source">來源：<a href="https://xueqiu.com/2095268812/394573874" target="_blank">雪球</a> · <a href="https://flash.jin10.com/detail/20260613041809603800" target="_blank">金十數據</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">美股三大指數週五集體收漲 SpaceX上市帶動科技股</div>
+      <div class="news-desc">標普500漲0.5%報7,431、納指漲0.31%報25,888、道指漲0.7%報51,202。科技七巨頭跑輸大盤，蘋果跌1.5%本週累跌超5%；英特爾漲6.5%本週累漲25%；存儲股希捷大漲超7%、西部數據漲逾6%。本週道指累漲0.66%、納指累漲0.70%。</div>
+      <div class="news-source">來源：<a href="https://caifuhao.eastmoney.com/news/20260613192310312546810" target="_blank">東方財富</a> · <a href="https://zhuanlan.zhihu.com/p/2049041149868955219" target="_blank">華爾街見聞</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">油價週五跌近4% 黃金期金漲超3%</div>
+      <div class="news-desc">美伊和平協議預期升溫、霍爾木茲海峽有望重開，紐約期油週五跌近4%。WTI現報$80.99/桶；布倫特原油$84.68/桶；紐約期金受避險需求提振漲超3%，突破$3,450/盎司。</div>
+      <div class="news-source">來源：<a href="https://www.cngold.org/crude/tendency_month.html" target="_blank">中金在線</a> · <a href="https://caifuhao.eastmoney.com/news/20260613192310312546810" target="_blank">東方財富</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag finance">📉 財經</span>
+      <div class="news-title">人民幣中間價6.8109 美元指數99.80 高盛力挺標普年底8000</div>
+      <div class="news-desc">6/13人民幣中間價報6.8109，美元指數99.80。高盛最新報告力挺標普500年底挑戰8,000點位，建議投資者逢低買入；太空主題ETF本週大漲74%。</div>
+      <div class="news-source">來源：<a href="https://caifuhao.eastmoney.com/news/20260613192310312546810" target="_blank">東方財富</a></div>
+    </div>
+  </div>
+
+  <!-- 5. 科技快訊 -->
+  <div class="section">
+    <div class="section-title">🤖 科技快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag tech">🤖 AI</span>
+      <div class="news-title">OpenAI與Anthropic競速IPO 估值逼近$1萬億</div>
+      <div class="news-desc">Anthropic 6/1率先向SEC秘密遞交S-1註冊聲明後，OpenAI 6/8緊隨其後宣布已秘密提交IPO文件。AI雙雄估值逼近$1萬億美元，將成2026年最重磅資本事件之一。Anthropic最新AI模型Fable 5和Mythos 5發布72小時後已下架。</div>
+      <div class="news-source">來源：<a href="https://finance.sina.com.cn/jjxw/2026-06-10/doc-iniawttu6036132.shtml" target="_blank">新浪財經</a> · <a href="https://www.aibars.net/zh/library/ai-news/list" target="_blank">AI bars</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag space">🚀 航天</span>
+      <div class="news-title">神舟二十三號載人飛船成功對接 港澳航天員有望年內進站</div>
+      <div class="news-desc">中國載人航天工程2026年計劃實施神舟二十三號、神舟二十四號載人飛行任務及天舟十號貨運飛船補給任務。來自港澳地區的航天員有望最早於今年執行空間站飛行任務，神舟二十三號飛行乘組含1名港澳航天員。2026年天問二號探測器將飛抵小行星2016HO3探測取樣並返回地球。</div>
+      <div class="news-source">來源：<a href="https://qnzs.youth.cn/tsxq/202602/t20260228_16531618.htm" target="_blank">中青網</a> · <a href="https://tech.huanqiu.com/article/4PmIraMp2kH" target="_blank">環球網</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tech">🤖 芯片</span>
+      <div class="news-title">NVIDIA GTC 2026 聚焦代理式AI、推理和物理AI</div>
+      <div class="news-desc">NVIDIA GTC 2026重點展示AI代理、推理晶片Vera Rubin及物理AI最新突破，雲端AI晶片戰進入新一輪週期。黃仁勳主題演講聚焦萬億級AI基礎設施部署。</div>
+      <div class="news-source">來源：<a href="https://www.nvidia.cn/gtc/" target="_blank">NVIDIA</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag tech">🤖 機器人</span>
+      <div class="news-title">Anthropic推出上下文對齊驗證工具 OpenAI發布GPT-5安全更新</div>
+      <div class="news-desc">OpenAI於6/10發布GPT-5安全更新，新增多語言惡意指令檢測模組；Anthropic推出上下文對齊驗證工具；谷歌已於2025年11月升級內容分類器修復漏洞。AI安全軍備競賽持續升級。</div>
+      <div class="news-source">來源：<a href="https://www.firecat-web.com/daily-news/9877" target="_blank">Firecat</a></div>
+    </div>
+  </div>
+
+  <!-- 6. 體育快訊 -->
+  <div class="section">
+    <div class="section-title">⚽ 體育快訊</div>
+
+    <div class="news-item">
+      <span class="news-tag society">⚽ 足球</span>
+      <div class="news-title">世界盃6/15戰報 德國7-1庫拉索 荷蘭2-2日本 澳洲2-0土耳其</div>
+      <div class="news-desc">2026世界盃6/15多場分組賽：E組德國7-1庫拉索、象牙海岸1-0厄瓜多；F組荷蘭2-2日本、瑞典5-1突尼西亞；澳洲2-0爆冷擊敗土耳其。各組積分與晉級形勢日趨明朗。揭幕戰墨西哥2-0南非。</div>
+      <div class="news-source">來源：<a href="https://www.worldcupfifa.com.tw/post/world-cup-2026-daily-0615-results-recap" target="_blank">worldcupfifa</a> · <a href="https://iet2.hket.com/feature/worldcup2026/index.html" target="_blank">經濟日報</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">⚽ 足球</span>
+      <div class="news-title">F組亞洲內戰格局形成 韓國澳洲日本同組</div>
+      <div class="news-desc">世界盃分組揭曉後亞洲球隊簽運各異，日本與韓國、澳洲同處F組形成亞洲內戰格局；伊朗落入I組面對卡塔爾、伊拉克。日本主帥森保一目標至少小組出線，韓國核心孫興慜確認健康上陣。</div>
+      <div class="news-source">來源：<a href="https://www.the-fifa.com.cn/worldcup/" target="_blank">FIFA中文官網</a></div>
+    </div>
+
+    <div class="news-item">
+      <span class="news-tag society">🚣 龍舟</span>
+      <div class="news-title">端午節6/19登場 尖沙咀海濱「日夜龍舟嘉年華」6/19-7/1</div>
+      <div class="news-desc">2026香港龍舟嘉年華將於6月19日至7月1日期間在尖沙咀海濱登場，為期13天的節日慶典橫跨端午節，節目涵蓋傳統文化、互動工作坊及連串精彩龍舟賽事。大澳龍舟遊涌、大埔、長洲「遊夜龍」等全港8個必睇必玩龍舟活動同步舉行。</div>
+      <div class="news-source">來源：<a href="https://www.sohu.com/a/1022961148_161795" target="_blank">搜狐</a> · <a href="https://reubird.hk/blog/%E7%AB%AF%E5%8D%88%E7%AF%80-%E9%BE%8D%E8%88%9F%E6%AF%94%E8%B3%BD/dragon-boat-festival-activities-Go" target="_blank">ReUbird</a></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    📰 上午新聞撮要 · 2026年6月16日 08:00 GMT+8 自動生成<br>
+    數據來源：星島頭條、香港01、政府新聞網、新華社、央廣網、東方財富、新浪財經、FIFA、Apple Newsroom、Reuters
+  </div>
+
+</div>
+</body>
+</html>
