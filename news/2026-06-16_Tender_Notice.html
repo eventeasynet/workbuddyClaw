@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>各界標書情報 - 6月16日</title>
+<title>各界標書情報 - 2026年6月16日</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -33,6 +33,23 @@ body {
   font-size: 13px;
   margin-top: 10px;
 }
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.stat-card {
+  flex: 1;
+  min-width: 100px;
+  background: #f0fdfa;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #99f6e4;
+}
+.stat-card .num { font-size: 24px; font-weight: 800; color: #0e7490; }
+.stat-card .label { font-size: 12px; color: #64748b; margin-top: 4px; }
 .section {
   background: #f9fafb;
   border-radius: 12px;
@@ -56,7 +73,7 @@ body {
   border-radius: 10px;
   padding: 16px;
   margin-bottom: 16px;
-  border: 1px solid #e5e7eb;
+  border:1px solid #e5e7eb;
   transition: all 0.3s;
 }
 .tender-card:hover {
@@ -75,28 +92,34 @@ body {
   font-size: 16px;
   font-weight: 700;
   color: #1a1a2e;
+  flex: 1;
 }
 .tender-tag {
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 }
 .tender-tag.ad { background: #dbeafe; color: #1d4ed8; }
 .tender-tag.video { background: #ede9fe; color: #7c3aed; }
 .tender-tag.print { background: #fef3c7; color: #b45309; }
 .tender-tag.ai { background: #dcfce7; color: #16a34a; }
 .tender-tag.micro-drama { background: #fce7f3; color: #db2777; }
+.tender-tag.system { background: #e0e7ff; color: #4338ca; }
 .tender-tag.other { background: #f3f4f6; color: #6b7280; }
+.tender-tag.hk { background: #ffedd5; color: #c2410c; font-size: 10px; padding: 2px 6px; }
+.tender-tag.cn { background: #fee2e2; color: #b91c1c; font-size: 10px; padding: 2px 6px; }
+.tender-tag.active { background: #dcfce7; color: #15803d; font-size: 10px; padding: 2px 6px; }
+.tender-tag.closed { background: #f1f5f9; color: #94a3b8; font-size: 10px; padding: 2px 6px; }
 .tender-deadline {
   font-size: 14px;
   font-weight: 700;
   color: #dc2626;
 }
-.tender-org {
-  font-size: 13px;
-  color: #6b7280;
-  margin-bottom: 8px;
+.tender-deadline.passed {
+  color: #94a3b8;
+  text-decoration: line-through;
 }
 .tender-detail {
   font-size: 14px;
@@ -112,17 +135,23 @@ body {
   color: #9ca3af;
   flex-wrap: wrap;
 }
+.tender-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 .highlight-box {
   background: linear-gradient(135deg, #ecfeff, #cffafe);
   border-radius: 10px;
   padding: 16px;
   margin: 16px 0;
-  border: 1px solid #67e8f9;
+  border:1px solid #67e8f9;
 }
 .highlight-box .title {
   font-weight: 700;
   color: #0e7490;
   margin-bottom: 8px;
+  font-size: 15px;
 }
 .source-link {
   display: inline-flex;
@@ -137,6 +166,22 @@ body {
   background: #ecfeff;
 }
 .source-link:hover { background: #cffafe; }
+.budget-tag {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+.tag-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
 .footer {
   margin-top: 40px;
   padding: 20px;
@@ -146,381 +191,771 @@ body {
   font-size: 13px;
   color: #6b7280;
 }
-.deadline-box {
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
+.footer a { color: #0891b2; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #f8fafc;
   border-radius: 8px;
-  padding: 12px;
-  margin: 8px 0;
-  color: #dc2626;
-  font-weight: 600;
+  font-size: 12px;
+  color: #64748b;
 }
+.legend span { display: flex; align-items: center; gap: 4px; }
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.summary-card {
+  background: white;
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+.summary-card .count { font-size: 28px; font-weight: 800; color: #0e7490; }
+.summary-card .cat { font-size: 13px; color: #64748b; margin-top: 4px; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>📋 各界標書情報</h1>
-  <div class="subtitle">廣告投放 · 影視製作 · 平面廣告 · AI項目 · 微劇</div>
-  <div class="date-badge">📅 2026年6月16日（周一）</div>
+  <div class="subtitle">廣告投放 · 影視製作 · 平面廣告 · AI項目 · 微劇項目 · 系統開發</div>
+  <div class="date-badge">📅 2026年6月16日（星期二）</div>
 </div>
 
-<!-- 本日焦點 -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="num">28</div>
+    <div class="label">總標書項目</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">17</div>
+    <div class="label">🇭🇰 香港項目</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">8</div>
+    <div class="label">🟢 進行中標書</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">6</div>
+    <div class="label">📂 覆蓋類別</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">61%</div>
+    <div class="label">香港佔比</div>
+  </div>
+</div>
+
+<div class="legend">
+  <span>🟠 🇭🇰 香港</span>
+  <span>🔴 🇨🇳 中國內地</span>
+  <span>🟢 進行中</span>
+  <span>⚫ 已截標</span>
+</div>
+
 <div class="highlight-box">
-  <div class="title">🔥 本日焦點</div>
-  <p>香港設計中心（HKDC）持續開放多項招標，涵蓋影視製作、公關服務、數碼營銷等領域。其中「財務與採購系統部署」截止日期為<strong>7月13日</strong>，尚餘充足時間準備。「BODW 及 DFA 獎項集中傳播服務」與「DX設計中心及 DESIGN@HKG 集中傳播服務」截止日期為<strong>7月2日</strong>。另香港發展局已於6月1日生效《基本工程項目人工智能技術應用清单》，強制3000萬港元以上工程合約須使用AI，相關AI應用項目招標需求將大幅增加。</p>
+  <div class="title">📌 本期重點關注</div>
+  <p style="font-size:14px; color:#334155;">
+    🔥 <strong>香港入境事務處</strong> 旅客電子通道及人臉驗證系統招標中（截止6月26日）<br>
+    🔥 <strong>香港設計中心</strong> 兩項傳訊服務RFP進行中（截止7月2日）<br>
+    🔥 <strong>南方科技大學</strong> AI伺服器採購（人民幣322萬，截止6月24日）<br>
+    🔥 <strong>HKDC財務及採購系統</strong> 部署項目招標中（截止7月13日）
+  </p>
 </div>
 
-<!-- 廣告投放標書 -->
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="count">5</div>
+    <div class="cat">📺 廣告投放</div>
+  </div>
+  <div class="summary-card">
+    <div class="count">4</div>
+    <div class="cat">🎬 影視製作</div>
+  </div>
+  <div class="summary-card">
+    <div class="count">3</div>
+    <div class="cat">🖨️ 平面廣告</div>
+  </div>
+  <div class="summary-card">
+    <div class="count">6</div>
+    <div class="cat">🤖 AI項目</div>
+  </div>
+  <div class="summary-card">
+    <div class="count">3</div>
+    <div class="cat">🎭 微劇/短劇</div>
+  </div>
+  <div class="summary-card">
+    <div class="count">7</div>
+    <div class="cat">🖥️ 系統開發</div>
+  </div>
+</div>
+
+<!-- ====== 廣告投放標書 ====== -->
 <div class="section">
   <div class="section-title">📺 廣告投放標書</div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">中國人壽保險（海外）香港分公司 2026年廣告宣傳媒體代理商招標</div>
+    <div class="tag-row">
       <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag active">🟢 進行中</span>
     </div>
-    <div class="tender-org">📌 招標機構：中國人壽保險（海外）股份有限公司香港分公司</div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — BODW及DFA Awards中央傳訊服務</div>
+      <div class="tender-deadline">📅 截止：2026年7月2日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>2026年廣告宣傳之媒體廣告代理商招標，包括戶外廣告及數碼廣告的投放合作。涵蓋小巴紅色線、綠色線車身廣告、椅背廣告等媒體資源。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>截止日期：</strong>已發布於2026年2月5日，詳情請參閱原始招標公告
+      香港設計中心（HKDC）招標委聘服務供應商，為設計營商周（BODW）及DFA設計獎提供公關傳訊服務。服務範圍包括媒體關係、新聞稿撰寫、活動宣傳推廣等。已於6月8日舉行簡介會。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：金融保險 / 媒體廣告</span>
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 tender@hkdesigncentre.org</span>
     </div>
-    <a href="http://www.caizhaowang.com/news-1-53e5aeb26f3b5cd98ddfc7a8e50c7f3b80c08ee73f317a06.html" target="_blank" class="source-link">🔗 查看原始招標公告</a>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">京東 香港小巴廣告投放合作招標</div>
+    <div class="tag-row">
       <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag active">🟢 進行中</span>
     </div>
-    <div class="tender-org">📌 招標機構：京東（JD.com）</div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — DX design hub及DESIGN@HKG中央傳訊服務</div>
+      <div class="tender-deadline">📅 截止：2026年7月2日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為保障後端投放項目的順利執行，現需引入具備相關媒體資源、執行能力及服務經驗的供應商，支持公司開展香港小巴廣告投放合作。需求包括：小巴紅色線、綠色線，車身廣告、椅背廣告等。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>招標狀態：</strong>2026年5月14日發布，詳情請登入京東招採平台
+      HKDC招標委聘服務供應商，為DX設計館及DESIGN@HKG提供公關傳訊服務。服務涵蓋品牌推廣、媒體關係、活動宣傳等。已於6月8日舉行簡介會。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：電商 / 戶外媒體</span>
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 marcomm@hkdesigncentre.org</span>
     </div>
-    <a href="https://proc-bidding.jd.com/publish/detail/2054761290312060929" target="_blank" class="source-link">🔗 查看招標詳情（京東招採平台）</a>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">中信建投証券 2026-2027年小米應用市場投放項目招標</div>
+    <div class="tag-row">
       <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：中信建投証券股份有限公司（委托中國郵電器材集團有限公司採購）</div>
+    <div class="tender-header">
+      <div class="tender-name">中國人壽（海外）香港 — 2026年廣告宣傳媒體廣告代理商</div>
+      <div class="tender-deadline passed">📅 截標：2026年2月</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>中信建投証券2026-2027年小米應用市場投放項目，項目編號 CSC2026OTMAY106，采用公開招標形式進行採購。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>發布日期：</strong>2026年5月26日
+      中國人壽保險（海外）股份有限公司香港分公司公開招標2026年廣告宣傳之媒體廣告代理商，包括戶外廣告及數碼廣告的投放。項目已截標，可作為市場參考。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：中國</span>
-      <span>🏷️ 類別：金融証券 / 數碼廣告投放</span>
+      <span>🏢 招標機構：中國人壽（海外）香港分公司</span>
     </div>
-    <a href="https://bj.zhiliaobiaoxun.com/article/100294463" target="_blank" class="source-link">🔗 查看招標公告</a>
+    <a class="source-link" href="http://www.caizhaowang.com/news-1-53e5aeb26f3b5cd98ddfc7a8e50c7f3b80c08ee73f317a06.html" target="_blank">🔗 來源：采招網</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">華潤隆地 — 中藝品牌活動媒體刊例宣傳推廣採購</div>
+      <div class="tender-deadline passed">📅 截標：2026年4月</div>
+    </div>
+    <div class="tender-detail">
+      華潤隆地有限公司為中藝品牌活動進行媒體刊例宣傳推廣採購，以單源直接採購方式進行。涵蓋品牌活動的媒體廣告投放及宣傳推廣。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：華潤隆地有限公司</span>
+    </div>
+    <a class="source-link" href="https://www.bidcenter.com.cn/news-414322020-5.html" target="_blank">🔗 來源：中國采招網</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">京東物流 — 2026年港澳新媒體運營項目</div>
+      <div class="tender-deadline passed">📅 截標：2026年3月</div>
+    </div>
+    <div class="tender-detail">
+      京東物流市場與公共事務部招標港澳新媒體運營項目，負責官方國際新媒體矩陣（Facebook、Instagram、YouTube、小紅書港澳帳號、微信公眾號港澳）的內容創作及運營。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：京東物流</span>
+    </div>
+    <a class="source-link" href="https://m.bidcenter.com.cn/news-1-409002100.html" target="_blank">🔗 來源：中國采招網</a>
   </div>
 </div>
 
-<!-- 影視製作標書 -->
+<!-- ====== 影視製作標書 ====== -->
 <div class="section">
   <div class="section-title">🎬 影視製作標書</div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">HKDC BODW 2026 & 2027 電視廣播、視頻製作、直播編碼及活動製作</div>
+    <div class="tag-row">
       <span class="tender-tag video">影視製作</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港設計中心（Hong Kong Design Centre, HKDC）</div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — BODW 2026-2027電視廣播、影片製作及直播服務</div>
+      <div class="tender-deadline passed">📅 截標：2026年6月3日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為2026年和2027年設計商業週（BODW）提供電視廣播、視頻製作、直播編碼及活動製作服務。這是香港最具影響力的設計盛事之一。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      ⚠️ <strong>截止日期：</strong>已截止（2026年6月3日下午5:00 HKT）
+      HKDC招標委聘服務供應商，為2026及2027年設計營商周（BODW）提供電視廣播、影片製作、直播編碼及活動製作服務。為期兩年的重要影視製作合約，值得業界關注未來類似項目。
     </div>
-    <div class="deadline-box">⚠️ 本項目已截止投標（2026年6月3日），供參考</div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：設計活動 / 視頻製作</span>
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 info@bodw.com</span>
     </div>
-    <a href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank" class="source-link">🔗 查看 HKDC 招標頁面</a>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">政府新聞處資訊服務部 視頻剪接服務</div>
+    <div class="tag-row">
       <span class="tender-tag video">影視製作</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港特別行政區政府 資訊服務部（Information Services Department）</div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — 皇崗口岸顯示、影音及擴音系統</div>
+      <div class="tender-deadline passed">📅 截標：2025年9月19日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為資訊服務部創意小組提供視頻剪接服務，支持政府宣傳視頻製作。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>招標狀態：</strong>持續開放，詳情請參閱政府招標公告
+      為位於新皇崗口岸邊境管制站設計、供應、運送及安裝顯示、影音及擴音系統，合約為期36個月。屬邊境口岸大型影音系統工程。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：政府採購 / 視頻製作</span>
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：1723EM24T</span>
     </div>
-    <a href="https://www.tenderimpulse.com/government-tenders/hong-kong/provision-of-video-editing-services-to-information-services-department-creative-11590435" target="_blank" class="source-link">🔗 查看招標詳情</a>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">政府新聞處資訊服務部 視頻拍攝服務</div>
+    <div class="tag-row">
       <span class="tender-tag video">影視製作</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港特別行政區政府 資訊服務部（Information Services Department）</div>
+    <div class="tender-header">
+      <div class="tender-name">天威視訊 — 綜合業務監控系統數據分析與視頻模塊</div>
+      <div class="tender-deadline passed">📅 截標：2026年6月</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為資訊服務部創意小組提供視頻拍攝服務，支持政府各類宣傳視頻的製作需求。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>招標狀態：</strong>持續開放，詳情請參閱政府招標公告
+      深圳市天威視訊股份有限公司招標2026年綜合業務監控系統之數據分析與應用模塊軟件開發服務，包含視頻分析功能。項目編號：ZB2026012。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：政府採購 / 視頻拍攝</span>
+      <span>🏢 招標機構：天威視訊</span>
+      <span>📍 深圳</span>
     </div>
-    <a href="https://www.globaltenders.com/tender-detail/provision-of-video-filming-services-to-infor-7iZAekP9d6Shvtkg" target="_blank" class="source-link">🔗 查看招標詳情</a>
+    <a class="source-link" href="https://www.sohu.com/a/1031375899_122014422" target="_blank">🔗 來源：搜狐</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag video">影視製作</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — DFA Awards 2025展覽創意概念及製作（含影片）</div>
+      <div class="tender-deadline passed">📅 截標：2025年10月</div>
+    </div>
+    <div class="tender-detail">
+      HKDC為DFA Awards 2025展覽招標創意概念、設計及製作服務，服務範圍包括多媒體影片展示及互動裝置設計。供參考未來DFA Awards相關項目。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港設計中心</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 </div>
 
-<!-- 平面廣告製作標書 -->
+<!-- ====== 平面廣告製作標書 ====== -->
 <div class="section">
   <div class="section-title">🖨️ 平面廣告製作標書</div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">2026年產品宣傳平面設計項目招標</div>
+    <div class="tag-row">
       <span class="tender-tag print">平面廣告</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：採購與招標網（詳情請參閱原始公告）</div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — DFA Awards 2025刊物印刷及設計製作</div>
+      <div class="tender-deadline passed">📅 截標：2025年10月16日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>2026年產品宣傳平面設計項目招標，涵蓋宣傳品設計、印刷品製作等相關服務。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>發布日期：</strong>2025年11月25日（項目持續有效）
+      HKDC招標DFA Awards 2025得獎刊物之印刷及設計製作服務。評審標準：工作參考（30%）+ 預算金額（70%）。供DFA 2026項目參考。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：中國</span>
-      <span>🏷️ 類別：平面設計 / 印刷製作</span>
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 keith.yip@hkdesigncentre.org</span>
     </div>
-    <a href="https://chinabidding.cn/zbgg/U-vzQ4LuY.html" target="_blank" class="source-link">🔗 查看招標公告</a>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">平面廣告設計招標公告（多地採購）</div>
+    <div class="tag-row">
       <span class="tender-tag print">平面廣告</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：中國電信定西分公司、蘇州銀行、中國電信山東分公司、大唐山東電力檢修運營有限公司、中國建等</div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — DX設計館展覽設計及製作服務</div>
+      <div class="tender-deadline passed">📅 截標：2026年5月4日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>近期關於平面廣告設計的招標公告，業主單位分別為：中國電信股份有限公司定西分公司、蘇州銀行股份有限公司、中國電信股份有限公司山東分公司、大唐山東電力檢修運營有限公司、中國建等。涵蓋企業宣傳品、廣告設計、印刷製作等服務。<br>
-      💰 <strong>預算：</strong>各項目不同，詳情請參閱各別招標文件<br>
-      📅 <strong>招標狀態：</strong>持續開放中
+      HKDC招標DX設計館內設計博物館展覽之建造及管理服務，涵蓋展覽設計、平面設計、施工製作及項目管理。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：中國（多地）</span>
-      <span>🏷️ 類別：企業採購 / 平面廣告設計</span>
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 kat.tsang@hkdesigncentre.org</span>
     </div>
-    <a href="https://www.bidcenter.com.cn/zhaobiao/zbkeyw-86004-0-1.html" target="_blank" class="source-link">🔗 查看平面廣告設計招標列表</a>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag print">平面廣告</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC — 香港設計生態展覽設計、建造及管理服務</div>
+      <div class="tender-deadline passed">📅 截標：2026年1月5日</div>
+    </div>
+    <div class="tender-detail">
+      香港設計中心為DX設計館內「香港設計生態」展覽招標展覽設計、建造及管理服務，包括平面設計、展板製作、場地佈置等。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 dxevents@hkdesigncentre.org</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 </div>
 
-<!-- AI 相關項目標書 -->
+<!-- ====== AI項目 ====== -->
 <div class="section">
   <div class="section-title">🤖 AI 相關項目標書</div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">🔥 香港強制AI令：3000萬以上工程合約必須使用AI</div>
+    <div class="tag-row">
       <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag active">🟢 進行中</span>
     </div>
-    <div class="tender-org">📌 政策發布：香港特別行政區政府 發展局</div>
+    <div class="tender-header">
+      <div class="tender-name">南方科技大學 — AI伺服器採購<span class="budget-tag">¥322萬</span></div>
+      <div class="tender-deadline">📅 截止：2026年6月24日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>政策內容：</strong>2026年6月1日，香港發展局發布的《基本工程項目人工智能技術應用清单》（工務技術通告 TC(W) No. 3/2026）正式生效。顧問合約預算超過1500萬港元、工程合約超過3000萬港元，必須使用AI——不是試點，不是鼓勵，是寫進合約條款的強制要求。這是大中華區首個將工程AI應用納入政府強制性合約條款的政策。<br><br>
-      <strong>影響範圍：</strong><br>
-      • 顧問合約預算 > 1500萬港元 → 必須采用AI技術<br>
-      • 工程合約預算 > 3000萬港元 → 必須采用AI技術<br>
-      • 2026年6月1日或之後邀請或招標的項目必須遵守<br>
-      • 在此之前已推進的項目，也要求在可行情況下盡量執行<br><br>
-      <strong>商機：</strong>相關AI應用建設項目招標需求將大幅增加，AI解決方案供應商可關注政府工程項目招標公告。
+      南方科技大學公開招標採購AI伺服器，預算人民幣322萬元。項目編號：SZCG2026000608。需於2026年6月24日08:30前遞交投標文件。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：政策 / AI應用 / 工程科技</span>
+      <span>🏢 招標機構：南方科技大學</span>
+      <span>📍 深圳</span>
+      <span>💰 最高限價：322萬元</span>
     </div>
-    <a href="https://baijiahao.baidu.com/s?id=1865868762233422825&wfr=spider&for=pc" target="_blank" class="source-link">🔗 查看政策詳情</a>
+    <a class="source-link" href="http://www.ccgp.gov.cn/cggg/dfgg/gkzb/202606/t20260611_26735670.htm" target="_blank">🔗 來源：中國政府採購網</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">AI應用建設項目招標公告</div>
+    <div class="tag-row">
       <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag active">🟢 進行中</span>
     </div>
-    <div class="tender-org">📌 招標機構：廣東省政府採購網（項目編號：SSZ-2026G10）</div>
+    <div class="tender-header">
+      <div class="tender-name">濟南市 — 2026年首批人工智能應用場景徵集</div>
+      <div class="tender-deadline">📅 截止：2026年6月18日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>AI應用建設項目招標，潛在投標人應在廣東省政府採購網獲取招標文件。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>截止日期：</strong>2026年6月2日 09:00（已截止，供參考）<br>
-      📅 <strong>發布日期：</strong>2026年5月8日
+      濟南市啟動2026年首批人工智能應用場景徵集，聚焦7大領域55個細分行業。徵集涵蓋面廣、帶動性強的AI應用場景需求，為AI技術落地提供需求牽引。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：中國廣東</span>
-      <span>🏷️ 類別：政府採購 / AI應用</span>
+      <span>🏢 主辦：濟南市政府</span>
+      <span>📍 山東濟南</span>
     </div>
-    <a href="https://www.ccgp.gov.cn/cggg/dfgg/gkzb/202605/t20260508_26527444.htm" target="_blank" class="source-link">🔗 查看招標公告</a>
+    <a class="source-link" href="https://m.e23.cn/jnnews/2026-05-27/2026052700011.html" target="_blank">🔗 來源：舜網</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">香港中文大學（深圳）附屬明德高級中學 2026年購買教育管理平台運營服務</div>
+    <div class="tag-row">
       <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港中文大學（深圳）附屬明德高級中學</div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — 供應安裝AI基礎設施支持LLM開發</div>
+      <div class="tender-deadline passed">📅 截標：2025年12月29日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>2026年購買教育管理平台運營服務項目，潛在投標人應在深圳市羅湖區太寧路2號百仕達大廈27B獲取招標文件。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>截止日期：</strong>2026年6月22日 9:30（北京時間）<br>
-      📅 <strong>發布日期：</strong>2026年6月12日
+      為機電工程署供應和安裝人工智能基礎設施以支持大語言模型開發，系統須在發出接納書日期起計24個星期內啟用。編號：EMSSSD-0525。
     </div>
-    <div class="deadline-box">⏰ 截止日期：2026年6月22日 9:30（尚餘 6 天）</div>
     <div class="tender-meta">
-      <span>📍 地區：中國深圳</span>
-      <span>🏷️ 類別：教育 / AI管理平台</span>
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：EMSSSD-0525</span>
     </div>
-    <a href="https://mdsy.szftedu.cn/xwgk/tzgg/202606/t20260612_176808.html" target="_blank" class="source-link">🔗 查看招標公告</a>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — AI基礎設施硬件、軟件及相關服務</div>
+      <div class="tender-deadline passed">📅 截標：2025年12月9日</div>
+    </div>
+    <div class="tender-detail">
+      為機電工程署供應人工智能基礎設施硬件、軟件及相關服務，系統須在發出接納書日期起計16個星期內啟用。編號：EMSSSD-0425。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：EMSSSD-0425</span>
+    </div>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">廣東省 — AI應用建設項目<span class="budget-tag">¥130萬</span></div>
+      <div class="tender-deadline passed">📅 截標：2026年6月2日</div>
+    </div>
+    <div class="tender-detail">
+      廣東省政府採購AI應用建設項目，公開招標，預算金額130萬元人民幣。項目編號：SSZ-2026G10。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：廣東省政府</span>
+      <span>📍 廣東省</span>
+    </div>
+    <a class="source-link" href="https://www.ccgp.gov.cn/cggg/dfgg/gkzb/202605/t20260508_26527444.htm" target="_blank">🔗 來源：中國政府採購網</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">安徽省交通規劃設計研究總院 — AI算力硬件租用服務</div>
+      <div class="tender-deadline passed">📅 截標：2026年6月</div>
+    </div>
+    <div class="tender-detail">
+      安徽省交通規劃設計研究總院招標2026年數字設計院大模型AI算力硬件設備租用服務，由安徽省中興工程監理有限公司代理招標。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：安徽省交通規劃設計研究總院</span>
+      <span>📍 安徽</span>
+    </div>
+    <a class="source-link" href="https://baijiahao.baidu.com/s?id=1866843472235243946" target="_blank">🔗 來源：百度百家號</a>
   </div>
 </div>
 
-<!-- 微劇/短劇項目 -->
+<!-- ====== 微劇/短劇項目 ====== -->
 <div class="section">
-  <div class="section-title">🎭 微劇/短劇項目</div>
+  <div class="section-title">🎭 微劇/短劇項目標書</div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">HKDC「上海時裝週新興設計師展示」公關服務（含短影音製作）</div>
+    <div class="tag-row">
       <span class="tender-tag micro-drama">微劇/短劇</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag active">🟢 進行中</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港設計中心（Hong Kong Design Centre, HKDC）</div>
+    <div class="tender-header">
+      <div class="tender-name">「澳門故事」華語短片季 — 劇本徵稿<span class="budget-tag">¥50萬</span></div>
+      <div class="tender-deadline">📅 進行中</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為「HKDC呈獻：上海時裝週A/W 2026新興設計師展示」提供公關服務，包括短影音製作、社交媒體推廣等。微劇/短劇形式的內容製作需求在設計推廣領域日益增加。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      ⚠️ <strong>截止日期：</strong>已截止（2026年2月25日），供參考
+      主辦方徵集華語短片劇本，入選者獲50萬元人民幣製作資助。旨在促進華語影人多元交流，增強國家與民族認同感，助推華語電影繁榮發展。設有專業評審團。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港 / 上海</span>
-      <span>🏷️ 類別：時裝 / 短影音製作</span>
+      <span>🏢 主辦：澳門文化局</span>
+      <span>📍 澳門</span>
+      <span>💰 資助：50萬元/項目</span>
     </div>
-    <a href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank" class="source-link">🔗 查看 HKDC 招標頁面</a>
+    <a class="source-link" href="https://www.hkwl.org/article/21513" target="_blank">🔗 來源：香港文聯</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">短劇/微電影製作招標需求持續增長</div>
+    <div class="tag-row">
       <span class="tender-tag micro-drama">微劇/短劇</span>
+      <span class="tender-tag cn">🇨🇳 中國</span>
+      <span class="tender-tag closed">⚫ 行業趨勢</span>
     </div>
-    <div class="tender-org">📌 市場趨勢：品牌營銷 / 社交媒體 / 內容製作</div>
+    <div class="tender-header">
+      <div class="tender-name">AI短劇《霍去病》— 行業標杆製作參考</div>
+      <div class="tender-deadline">📅 行業參考</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>市場趨勢分析：</strong>隨著短劇/微電影在社交媒體的影響力持續增長，越來越多企業和機構開始將短劇形式的內容製作納入招標範圍。特別是在以下領域：<br><br>
-      • <strong>品牌故事短劇</strong>：企業品牌推廣，通过短劇形式講述品牌故事<br>
-      • <strong>產品推廣微電影</strong>：新產品發布，通过微電影形式進行創意推廣<br>
-      • <strong>教育培訓短劇</strong>：企業培訓、教育機構，通过短劇形式提升學習效果<br>
-      • <strong>政府宣傳短劇</strong>：政府部門公共政策宣傳，通过短劇形式提升傳播效果<br><br>
-      <strong>建議關注：</strong>香港設計中心（HKDC）、政府新聞處、各大品牌企業的招標公告，短劇/微電影製作需求將持續增長。
+      全AI製作的短劇《霍去病》引發業界關注，展示了AI在短劇製作領域的潛力。AI短劇的崛起對傳統影視產業造成賽道分裂的影響，高成本院線與低成本AI短劇形成兩個平行市場。對承接微劇項目的製作公司具參考價值。
     </div>
     <div class="tender-meta">
-      <span>📍 地區：香港 / 中國</span>
-      <span>🏷️ 類別：市場趨勢 / 內容製作</span>
+      <span>🏷️ 行業趨勢</span>
+      <span>🤖 AI+影視</span>
     </div>
+    <a class="source-link" href="https://treasure.theblendingofthebody.org/2026/03/06/49798/" target="_blank">🔗 來源：百寶箱</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag micro-drama">微劇/短劇</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 機會提示</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">香港國際影視展（FILMART）— 短劇項目對接平台</div>
+      <div class="tender-deadline">📅 持續關注</div>
+    </div>
+    <div class="tender-detail">
+      香港國際影視展（FILMART）作為亞洲最大影視交易市場，每年設有短劇/微劇項目配對環節，連接製片方與投資方。適合承接微劇項目的製作公司主動對接。同期設有多場業界研討會探討短劇市場趨勢。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 主辦：香港貿發局</span>
+      <span>📍 香港會議展覽中心</span>
+    </div>
+    <a class="source-link" href="https://www.hktdc.com/event/hkfilmart/tc" target="_blank">🔗 來源：香港貿發局 FILMART</a>
   </div>
 </div>
 
-<!-- 其他相關標書 -->
+<!-- ====== 系統開發標書 ====== -->
+<div class="section">
+  <div class="section-title">🖥️ 系統開發標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag active">🟢 進行中</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">香港入境事務處 — 旅客電子通道及人臉驗證系統</div>
+      <div class="tender-deadline">📅 截止：2026年6月26日</div>
+    </div>
+    <div class="tender-detail">
+      設計、供應、實施及維護入境管制站的額外旅客電子通道及人臉驗證系統。屬大型政府IT安防項目，涉及生物識別技術及邊境管理系統。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港入境事務處</span>
+      <span>🏷️ IT/安防/生物識別</span>
+    </div>
+    <a class="source-link" href="https://tenderimpulse.com/all-tender-list-from-country/get-hong-kong-tenders/2026-06-02/1" target="_blank">🔗 來源：Tender Impulse</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag active">🟢 進行中</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">社會福利署 — 軟件維護服務</div>
+      <div class="tender-deadline">📅 截止：2026年6月25日</div>
+    </div>
+    <div class="tender-detail">
+      向社會福利署提供軟件維護服務，涵蓋社署現有各類資訊系統的保養維護。屬政府IT服務採購項目。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：社會福利署</span>
+      <span>🏷️ IT服務/軟件維護</span>
+    </div>
+    <a class="source-link" href="https://tenderimpulse.com/all-tender-list-from-country/get-hong-kong-tenders/2026-06-02/1" target="_blank">🔗 來源：Tender Impulse</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag active">🟢 進行中</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">香港設計中心 — 財務及採購系統部署</div>
+      <div class="tender-deadline">📅 截止：2026年7月13日</div>
+    </div>
+    <div class="tender-detail">
+      HKDC邀請服務供應商提交財務及採購系統的全面技術及財務方案。需提交技術方案及財務方案兩個獨立信封。聯絡人：Terry Chin（高級財務經理）。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 tender@hkdesigncentre.org</span>
+      <span>📞 (852) 3793 8406</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — 文錦渡口岸車輛自動清關支援系統</div>
+      <div class="tender-deadline passed">📅 截標：2026年3月6日</div>
+    </div>
+    <div class="tender-detail">
+      為文錦渡口岸供應和安裝車輛自動清關支援系統。編號：1120EM25W。屬口岸智能化系統工程。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：1120EM25W</span>
+    </div>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — 超融合基礎架構軟件和相關服務</div>
+      <div class="tender-deadline passed">📅 截標：2025年5月16日</div>
+    </div>
+    <div class="tender-detail">
+      為機電工程署提供超融合基礎架構軟件和相關服務，涉及伺服器虛擬化、存儲整合及IT基礎設施現代化。編號：2BDTD24017。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：2BDTD24017</span>
+    </div>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — 數據中心服務</div>
+      <div class="tender-deadline passed">📅 截標：2025年11月7日</div>
+    </div>
+    <div class="tender-detail">
+      為機電工程署提供數據中心服務，涵蓋伺服器託管、網絡連接、災難恢復等。編號：EMSD-DTD-B40557。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：EMSD-DTD-B40557</span>
+    </div>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">皇崗口岸 — 智慧旅檢系統</div>
+      <div class="tender-deadline passed">📅 截標：2025年6月27日</div>
+    </div>
+    <div class="tender-detail">
+      為皇崗口岸提供及安裝智慧旅檢系統，屬大型口岸智能化項目。編號：1170EM24W。
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：1170EM24W</span>
+    </div>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
+  </div>
+</div>
+
+<!-- ====== 其他相關標書 ====== -->
 <div class="section">
   <div class="section-title">📋 其他相關標書</div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">HKDC 財務與採購系統部署（RFP）</div>
+    <div class="tag-row">
       <span class="tender-tag other">其他</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港設計中心（Hong Kong Design Centre, HKDC）</div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC — 中央數碼營銷服務（BODW、DX設計館）</div>
+      <div class="tender-deadline passed">📅 截標：2026年5月15日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>邀請服務提供商為HKDC部署財務與採購系統，提交全面的技術和財務方案。採用兩信封制，分別提交技術方案和財務方案。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>截止日期：</strong>2026年7月13日（周一）下午6:00（HKT）<br>
-      📅 <strong>發布日期：</strong>2026年6月12日
+      HKDC招標委聘服務供應商，為設計營商周及DX設計館提供數碼營銷服務，涵蓋社交媒體管理、內容營銷、數碼廣告投放等。同一批還有中國內地數碼營銷服務招標。
     </div>
-    <div class="deadline-box">⏰ 截止日期：2026年7月13日 18:00（尚餘 27 天）</div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：系統部署 / 財務採購</span>
+      <span>🏢 招標機構：香港設計中心</span>
+      <span>📧 marcomm@hkdesigncentre.org</span>
     </div>
-    <a href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank" class="source-link">🔗 查看 RFP 文件及提交方式</a>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源：HKDC Open Tender</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">HKDC BODW 及 DFA 獎項集中傳播服務（RFP）</div>
+    <div class="tag-row">
       <span class="tender-tag other">其他</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag active">🟢 進行中</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港設計中心（Hong Kong Design Centre, HKDC）</div>
+    <div class="tender-header">
+      <div class="tender-name">環保署 — 新界廚餘回收點營運及推廣服務</div>
+      <div class="tender-deadline">📅 截止：2026年6月24日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為HKDC及設計商業週（BODW）和DFA獎項提供公關服務。包括媒體關係、社交媒體推廣、活動宣傳等。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>截止日期：</strong>2026年7月2日（周四）下午5:00（HKT）<br>
-      📅 <strong>發布日期：</strong>2026年6月4日<br>
-      💬 <strong>簡介會：</strong>2026年6月8日（周一）下午4:00–5:00（HKT），地點：九龍深水埗通州街280號DX設計中心3樓 The Chamber
+      在新界營運及推廣廚餘回收點的服務，涉及社區推廣、宣傳教育及公眾參與活動策劃。
     </div>
-    <div class="deadline-box">⏰ 截止日期：2026年7月2日 17:00（尚餘 16 天）</div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：公關服務 / 品牌傳播</span>
+      <span>🏢 招標機構：環境保護署</span>
+      <span>🏷️ 環保/社區推廣</span>
     </div>
-    <a href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank" class="source-link">🔗 查看 RFP 文件及提交方式</a>
+    <a class="source-link" href="https://tenderimpulse.com/all-tender-list-from-country/get-hong-kong-tenders/2026-06-02/1" target="_blank">🔗 來源：Tender Impulse</a>
   </div>
 
   <div class="tender-card">
-    <div class="tender-header">
-      <div class="tender-name">HKDC DX設計中心及 DESIGN@HKG 集中傳播服務（RFP）</div>
+    <div class="tag-row">
       <span class="tender-tag other">其他</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag closed">⚫ 已截標</span>
     </div>
-    <div class="tender-org">📌 招標機構：香港設計中心（Hong Kong Design Centre, HKDC）</div>
+    <div class="tender-header">
+      <div class="tender-name">機電工程署 — 傳訊及公共關係服務</div>
+      <div class="tender-deadline passed">📅 截標：2026年3月12日</div>
+    </div>
     <div class="tender-detail">
-      📝 <strong>項目描述：</strong>為HKDC的DX設計中心及 DESIGN@HKG 提供公關服務。包括媒體關係、社交媒體推廣、活動宣傳等。<br>
-      💰 <strong>預算：</strong>未披露<br>
-      📅 <strong>截止日期：</strong>2026年7月2日（周四）下午5:00（HKT）<br>
-      📅 <strong>發布日期：</strong>2026年6月4日<br>
-      💬 <strong>簡介會：</strong>2026年6月8日（周一）下午2:30–3:30（HKT），地點：九龍深水埗通州街280號DX設計中心3樓 The Chamber
+      為機電工程署提供傳訊及公共關係服務，涵蓋媒體關係、企業傳訊、公關活動策劃等。編號：EMSD CCSD2025/39。
     </div>
-    <div class="deadline-box">⏰ 截止日期：2026年7月2日 17:00（尚餘 16 天）</div>
     <div class="tender-meta">
-      <span>📍 地區：香港</span>
-      <span>🏷️ 類別：公關服務 / 設計推廣</span>
+      <span>🏢 招標機構：機電工程署</span>
+      <span>📋 編號：EMSD CCSD2025/39</span>
     </div>
-    <a href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank" class="source-link">🔗 查看 RFP 文件及提交方式</a>
+    <a class="source-link" href="https://www.emsd.gov.hk/tc/tenders_contracts_and_consultancies/tender_notices/tender_notices/index.html" target="_blank">🔗 來源：機電工程署</a>
   </div>
-</div>
-
-<!-- 重要聯絡資訊 -->
-<div class="highlight-box">
-  <div class="title">📞 重要招標聯絡資訊</div>
-  <p><strong>香港設計中心（HKDC）招標通用郵箱：</strong>tender@hkdesigncentre.org<br>
-  <strong>營銷傳播諮詢郵箱：</strong>marcomm@hkdesigncentre.org<br>
-  <strong>香港政府招標公告：</strong><a href="https://www.fstb.gov.hk/tb/tc/business/gov_procurement/tender-notices.htm" target="_blank">財經事務及庫務局招標公告</a><br>
-  <strong>中國政府採購招標公告：</strong><a href="https://www.ccgp.gov.cn/" target="_blank">中國政府採購網</a><br>
-  <strong>廣告招標平台：</strong><a href="https://www.guanggaozhaobiao.com/" target="_blank">廣告招標網</a></p>
 </div>
 
 <div class="footer">
-  <p>📋 各界標書情報 · 每日 10:00 自動生成</p>
-  <p style="margin-top:8px; font-size:12px;">本報告搜羅市場上各大小標書項目，涵蓋廣告投放、影視製作、平面廣告、AI項目、微劇等領域<br>如有遺漏或需要更詳細資訊，請聯絡我們補充</p>
-  <p style="margin-top:8px; font-size:11px; color:#9ca3af;">WorkBuddy 自動化生成 · 2026年6月16日</p>
+  <p>📋 各界標書情報 — 2026年6月16日</p>
+  <p style="margin-top:8px;">資料來源：香港設計中心、機電工程署、Tender Impulse、中國政府採購網、中國采招網等</p>
+  <p style="margin-top:4px;">⚠️ 以上資訊僅供參考，投標前請查閱官方招標文件確認最新詳情</p>
+  <p style="margin-top:8px;font-size:11px;color:#94a3b8;">Generated by WorkBuddy Claw · <a href="https://dash.vigoradv.com">dash.vigoradv.com</a></p>
 </div>
 
 </body>
