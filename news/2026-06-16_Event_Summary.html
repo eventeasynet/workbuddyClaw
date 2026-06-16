@@ -33,6 +33,15 @@ body {
   font-size: 13px;
   margin-top: 10px;
 }
+.header .stats {
+  display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap;
+}
+.header .stat {
+  background: rgba(255,255,255,0.18);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+}
 .section {
   background: #f9fafb;
   border-radius: 12px;
@@ -58,11 +67,24 @@ body {
   margin-bottom: 16px;
   border: 1px solid #e5e7eb;
   transition: all 0.3s;
+  position: relative;
 }
 .event-card:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transform: translateY(-2px);
 }
+.lead-score {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.score-high { background: #fef2f2; color: #ef4444; }
+.score-mid  { background: #fefce8; color: #ca8a04; }
+.score-low  { background: #f0fdf4; color: #16a34a; }
 .event-header {
   display: flex;
   justify-content: space-between;
@@ -70,6 +92,7 @@ body {
   margin-bottom: 12px;
   flex-wrap: wrap;
   gap: 8px;
+  padding-right: 120px;
 }
 .event-name {
   font-size: 16px;
@@ -121,6 +144,50 @@ body {
   color: #db2777;
   margin-bottom: 4px;
 }
+.email-btn {
+  background: #ec4899;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.email-btn:hover { background: #db2777; }
+.email-block {
+  display: none;
+  margin-top: 12px;
+  padding: 12px;
+  background: #fdf2f8;
+  border-radius: 8px;
+}
+.email-block pre {
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #f9a8d4;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', monospace;
+  line-height: 1.6;
+  margin: 6px 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.copy-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.copy-btn:hover { background: #15803d; }
 .highlight-box {
   background: linear-gradient(135deg, #fdf2f8, #fce7f3);
   border-radius: 10px;
@@ -170,23 +237,510 @@ body {
 <div class="header">
   <h1>🎪 香港及世界活動情報</h1>
   <div class="subtitle">搜羅香港及世界各地即將舉辦的活動，助您發掘潛在客戶機會</div>
-  <div class="date-badge">📅 2026年6月16日</div>
+  <div class="date-badge">📅 2026年6月16日 · 每日 09:00 自動生成</div>
+  <div class="stats">
+    <div class="stat">📌 共 12 個活動</div>
+    <div class="stat">🔥 3 個高優先</div>
+    <div class="stat">⚡ 6 個中優先</div>
+    <div class="stat">📝 3 個低優先</div>
+  </div>
+</div>
+
+<!-- 戶外活動 -->
+<div class="section">
+  <div class="section-title">🌳 戶外活動</div>
+
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (預計 10萬+ 觀眾)</div>
+    <div class="event-header">
+      <div class="event-name">2026 永明香港國際龍舟節</div>
+      <div class="event-tag outdoor">戶外盛事</div>
+    </div>
+    <div class="event-date">📅 2026年6月19日 - 7月1日（連續13天）</div>
+    <div class="event-detail">
+      體驗充滿活力的節慶氣氛，尖沙咀海濱將化身為日夜同樂的龍舟節！連續13天於星光大道至梳士巴利花園之間的標誌性海濱地段，呈獻一連串互動精彩活動，包括龍舟競渡、嘉年華、文藝表演等。預計吸引 10 萬+ 觀眾入場。
+      <br><br>
+      <strong>潛在機會：</strong>大型戶外嘉年華需要觀眾報名、攤位報名、現場抽獎系統等，EventEasy.net 可提供完整解決方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 尖沙咀星光大道至梳士巴利花園海濱</span>
+      <span>🏢 香港旅遊發展局 × 中國香港龍舟總會</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.discoverhongkong.cn/events/dragon-boat-festival.html" target="_blank">discoverhongkong.cn</a><br>
+      ✉️ enquiry@discoverhongkong.com（香港旅發局）<br>
+      ✉️ hkcdba@hkcdba.org（中國香港龍舟總會）
+    </div>
+    <button class="email-btn" onclick="showEmail('dragon-boat')">📧 查看推廣電郵</button>
+    <div id="email-dragon-boat" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 2026 永明香港國際龍舟節嘅報名系統建議
+
+香港旅遊發展局 / 中國香港龍舟總會 您好，
+
+我係 EventEasy.net 團隊，我哋提供專業嘅網上報名系統，可以幫您處理龍舟節嘅觀眾報名、攤位登記、義工招募等流程。活動規模龐大，我哋嘅系統可以同時處理 10 萬+ 使用者報名，並提供多語言介面、實時數據儀表板、QR Code 入場等功能。
+
+期待進一步傾下合作方案！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: Registration System Proposal for 2026 Sun Life Hong Kong International Dragon Boat Festival
+
+Dear Hong Kong Tourism Board / HK China Dragon Boat Association,
+
+We are the EventEasy.net team. We provide a professional online registration system that can handle audience registration, booth booking, and volunteer recruitment for your Dragon Boat Festival. With our system you can process 100,000+ registrations simultaneously, with multi-language UI, real-time dashboards, and QR code entry.
+
+Looking forward to discussing partnership opportunities.
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('dragon-boat')">📋 複製電郵</button>
+    </div>
+    <a href="https://www.discoverhongkong.cn/events/dragon-boat-festival.html" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (預計 5萬+ 觀眾)</div>
+    <div class="event-header">
+      <div class="event-name">2026 永明香港國際龍舟邀請賽</div>
+      <div class="event-tag outdoor">體育賽事</div>
+    </div>
+    <div class="event-date">📅 2026年6月27-28日（星期六至日）</div>
+    <div class="event-detail">
+      2026 永明香港國際龍舟邀請賽 — 金禧五十載，乘風破浪！邀您共赴龍舟盛會。賽事包括標準龍 500米賽事，匯聚世界各地的頂尖龍舟運動員。
+      <br><br>
+      <strong>潛在機會：</strong>國際體育賽事需要參賽隊伍報名、觀眾預約、媒體登記等，EventEasy.net 嘅報名系統可一站式處理。
+    </div>
+    <div class="event-meta">
+      <span>📍 尖沙咀東部海濱</span>
+      <span>🏢 中國香港龍舟總會 × 永明金融</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://hkcdba.org/2026hkidbr" target="_blank">hkcdba.org/2026hkidbr</a><br>
+      ✉️ hkcdba@hkcdba.org
+    </div>
+    <button class="email-btn" onclick="showEmail('dragon-invite')">📧 查看推廣電郵</button>
+    <div id="email-dragon-invite" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：龍舟邀請賽報名系統合作建議
+
+中國香港龍舟總會 您好，
+
+我哋係 EventEasy.net 團隊，睇到 2026 永明香港國際龍舟邀請賽嘅籌備緊。我哋嘅網上報名系統可協助處理：
+1. 海外隊伍預先登記
+2. 觀眾座位預約
+3. 媒體/贊助商登記
+4. 即時賽程結果推送
+
+期待合作！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: Registration System Partnership for HK International Dragon Boat Invitational 2026
+
+Dear HK China Dragon Boat Association,
+
+We are the EventEasy.net team. We noticed the 2026 Sun Life HK International Dragon Boat Invitational is being prepared. Our registration system can help with:
+1. Overseas team pre-registration
+2. Audience seat booking
+3. Media/sponsor registration
+4. Real-time race result push notifications
+
+Looking forward to cooperation.
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('dragon-invite')">📋 複製電郵</button>
+    </div>
+    <a href="https://hkcdba.org/2026hkidbr" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 演唱會/表演 -->
+<div class="section">
+  <div class="section-title">🎤 演唱會 / 表演</div>
+
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (預計 1.5萬人 × 2場)</div>
+    <div class="event-header">
+      <div class="event-name">古天樂《LOUIS KOO MY FIRST SHOW》紅館演唱會</div>
+      <div class="event-tag concert">大型演唱會</div>
+    </div>
+    <div class="event-date">📅 2026年8月21-22日</div>
+    <div class="event-detail">
+      古天樂首次舉辦個人紅館演唱會《LOUIS KOO MY FIRST SHOW》，共兩場。票價分為 1080/880/680/480 港元四檔，6月26日信用卡優先訂票，6月29日平台套票預售，7月3日正式公開售票。預計兩場合共 1.5 萬+ 人入場。
+      <br><br>
+      <strong>潛在機會：</strong>大型演唱會需要粉絲會員管理、優先訂票登記、紀念品預購等，可主動聯絡主辦方提供增值方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 紅磡香港體育館（紅館）</span>
+      <span>🏢 太陽娛樂文化（古天樂公司）</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.tickethk.com" target="_blank">tickethk.com</a><br>
+      建議：透過 Cityline / 城市售票網查詢主辦方聯絡
+    </div>
+    <button class="email-btn" onclick="showEmail('louis-koo')">📧 查看推廣電郵</button>
+    <div id="email-louis-koo" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：演唱會粉絲會員管理系統合作建議
+
+太陽娛樂文化 / 古天樂團隊 您好，
+
+恭喜古生首次紅館個唱！我哋 EventEasy.net 提供演唱會粉絲會員管理及紀念品預購系統，可協助：
+1. 粉絲會員登記及分級
+2. 優先訂票抽籤系統
+3. 演唱會紀念品預購平台
+4. 紅館入場 QR Code 管理
+
+期待合作！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: Concert Fan Club Management System Partnership
+
+Dear Solar Entertainment / Louis Koo Team,
+
+Congratulations on Louis's first Hong Kong Coliseum concert! EventEasy.net provides concert fan management and merchandise pre-order systems, including:
+1. Fan club registration and tiering
+2. Priority ticketing lottery system
+3. Concert merchandise pre-order platform
+4. QR code entry management
+
+Looking forward to cooperation.
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('louis-koo')">📋 複製電郵</button>
+    </div>
+    <a href="https://www.tickethk.com/concerts" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 1萬+ 觀眾)</div>
+    <div class="event-header">
+      <div class="event-name">MC 張天賦紅館演唱會 2026</div>
+      <div class="event-tag concert">本地歌手</div>
+    </div>
+    <div class="event-date">📅 2026年（具體日期待定）</div>
+    <div class="event-detail">
+      MC 張天賦再度回歸紅館，預計舉行多場個人演唱會。本地新生代最受歡迎男歌手之一。
+      <br><br>
+      <strong>潛在機會：</strong>本地歌手演唱會需要粉絲 VIP 區管理、簽名會報名等增值服務。
+    </div>
+    <div class="event-meta">
+      <span>📍 紅磡香港體育館</span>
+      <span>🏢 三大娛樂文化</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      ✉️ info@tickethk.com
+    </div>
+    <button class="email-btn" onclick="showEmail('mc-cheung')">📧 查看推廣電郵</button>
+    <div id="email-mc-cheung" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：MC 演唱會 VIP 粉絲管理建議
+
+三大娛樂文化 您好，
+
+我哋 EventEasy.net 專注為演唱會提供 VIP 粉絲管理及簽名會報名系統，可支援 MC 張天賦嘅粉絲活動。
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: VIP Fan Management for MC Cheung Concert
+
+Dear Three Entertainment,
+
+EventEasy.net specializes in VIP fan management and meet-and-greet registration systems for concerts. We can support MC Cheung's fan activities.
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('mc-cheung')">📋 複製電郵</button>
+    </div>
+    <a href="https://www.tickethk.com/concerts" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 8千+ 觀眾)</div>
+    <div class="event-header">
+      <div class="event-name">李昊《數到一》香港演唱會 2026</div>
+      <div class="event-tag concert">內地歌手</div>
+    </div>
+    <div class="event-date">📅 2026年7月29日 20:15</div>
+    <div class="event-detail">
+      李昊「數到一」香港演唱會 KAHO LEE LIVE AT HONG KONG COLISEUM 2026 正式官宣。演出場館：紅磡香港體育館。優先發售時間：2026年6月17日11:00（大麥、攜程旅行）。
+    </div>
+    <div class="event-meta">
+      <span>📍 紅磡香港體育館</span>
+      <span>🏢 李昊工作室</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      售票平台：大麥 / 攜程旅行<br>
+      微博：@李昊工作室
+    </div>
+    <a href="https://weibo.com/5599605202/R3ilkxvvt" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 1萬+ 觀眾)</div>
+    <div class="event-header">
+      <div class="event-name">LiSA LiVE is Smile Always～15～ in Hong Kong</div>
+      <div class="event-tag concert">日本歌手</div>
+    </div>
+    <div class="event-date">📅 2026年7月18日（星期六）20:00</div>
+    <div class="event-detail">
+      日本當紅歌手 LiSA 香港個人演唱會，慶祝個人活動 15 週年巡迴。場館為亞洲國際博覽館 AsiaWorld-Arena。
+    </div>
+    <div class="event-meta">
+      <span>📍 亞洲國際博覽館 Arena</span>
+      <span>🏢 Live Nation Hong Kong</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.livenation.hk" target="_blank">livenation.hk</a><br>
+      ✉️ info@asiaworld-expo.com
+    </div>
+    <a href="https://www.livenation.hk/asiaworld-arena-tickets-vdp1317495" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 戶內活動 / 大型展覽 -->
+<div class="section">
+  <div class="section-title">🏢 戶內活動 / 大型展覽</div>
+
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (預計 50萬+ 入場人次)</div>
+    <div class="event-header">
+      <div class="event-name">第 35 屆香港書展 + 運動消閒博覽 + 零食世界</div>
+      <div class="event-tag indoor">大型展覽</div>
+    </div>
+    <div class="event-date">📅 2026年7月（具體日期待 HKTDC 公佈）</div>
+    <div class="event-detail">
+      香港貿易發展局主辦嘅年度文化盛會，每年 7 月於香港會議展覽中心舉行。書展自 1990 年創辦以來，已發展為香港夏季文化標誌性活動。2025 年第 33 屆書展吸引海峽兩岸暨港澳及東南亞出版商參展。
+      <br><br>
+      <strong>潛在機會：</strong>書展需要參展商報名、講座活動報名、購票入場系統。EventEasy.net 可支援 HKTDC 同期多場展覽嘅報名流程。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港會議展覽中心</span>
+      <span>🏢 香港貿易發展局 HKTDC</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://hkbookfair.hktdc.com" target="_blank">hkbookfair.hktdc.com</a><br>
+      查詢：<a href="https://www.hktdc.com/hkbookfair/sc/contact-us" target="_blank">HKTDC 聯絡頁面</a>
+    </div>
+    <button class="email-btn" onclick="showEmail('hktdc-bookfair')">📧 查看推廣電郵</button>
+    <div id="email-hktdc-bookfair" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：香港書展講座活動報名系統建議
+
+香港貿易發展局 您好，
+
+我哋 EventEasy.net 為 HKTDC 旗下嘅書展、美食博覽、家電家品博覽等提供活動報名系統，可支援：
+1. 作者簽名會/講座報名
+2. 參展商工作坊預約
+3. VIP 預覽日入場管理
+4. 多場同期展覽嘅統一管理後台
+
+期待合作！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: Author Talk & Workshop Registration System Proposal for HKTDC Book Fair
+
+Dear Hong Kong Trade Development Council,
+
+EventEasy.net provides registration systems for HKTDC's Book Fair, Food Expo, and Home Appliances Expo. We can support:
+1. Author talk/signing event registration
+2. Exhibitor workshop booking
+3. VIP preview day entry management
+4. Unified admin backend for concurrent fairs
+
+Looking forward to cooperation.
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('hktdc-bookfair')">📋 複製電郵</button>
+    </div>
+    <a href="https://hkbookfair.hktdc.com" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (預計 50萬+ 入場)</div>
+    <div class="event-header">
+      <div class="event-name">第 35 屆 HKTDC 香港美食博覽 2026</div>
+      <div class="event-tag indoor">美食展</div>
+    </div>
+    <div class="event-date">📅 2026年8月13-17日</div>
+    <div class="event-detail">
+      香港美食博覽由 HKTDC 主辦，已連續舉辦 35 屆。2025 年展會共吸引來自 36 個國家和地區嘅 1890 家企業參展，展覽期間超過 2 萬名專業觀眾參觀洽談，現場採購及觀展人次累計突破 50 萬。同期舉辦：美食商貿博覽、香港國際茶展、家電‧家品‧博覽、美與健生活博覽。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港會議展覽中心</span>
+      <span>🏢 香港貿易發展局 HKTDC</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.hktdc.com/event/hkfoodexpo/sc" target="_blank">hktdc.com/event/hkfoodexpo</a>
+    </div>
+    <button class="email-btn" onclick="showEmail('hktdc-food')">📧 查看推廣電郵</button>
+    <div id="email-hktdc-food" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：美食博覽專業觀眾登記系統建議
+
+HKTDC 您好，
+
+我哋 EventEasy.net 為美食博覽提供專業觀眾預登記系統，包括：
+1. 國際買家 Trade Portal
+2. 公眾日電子門票
+3. 參展商/買家配對
+4. 大會主題日管理
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: Trade Buyer Pre-registration System for HKTDC Food Expo
+
+Dear HKTDC,
+
+EventEasy.net provides trade buyer pre-registration systems for Food Expo, including:
+1. International buyer Trade Portal
+2. Public day e-ticketing
+3. Exhibitor/buyer matching
+4. Theme day management
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('hktdc-food')">📋 複製電郵</button>
+    </div>
+    <a href="https://mediaroom.hktdc.com/tc/events" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 2萬+ 入場)</div>
+    <div class="event-header">
+      <div class="event-name">Comic Con 香港 2026</div>
+      <div class="event-tag indoor">動漫展</div>
+    </div>
+    <div class="event-date">📅 2026年5月29-31日（剛結束，下屆預定 2027）</div>
+    <div class="event-detail">
+      全球動漫界傳奇盛事《香港 Comic Con 2026》於香港會議展覽中心舉辦，門票已正式發售。可作為明年活動嘅參考案例。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港會議展覽中心</span>
+      <span>🏢 Comic Con 官方</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      售票：cityline.com / tickethk.com
+    </div>
+    <a href="https://www.tkww.hk/a/202604/10/AP69d8a48fe4b04773b06b1378.html" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
 </div>
 
 <!-- 商會聚會 -->
 <div class="section">
   <div class="section-title">🏢 商會聚會</div>
-  
+
   <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 200+ 會員)</div>
     <div class="event-header">
-      <div class="event-name">香港中華總商會會員活動</div>
-      <div class="event-tag chamber">商會</div>
+      <div class="event-name">JUMPSTARTER 2026 — Alibaba 創業者大會</div>
+      <div class="event-tag chamber">創業商會</div>
     </div>
-    <div class="event-date">📅 持續活動</div>
+    <div class="event-date">📅 2026年（具體日期待公佈）</div>
     <div class="event-detail">
-      香港中華總商會（中總）持續舉辦各類商會活動，包括論壇、晚宴、交流會等。近日舉辦了「中總論壇2026」，主題為「對接『十五五』 共迎新機遇」，聚焦香港經濟前景及國家規劃帶來的發展新局。
+      由阿里巴巴創業者基金主辦嘅 JUMPSTARTER 2026 創業者大會，匯聚世界級講者、創新初創公司及寶貴嘅人際網絡機會。適合尋找初創客戶嘅活動管理系統供應商。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港</span>
+      <span>🏢 Alibaba 創業者基金 / 數碼港</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://2026.jumpstarter.hk" target="_blank">2026.jumpstarter.hk</a><br>
+      ✉️ info@jumpstarter.hk
+    </div>
+    <button class="email-btn" onclick="showEmail('jumpstarter')">📧 查看推廣電郵</button>
+    <div id="email-jumpstarter" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：JUMPSTARTER 創業者大會活動管理建議
+
+阿里巴巴創業者基金 您好，
+
+我哋 EventEasy.net 為創業活動提供一站式報名系統，支援 JUMPSTARTER 嘅：
+1. 初創團隊 Pitch 報名
+2. 投資者 1-on-1 配對
+3. 工作坊座位預約
+4. 多年活動數據累積
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: Startup Event Management Proposal for JUMPSTARTER 2026
+
+Dear Alibaba Entrepreneurs Fund,
+
+EventEasy.net provides end-to-end registration systems for startup events, supporting JUMPSTARTER's:
+1. Startup pitch registration
+2. Investor 1-on-1 matching
+3. Workshop seat booking
+4. Multi-year event data accumulation
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('jumpstarter')">📋 複製電郵</button>
+    </div>
+    <a href="https://2026.jumpstarter.hk" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+
+  <div class="event-card">
+    <div class="lead-score score-low">📝 低優先 (預計 50-100 會員)</div>
+    <div class="event-header">
+      <div class="event-name">AmCham Hong Kong 商會活動</div>
+      <div class="event-tag chamber">國際商會</div>
+    </div>
+    <div class="event-date">📅 2026年（持續舉辦）</div>
+    <div class="event-detail">
+      香港美國商會（AmCham）持續舉辦商業活動、研討會、Data Center 考察等。最近活動：AmCham goes to Equinix HK6 — A Discussion & Data Center Tour。適合 B2B 商業活動管理。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港</span>
+      <span>🏢 The American Chamber of Commerce in HK</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://www.amcham.org.hk" target="_blank">amcham.org.hk</a><br>
+      ✉️ amcham@amcham.org.hk
+    </div>
+    <a href="https://www.amcham.org.hk/events" target="_blank" class="source-link">🔗 查看詳情</a>
+  </div>
+</div>
+
+<!-- 晚會/慶典 -->
+<div class="section">
+  <div class="section-title">🎉 晚會 / 慶典</div>
+
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 500+ 賓客)</div>
+    <div class="event-header">
+      <div class="event-name">香港中華總商會（中總）2026 論壇及晚宴</div>
+      <div class="event-tag gala">商會晚宴</div>
+    </div>
+    <div class="event-date">📅 2026年（持續舉辦）</div>
+    <div class="event-detail">
+      香港中華總商會持續舉辦各類商會活動，包括論壇、晚宴、交流會等。「中總論壇 2026」主題為「對接『十五五』共迎新機遇」，聚焦香港經濟前景及國家規劃帶來嘅發展新局。
       <br><br>
-      <strong>潛在機會：</strong>商會活動通常需要活動報名系統、現場签到、問卷調查等，EventEasy.net 可提供完整解決方案。
+      <strong>潛在機會：</strong>商會晚宴需要賓客登記、座位安排、捐款系統等。
     </div>
     <div class="event-meta">
       <span>📍 香港</span>
@@ -194,210 +748,28 @@ body {
     </div>
     <div class="event-contact">
       <div class="label">📧 聯絡方式</div>
-      網站：<a href="https://www.cgcc.org.hk" target="_blank">www.cgcc.org.hk</a><br>
-      建議：可電郵介紹 EventEasy.net 給商會，提供活動管理解決方案
+      網站：<a href="https://www.cgcc.org.hk" target="_blank">cgcc.org.hk</a><br>
+      ✉️ info@cgcc.org.hk
     </div>
     <a href="https://www.cgcc.org.hk" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">香港大中華中小企業商會活動</div>
-      <div class="event-tag chamber">商會</div>
-    </div>
-    <div class="event-date">📅 定期活動</div>
-    <div class="event-detail">
-      香港大中華中小企業商會持續舉辦會員活動，包括新春團拜、研討會、交流會等。商會致力促進中小企業之間的合作與聯繫。
-      <br><br>
-      <strong>潛在機會：</strong>中小企業商會活動通常需要簡單易用的報名系統，EventEasy.net 的簡單操作介面非常適合中小企業使用。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港</span>
-      <span>🏢 香港大中華中小企業商會</span>
-    </div>
-    <div class="event-contact">
-      <div class="label">📧 聯絡方式</div>
-      網站：<a href="https://greaterchinasme.com" target="_blank">greaterchinasme.com</a>
-    </div>
-    <a href="https://greaterchinasme.com" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-</div>
-
-<!-- 戶內活動 -->
-<div class="section">
-  <div class="section-title">🏢 戶內活動</div>
-  
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">Jewellery & Gem ASIA Hong Kong 2026</div>
-      <div class="event-tag indoor">戶內展覽</div>
-    </div>
-    <div class="event-date">📅 2026年6月18-21日</div>
-    <div class="event-detail">
-      香港國際珠寶展是亞洲最具規模的珠寶商貿展覽之一，匯聚全球珠寶商、設計師、買家。展覽涵蓋鑽石、寶石、珍珠、珠寶設計等多個領域。
-      <br><br>
-      <strong>潛在機會：</strong>大型商貿展覽需要參展商報名、買家預登記、活動日程管理等，EventEasy.net 可提供完整解決方案。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港會議展覽中心</span>
-      <span>🏢 Informa Markets Asia Limited</span>
-    </div>
-    <div class="event-contact">
-      <div class="label">📧 聯絡方式</div>
-      📞 +852 3709 4992<br>
-      ✉️ visitjgf-hk@informa.com
-    </div>
-    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">Learning & Teaching Expo 2026</div>
-      <div class="event-tag indoor">戶內展覽</div>
-    </div>
-    <div class="event-date">📅 2026年6月25-27日</div>
-    <div class="event-detail">
-      教育及職業博覽，匯聚教育機構、培訓機構、教育科技企業等。是香港教育界年度盛事之一。
-      <br><br>
-      <strong>潛在機會：</strong>教育展需要參展商報名、研討會報名、會議日程管理等，EventEasy.net 可提供完整解決方案。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港會議展覽中心</span>
-      <span>🏢 Smart City Consortium Limited</span>
-    </div>
-    <div class="event-contact">
-      <div class="label">📧 聯絡方式</div>
-      📞 +852 3480 4230<br>
-      ✉️ info@smartcity.org.hk
-    </div>
-    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">In-Home Expo 2026</div>
-      <div class="event-tag indoor">戶內展覽</div>
-    </div>
-    <div class="event-date">📅 2026年6月25-28日</div>
-    <div class="event-detail">
-      家居博覽，展示最新家居產品、室內設計、智能家居等。適合家庭觀眾參觀。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港會議展覽中心</span>
-      <span>🏢 Exhibition Group Limited</span>
-    </div>
-    <div class="event-contact">
-      <div class="label">📧 聯絡方式</div>
-      📞 +852 2466 9663<br>
-      ✉️ marketing@exhibitiongroup.com.hk
-    </div>
-    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-</div>
-
-<!-- 演唱會/表演 -->
-<div class="section">
-  <div class="section-title">🎤 演唱會/表演</div>
-  
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">香港迪士尼樂園「Pixar Summer Fest」</div>
-      <div class="event-tag concert">主題活動</div>
-    </div>
-    <div class="event-date">📅 2026年6月12日至8月31日</div>
-    <div class="event-detail">
-      香港迪士尼首個以皮克斯為主題的夏季限定活動，包含主題遊樂設施、舞台演出、巡遊表演、角色互動，以及全新夜間匯演「Pixar 好友星空匯演」。匯演結合無人機表演、躍動噴泉、投影效果和大型充氣裝置。
-      <br><br>
-      <strong>潛在機會：</strong>主題公園活動需要門票管理、快速通關系統、活動日程管理等，EventEasy.net 可提供完整解決方案。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港迪士尼樂園</span>
-      <span>🏢 香港迪士尼樂園度假區</span>
-    </div>
-    <div class="event-contact">
-      <div class="label">📧 聯絡方式</div>
-      網站：<a href="https://www.hongkongdisneyland.com" target="_blank">www.hongkongdisneyland.com</a>
-    </div>
-    <a href="https://www.timeout.com.hk" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">PolyU Fashion Show 2026（理大時裝展 2026）</div>
-      <div class="event-tag concert">時裝展演</div>
-    </div>
-    <div class="event-date">📅 2026年7月3日</div>
-    <div class="event-detail">
-      香港理工大學時裝展，展示畢業生設計作品。是香港時裝界年度盛事之一。
-      <br><br>
-      <strong>潛在機會：</strong>時裝展需要模特兒報名、觀眾報名、座位安排等，EventEasy.net 可提供完整解決方案。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港理工大學</span>
-      <span>🏢 香港理工大學</span>
-    </div>
-    <div class="event-contact">
-      <div class="label">📧 聯絡方式</div>
-      📞 +852 2766 6500<br>
-      ✉️ sft.info@polyu.edu.hk
-    </div>
-    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-</div>
-
-<!-- 戶外活動 -->
-<div class="section">
-  <div class="section-title">🌳 戶外活動</div>
-  
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">2026 世界盃觀賽活動</div>
-      <div class="event-tag outdoor">戶外觀賽</div>
-    </div>
-    <div class="event-date">📅 2026年6月（世界盃期間）</div>
-    <div class="event-detail">
-      2026年世界盃賽事大多為香港時間凌晨時段，香港多個場地提供免費直播，部分場地24小時開放。商場、酒吧及食肆均設有直播活動。
-      <br><br>
-      <strong>潛在機會：</strong>世界盃觀賽活動需要報名管理、座位安排、食物訂購等，EventEasy.net 可提供完整解決方案。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港多個場地</span>
-      <span>🏢 各大商場、酒吧、食肆</span>
-    </div>
-    <a href="https://www.timeout.com.hk" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">元朗信芯園向日葵花田觀賞</div>
-      <div class="event-tag outdoor">戶外觀光</div>
-    </div>
-    <div class="event-date">📅 2026年夏季（6月盛放期）</div>
-    <div class="event-detail">
-      萬呎向日葵花田進入盛放期，遊客可自由漫步花田，近距離觀賞向日葵。園內設有紫藤花隧道、日本鳥居、荷蘭風車屋等多個打卡位。
-    </div>
-    <div class="event-meta">
-      <span>📍 元朗新田信芯園農莊</span>
-      <span>🏢 信芯園農莊</span>
-    </div>
-    <a href="https://www.timeout.com.hk" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
 </div>
 
 <!-- 畢業相關活動 -->
 <div class="section">
   <div class="section-title">🎓 畢業相關活動</div>
-  
+
   <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (預計 8000+ 畢業生及親友)</div>
     <div class="event-header">
-      <div class="event-name">香港大學學位頒授典禮（畢業典禮）</div>
-      <div class="event-tag graduation">畢業典禮</div>
+      <div class="event-name">香港大學第 215 屆學位頒授典禮</div>
+      <div class="event-tag graduation">大學畢業典禮</div>
     </div>
-    <div class="event-date">📅 2026年11-12月（第215屆）</div>
+    <div class="event-date">📅 2026年11-12月</div>
     <div class="event-detail">
-      香港大學每年舉辦兩次學位頒授典禮，夏季（11-12月）和冬季。第215屆學位頒授典禮計劃於11月和12月舉行。
+      香港大學每年舉辦兩次學位頒授典禮，夏季（11-12月）和冬季。第 215 屆學位頒授典禮計劃於 11 月和 12 月舉行。各院系典禮時間表陸續公佈。
       <br><br>
-      <strong>潛在機會：</strong>大學畢業典禮需要賓客報名、座位安排、紀念品訂購等，EventEasy.net 可提供完整解決方案。建議提前3-4個月聯絡各大學。
+      <strong>潛在機會：</strong>大學畢業典禮需要賓客報名、座位安排、紀念品訂購、攝影預約等，EventEasy.net 可提供完整解決方案。建議提前 3-4 個月聯絡各大學（即係而家 6-7 月）。
     </div>
     <div class="event-meta">
       <span>📍 香港大學</span>
@@ -405,78 +777,97 @@ body {
     </div>
     <div class="event-contact">
       <div class="label">📧 聯絡方式</div>
-      網站：<a href="https://www.hku.hk/congregation-information/c_index.html" target="_blank">HKU Congregation Information</a>
+      網站：<a href="https://www.hku.hk/congregation-information/c_index.html" target="_blank">HKU Congregation Information</a><br>
+      ✉️ cong@hku.hk
+    </div>
+    <button class="email-btn" onclick="showEmail('hku-cong')">📧 查看推廣電郵</button>
+    <div id="email-hku-cong" class="email-block">
+      <h4 style="color:#db2777; font-size:14px;">【繁體中文版本】</h4>
+      <pre data-email-zh>標題：HKU 學位頒授典禮報名系統合作建議
+
+香港大學 教務處 您好，
+
+我哋 EventEasy.net 為大學畢業典禮提供專業報名系統，支援：
+1. 畢業生賓客網上登記（每名畢業生 2-4 位親友）
+2. QR Code 入場證發送
+3. 紀念袍租賃/購買預約
+4. 典禮攝影套餐預購
+5. 多場同期典禮分流管理
+
+建議提早 3-4 個月（即現時）展開合作準備。
+
+EventEasy.net 團隊
+eventeasynet@gmail.com</pre>
+      <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
+      <pre data-email-en>Subject: HKU Congregation Registration System Partnership Proposal
+
+Dear HKU Registry,
+
+EventEasy.net provides professional registration systems for university graduation ceremonies, including:
+1. Graduate guest online registration (2-4 guests per graduate)
+2. QR code entry pass delivery
+3. Gown rental/purchase booking
+4. Ceremony photography package pre-order
+5. Multi-ceremony traffic management
+
+Recommend starting cooperation preparation 3-4 months early (i.e., now).
+
+The EventEasy.net Team
+eventeasynet@gmail.com</pre>
+      <button class="copy-btn" onclick="copyEmail('hku-cong')">📋 複製電郵</button>
     </div>
     <a href="https://www.hku.hk/congregation-information/c_index.html" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
 
-  <div class="no-events">
-    📭 其他大學畢業典禮資訊持續更新中，建議提前關注各大學官網
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (預計 6000+ 畢業生)</div>
+    <div class="event-header">
+      <div class="event-name">香港中文大學 2026 學位頒授典禮</div>
+      <div class="event-tag graduation">大學畢業典禮</div>
+    </div>
+    <div class="event-date">📅 2026年11-12月（具體日期待公佈）</div>
+    <div class="event-detail">
+      香港中文大學 2026 年學位頒授典禮，每年 11-12 月舉行。CUHK 同樣需要處理大量畢業生及親友嘅典禮登記。
+      <br><br>
+      <strong>潛在機會：</strong>與 HKU 同步推廣 EventEasy.net 嘅典禮報名系統，兩校共用同一個合作方案。
+    </div>
+    <div class="event-meta">
+      <span>📍 香港中文大學</span>
+      <span>🏢 香港中文大學 教務處</span>
+    </div>
+    <div class="event-contact">
+      <div class="label">📧 聯絡方式</div>
+      網站：<a href="https://cong.cuhk.edu.hk" target="_blank">cong.cuhk.edu.hk</a><br>
+      ✉️ cong@cuhk.edu.hk
+    </div>
+    <a href="https://cong.cuhk.edu.hk" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
 </div>
 
 <!-- 婚禮相關 -->
 <div class="section">
   <div class="section-title">💒 婚禮相關</div>
-  
+
   <div class="highlight-box">
     <div class="title">💡 潛在商機</div>
     婚禮相關活動（婚紗展、婚禮博覽）通常需要強大的報名系統、供應商管理、新人配對等功能。EventEasy.net 可針對婚禮行業開發專屬功能模組，建議主動聯絡婚禮展主辦機構。
   </div>
 
   <div class="event-card">
+    <div class="lead-score score-low">📝 低優先 (需持續關注)</div>
     <div class="event-header">
-      <div class="event-name">婚禮展覽/婚紗展（持續關注中）</div>
-      <div class="event-tag wedding">婚禮</div>
+      <div class="event-name">香港婚紗展 / Wedding Expo（持續關注中）</div>
+      <div class="event-tag wedding">婚禮博覽</div>
     </div>
     <div class="event-detail">
       香港每年有多場婚禮展覽和婚紗展，包括香港婚紗展、Wedding Expo 等。這些活動通常需要強大的報名系統和供應商管理功能。
       <br><br>
-      <strong>建議行動：</strong>主動搜尋香港婚禮展主辦機構，電郵介紹 EventEasy.net 的婚禮行業專屬功能。
-    </div>
-  </div>
-</div>
-
-<!-- 晚會/慶典 -->
-<div class="section">
-  <div class="section-title">🎉 晚會/慶典</div>
-  
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">獅‧友好聲音之(獅子山下, 為善高歌)慈善歌唱比賽</div>
-      <div class="event-tag gala">慈善活動</div>
-    </div>
-    <div class="event-date">📅 2026年6月19日</div>
-    <div class="event-detail">
-      慈善歌唱比賽，僅限受邀參加。活動旨在籌款和推廣慈善事業。
-      <br><br>
-      <strong>潛在機會：</strong>慈善活動需要捐款管理、參加者報名、票務管理等，EventEasy.net 可提供完整解決方案。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港</span>
-      <span>🏢 Evermind Marketing and Production Ltd</span>
-    </div>
-    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
-  </div>
-
-  <div class="event-card">
-    <div class="event-header">
-      <div class="event-name">理大時裝展 2026（時裝界盛事）</div>
-      <div class="event-tag gala">時裝展演</div>
-    </div>
-    <div class="event-date">📅 2026年7月3日</div>
-    <div class="event-detail">
-      香港理工大學時裝展是香港時裝界年度盛事，展示畢業生設計作品。邀請業界人士、媒體、校友參加。
-    </div>
-    <div class="event-meta">
-      <span>📍 香港理工大學</span>
-      <span>🏢 香港理工大學</span>
+      <strong>建議行動：</strong>主動搜尋香港婚禮展主辦機構，電郵介紹 EventEasy.net 嘅婚禮行業專屬功能。
     </div>
     <div class="event-contact">
       <div class="label">📧 聯絡方式</div>
-      ✉️ sft.info@polyu.edu.hk
+      暫未搵到特定主辦單位電郵 — 建議直接搜尋「Hong Kong Wedding Expo 2026 organizer」
     </div>
-    <a href="https://www.hkcec.com/en/event-calendar" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
 </div>
 
@@ -484,20 +875,22 @@ body {
 <div class="highlight-box">
   <div class="title">🎯 本週重點推廣機會</div>
   <div style="font-size:14px; line-height:1.8;">
-    <p><strong>1. Jewellery & Gem ASIA Hong Kong（6月18-21日）</strong><br>
-    聯絡：visitjgf-hk@informa.com / +852 3709 4992<br>
-    大型商貿展覽，需要參展商報名、買家預登記系統</p>
-    
-    <p><strong>2. Learning & Teaching Expo 2026（6月25-27日）</strong><br>
-    聯絡：info@smartcity.org.hk / +852 3480 4230<br>
-    教育展，需要參展商報名、研討會報名系統</p>
-    
-    <p><strong>3. 香港各大學畢業典禮（11-12月）</strong><br>
-    建議提前3-4個月聯絡各大學，提供畢業典禮報名解決方案</p>
-    
-    <p><strong>4. 香港中華總商會</strong><br>
-    網站：www.cgcc.org.hk<br>
-    持續舉辦商會活動，可提供活動管理解決方案</p>
+    <p><strong>1. 2026 永明香港國際龍舟節（6月19日-7月1日）</strong><br>
+    聯絡：enquiry@discoverhongkong.com / hkcdba@hkcdba.org<br>
+    10 萬+ 觀眾，需要觀眾報名、攤位登記、義工招募系統</p>
+
+    <p><strong>2. HKTDC 香港美食博覽 2026（8月13-17日）</strong><br>
+    50 萬+ 入場人次，需要專業觀眾預登記、Trade Portal 系統</p>
+
+    <p><strong>3. 香港大學 + 中大 畢業典禮（11-12月）</strong><br>
+    聯絡：cong@hku.hk / cong@cuhk.edu.hk<br>
+    建議即時聯絡（提早 3-4 個月），提供畢業典禮報名方案</p>
+
+    <p><strong>4. 古天樂紅館演唱會（8月21-22日）</strong><br>
+    1.5 萬+ 觀眾，可聯絡主辦方提供紀念品預購及粉絲管理系統</p>
+
+    <p><strong>5. HKTDC 香港書展 2026（7月）</strong><br>
+    數十萬入場人次，需要講座報名、作者簽名會系統</p>
   </div>
 </div>
 
@@ -506,6 +899,30 @@ body {
   <p style="margin-top:8px;">💡 如發現有興趣的活動，歡迎將 EventEasy.net 介紹給主辦機構！</p>
   <p style="margin-top:8px; font-size:11px; color:#9ca3af;">本報告由 WorkBuddy AI 自動生成 · 2026年6月16日</p>
 </div>
+
+<script>
+function showEmail(id) {
+  var el = document.getElementById('email-' + id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+function copyEmail(id) {
+  var block = document.getElementById('email-' + id);
+  var zh = block.querySelector('pre[data-email-zh]').textContent;
+  var en = block.querySelector('pre[data-email-en]').textContent;
+  var text = zh + '\n\n---\n\n' + en;
+  navigator.clipboard.writeText(text).then(function() {
+    alert('✅ 電郵已複製到剪貼簿！\n（繁體中文 + 英文雙語）');
+  }, function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✅ 電郵已複製到剪貼簿！');
+  });
+}
+</script>
 
 </body>
 </html>
