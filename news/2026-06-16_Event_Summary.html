@@ -188,6 +188,17 @@ body {
   margin-top: 4px;
 }
 .copy-btn:hover { background: #15803d; }
+.edit-btn { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; margin-left: 6px; font-size: 13px; }
+.edit-btn:hover { background: #2563eb; }
+.save-btn { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; margin-left: 6px; font-size: 13px; display: none; }
+.save-btn:hover { background: #059669; }
+.send-btn { background: #8b5cf6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; margin-left: 6px; font-size: 13px; }
+.send-btn:hover { background: #7c3aed; }
+.email-block textarea { width: 100%; min-height: 300px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.5; padding: 12px; border-radius: 6px; border: 2px solid #ec4899; background: white; color: #1f2937; resize: vertical; display: none; }
+.save-status { font-size: 12px; margin-top: 6px; display: none; }
+.save-status.success { color: #10b981; }
+.save-status.error { color: #ef4444; }
+.email-action-bar { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .highlight-box {
   background: linear-gradient(135deg, #fdf2f8, #fce7f3);
   border-radius: 10px;
@@ -232,7 +243,7 @@ body {
 }
 </style>
 </head>
-<body>
+<body data-drive-file-id="" data-github-path="news/2026-06-16_Event_Summary.html">
 
 <div class="header">
   <h1>🎪 香港及世界活動情報</h1>
@@ -285,6 +296,7 @@ body {
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: Registration System Proposal for 2026 Sun Life Hong Kong International Dragon Boat Festival
 
@@ -296,7 +308,14 @@ Looking forward to discussing partnership opportunities.
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('dragon-boat')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('dragon-boat')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('dragon-boat')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-dragon-boat" onclick="saveEdit('dragon-boat')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('dragon-boat')">📧 發送</button>
+        <span class="save-status" id="status-dragon-boat"></span>
+      </div>
     </div>
     <a href="https://www.discoverhongkong.cn/events/dragon-boat-festival.html" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -339,6 +358,7 @@ eventeasynet@gmail.com</pre>
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: Registration System Partnership for HK International Dragon Boat Invitational 2026
 
@@ -354,7 +374,14 @@ Looking forward to cooperation.
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('dragon-invite')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('dragon-invite')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('dragon-invite')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-dragon-invite" onclick="saveEdit('dragon-invite')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('dragon-invite')">📧 發送</button>
+        <span class="save-status" id="status-dragon-invite"></span>
+      </div>
     </div>
     <a href="https://hkcdba.org/2026hkidbr" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -402,6 +429,7 @@ eventeasynet@gmail.com</pre>
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: Concert Fan Club Management System Partnership
 
@@ -417,7 +445,14 @@ Looking forward to cooperation.
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('louis-koo')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('louis-koo')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('louis-koo')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-louis-koo" onclick="saveEdit('louis-koo')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('louis-koo')">📧 發送</button>
+        <span class="save-status" id="status-louis-koo"></span>
+      </div>
     </div>
     <a href="https://www.tickethk.com/concerts" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -453,6 +488,7 @@ eventeasynet@gmail.com</pre>
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: VIP Fan Management for MC Cheung Concert
 
@@ -462,7 +498,14 @@ EventEasy.net specializes in VIP fan management and meet-and-greet registration 
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('mc-cheung')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('mc-cheung')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('mc-cheung')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-mc-cheung" onclick="saveEdit('mc-cheung')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('mc-cheung')">📧 發送</button>
+        <span class="save-status" id="status-mc-cheung"></span>
+      </div>
     </div>
     <a href="https://www.tickethk.com/concerts" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -554,6 +597,7 @@ eventeasynet@gmail.com</pre>
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: Author Talk & Workshop Registration System Proposal for HKTDC Book Fair
 
@@ -569,7 +613,14 @@ Looking forward to cooperation.
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('hktdc-bookfair')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('hktdc-bookfair')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('hktdc-bookfair')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-hktdc-bookfair" onclick="saveEdit('hktdc-bookfair')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('hktdc-bookfair')">📧 發送</button>
+        <span class="save-status" id="status-hktdc-bookfair"></span>
+      </div>
     </div>
     <a href="https://hkbookfair.hktdc.com" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -607,6 +658,7 @@ HKTDC 您好，
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: Trade Buyer Pre-registration System for HKTDC Food Expo
 
@@ -620,7 +672,14 @@ EventEasy.net provides trade buyer pre-registration systems for Food Expo, inclu
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('hktdc-food')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('hktdc-food')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('hktdc-food')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-hktdc-food" onclick="saveEdit('hktdc-food')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('hktdc-food')">📧 發送</button>
+        <span class="save-status" id="status-hktdc-food"></span>
+      </div>
     </div>
     <a href="https://mediaroom.hktdc.com/tc/events" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -685,6 +744,7 @@ eventeasynet@gmail.com</pre>
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: Startup Event Management Proposal for JUMPSTARTER 2026
 
@@ -698,7 +758,14 @@ EventEasy.net provides end-to-end registration systems for startup events, suppo
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('jumpstarter')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('jumpstarter')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('jumpstarter')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-jumpstarter" onclick="saveEdit('jumpstarter')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('jumpstarter')">📧 發送</button>
+        <span class="save-status" id="status-jumpstarter"></span>
+      </div>
     </div>
     <a href="https://2026.jumpstarter.hk" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -798,6 +865,7 @@ eventeasynet@gmail.com</pre>
 
 EventEasy.net 團隊
 eventeasynet@gmail.com</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
       <h4 style="color:#db2777; font-size:14px;">【英文版本】</h4>
       <pre data-email-en>Subject: HKU Congregation Registration System Partnership Proposal
 
@@ -814,7 +882,14 @@ Recommend starting cooperation preparation 3-4 months early (i.e., now).
 
 The EventEasy.net Team
 eventeasynet@gmail.com</pre>
-      <button class="copy-btn" onclick="copyEmail('hku-cong')">📋 複製電郵</button>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('hku-cong')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('hku-cong')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-hku-cong" onclick="saveEdit('hku-cong')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('hku-cong')">📧 發送</button>
+        <span class="save-status" id="status-hku-cong"></span>
+      </div>
     </div>
     <a href="https://www.hku.hk/congregation-information/c_index.html" target="_blank" class="source-link">🔗 查看詳情</a>
   </div>
@@ -901,6 +976,8 @@ eventeasynet@gmail.com</pre>
 </div>
 
 <script>
+var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec';
+
 function showEmail(id) {
   var el = document.getElementById('email-' + id);
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
@@ -921,6 +998,158 @@ function copyEmail(id) {
     document.body.removeChild(ta);
     alert('✅ 電郵已複製到剪貼簿！');
   });
+}
+
+// === 編輯功能 ===
+function toggleEdit(id) {
+  var section = document.getElementById('email-' + id);
+  var preZh = section.querySelector('pre[data-email-zh]');
+  var preEn = section.querySelector('pre[data-email-en]');
+  var taZh = section.querySelector('textarea[data-email-zh-edit]');
+  var taEn = section.querySelector('textarea[data-email-en-edit]');
+  var editBtn = section.querySelector('.edit-btn');
+  var saveBtn = document.getElementById('save-' + id);
+
+  if (!taZh || !taEn) return;
+
+  // 查看模式 → 編輯模式
+  if (taZh.style.display === 'none' || taZh.style.display === '') {
+    taZh.value = preZh.textContent;
+    taEn.value = preEn.textContent;
+    preZh.style.display = 'none';
+    preEn.style.display = 'none';
+    taZh.style.display = 'block';
+    taEn.style.display = 'block';
+    editBtn.textContent = '👁️ 取消編輯';
+    editBtn.style.background = '#6b7280';
+    saveBtn.style.display = 'inline-block';
+  } else {
+    // 編輯模式 → 查看模式（不保存）
+    preZh.style.display = 'block';
+    preEn.style.display = 'block';
+    taZh.style.display = 'none';
+    taEn.style.display = 'none';
+    editBtn.textContent = '✏️ 編輯電郵';
+    editBtn.style.background = '#3b82f6';
+    saveBtn.style.display = 'none';
+  }
+}
+
+// === 保存功能 ===
+function saveEdit(id) {
+  var section = document.getElementById('email-' + id);
+  var preZh = section.querySelector('pre[data-email-zh]');
+  var preEn = section.querySelector('pre[data-email-en]');
+  var taZh = section.querySelector('textarea[data-email-zh-edit]');
+  var taEn = section.querySelector('textarea[data-email-en-edit]');
+  var statusEl = document.getElementById('status-' + id);
+  var saveBtn = document.getElementById('save-' + id);
+
+  if (!taZh || !taEn) return;
+
+  // 1. 更新本地 pre 內容
+  preZh.textContent = taZh.value;
+  preEn.textContent = taEn.value;
+
+  // 2. 切換回查看模式
+  preZh.style.display = 'block';
+  preEn.style.display = 'block';
+  taZh.style.display = 'none';
+  taEn.style.display = 'none';
+  section.querySelector('.edit-btn').textContent = '✏️ 編輯電郵';
+  section.querySelector('.edit-btn').style.background = '#3b82f6';
+  saveBtn.style.display = 'none';
+
+  // 3. 顯示保存狀態
+  statusEl.textContent = '⏳ 保存中...';
+  statusEl.className = 'save-status';
+  statusEl.style.display = 'inline';
+
+  // 4. 發送到 GAS API 更新 Google Drive + GitHub
+  var fileId = document.body.getAttribute('data-drive-file-id') || '';
+  var githubPath = document.body.getAttribute('data-github-path') || '';
+  var updatedHtml = document.documentElement.outerHTML;
+
+  var payload = {
+    action: 'update_html',
+    fileId: fileId,
+    content: '<!DOCTYPE html>\n' + updatedHtml,
+    githubPath: githubPath
+  };
+
+  // 用 text/plain 避免 CORS preflight（application/json 會觸發 OPTIONS 請求被 GAS 拒絕）
+  fetch(GAS_API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  }).then(function() {
+    statusEl.textContent = '✅ 已保存（GDrive + GitHub）';
+    statusEl.className = 'save-status success';
+    setTimeout(function() { statusEl.style.display = 'none'; }, 5000);
+  }).catch(function(err) {
+    statusEl.textContent = '❌ 保存失敗：' + err.message;
+    statusEl.className = 'save-status error';
+    console.error('Save error:', err);
+  });
+}
+
+// === 發送功能（mailto:） ===
+function sendEmail(id) {
+  var section = document.getElementById('email-' + id);
+  var preZh = section.querySelector('pre[data-email-zh]');
+  var preEn = section.querySelector('pre[data-email-en]');
+  var taZh = section.querySelector('textarea[data-email-zh-edit]');
+  var taEn = section.querySelector('textarea[data-email-en-edit]');
+
+  // 優先使用編輯中的內容
+  var zhText = (taZh && taZh.style.display !== 'none') ? taZh.value : preZh.textContent;
+  var enText = (taEn && taEn.style.display !== 'none') ? taEn.value : preEn.textContent;
+
+  // 找出收件人
+  var card = section.closest('.event-card');
+  var emailLink = card ? card.querySelector('.event-contact a[href^="mailto:"]') : null;
+  var recipient = emailLink ? emailLink.textContent.trim() : '';
+
+  // 從中文版本提取標題
+  var subject = '';
+  var zhLines = zhText.split('\n');
+  for (var i = 0; i < zhLines.length; i++) {
+    if (zhLines[i].indexOf('標題：') === 0 || zhLines[i].indexOf('标题：') === 0) {
+      subject = zhLines[i].replace(/^標題：|^标题：/, '').trim();
+      break;
+    }
+  }
+
+  if (!subject) {
+    var enLines = enText.split('\n');
+    for (var j = 0; j < enLines.length; j++) {
+      if (enLines[j].indexOf('Subject:') === 0) {
+        subject = enLines[j].replace(/^Subject:\s*/, '').trim();
+        break;
+      }
+    }
+  }
+
+  // 選擇語言版本
+  var useZh = confirm('📧 發送電郵\n\n選擇語言版本：\n\n✅ 確定 = 繁體中文版本\n❌ 取消 = 英文版本');
+  var body = useZh ? zhText : enText;
+
+  // 構建 mailto 連結
+  var mailto = 'mailto:' + encodeURIComponent(recipient) +
+    '?subject=' + encodeURIComponent(subject) +
+    '&body=' + encodeURIComponent(body);
+
+  // mailto URL 有長度限制
+  if (mailto.length > 2000) {
+    navigator.clipboard.writeText(body).then(function() {
+      alert('📋 電郵內容已複製到剪貼簿！\n\nmailto 連結過長，請手動操作：\n1. 打開 Gmail / Outlook\n2. 收件人：' + recipient + '\n3. 主旨：' + subject + '\n4. 按 Ctrl+V 貼上內容\n5. 發送');
+    }, function() {
+      alert('❌ 複製失敗，請手動複製電郵內容');
+    });
+  } else {
+    window.location.href = mailto;
+  }
 }
 </script>
 
