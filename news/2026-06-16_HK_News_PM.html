@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌇 下午新聞 - 6月16日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #744210 0%, #975a16 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(116,66,16,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .section-hk .section-title { color: #c53030; border-bottom-color: #fc8181; }
+  .section-cn .section-title { color: #b7791f; border-bottom-color: #f6e05e; }
+  .section-intl .section-title { color: #2b6cb0; border-bottom-color: #90cdf4; }
+  .section-fin .section-title { color: #2f855a; border-bottom-color: #9ae6b4; }
+  .section-tech .section-title { color: #6b46c1; border-bottom-color: #d6bcfa; }
+  .section-sport .section-title { color: #c05621; border-bottom-color: #fbd38d; }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #9b2c2c; }
+  .tag-weather { background: #bee3f8; color: #2a4365; }
+  .tag-finance { background: #c6f6d5; color: #22543d; }
+  .tag-tech { background: #e9d8fd; color: #44337a; }
+  .tag-property { background: #feebc8; color: #7b341e; }
+  .tag-intl { background: #bee3f8; color: #2a4365; }
+  .tag-social { background: #fed7e2; color: #702459; }
+  .tag-edu { background: #c6f6d5; color: #22543d; }
+  .tag-politics { background: #e9d8fd; color: #44337a; }
+  .tag-sport { background: #feebc8; color: #7b341e; }
+  .tag-space { background: #bee3f8; color: #2a4365; }
+  .news-title {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #1a365d;
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+  .news-desc {
+    font-size: 0.85em;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: #a0aec0;
+    font-size: 0.78em;
+  }
+  .focus-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #c53030;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .focus-box .focus-title {
+    font-weight: 700;
+    color: #c53030;
+    font-size: 1em;
+    margin-bottom: 6px;
+  }
+  .focus-box .focus-text {
+    font-size: 0.88em;
+    color: #742a2a;
+    line-height: 1.6;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .market-bar { flex-direction: column; gap: 8px; }
+    .section { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>🌇 下午新聞 - 6月16日</h1>
+  <div class="subtitle">本港及國際新聞撮要 | 下午版</div>
+  <div class="date-badge">📅 2026年6月16日 星期二</div>
+</div>
+
+<!-- Market Bar -->
+<div class="market-bar">
+  <div class="market-item">
+    <div class="label">恒生指數</div>
+    <div class="value">24,493</div>
+    <div class="change down">▼ -348</div>
+  </div>
+  <div class="market-item">
+    <div class="label">國企指數</div>
+    <div class="value">8,375</div>
+    <div class="change down">▼ -0.6%</div>
+  </div>
+  <div class="market-item">
+    <div class="label">成交額</div>
+    <div class="value">2,498億</div>
+    <div class="change" style="color:#718096;">一個半月新低</div>
+  </div>
+  <div class="market-item">
+    <div class="label">港股氣氛</div>
+    <div class="value" style="font-size:0.9em;">ATM領跌</div>
+    <div class="change down">聯想逆升4%</div>
+  </div>
+</div>
+
+<!-- 焦點 -->
+<div class="focus-box">
+  <div class="focus-title">🔥 今日焦點：內地經濟數據遜預期 + 美伊協議持續發酵 + 世界盃4場全平</div>
+  <div class="focus-text">內地5月零售及固投數據雙雙遜預期，恒指挫348點成交縮至近月新低；美伊初步協議下霍爾木茲海峽將重開；世界盃西班牙0:0遭佛得角逼和成最大冷門</div>
+</div>
+
+<!-- 🇭🇰 本港新聞 -->
+<div class="section section-hk">
+  <div class="section-title">🇭🇰 本港新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">本港最新失業率維持3.7% 逾14.1萬人無工開 微增1900人</div>
+    <div class="news-desc">政府統計處公布3月至5月失業率維持3.7%，就業不足率1.5%。總就業人數減少約8,700人至3,639,300人。勞工及福利局局長孫玉菡表示本地經濟持續增長將支持勞工市場。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政情</span>
+    <div class="news-title">夏寶龍訪港 多名局長匯報北部都會區發展</div>
+    <div class="news-desc">包括運輸基建、簡約公屋、北都大學城等項目。夏寶龍此行重點了解北都建設進度及大灣區合作規劃，突顯中央對香港北部發展的關注。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政情</span>
+    <div class="news-title">公務員劃一加薪2% 議員質疑不跟隨薪酬趨勢調查</div>
+    <div class="news-desc">局方回應稱經濟復甦不平均需審慎理財。有議員指薪酬趨勢調查結果高於2%，質疑政府帶頭壓抑工資，影響公務員士氣及私人市場薪酬走向。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-breaking">🚨突發</span>
+    <div class="news-title">反外圍賭博｜O記拘150人 涉賭款逾3億元</div>
+    <div class="news-desc">外圍集團設24小時上落分中心處理賭款。行動中檢獲大量現金及投注記錄，為今年以來最大規模反外圍賭博行動之一。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">陳敏兒離世｜TVB明晚重播《獵鷹》悼念 與劉德華44年摯友緣</div>
+    <div class="news-desc">最後合照互望極感人。陳敏兒縱橫演藝圈數十載，與劉德華由《獵鷹》結緣，情誼深厚，其離世令圈中好友及觀眾不捨。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">王鄭浚仁獲委任器官捐贈宣傳大使 分享失聲經歷：如獲第二次生命</div>
+    <div class="news-desc">王鄭浚仁曾因聲帶問題險告別演藝事業，康復後積極推廣器官捐贈，呼籲市民登記成為器官捐贈者。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-edu">📚教育</span>
+    <div class="news-title">科大舉辦數碼藝術展 結合混合實境人工智能</div>
+    <div class="news-desc">展覽融合MR技術與AI生成藝術，探討科技與人文創意的交匯，展示本地高等教育在數碼藝術領域的前沿探索。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-weather">🌤️天氣</span>
+    <div class="news-title">今日天氣｜氣溫27°C 濕度90% 暖濕有霧</div>
+    <div class="news-desc">今日大致多雲，有一兩陣雨。日間短暫陽光，市區最高氣溫約31°C。吹和緩南至西南風。展望未來數天持續炎熱。</div>
+  </div>
+</div>
+
+<!-- 🇨🇳 中國新聞 -->
+<div class="section section-cn">
+  <div class="section-title">🇨🇳 中國新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">深圳惡劣天氣｜部分往來西九及內地列車取消 全市今日下午停課</div>
+    <div class="news-desc">深圳暴雨天氣持續，當局宣布全市下午停課，多條往返西九龍的高鐵列車班次取消，影響大量跨境通勤市民。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">寶馬女司機失控直衝喪宴 慘釀1死7傷</div>
+    <div class="news-desc">內地一起嚴重交通事故，女司機駕駛寶馬失控衝入喪禮現場，造成1死7傷慘劇。肇事司機已被控制，事故原因調查中。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">36歲單親爸參加幼稚園親子馬拉松猝死 與兒拖手成最後合照</div>
+    <div class="news-desc">一名36歲單親父親參加幼稚園親子馬拉松活動時突然暈倒，送院後不治。與兒子拖手衝線的照片成為最後合影，令人唏噓。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉經濟</span>
+    <div class="news-title">1-5月全國固定資產投資同比下降4.1% 零售數據遜預期</div>
+    <div class="news-desc">國家統計局公布5月經濟「三頭馬車」數據：工業增長略勝預期，但零售銷售及固定資產投資均遜預期。1-5月固投178,512億元，同比下降4.1%，其中第三產業投資下降6.8%。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政策</span>
+    <div class="news-title">新皇崗口岸｜全國人大常委會下周審議授權香港管轄草案</div>
+    <div class="news-desc">全國人大常委會將於下周二舉行會議，審議授權香港對皇崗口岸港方口岸區實施管轄的草案，為新皇崗口岸通關安排提供法律基礎。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-edu">📚教育</span>
+    <div class="news-title">浙江小縣取消中考選拔 全員直升高中</div>
+    <div class="news-desc">浙江省一個小縣宣布取消中考選拔制度，實行全員直升高中，引發教育界熱議。支持者認為可減輕學生壓力，反對者擔憂教育質量下降。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉經濟</span>
+    <div class="news-title">寧波香港經濟合作論壇簽約20項目 涵蓋科技貿易金融</div>
+    <div class="news-desc">寧波香港經濟合作論壇成功舉辦，兩地簽約20個合作項目，涵蓋科技創新、貿易物流、金融服務等領域，深化長三角與香港的經貿聯繫。</div>
+  </div>
+</div>
+
+<!-- 🕊️ 國際新聞 -->
+<div class="section section-intl">
+  <div class="section-title">🕊️ 國際新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">美伊達成協議｜伊朗3油輪2貨船穿越美軍封鎖線</div>
+    <div class="news-desc">美伊初步和平協議首見成果，伊朗船隻突破美軍海上封鎖，標誌着局勢緩和。特朗普感謝習近平及普京促成協議。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">霍爾木茲海峽將重開 約500艘滯留商船需數周消化</div>
+    <div class="news-desc">隨着美伊協議落實，霍爾木茲海峽即將重新開放。約500艘滯留商船需數周時間「消化」，全球石油供應鏈有望逐步恢復正常。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">萬斯：諒解備忘錄約一頁半 若伊朗毀約美方會再開炸</div>
+    <div class="news-desc">美國副總統萬斯透露美伊諒解備忘錄僅約一頁半篇幅，並警告伊朗若毀約，美方將再次採取軍事行動。協議具體條款仍待公布。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-breaking">🚨突發</span>
+    <div class="news-title">美軍B-52轟炸機加州墜毀 8機員全罹難</div>
+    <div class="news-desc">美軍一架B-52戰略轟炸機在加州墜毀，機上8名機員全部遇難。空拍畫面顯示大片焦黑，事故原因正在調查中。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">印尼6.7級極淺層地震 震源深度僅10公里</div>
+    <div class="news-desc">印尼發生6.7級極淺層地震，震源深度僅10公里，恐造成嚴重破壞。當局密切監測是否引發海嘯風險。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">內塔尼亞胡：續留守加沙黎敘3地 稱協議是「特朗普的決定」</div>
+    <div class="news-desc">以色列總理內塔尼亞胡強調將繼續駐守加沙、黎巴嫩、敘利亞三地，對美伊協議持保留態度，稱此為特朗普單方面決定。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">柬埔寨德崇機場榮膺「世界最美機場」</div>
+    <div class="news-desc">位於金邊以南約20公里的德崇國際機場榮獲2026年凡爾賽獎「世界最美機場」，以現代高棉建築風格和波浪形屋頂設計脫穎而出。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖科技</span>
+    <div class="news-title">MrBeast 5億訂閱神話誕生 YouTube史上第一人</div>
+    <div class="news-desc">MrBeast正式成為YouTube史上首位頻道訂閱數突破5億的個人創作者，13歲起即開始經營頻道，堪稱內容創作界傳奇。</div>
+  </div>
+</div>
+
+<!-- 📈 財經新聞 -->
+<div class="section section-fin">
+  <div class="section-title">📈 財經新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">內地經濟數據遜預期 恒指挫348點 成交縮至2498億一個半月新低</div>
+    <div class="news-desc">重磅科技股拖累大市：美團挫3.8%、騰訊跌2.7%、小米跌2.3%、阿里跌2.1%。聯想逆市升4.3%，AI硬件主題繼續受捧。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">日央行如期加息 日股一度突破7萬點 惟收市未能企穩</div>
+    <div class="news-desc">日本央行如預期加息，日經指數盤中一度突破70,000點大關，創歷史新高。但獲利回吐壓力下，收市未能守住7萬點關口。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">Nvidia據報發行250億美元債券 獲超額認購3倍</div>
+    <div class="news-desc">較最初目標增加，顯示市場對AI基建的強勁需求。Nvidia將利用所得資金擴建數據中心基礎設施，強化AI晶片供應鏈。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">小紅書據報本月來港秘密申上市 最新估值逾2400億</div>
+    <div class="news-desc">有消息指中國內地社交平台小紅書正準備最快本月底前向香港提交IPO申請，此次上市規模備受市場關注。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">本地個股槓桿及反向ETF勢面世 初期料集中藍籌股</div>
+    <div class="news-desc">業界呼籲投資者勿視為長線投資工具。槓桿及反向ETF為短線交易工具，波動風險較高，適合有經驗投資者。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">半新股未來12個月迎逾2萬億解禁潮 高盛：強勁需求能吸納供應</div>
+    <div class="news-desc">高盛報告指出，雖然未來12個月將有逾2萬億市值的半新股限售期屆滿，但市場強勁需求料能消化供應壓力。</div>
+  </div>
+</div>
+
+<!-- 🤖 科技快訊 -->
+<div class="section section-tech">
+  <div class="section-title">🤖 科技快訊</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖科技</span>
+    <div class="news-title">OpenAI去年燒錢340億美元 研發支出佔190億美元 鋪路上市</div>
+    <div class="news-desc">經審計財務數據顯示，OpenAI去年總開支高達340億美元，其中研發約190億、銷售約60億美元。公司正密鑼緊鼓籌備IPO，據報目標估值1萬億美元，最快9月上市。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-space">🚀航天</span>
+    <div class="news-title">力箭一號遙十四運載火箭成功發射8顆衛星 我國新一代通信網加速構建</div>
+    <div class="news-desc">6月15日11時44分，力箭一號遙十四運載火箭成功將8顆衛星送入預定軌道，標誌着我國新一代通信網加速構建邁出重要一步。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖科技</span>
+    <div class="news-title">MDRi研究指AI重塑電話客服模式 涉投訴或緊急支援消費者仍偏好真人</div>
+    <div class="news-desc">研究發現AI客服在一般查詢方面已可替代人工，但涉及投訴或緊急支援時，消費者仍明顯偏好真人處理，反映AI客服應用仍有限制。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖科技</span>
+    <div class="news-title">長沙躋全國微短劇產業十強 文創園48小時完成AI漫劇</div>
+    <div class="news-desc">長沙文創園利用AI技術實現48小時完成一部AI漫畫短劇，展示AI在影視創作領域的加速應用，微短劇產業正成為文化消費新引擎。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖科技</span>
+    <div class="news-title">佛州控TikTok違反未成年保護法 允許14歲以下兒童開設賬號</div>
+    <div class="news-desc">美國佛羅里達州指控TikTok允許14歲以下兒童開設賬號，違反未成年保護法。此舉為美國各州收緊社交平台監管的最新動態。</div>
+  </div>
+</div>
+
+<!-- ⚽ 體育快訊 -->
+<div class="section section-sport">
+  <div class="section-title">⚽ 體育快訊</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽體育</span>
+    <div class="news-title">🏆 世界盃最大冷門！西班牙0:0遭佛得角逼和</div>
+    <div class="news-desc">H組：佛得角40歲門將Vozinha多次神撲，包括封堵Ferran Torres、Pedri等射門。人口僅50萬的非洲島國首次參加世界盃便逼平歐洲盟主，堪稱世盃歷史最大驚喜之一。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽體育</span>
+    <div class="news-title">世界盃G組：伊朗2:2新西蘭 比利時1:1埃及</div>
+    <div class="news-desc">伊朗兩度落後兩度追平，Mohammad Mohebi頭球扳平；比利時憑埃及烏龍球逼和，Lukaku替補登場未觸球卻迫使對方自擺烏龍。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽體育</span>
+    <div class="news-title">世界盃H組：烏拉圭1:1沙特阿拉伯</div>
+    <div class="news-desc">沙特Al-Amri國家隊首球先開紀錄，烏拉圭Maxi Araújo80分鐘扳平。烏拉圭控球率66%、射門28次，沙特門將Al-Owais8次撲救力保不敗。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽體育</span>
+    <div class="news-title">世界盃｜伊朗首戰後遭反口不准留美過夜 教練：我們是最受壓迫的球隊</div>
+    <div class="news-desc">伊朗足球隊在美國參賽後遭美方「反口」拒絕留宿，球隊被迫臨時更改行程安排。教練痛訴球隊處境艱難，事件引發體壇關注。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽體育</span>
+    <div class="news-title">國際象棋｜中國隊「世二」雷挺婕首次來港參賽 有回家的感覺</div>
+    <div class="news-desc">中國國際象棋棋手雷挺婕表示兩個比賽都有信心衝擊最高領獎台，首次來港參賽倍感親切，稱有「回家的感覺」。</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  🌇 下午新聞撮要 | 2026年6月16日 | 由 WorkBuddy AI 自動生成<br>
+  資料來源：星島日報、香港01、RTHK、明報等 | 僅供參考
+</div>
+
+</div>
+</body>
+</html>
