@@ -44,12 +44,25 @@ body { font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI
 .email-section pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.5; background: white; padding: 12px; border-radius: 6px; max-height: 400px; overflow-y: auto; color: #1f2937; }
 .copy-btn { background: white; color: #f97316; border: 1px solid #f97316; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; font-size: 13px; }
 .copy-btn:hover { background: #fff7ed; }
+.edit-btn { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; margin-left: 6px; font-size: 13px; }
+.edit-btn:hover { background: #2563eb; }
+.save-btn { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; margin-left: 6px; font-size: 13px; display: none; }
+.save-btn:hover { background: #059669; }
+.send-btn { background: #8b5cf6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 8px; margin-left: 6px; font-size: 13px; }
+.send-btn:hover { background: #7c3aed; }
+.email-section textarea { width: 100%; min-height: 300px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.5; padding: 12px; border-radius: 6px; border: 2px solid #f97316; background: white; color: #1f2937; resize: vertical; display: none; }
+.save-status { font-size: 12px; margin-top: 6px; display: none; }
+.save-status.success { color: #10b981; }
+.save-status.error { color: #ef4444; }
+.email-action-bar { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .footer-note { background: white; padding: 20px; border-radius: 12px; margin-top: 30px; text-align: center; color: #6b7280; font-size: 13px; }
 .footer-note a { color: #f97316; text-decoration: none; }
 .tag { display: inline-block; background: #f3f4f6; color: #4b5563; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 6px; }
 </style>
 </head>
-<body>
+<body data-drive-file-id="" data-github-path="news/2026-06-16_Lead_Intelligence.html">
+<!-- GAS API URL for saving edits -->
+<!-- data-gas-api: https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec -->
 <div class="header">
 <h1>🎯 潛在客戶情報</h1>
 <p>6月16日 生成 | 為 EventEasy.net 搜羅高質量 B2B 潛在客戶</p>
@@ -72,7 +85,7 @@ body { font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI
 <div class="lead-meta"><strong>活動：</strong>渣打香港馬拉松 2027 (全馬/半馬/10K)</div>
 <div class="lead-meta"><strong>日期：</strong>2027年1月 (預計)</div>
 <div class="contact-email">✉️ <a href="mailto:info@hkmarathon.com">info@hkmarathon.com</a> <span class="tag">74,000 名跑手 (2026 賽事紀錄)</span></div>
-<button class="email-btn" onclick="showEmail('lead01')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead01')" data-lead-id="lead01">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead01">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 渣打香港馬拉松 2027 嘅賽事報名系統建議
@@ -118,7 +131,7 @@ EventEasy.net 點解適合大型馬拉松賽事：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for Standard Chartered Hong Kong Marathon 2027
 
@@ -163,8 +176,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead01')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead01')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead01')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead01" onclick="saveEdit('lead01')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead01')">📧 發送</button><span class="save-status" id="status-lead01"></span></div>
 </div>
 </div>
 
@@ -175,7 +188,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>活動：</strong>2026 屆本科生畢業典禮</div>
 <div class="lead-meta"><strong>日期：</strong>2026 年 5 月 17 日 (已舉行) | 11-12 月研究院畢業典禮 (預計)</div>
 <div class="contact-email">✉️ <a href="mailto:communications@cuhk.edu.cn">communications@cuhk.edu.cn</a> <span class="tag">公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead02')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead02')" data-lead-id="lead02">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead02">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 2026 屆畢業典禮 嘅網上報名系統建議
@@ -219,7 +232,7 @@ EventEasy.net 點解適合大學畢業典禮：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for CUHK(SZ) Graduation Ceremony
 
@@ -262,8 +275,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead02')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead02')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead02')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead02" onclick="saveEdit('lead02')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead02')">📧 發送</button><span class="save-status" id="status-lead02"></span></div>
 </div>
 </div>
 
@@ -274,7 +287,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>活動：</strong>第 38 屆夏季畢業典禮</div>
 <div class="lead-meta"><strong>日期：</strong>2026 年 7 月 22 日 及 8 月 18 日 (灣仔伊利沙伯體育館)</div>
 <div class="contact-email">✉️ <a href="mailto:reg@hkmu.edu.hk">reg@hkmu.edu.hk</a> <span class="tag">教務處公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead03')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead03')" data-lead-id="lead03">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead03">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 第 38 屆夏季畢業典禮 嘅網上報名系統建議
@@ -316,7 +329,7 @@ EventEasy.net 點解適合大學畢業典禮：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for HKMU 38th Summer Congregation
 
@@ -357,8 +370,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead03')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead03')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead03')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead03" onclick="saveEdit('lead03')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead03')">📧 發送</button><span class="save-status" id="status-lead03"></span></div>
 </div>
 </div>
 
@@ -369,7 +382,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>活動：</strong>第 69 屆體育節 (主題: 一線牽全城動)</div>
 <div class="lead-meta"><strong>日期：</strong>2026 年 4 月 10 日 (已開幕) | 持續至年底</div>
 <div class="contact-email">✉️ <a href="mailto:enquiry@hkolympic.org">enquiry@hkolympic.org</a> <span class="tag">奧委會公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead04')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead04')" data-lead-id="lead04">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead04">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 第 70 屆香港體育節 嘅活動報名系統建議
@@ -407,7 +420,7 @@ EventEasy.net 點解適合大型體育節：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for the 70th Hong Kong Sports Festival
 
@@ -444,8 +457,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead04')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead04')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead04')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead04" onclick="saveEdit('lead04')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead04')">📧 發送</button><span class="save-status" id="status-lead04"></span></div>
 </div>
 </div>
 
@@ -458,7 +471,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>活動：</strong>商務研討會 / 春節聯歡晚宴 / 國慶酒會</div>
 <div class="lead-meta"><strong>地點：</strong>中環干諾道中 24-25 號 4 字樓</div>
 <div class="contact-email">✉️ <a href="mailto:cgcc@cgcc.org.hk">cgcc@cgcc.org.hk</a> <span class="tag">官方公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead05')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead05')" data-lead-id="lead05">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead05">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 香港中華總商會年度活動 嘅報名管理系統建議
@@ -500,7 +513,7 @@ EventEasy.net 點解適合商會活動：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for CGCC Events
 
@@ -541,8 +554,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead05')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead05')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead05')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead05" onclick="saveEdit('lead05')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead05')">📧 發送</button><span class="save-status" id="status-lead05"></span></div>
 </div>
 </div>
 
@@ -552,7 +565,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>香港總商會 (HKGCC)</div>
 <div class="lead-meta"><strong>活動：</strong>商務午宴 / 年度晚宴 / 研討會</div>
 <div class="contact-email">✉️ <a href="mailto:hkgcc@chamber.org.hk">hkgcc@chamber.org.hk</a> <span class="tag">總商會公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead06')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead06')" data-lead-id="lead06">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead06">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 HKGCC 年度活動 嘅報名系統建議
@@ -587,7 +600,7 @@ EventEasy.net 點解適合總商會活動：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for HKGCC Events
 
@@ -623,8 +636,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead06')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead06')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead06')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead06" onclick="saveEdit('lead06')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead06')">📧 發送</button><span class="save-status" id="status-lead06"></span></div>
 </div>
 </div>
 
@@ -634,7 +647,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>聖雅各福群會</div>
 <div class="lead-meta"><strong>活動：</strong>年度籌款晚會 / 慈善步行 / 環保工作坊</div>
 <div class="contact-email">✉️ <a href="mailto:enquiry@sjs.org.hk">enquiry@sjs.org.hk</a> <span class="tag">機構公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead07')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead07')" data-lead-id="lead07">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead07">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 聖雅各福群會籌款活動 嘅報名系統建議
@@ -672,7 +685,7 @@ EventEasy.net 點解適合社福機構活動：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for St. James' Settlement
 
@@ -711,8 +724,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead07')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead07')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead07')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead07" onclick="saveEdit('lead07')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead07')">📧 發送</button><span class="save-status" id="status-lead07"></span></div>
 </div>
 </div>
 
@@ -722,7 +735,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>香港中文大學 (CUHK)</div>
 <div class="lead-meta"><strong>活動：</strong>第 94 屆頒授學位典禮 (本科生 + 研究院)</div>
 <div class="contact-email">✉️ <a href="mailto:communications@cuhk.edu.hk">communications@cuhk.edu.hk</a> <span class="tag">傳訊及公共關係處</span></div>
-<button class="email-btn" onclick="showEmail('lead08')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead08')" data-lead-id="lead08">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead08">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 CUHK 2026 畢業典禮 嘅報名系統建議
@@ -759,7 +772,7 @@ EventEasy.net 點解適合 CUHK 畢業典禮：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for CUHK Graduation
 
@@ -797,8 +810,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead08')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead08')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead08')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead08" onclick="saveEdit('lead08')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead08')">📧 發送</button><span class="save-status" id="status-lead08"></span></div>
 </div>
 </div>
 
@@ -808,7 +821,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>港大同學會小學</div>
 <div class="lead-meta"><strong>活動：</strong>第 19 屆陸運會暨親子競技日</div>
 <div class="contact-email">✉️ <a href="mailto:info@hkugaps.edu.hk">info@hkugaps.edu.hk</a> <span class="tag">學校公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead09')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead09')" data-lead-id="lead09">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead09">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 港大同學會小學陸運會 嘅報名系統建議
@@ -846,7 +859,7 @@ EventEasy.net 點解適合學校活動：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for HKUGA Primary School Sports Day
 
@@ -885,8 +898,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead09')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead09')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead09')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead09" onclick="saveEdit('lead09')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead09')">📧 發送</button><span class="save-status" id="status-lead09"></span></div>
 </div>
 </div>
 
@@ -896,7 +909,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>Hybrid Group Asia (香港領先活動統籌公司)</div>
 <div class="lead-meta"><strong>業務：</strong>大型企業活動、產品發布會、品牌活動</div>
 <div class="contact-email">✉️ <a href="mailto:info@hybridgroupasia.com">info@hybridgroupasia.com</a> <span class="tag">官方電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead10')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead10')" data-lead-id="lead10">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead10">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：Hybrid Group × EventEasy.net 活動管理合作建議
@@ -935,7 +948,7 @@ EventEasy.net 點解適合活動策劃公司：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Hybrid Group x EventEasy.net Partnership Proposal
 
@@ -975,8 +988,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead10')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead10')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead10')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead10" onclick="saveEdit('lead10')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead10')">📧 發送</button><span class="save-status" id="status-lead10"></span></div>
 </div>
 </div>
 
@@ -986,7 +999,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>DMX HK (香港專業活動策劃公司)</div>
 <div class="lead-meta"><strong>業務：</strong>企業商務活動、品牌行銷、私人慶典 (300+ 場經驗)</div>
 <div class="contact-email">✉️ <a href="mailto:info@dmxhk.com">info@dmxhk.com</a> <span class="tag">官方電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead11')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead11')" data-lead-id="lead11">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead11">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：DMX HK × EventEasy.net 活動管理合作建議
@@ -1011,7 +1024,7 @@ EventEasy.net 點解適合活動策劃公司：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: DMX HK x EventEasy.net Partnership Proposal
 
@@ -1037,8 +1050,8 @@ Best regards,
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead11')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead11')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead11')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead11" onclick="saveEdit('lead11')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead11')">📧 發送</button><span class="save-status" id="status-lead11"></span></div>
 </div>
 </div>
 
@@ -1050,7 +1063,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>香港中華工商總會</div>
 <div class="lead-meta"><strong>活動：</strong>2026 新年晚宴 (已舉行) | 下年度晚宴 (待策劃)</div>
 <div class="contact-email">✉️ <a href="mailto:info@hkcica.org.hk">info@hkcica.org.hk</a> <span class="tag">總會公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead12')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead12')" data-lead-id="lead12">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead12">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 香港中華工商總會下年度晚宴 嘅報名系統建議
@@ -1071,7 +1084,7 @@ EventEasy.net 點解適合商會晚宴：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for HKCICA Events
 
@@ -1091,8 +1104,8 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead12')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead12')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead12')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead12" onclick="saveEdit('lead12')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead12')">📧 發送</button><span class="save-status" id="status-lead12"></span></div>
 </div>
 </div>
 
@@ -1102,7 +1115,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>中國香港閃避球總會</div>
 <div class="lead-meta"><strong>活動：</strong>閃避球聯賽 / 校際比賽</div>
 <div class="contact-email">✉️ <a href="mailto:info@dodgeball.org.hk">info@dodgeball.org.hk</a> <span class="tag">總會公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead13')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead13')" data-lead-id="lead13">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead13">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 香港閃避球總會賽事 嘅報名系統建議
@@ -1132,7 +1145,7 @@ EventEasy.net 點解適合體育總會：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for HK Dodgeball Association
 
@@ -1161,8 +1174,8 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead13')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead13')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead13')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead13" onclick="saveEdit('lead13')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead13')">📧 發送</button><span class="save-status" id="status-lead13"></span></div>
 </div>
 </div>
 
@@ -1172,7 +1185,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>中國香港南北國術總會</div>
 <div class="lead-meta"><strong>活動：</strong>2026 粵港澳大灣區及全港校際武術公開賽</div>
 <div class="contact-email">✉️ <a href="mailto:info@snkungfu.com">info@snkungfu.com</a> <span class="tag">總會公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead14')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead14')" data-lead-id="lead14">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead14">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 校際武術公開賽 嘅報名系統建議
@@ -1202,7 +1215,7 @@ EventEasy.net 點解適合武術賽事：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for Martial Arts Competition
 
@@ -1231,8 +1244,8 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead14')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead14')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead14')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead14" onclick="saveEdit('lead14')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead14')">📧 發送</button><span class="save-status" id="status-lead14"></span></div>
 </div>
 </div>
 
@@ -1242,7 +1255,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>西九文化區管理局</div>
 <div class="lead-meta"><strong>活動：</strong>戲曲中心 / 自由空間 表演活動</div>
 <div class="contact-email">✉️ <a href="mailto:enquiry@wkcda.hk">enquiry@wkcda.hk</a> <span class="tag">管理局公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead15')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead15')" data-lead-id="lead15">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead15">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 西九表演活動 嘅報名系統建議
@@ -1263,7 +1276,7 @@ EventEasy.net 點解適合表演場地：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for West Kowloon Performances
 
@@ -1283,8 +1296,8 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead15')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead15')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead15')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead15" onclick="saveEdit('lead15')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead15')">📧 發送</button><span class="save-status" id="status-lead15"></span></div>
 </div>
 </div>
 
@@ -1294,7 +1307,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>ifva (香港藝術中心)</div>
 <div class="lead-meta"><strong>活動：</strong>獨立短片及錄像比賽</div>
 <div class="contact-email">✉️ <a href="mailto:info@ifva.com">info@ifva.com</a> <span class="tag">官方電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead16')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead16')" data-lead-id="lead16">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead16">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 ifva 獨立短片比賽 嘅報名系統建議
@@ -1315,7 +1328,7 @@ EventEasy.net 點解適合文藝比賽：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for ifva Competition
 
@@ -1335,8 +1348,8 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead16')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead16')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead16')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead16" onclick="saveEdit('lead16')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead16')">📧 發送</button><span class="save-status" id="status-lead16"></span></div>
 </div>
 </div>
 
@@ -1346,7 +1359,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>仁愛堂</div>
 <div class="lead-meta"><strong>活動：</strong>仁愛堂慈善步行日 (年度籌款活動)</div>
 <div class="contact-email">✉️ <a href="mailto:info@yot.org.hk">info@yot.org.hk</a> <span class="tag">公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead17')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead17')" data-lead-id="lead17">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead17">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 仁愛堂慈善步行日 嘅報名系統建議
@@ -1382,7 +1395,7 @@ EventEasy.net 點解適合慈善活動：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for Yan Chai Charity Walk
 
@@ -1417,8 +1430,8 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead17')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead17')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead17')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead17" onclick="saveEdit('lead17')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead17')">📧 發送</button><span class="save-status" id="status-lead17"></span></div>
 </div>
 </div>
 
@@ -1428,7 +1441,7 @@ The EventEasy.net Team
 <div class="lead-meta"><strong>主辦：</strong>樂善堂楊葛小琳中學 校友會</div>
 <div class="lead-meta"><strong>活動：</strong>校友會聚會 / 周年活動</div>
 <div class="contact-email">✉️ <a href="mailto:info@lstyoungkhl.edu.hk">info@lstyoungkhl.edu.hk</a> <span class="tag">學校公開電郵</span></div>
-<button class="email-btn" onclick="showEmail('lead18')">📧 查看推廣電郵</button>
+<button class="email-btn" onclick="showEmail('lead18')" data-lead-id="lead18">📧 查看推廣電郵</button>
 <div class="email-section" id="email-lead18">
 <h4>【繁體中文版本】</h4>
 <pre data-email-zh>標題：關於 校友會活動 嘅報名系統建議
@@ -1449,7 +1462,7 @@ EventEasy.net 點解適合校友會：
 
 EventEasy.net 团队
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
+🌐 https://eventeasy.net</pre><textarea data-email-zh-edit style="display:none"></textarea>
 <h4>【英文版本】</h4>
 <pre data-email-en>Subject: Online Registration Platform Proposal for Alumni Association
 
@@ -1469,19 +1482,21 @@ Flexible pricing. Free for under 20!
 
 The EventEasy.net Team
 📧 support@eventeasy.net
-🌐 https://eventeasy.net</pre>
-<button class="copy-btn" onclick="copyEmail('lead18')">📋 複製電郵</button>
+🌐 https://eventeasy.net</pre><textarea data-email-en-edit style="display:none"></textarea>
+<div class="email-action-bar"><button class="copy-btn" onclick="copyEmail('lead18')">📋 複製電郵</button><button class="edit-btn" onclick="toggleEdit('lead18')">✏️ 編輯電郵</button><button class="save-btn" id="save-lead18" onclick="saveEdit('lead18')">💾 保存</button><button class="send-btn" onclick="sendEmail('lead18')">📧 發送</button><span class="save-status" id="status-lead18"></span></div>
 </div>
 </div>
 
 <div class="footer-note">
 <p>📊 報告生成時間：2026 年 6 月 16 日 08:20 (GMT+8)</p>
 <p>🤖 由 WorkBuddy 自動生成 · 數據來源：WebSearch 公開資訊</p>
-<p>💡 提示：點擊「查看推廣電郵」展開雙語草稿，再點「複製電郵」一鍵複製到剪貼簿</p>
+<p>💡 提示：點擊「查看推廣電郵」展開雙語草稿 → ✏️ 編輯修改 → 💾 保存到 GDrive+GitHub → 📧 發送郵件</p>
 <p style="margin-top:12px;">🌐 <a href="https://eventeasy.net">EventEasy.net</a> · 📧 <a href="mailto:eventeasynet@gmail.com">eventeasynet@gmail.com</a></p>
 </div>
 
 <script>
+var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec';
+
 function showEmail(id) {
 var el = document.getElementById('email-' + id);
 if (el.style.display === 'none' || el.style.display === '') {
@@ -1490,6 +1505,7 @@ el.style.display = 'block';
 el.style.display = 'none';
 }
 }
+
 function copyEmail(id) {
 var zh = document.querySelector('#email-' + id + ' pre[data-email-zh]').textContent;
 var en = document.querySelector('#email-' + id + ' pre[data-email-en]').textContent;
@@ -1499,6 +1515,157 @@ alert('✅ 雙語電郵已複製到剪貼簿！\n\n包含：\n- 繁體中文版�
 }, function() {
 alert('❌ 複製失敗，請手動選擇文字複製');
 });
+}
+
+// === 編輯功能 ===
+function toggleEdit(id) {
+  var section = document.getElementById('email-' + id);
+  var preZh = section.querySelector('pre[data-email-zh]');
+  var preEn = section.querySelector('pre[data-email-en]');
+  var taZh = section.querySelector('textarea[data-email-zh-edit]');
+  var taEn = section.querySelector('textarea[data-email-en-edit]');
+  var editBtn = section.querySelector('.edit-btn');
+  var saveBtn = document.getElementById('save-' + id);
+  
+  if (!taZh || !taEn) return;
+  
+  // 查看模式 → 編輯模式
+  if (taZh.style.display === 'none' || taZh.style.display === '') {
+    taZh.value = preZh.textContent;
+    taEn.value = preEn.textContent;
+    preZh.style.display = 'none';
+    preEn.style.display = 'none';
+    taZh.style.display = 'block';
+    taEn.style.display = 'block';
+    editBtn.textContent = '👁️ 取消編輯';
+    editBtn.style.background = '#6b7280';
+    saveBtn.style.display = 'inline-block';
+  } else {
+    // 編輯模式 → 查看模式（不保存）
+    preZh.style.display = 'block';
+    preEn.style.display = 'block';
+    taZh.style.display = 'none';
+    taEn.style.display = 'none';
+    editBtn.textContent = '✏️ 編輯電郵';
+    editBtn.style.background = '#3b82f6';
+    saveBtn.style.display = 'none';
+  }
+}
+
+// === 保存功能 ===
+function saveEdit(id) {
+  var section = document.getElementById('email-' + id);
+  var preZh = section.querySelector('pre[data-email-zh]');
+  var preEn = section.querySelector('pre[data-email-en]');
+  var taZh = section.querySelector('textarea[data-email-zh-edit]');
+  var taEn = section.querySelector('textarea[data-email-en-edit]');
+  var statusEl = document.getElementById('status-' + id);
+  var saveBtn = document.getElementById('save-' + id);
+  
+  if (!taZh || !taEn) return;
+  
+  // 1. 更新本地 pre 內容
+  preZh.textContent = taZh.value;
+  preEn.textContent = taEn.value;
+  
+  // 2. 切換回查看模式
+  preZh.style.display = 'block';
+  preEn.style.display = 'block';
+  taZh.style.display = 'none';
+  taEn.style.display = 'none';
+  section.querySelector('.edit-btn').textContent = '✏️ 編輯電郵';
+  section.querySelector('.edit-btn').style.background = '#3b82f6';
+  saveBtn.style.display = 'none';
+  
+  // 3. 顯示保存狀態
+  statusEl.textContent = '⏳ 保存中...';
+  statusEl.className = 'save-status';
+  statusEl.style.display = 'inline';
+  
+  // 4. 發送到 GAS API 更新 Google Drive + GitHub
+  var fileId = document.body.getAttribute('data-drive-file-id') || '';
+  var githubPath = document.body.getAttribute('data-github-path') || '';
+  var updatedHtml = document.documentElement.outerHTML;
+  
+  var payload = {
+    action: 'update_html',
+    fileId: fileId,
+    content: '<!DOCTYPE html>\n' + updatedHtml,
+    githubPath: githubPath
+  };
+  
+  fetch(GAS_API_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function() {
+    statusEl.textContent = '✅ 已保存（GDrive + GitHub）';
+    statusEl.className = 'save-status success';
+    setTimeout(function() { statusEl.style.display = 'none'; }, 5000);
+  }).catch(function(err) {
+    statusEl.textContent = '❌ 保存失敗：' + err.message;
+    statusEl.className = 'save-status error';
+    console.error('Save error:', err);
+  });
+}
+
+// === 發送功能（mailto:） ===
+function sendEmail(id) {
+  var section = document.getElementById('email-' + id);
+  var preZh = section.querySelector('pre[data-email-zh]');
+  var preEn = section.querySelector('pre[data-email-en]');
+  var taZh = section.querySelector('textarea[data-email-zh-edit]');
+  var taEn = section.querySelector('textarea[data-email-en-edit]');
+  
+  // 優先使用編輯中的內容
+  var zhText = (taZh && taZh.style.display !== 'none') ? taZh.value : preZh.textContent;
+  var enText = (taEn && taEn.style.display !== 'none') ? taEn.value : preEn.textContent;
+  
+  // 找出收件人
+  var card = section.closest('.lead-card');
+  var emailLink = card ? card.querySelector('.contact-email a[href^="mailto:"]') : null;
+  var recipient = emailLink ? emailLink.textContent.trim() : '';
+  
+  // 從中文版本提取標題
+  var subject = '';
+  var zhLines = zhText.split('\n');
+  for (var i = 0; i < zhLines.length; i++) {
+    if (zhLines[i].indexOf('標題：') === 0 || zhLines[i].indexOf('标题：') === 0) {
+      subject = zhLines[i].replace(/^標題：|^标题：/, '').trim();
+      break;
+    }
+  }
+  
+  if (!subject) {
+    var enLines = enText.split('\n');
+    for (var j = 0; j < enLines.length; j++) {
+      if (enLines[j].indexOf('Subject:') === 0) {
+        subject = enLines[j].replace(/^Subject:\s*/, '').trim();
+        break;
+      }
+    }
+  }
+  
+  // 選擇語言版本
+  var useZh = confirm('📧 發送電郵\n\n選擇語言版本：\n\n✅ 確定 = 繁體中文版本\n❌ 取消 = 英文版本');
+  var body = useZh ? zhText : enText;
+  
+  // 構建 mailto 連結
+  var mailto = 'mailto:' + encodeURIComponent(recipient) +
+    '?subject=' + encodeURIComponent(subject) +
+    '&body=' + encodeURIComponent(body);
+  
+  // mailto URL 有長度限制
+  if (mailto.length > 2000) {
+    navigator.clipboard.writeText(body).then(function() {
+      alert('📋 電郵內容已複製到剪貼簿！\n\nmailto 連結過長，請手動操作：\n1. 打開 Gmail / Outlook\n2. 收件人：' + recipient + '\n3. 主旨：' + subject + '\n4. 按 Ctrl+V 貼上內容\n5. 發送');
+    }, function() {
+      alert('❌ 複製失敗，請手動複製電郵內容');
+    });
+  } else {
+    window.location.href = mailto;
+  }
 }
 </script>
 </body>
