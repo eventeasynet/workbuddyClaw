@@ -1098,7 +1098,7 @@ function saveEdit(id) {
   });
 }
 
-// === 發送功能（mailto:） ===
+// === 發送功能（Gmail Web Compose） ===
 function sendEmail(id) {
   var section = document.getElementById('email-' + id);
   var preZh = section.querySelector('pre[data-email-zh]');
@@ -1115,44 +1115,47 @@ function sendEmail(id) {
   var emailLink = card ? card.querySelector('.event-contact a[href^="mailto:"]') : null;
   var recipient = emailLink ? emailLink.textContent.trim() : '';
 
-  // 從中文版本提取標題
-  var subject = '';
+  // 提取中文標題
+  var zhSubject = '';
   var zhLines = zhText.split('\n');
   for (var i = 0; i < zhLines.length; i++) {
     if (zhLines[i].indexOf('標題：') === 0 || zhLines[i].indexOf('标题：') === 0) {
-      subject = zhLines[i].replace(/^標題：|^标题：/, '').trim();
+      zhSubject = zhLines[i].replace(/^標題：|^标题：/, '').trim();
       break;
     }
   }
 
-  if (!subject) {
-    var enLines = enText.split('\n');
-    for (var j = 0; j < enLines.length; j++) {
-      if (enLines[j].indexOf('Subject:') === 0) {
-        subject = enLines[j].replace(/^Subject:\s*/, '').trim();
-        break;
-      }
+  // 提取英文標題
+  var enSubject = '';
+  var enLines = enText.split('\n');
+  for (var j = 0; j < enLines.length; j++) {
+    if (enLines[j].indexOf('Subject:') === 0) {
+      enSubject = enLines[j].replace(/^Subject:\s*/, '').trim();
+      break;
     }
   }
 
-  // 選擇語言版本
-  var useZh = confirm('📧 發送電郵\n\n選擇語言版本：\n\n✅ 確定 = 繁體中文版本\n❌ 取消 = 英文版本');
-  var body = useZh ? zhText : enText;
+  // 合併雙語標題
+  var subject = zhSubject && enSubject ? zhSubject + ' | ' + enSubject : (zhSubject || enSubject || 'EventEasy.net 合作建議');
 
-  // 構建 mailto 連結
-  var mailto = 'mailto:' + encodeURIComponent(recipient) +
-    '?subject=' + encodeURIComponent(subject) +
+  // 合併雙語內容
+  var body = '【繁體中文版本】\n\n' + zhText + '\n\n---\n\n【English Version】\n\n' + enText;
+
+  // 構建 Gmail Web Compose URL
+  var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1' +
+    '&to=' + encodeURIComponent(recipient) +
+    '&su=' + encodeURIComponent(subject) +
     '&body=' + encodeURIComponent(body);
 
-  // mailto URL 有長度限制
-  if (mailto.length > 2000) {
+  // Gmail URL 過長時 fallback 到剪貼簿
+  if (gmailUrl.length > 8000) {
     navigator.clipboard.writeText(body).then(function() {
-      alert('📋 電郵內容已複製到剪貼簿！\n\nmailto 連結過長，請手動操作：\n1. 打開 Gmail / Outlook\n2. 收件人：' + recipient + '\n3. 主旨：' + subject + '\n4. 按 Ctrl+V 貼上內容\n5. 發送');
+      alert('📋 電郵內容已複製到剪貼簿！\n\n請手動操作：\n1. 打開 Gmail\n2. 收件人：' + recipient + '\n3. 主旨：' + subject + '\n4. 按 Ctrl+V 貼上內容\n5. 發送');
     }, function() {
       alert('❌ 複製失敗，請手動複製電郵內容');
     });
   } else {
-    window.location.href = mailto;
+    window.open(gmailUrl, '_blank');
   }
 }
 </script>
