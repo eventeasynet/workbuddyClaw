@@ -11,7 +11,7 @@
 // 防緩存：每次加載檢查遠端版本
 (function(){
   var KEY = 'wb_dashboard_ver';
-  var CURRENT = 2026061607;
+  var CURRENT = 2026061608;
   var stored = localStorage.getItem(KEY);
   if (stored && parseInt(stored) < CURRENT) {
     console.log('Dashboard 有新版本，清除緩存...');
@@ -852,7 +852,7 @@ function renderReport(areaId, item) {
 
     var iframe = document.createElement('iframe');
     iframe.src = url + '?_t=' + Date.now();
-    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-top-navigation allow-popups');
+    iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-top-navigation allow-popups allow-popups-to-escape-sandbox');
     area.appendChild(iframe);
   } else {
     // 無 driveUrl 但有 notes → 包成 HTML 用 iframe srcdoc 顯示
