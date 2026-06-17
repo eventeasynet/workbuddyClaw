@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞 - 6月17日</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    line-height: 1.7;
+    padding: 16px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+  .header {
+    background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #2b6cb0 100%);
+    color: #fff;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26,54,93,0.25);
+  }
+  .header h1 { font-size: 1.6em; margin-bottom: 6px; letter-spacing: 1px; }
+  .header .date { font-size: 0.95em; opacity: 0.9; }
+  .header .subtitle { font-size: 0.85em; opacity: 0.75; margin-top: 4px; }
+  .market-bar {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    background: #edf2f7; border-radius: 8px; padding: 12px 16px;
+    margin-bottom: 20px; font-size: 0.82em;
+  }
+  .market-item { display: flex; align-items: center; gap: 4px; }
+  .market-item .label { font-weight: 600; color: #4a5568; }
+  .market-item .down { color: #e53e3e; }
+  .market-item .up { color: #38a169; }
+  .section {
+    background: #fff; border-radius: 10px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em; font-weight: 700; margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title .icon { font-size: 1.3em; }
+  .tag {
+    display: inline-block; font-size: 0.7em; padding: 2px 8px;
+    border-radius: 10px; margin-right: 6px; font-weight: 600;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #c53030; }
+  .tag-weather { background: #bee3f8; color: #2b6cb0; }
+  .tag-finance { background: #fefcbf; color: #975a16; }
+  .tag-tech { background: #c6f6d5; color: #276749; }
+  .tag-society { background: #e9d8fd; color: #6b46c1; }
+  .tag-politics { background: #e2e8f0; color: #2d3748; }
+  .tag-sport { background: #feebc8; color: #c05621; }
+  .tag-space { background: #e9d8fd; color: #553c9a; }
+  .tag-intl { background: #fed7e2; color: #97266d; }
+  .tag-disaster { background: #fc8181; color: #fff; }
+  .tag-education { background: #b2f5ea; color: #234e52; }
+  .news-item {
+    padding: 10px 0; border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-title {
+    font-weight: 600; font-size: 0.95em; margin-bottom: 3px;
+    display: flex; align-items: flex-start; gap: 6px;
+  }
+  .news-title .num {
+    background: #1a365d; color: #fff; border-radius: 50%;
+    min-width: 22px; height: 22px; display: flex; align-items: center;
+    justify-content: center; font-size: 0.75em; flex-shrink: 0; margin-top: 2px;
+  }
+  .news-summary { font-size: 0.88em; color: #4a5568; margin-left: 28px; }
+  .source { font-size: 0.75em; color: #a0aec0; margin-left: 28px; margin-top: 2px; }
+  .highlight-box {
+    background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+    border-left: 4px solid #3182ce; padding: 12px 16px;
+    border-radius: 0 8px 8px 0; margin-bottom: 12px;
+    font-size: 0.9em;
+  }
+  .footer {
+    text-align: center; font-size: 0.78em; color: #a0aec0;
+    margin-top: 20px; padding: 16px 0;
+  }
+  @media (max-width: 600px) {
+    body { padding: 8px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .section { padding: 14px 14px; }
+    .market-bar { font-size: 0.75em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>📰 上午新聞撮要</h1>
+  <div class="date">2026年6月17日 星期三</div>
+  <div class="subtitle">每日 08:00 自動生成 · 涵蓋本港、中國、國際、財經、科技、體育</div>
+</div>
+
+<!-- Market Bar -->
+<div class="market-bar">
+  <div class="market-item"><span class="label">恆指</span> <span class="down">24,494 (-1.40%)</span></div>
+  <div class="market-item"><span class="label">恒科</span> <span class="down">4,659 (-2.24%)</span></div>
+  <div class="market-item"><span class="label">國指</span> <span class="down">8,240 (-1.62%)</span></div>
+  <div class="market-item"><span class="label">道指</span> <span class="up">51,200+ 歷史新高</span></div>
+  <div class="market-item"><span class="label">日央行</span> <span class="up">加息至1%</span></div>
+  <div class="market-item"><span class="label">油價</span> <span class="down">大幅下跌</span></div>
+</div>
+
+<!-- Headline -->
+<div class="highlight-box">
+  🚨 <strong>今日焦點：</strong>夏寶龍訪港考察北都第二天 · 日央行31年來最高利率1% · G7峰會埃維昂閉幕 · 美聯儲FOMC沃什首次主持6/16-17議息 · 青海6.3級地震1死8傷 · 世界杯法國3-1塞內加爾
+</div>
+
+<!-- Section 1: HK News -->
+<div class="section">
+  <div class="section-title"><span class="icon">🇭🇰</span> 本港新聞</div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">1</span><span class="tag tag-politics">政情</span> 夏寶龍訪港考察第二天：走訪港深創科園、古洞北新發展區</div>
+    <div class="news-summary">中央港澳辦主任夏寶龍6/16-17訪港兩天，先後考察洪水橋/厦村新發展區、元朗簡約公屋、古洞北新發展區、河套港深創科園、沙嶺數據中心等多個項目。孫東稱為北都及創科發展注入「強心針」。甯漢豪匯報北都規劃建設情況。</div>
+    <div class="source">來源：點新聞、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">2</span><span class="tag tag-society">社會</span> 夏寶龍探訪元朗簡約公屋 居民讚入住舒適安心</div>
+    <div class="news-summary">夏寶龍在李家超、何永賢陪同下探訪元朗簡約公屋住戶。何永賢介紹項目採用大灣區生產MiC組件，有效提速建房。住戶反映租金大減、居住環境大幅改善。夏寶龍對基層生活改善表示欣慰。</div>
+    <div class="source">來源：點新聞、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">3</span><span class="tag tag-breaking">治安</span> 警搗三合會外圍賭波集團 拘150人涉3.2億賭款</div>
+    <div class="news-summary">香港警方針對世界杯期間外圍賭博展開專項打擊，搗破由三合會操控的網上外圍賭博集團，拘捕150人，涉案賭款超過3.2億港元。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">4</span><span class="tag tag-society">社會</span> 奇華餅家遭勒索軟件攻擊 未確認資料是否被存取</div>
+    <div class="news-summary">香港老字號奇華餅家遭遇勒索軟件網絡攻擊，公司正緊急排查系統受影響情況，暫未確認用戶及內部資料是否被非法存取，已通報相關部門跟進處理。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">5</span><span class="tag tag-society">治安</span> 西環髮廊劫案「銳眼」助攻 警6小時閃電拘兩賊</div>
+    <div class="news-summary">西環一家髮廊店主遇劫，警方通過城市「銳眼」監控系統快速鎖定嫌疑人行蹤，僅用6小時將兩名劫匪抓獲。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">6</span><span class="tag tag-weather">天氣</span> 連日狂風驟雨 端午節後升溫至33°C</div>
+    <div class="news-summary">受活躍西南季候風及低壓槽影響，本港近期天氣不穩定，17-18日初時仍有大雨及狂風雷暴，之後氣溫逐步回升至33度。市民出行留意天氣提示。</div>
+    <div class="source">來源：點新聞、天文台</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">7</span><span class="tag tag-finance">交通</span> 高鐵香港段新增三站 明起發售直達義烏票</div>
+    <div class="news-summary">高鐵香港段6/18起新增3個站點，可直達有「世界超市」之稱的義烏等地，6/17起正式發售車票，進一步便利港內地人員往來和商貿交流。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">8</span><span class="tag tag-society">民生</span> 非遺開篷巴士免費搭 中環→廟街→尖沙咀 今起登記</div>
+    <div class="news-summary">非遺辦事處與觀光城巴合作推出「非遺」主題開篷巴士免費體驗活動，路線覆蓋中環、廟街、尖沙咀龍舟活動點，6/17起開放報名。</div>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">9</span><span class="tag tag-politics">政情</span> 駐港部隊七一軍營開放日 今起免費預約</div>
+    <div class="news-summary">慶祝香港回歸祖國28周年，駐港部隊開放軍營供市民參觀，6/17起開放免費預約通道。</div>
+    <div class="source">來源：點新聞</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">10</span><span class="tag tag-society">民生</span> 公務員統一加薪2% 宏利送1.8萬張免費港鐵車飛</div>
+    <div class="news-summary">公務員統一加薪2%，在港外國人士指薪水非唯一考量。宏利與港鐵合作送出1.8萬張免費車票，指定3天簡單步驟即可領取。</div>
+    <div class="source">來源：文匯網、點新聞</div>
+  </div>
+</div>
+
+<!-- Section 2: China News -->
+<div class="section">
+  <div class="section-title"><span class="icon">🇨🇳</span> 中國新聞</div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">1</span><span class="tag tag-disaster">突發</span> 青海海西州6.3級地震 1死8傷 礦區人員已撤離</div>
+    <div class="news-summary">6/16下午5時06分，青海海西州直轄區發生6.3級淺源地震（震源深度10公里），西寧、敦煌等多地有震感。截至當晚23時已致1人遇難、8人受傷（均為輕傷已出院）。中國地震局啟動三級應急響應，附近煤礦全部停產撤離。</div>
+    <div class="source">來源：央視網、新華社、極目新聞</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">2</span><span class="tag tag-politics">政情</span> 國防部第十任新聞發言人陳曦首次亮相</div>
+    <div class="news-summary">國防部新任新聞發言人陳曦正式公開亮相，向媒體介紹相關工作情況。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">3</span><span class="tag tag-politics">政情</span> 皇崗口岸全國人大常委會下周審議相關法律議案</div>
+    <div class="news-summary">全國人大常委會將於下周審議與皇崗口岸相關的法律調整議案，為新皇崗口岸後續正式啟用、優化通關安排提供法律支持。</div>
+    <div class="source">來源：點新聞、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">4</span><span class="tag tag-finance">經濟</span> 5月CPI同比漲1.2% PPI漲3.9% 社融2.03萬億</div>
+    <div class="news-summary">國家統計局數據：5月CPI同比上漲1.2%，環比降0.1%；PPI同比漲3.9%，環比漲0.5%。央行數據：5月M2餘額353.67萬億同比增8.6%，5月單月新增社融2.03萬億。政府債券仍是社融主要支撐，住戶貸款持續收縮。</div>
+    <div class="source">來源：國家統計局、央行</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">5</span><span class="tag tag-finance">金融</span> A股創業板指站上4100點 科技新能源板塊活躍</div>
+    <div class="news-summary">A股走勢向好，創業板指單日拉升近2%站上4100點關口，科技、新能源等板塊表現活躍，市場信心持續回升。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">6</span><span class="tag tag-tech">科技</span> 螞蟻集團加入特區政府出海服务平台 助內地商戶走出去</div>
+    <div class="news-summary">螞蟻集團正式加入香港特區政府推出的企業出海服務平台，依托跨境支付、數字服務等能力，助力內地中小商戶拓展海外市場，相關服務使用量按年增長65%。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+</div>
+
+<!-- Section 3: International News -->
+<div class="section">
+  <div class="section-title"><span class="icon">🕊️</span> 國際新聞</div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">1</span><span class="tag tag-intl">峰會</span> G7峰會埃維昂閉幕 AI監管、關鍵礦產、全球經濟成焦點</div>
+    <div class="news-summary">G7領導人峰會6/15-17在法國埃維昂舉行，討論國際和平安全、全球經濟穩定、AI監管、關鍵礦產供應鏈安全等議題。特朗普與普京、澤連斯基分別通話，稱兩人願就解決烏克蘭危機「採取行動」。</div>
+    <div class="source">來源：歐盟理事會、央視網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">2</span><span class="tag tag-intl">美伊</span> 美伊簽署諒解備忘錄 3000億美元投資基金過半獲承諾</div>
+    <div class="news-summary">美伊雙方電子簽署諒解備忘錄，協議包含3000億美元對伊投資私有基金，超半數已獲出資承諾。特朗普稱談判進入第二階段，19日前霍爾木茲海峽完全開放。伊朗外長稱新一輪談判可能19日在瑞士舉行。但雙方對協議解讀存分歧，缺乏互信。</div>
+    <div class="source">來源：央視網、新華網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">3</span><span class="tag tag-breaking">軍事</span> 美軍B-52轟炸機加州墜毀 機上8人恐全部遇難</div>
+    <div class="news-summary">一架B-52戰略轟炸機在加州莫哈韋沙漠地區墜毀，從愛德華茲空軍基地起飛不久後墜毀，機上8人恐全部遇難。</div>
+    <div class="source">來源：央視網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">4</span><span class="tag tag-disaster">災難</span> 菲律賓南部強震已致68死33失蹤</div>
+    <div class="news-summary">6月8日發生的菲律賓南部強震，截至6/16上午已致68人死亡、33人失蹤。</div>
+    <div class="source">來源：央視網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">5</span><span class="tag tag-intl">貿易</span> 歐洲議會通過歐美貿易協議相關立法</div>
+    <div class="news-summary">歐洲議會全會在法國斯特拉斯堡最終表決通過歐盟-美國貿易協議相關立法，隨後將提交歐盟理事會批准。</div>
+    <div class="source">來源：央視網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">6</span><span class="tag tag-intl">中東</span> 以軍黎南部持續軍事行動 伊朗軍方警告違反停火84次</div>
+    <div class="news-summary">伊朗武裝部隊聲明稱，美伊達成諒解備忘錄後，以色列在黎巴嫩南部已違反停火協議84次，繼續對無辜民眾實施犯罪。以方稱獲得約旦河西岸希伯倫規劃建設管轄權。</div>
+    <div class="source">來源：央視網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">7</span><span class="tag tag-disaster">災難</span> 日本茨城5.5級地震 東京有較強震感</div>
+    <div class="news-summary">日本茨城縣南部6/16發生5.5級地震，震源深度50公里，東京有較強震感。</div>
+    <div class="source">來源：央視網</div>
+  </div>
+</div>
+
+<!-- Section 4: Finance -->
+<div class="section">
+  <div class="section-title"><span class="icon">📈</span> 財經新聞</div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">1</span><span class="tag tag-finance">美股</span> 美股三大指數齊漲 道指標普再創收市新高</div>
+    <div class="news-summary">美股6/16收市全線上漲，道指和標普500再創收市歷史新高。市場關注6/16-17美聯儲FOMC議息會議，沃什首次以主席身份主持，預期維持利率不變概率約97%，焦點轉向點陣圖和利率路徑預測。</div>
+    <div class="source">來源：央視網、StockTitan</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">2</span><span class="tag tag-finance">央行</span> 日本央行加息至1% 31年來最高水平</div>
+    <div class="news-summary">日本央行6/16結束兩天貨幣政策會議，將政策利率由0.75%上調至1.0%，為1995年以來最高水平，也是繼2025年12月以來首次加息。日元走強，日經受壓。澳洲央行則維持利率4.35%不變。</div>
+    <div class="source">來源：CNBC、央視網、CGTN</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">3</span><span class="tag tag-finance">港股</span> 恆指跌1.40%收24,494 恒科跌2.24%</div>
+    <div class="news-summary">港股6/16跟隨外圍調整，恆指收24,493跌348點（-1.40%），恒生科技指數跌2.24%至4,658。國指跌1.62%。市場等待美聯儲議息結果及G7峰會結論。</div>
+    <div class="source">來源：恒生指數公司</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">4</span><span class="tag tag-finance">商品</span> 國際油價大幅下跌 金價約$4,165</div>
+    <div class="news-summary">受美伊局勢階段性緩和影響，6/16國際油價大幅下跌，能源市場波動緩解。黃金價格約$4,165/盎司，距歷史高位回落約25%。</div>
+    <div class="source">來源：GoldSilver、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">5</span><span class="tag tag-finance">併購</span> 福克斯220億美元收購流媒體企業</div>
+    <div class="news-summary">美國傳媒巨頭福克斯公司宣布將以220億美元收購一家流媒體企業，加速布局數字內容賽道。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+</div>
+
+<!-- Section 5: Tech -->
+<div class="section">
+  <div class="section-title"><span class="icon">🤖</span> 科技快訊</div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">1</span><span class="tag tag-tech">AI</span> 蘋果WWDC：Siri由Google Gemini驅動 iOS 27 macOS放棄Intel</div>
+    <div class="news-summary">蘋果WWDC 2026發布多項更新：全新Siri由Google Gemini（1.2萬億參數）驅動；iOS 27速度大幅提升新增家長控制；macOS「金門」正式放棄Intel支持；液態玻璃透明度滑塊等新功能。</div>
+    <div class="source">來源：AIBars、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">2</span><span class="tag tag-tech">AI</span> Anthropic估值$9,650億 IPO臨近 與OpenAI爭相上市</div>
+    <div class="news-summary">AI巨頭Anthropic估值已達$9,650億，與OpenAI爭相推進IPO。SpaceX(SPCX)已於6/12上市首日漲19%市值超2.1萬億美元。三大巨頭合計為公開市場增加近4萬億美元市值。</div>
+    <div class="source">來源：Kersai、新浪財經</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">3</span><span class="tag tag-tech">芯片</span> 三星獲Neuralink芯片代工訂單 生產第四代腦機接口芯片</div>
+    <div class="news-summary">三星電子晶圓代工業務首次贏得馬斯克旗下腦機接口企業Neuralink的芯片製造訂單，將為其生產「第四代」芯片。</div>
+    <div class="source">來源：快科技</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">4</span><span class="tag tag-tech">指數</span> 恒生港美科技指數將納入SpaceX</div>
+    <div class="news-summary">恒生指數公司宣布，港美科技指數將納入新上市的SpaceX(SPCX)，反映港美科技板塊最新格局。</div>
+    <div class="source">來源：恒生指數公司</div>
+  </div>
+</div>
+
+<!-- Section 6: Sports -->
+<div class="section">
+  <div class="section-title"><span class="icon">⚽</span> 體育快訊</div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">1</span><span class="tag tag-sport">世界杯</span> 法國3-1塞內加爾 麥巴比梅開二度成法國歷史最佳射手</div>
+    <div class="news-summary">世界杯I組首輪，麥巴比梅開二度，超越成為法國隊史國際賽入球最多球員，法國3-1輕取塞內加爾。同組阿根廷出戰阿爾及利亞。</div>
+    <div class="source">來源：Sporting News</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">2</span><span class="tag tag-sport">世界杯</span> 西班牙0-0佛得角 亞洲球隊前幾輪保持不敗</div>
+    <div class="news-summary">H組西班牙0-0悶和佛得角未能開門紅。此前賽果：德國7-1庫拉索、瑞典5-1突尼斯、荷蘭2-2日本、美國4-1巴拉圭。亞洲球隊首輪保持不敗。佛得角官方感謝中國幫助圓夢世界杯，登上熱搜第一。</div>
+    <div class="source">來源：Sporting News、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">3</span><span class="tag tag-sport">棋賽</span> 國際象棋錦標賽6/17-21香港伊館 卡爾森抵港參賽</div>
+    <div class="news-summary">國際象棋錦標賽6/17-21在伊利沙伯體育館舉行，全球排名第一的卡爾森抵達香港參賽，300+頂尖棋手來自50+國家角逐50萬歐元獎金，香港歷史首次成為國際象棋世界中心。</div>
+    <div class="source">來源：Media Outreach、文匯網</div>
+  </div>
+
+  <div class="news-item">
+    <div class="news-title"><span class="num">4</span><span class="tag tag-sport">世界杯</span> 今夜賽程預告：挪威vs伊拉克 英格蘭vs約旦</div>
+    <div class="news-summary">J組挪威對伊拉克（夏蘭特世界盃首秀），I組阿根廷對阿爾及利亞（美斯衛冕之旅），J組奧地利對約旦，L組克羅地亞vs英格蘭。世界杯用球內置芯片需充電引發熱議。</div>
+    <div class="source">來源：文匯網</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  📰 上午新聞撮要 · 每日 08:00 自動生成 · GitHub Pages 渲染<br>
+  資料來源：點新聞、文匯網、央視網、新華社、恒指公司、Sporting News、CNBC 等<br>
+  上午版 · 2026年6月17日
+</div>
+
+</div>
+</body>
+</html>
