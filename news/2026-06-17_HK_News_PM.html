@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌇 下午新聞 - 6月17日 | 本港及國際新聞撮要</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans CJK TC', 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+    background: #eef2f7;
+    color: #2d3748;
+    line-height: 1.7;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .header {
+    background: linear-gradient(135deg, #744210 0%, #975a16 100%);
+    color: white;
+    padding: 28px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(116,66,16,0.3);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .header .subtitle {
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-top: 10px;
+  }
+  .market-bar {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .market-item {
+    text-align: center;
+    min-width: 80px;
+  }
+  .market-item .label {
+    font-size: 0.72em;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .market-item .value {
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+  .market-item .change {
+    font-size: 0.78em;
+    font-weight: 600;
+  }
+  .up { color: #c53030; }
+  .down { color: #38a169; }
+  .section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .section-title {
+    font-size: 1.2em;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .section-hk .section-title { color: #c53030; border-bottom-color: #fc8181; }
+  .section-cn .section-title { color: #b7791f; border-bottom-color: #f6e05e; }
+  .section-intl .section-title { color: #2b6cb0; border-bottom-color: #90cdf4; }
+  .section-fin .section-title { color: #2f855a; border-bottom-color: #9ae6b4; }
+  .section-tech .section-title { color: #6b46c1; border-bottom-color: #d6bcfa; }
+  .section-sport .section-title { color: #c05621; border-bottom-color: #fbd38d; }
+  .news-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-tag {
+    display: inline-block;
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag-breaking { background: #fed7d7; color: #9b2c2c; }
+  .tag-weather { background: #bee3f8; color: #2a4365; }
+  .tag-finance { background: #c6f6d5; color: #22543d; }
+  .tag-tech { background: #e9d8fd; color: #44337a; }
+  .tag-property { background: #feebc8; color: #7b341e; }
+  .tag-intl { background: #bee3f8; color: #2a4365; }
+  .tag-social { background: #fed7e2; color: #702459; }
+  .tag-edu { background: #c6f6d5; color: #22543d; }
+  .tag-politics { background: #e9d8fd; color: #44337a; }
+  .tag-sport { background: #feebc8; color: #7b341e; }
+  .tag-space { background: #bee3f8; color: #2a4365; }
+  .news-title {
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #1a365d;
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+  .news-desc {
+    font-size: 0.85em;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: #a0aec0;
+    font-size: 0.78em;
+  }
+  .focus-box {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-left: 4px solid #c53030;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .focus-box .focus-title {
+    font-weight: 700;
+    color: #c53030;
+    font-size: 1em;
+    margin-bottom: 6px;
+  }
+  .focus-box .focus-text {
+    font-size: 0.88em;
+    color: #742a2a;
+    line-height: 1.6;
+  }
+  @media (max-width: 600px) {
+    .container { padding: 10px; }
+    .header { padding: 20px 16px; }
+    .header h1 { font-size: 1.3em; }
+    .market-bar { flex-direction: column; gap: 8px; }
+    .section { padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>🌇 下午新聞 - 6月17日</h1>
+  <div class="subtitle">本港及國際新聞撮要 | 下午版</div>
+  <div class="date-badge">📅 2026年6月17日 星期三</div>
+</div>
+
+<!-- Market Bar -->
+<div class="market-bar">
+  <div class="market-item">
+    <div class="label">恒生指數</div>
+    <div class="value">24,312</div>
+    <div class="change down">▼ -181</div>
+  </div>
+  <div class="market-item">
+    <div class="label">國企指數</div>
+    <div class="value">8,235</div>
+    <div class="change down">▼ -0.74%</div>
+  </div>
+  <div class="market-item">
+    <div class="label">科指</div>
+    <div class="value">4,658</div>
+    <div class="change up">▲ +0.17%</div>
+  </div>
+  <div class="market-item">
+    <div class="label">內地A股</div>
+    <div class="value">創業板+1.6%</div>
+    <div class="change up">A股造好</div>
+  </div>
+  <div class="market-item">
+    <div class="label">日經指數</div>
+    <div class="value">再創新高</div>
+    <div class="change up">▲ +500點</div>
+  </div>
+</div>
+
+<!-- 焦點 -->
+<div class="focus-box">
+  <div class="focus-title">🔥 今日焦點：美伊6.19簽和平協議 + 夏寶龍完成兩日考察 + 世界盃阿根廷法國齊報捷</div>
+  <div class="focus-text">美伊框架協議定於本周五（6/19）瑞士簽署，霍爾木茲海峽將重開油價急挫逾5%；夏寶龍視察葵涌碼頭及新皇崗口岸後離港；美斯帽子戲法助阿根廷3:0大捷；DeepSeek完成逾70億美元融資創中國AI行業紀錄</div>
+</div>
+
+<!-- 🇭🇰 本港新聞 -->
+<div class="section section-hk">
+  <div class="section-title">🇭🇰 本港新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-breaking">🚨突發</span>
+    <div class="news-title">青沙公路奪命車禍｜休班消防員偕妻同告不治 上周跳海救人受傷仍赴泰國度蜜月</div>
+    <div class="news-desc">38歲休班消防員張阿芹與35歲妻子乘坐的士被客貨車撞至翻側，兩人被拋出車外身亡，客貨車司機涉危險駕駛被捕。死者舅父透露，阿芹上周曾在觀塘碼頭救回跳海自殺男子弄傷腳，其後仍與妻赴曼谷補度蜜月，感嘆「個天好似叫佢唔好去旅行……點知都係避唔到」。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政情</span>
+    <div class="news-title">夏寶龍完成兩日考察離港 視察葵涌貨櫃碼頭及新皇崗口岸</div>
+    <div class="news-desc">中央港澳辦主任夏寶龍今日完成兩日考察調研，上午視察葵涌貨櫃碼頭後再到深圳新皇崗口岸考察重建進度。運輸及物流局局長陳美寶匯報海運港口業發展，稱以「全球航運之都」為目標。行政長官李家超於深圳灣口岸送行。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-breaking">🚨突發</span>
+    <div class="news-title">深水埗司機疑不忿被砵爆粗辱罵女乘客 車主揚言控告性騷擾</div>
+    <div class="news-desc">深水埗一名司機疑不滿被其他車響號提示，以粗言穢語辱罵車上女乘客。車主得悉後怒斥司機行為，揚言已就事件報警並控告性騷擾，網上流傳事發片段引熱議。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">黃百鳴內幕交易案判囚5個月 今日放棄保釋即時服刑</div>
+    <div class="news-desc">著名電影人黃百鳴因內幕交易案被判監5個月，今日（17日）放棄保釋上訴權利，即時入獄服刑。案件涉及多年前的電影公司股份交易，法庭裁定其利用內幕消息獲利。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">洪水橋男子涉謀殺 拖板車露出人腳 被捕稱襲擊助女友減肥</div>
+    <div class="news-desc">洪水橋一名男子清晨拖板車時被途人發現露出人腳，警方接報到場揭發案件，以涉嫌謀殺拘捕該男子。疑犯辯稱襲擊是為幫助女友減肥，案件交由重案組跟進。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">尖沙咀體檢中心中醫違規操作乳房超聲波 衛生署轉介警方跟進</div>
+    <div class="news-desc">《星島申訴王》放蛇揭發尖沙咀一間體檢中心以「中醫主理」名義推銷乳房超聲波檢查，質疑中醫資格操作超聲波儀器。衛生署已將個案轉交警方跟進，並承諾提供專業支援。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-weather">🌤️天氣</span>
+    <div class="news-title">天文台：今晚及明日初時雨勢有時頗大 部分地區有機會水浸</div>
+    <div class="news-desc">天文台發出特別天氣提示，強雷雨區逐漸靠近，未來兩三小時本港可能受大雨影響。今晚及明早雨勢有時頗大，多個泳灘因水質預測極差或大浪懸掛紅旗。市民應留意天氣變化及可能出現的水浸。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-edu">📚教育</span>
+    <div class="news-title">當局公布中小學數字教育發展藍圖 下學年所有公帑資助學校須納入</div>
+    <div class="news-desc">教育局公布中小學數字教育發展藍圖，要求下學年起所有公帑資助學校將數字教育納入學校發展計劃。局方稱不同學習階段的目標將有所不同，強調培養學生數字素養及AI時代所需技能。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">盧寵茂：本港捐血人口比例偏低 年輕捐血者比例不足</div>
+    <div class="news-desc">醫務衞生局局長盧寵茂出席立法會紅十字會捐血活動時指出，本港捐血人口比例偏低，特別年輕捐血者比例不足。立法會聯同紅十字會今日舉辦捐血活動，呼籲市民積極捐血。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政情</span>
+    <div class="news-title">林正財：五年規劃諮詢文件六大範圍「點睛」 政府仍要聽意見</div>
+    <div class="news-desc">行政會議成員林正財表示，政府公布的五年規劃諮詢文件六大範圍已為香港發展「點睛」，但強調政府仍需廣泛聽取社會各界意見，才能制定出切實可行的長遠藍圖。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-property">🏘️地產</span>
+    <div class="news-title">鄭若骅丈夫潘樂陶入市 1.2億購雅賓利大廈複式戶</div>
+    <div class="news-desc">超級豪宅持續熾熱。律政司前司長鄭若驊丈夫、安樂工程創辦人潘樂陶再度入市，本月初斥近1.17億元購入中半山雅賓利大廈低層複式戶，反映豪宅市場信心持續。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">商用車司機體檢年齡門檻擬降至65歲 政府目標明年中落實修例</div>
+    <div class="news-desc">政府計劃將商用車司機強制體檢年齡門檻由70歲降至65歲，目標明年中落實修例。當局表示此舉旨在加強道路安全，但運輸業界擔心加劇司機短缺問題。</div>
+  </div>
+</div>
+
+<!-- 🇨🇳 中國新聞 -->
+<div class="section section-cn">
+  <div class="section-title">🇨🇳 中國新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政策</span>
+    <div class="news-title">中國發布《構建更加公正合理的全球治理體系》白皮書 提出中國方案</div>
+    <div class="news-desc">國務院新聞辦公室今日發布《構建更加公正合理的全球治理體系：中國的理念、倡議與行動》白皮書，系統闡述中國對改革全球治理體系的主張，涵蓋國際金融、貿易、氣候變化及AI治理等領域。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉經濟</span>
+    <div class="news-title">何立峰陸家嘴論壇致辭：歡迎各國金融機構深耕中國市場</div>
+    <div class="news-desc">國務院副總理何立峰在2026陸家嘴論壇致辭，強調加強金融監管、提升金融開放水平及國際競爭力。人行等部門公布多項措施，包括在上海自貿區開展離岸人民幣外匯交易試點，為「走出去」企業打造金融避風港。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">深圳約談美團淘寶閃購京東外賣 嚴打「幽靈外賣」食品安全問題</div>
+    <div class="news-desc">深圳市市場監管局針對6月15日「幽靈外賣」統一行動發現的食安突出問題，依法約談美團、淘寶閃購、京東外賣三家平台駐深運營機構負責人，現場送達《嚴格落實網絡餐飲平台食品安全主體責任提醒敦促函》。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-politics">🏛️政策</span>
+    <div class="news-title">發改委：系統推進「六張網」建設 統籌政府資金和新型政策性金融工具</div>
+    <div class="news-desc">國家發改委主任鄭柵潔主持座談會，強調將加強「六張網」規劃建設，強化多網協同推進，統籌用好各類政府資金和新型政策性金融工具，推動算力網等新基建投資達萬億量級。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖科技</span>
+    <div class="news-title">中國成功研製首款矽-石墨烯-鍺勢壘晶體管 理論頻率有望突破1THz</div>
+    <div class="news-desc">中國科研團隊成功研製出國際上首款實現射頻測試的矽-石墨烯-鍺勢壘晶體管，理論工作頻率有望突破1THz，標誌著中國在半導體基礎研究領域取得重大突破。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-social">👥社會</span>
+    <div class="news-title">緬甸總統敏昂萊抵北京開始訪華 國台辦歡迎台灣同胞來大陸看世界盃</div>
+    <div class="news-desc">緬甸總統敏昂萊抵達北京展開訪華行程。同日，國台辦發言人表示歡迎台灣同胞來大陸觀看世界盃賽事，強調兩岸民間交流不受政治因素影響。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉經濟</span>
+    <div class="news-title">中央國債結算公司擬降低做市商結算費用 7月起7.5折優惠</div>
+    <div class="news-desc">中央國債登記結算公司宣布，將做市商通過做市成交的現券交易結算服務費由8折進一步降低至7.5折，優惠措施自2026年7月1日起至2028年12月31日止有效，以降低做市商交易成本。</div>
+  </div>
+</div>
+
+<!-- 🕊️ 國際新聞 -->
+<div class="section section-intl">
+  <div class="section-title">🕊️ 國際新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">美伊和平協議｜瑞士公布本周五正式簽署 伊朗外長要求以色列撤出黎巴嫩</div>
+    <div class="news-desc">瑞士公布美伊框架協議簽署儀式將於本周五（6/19）在中部比爾根山度假村舉行。伊朗外長阿拉格齊要求以色列撤出黎巴嫩作為簽署條件。特朗普稱可能很快重新對俄羅斯實施石油制裁，為協議蒙上陰影。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">伊朗兩艘超大運油輪駛出美軍封鎖線 霍爾木茲海峽有望重開</div>
+    <div class="news-desc">至少兩艘隸屬伊朗國家運油輪公司的超大運油輪據報駛出美軍封鎖線，標誌着美伊協議下霍爾木茲海峽重新開放取得實質進展。國際油價應聲急挫逾5%，失守80美元關口。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-breaking">🚨突發</span>
+    <div class="news-title">俄軍軍艦在英倫海峽向英國遊艇開火示警 事件中無人受傷</div>
+    <div class="news-desc">俄羅斯軍艦在英倫海峽向一艘英國遊艇開火示警，事件中無人受傷。英國政府強烈譴責俄方行為，事件發生在G7峰會期間，加劇西方與俄羅斯之間的緊張關係。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">美國FBI堵截襲擊白宮計劃 5人被捕</div>
+    <div class="news-desc">美國聯邦調查局（FBI）及相關部門成功堵截一宗針對白宮的襲擊計劃，據報已拘捕5名涉案人士。白宮及周邊地區安保級別即時提升，調查仍在進行中。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">澤連斯基分別與美德領袖會晤 討論加強防務合作</div>
+    <div class="news-desc">烏克蘭總統澤連斯基分別與美國總統特朗普及德國總理會晤，討論加強防務合作及對烏軍事援助。會談正值美伊和平協議即將簽署之際，烏方關注協議對烏克蘭安全的影響。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">中方堅決反對英方實施無國際法依據單邊制裁 已向英方嚴正交涉</div>
+    <div class="news-desc">中國外交部就英國對華實施新一輪單邊制裁表示堅決反對，強調英方措施沒有國際法依據，中方已向英方提出嚴正交涉，並保留採取反制措施的權利。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">美軍印太司令部恢復原名「美軍太平洋司令部」</div>
+    <div class="news-desc">美國軍方宣布印太司令部恢復使用原「美軍太平洋司令部」名稱，此舉被視為美方調整印太戰略部署的一部分。分析指改名反映美軍重新聚焦傳統太平洋防務架構。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-intl">🕊️國際</span>
+    <div class="news-title">世衛：剛果民主共和國伊波拉疫情持續惡化 存在進一步擴散風險</div>
+    <div class="news-desc">世界衛生組織警告，剛果民主共和國伊波拉疫情持續惡化，存在進一步擴散至鄰國的風險。中國國務院副總理劉國中表示中方已向剛果及非盟提供緊急人道主義援助。</div>
+  </div>
+</div>
+
+<!-- 📈 財經新聞 -->
+<div class="section section-fin">
+  <div class="section-title">📈 財經新聞</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">恒指收市跌181點報24,312 科指靠穩 AI硬件及工業製品逆市走強</div>
+    <div class="news-desc">港股三大指數個別發展，恒指低收181點（-0.74%）報24,312點。科指微升0.17%。建滔集團飆16.87%領漲藍籌，凱盛新能暴升28.47%。建滔積層板成交額218億冠絕大市，新能源汽車全線走低。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">建滔折讓近12%減持建滔積層板 配售集資近120億元</div>
+    <div class="news-desc">建滔集團以折讓近12%配售建滔積層板股份，集資近120億港元。花旗上調建滔集團目標價至90港元，南下資金持續加倉，反映市場看好AI驅動的PCB及覆銅板景氣周期。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">SENASIC首日掛牌飆118% 微創機器人核心產品訂單累計近400台</div>
+    <div class="news-desc">新股SENASIC今日在港交所掛牌，首日股價飆升118.52%。微創機器人漲12.49%，公司稱核心產品綜合訂單量累計近400台。博泰車聯則插水近10%，擬配售225.93萬股新H股淨籌約3.82億。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">人行下周一在港發行400億元人民幣央票</div>
+    <div class="news-desc">中國人民銀行宣布將於下周一在港發行400億元人民幣央行票據，為今年以來較大規模的離岸央票發行，旨在穩定離岸人民幣匯率預期。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">日股高收近500點再創新高 韓股升近2%創收市新高 油價急挫逾5%</div>
+    <div class="news-desc">亞太股市個別發展：日經指數高收近500點再創歷史新高；韓股高收近2%同創收市新高；台股靠穩。美伊和平協議預期拖累國際油價急挫逾5%，失守80美元；金價靠穩升至4,330美元以上。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-finance">📉財經</span>
+    <div class="news-title">美股：道指升328點再創新高 科技股拖累納指標指下挫</div>
+    <div class="news-desc">美股周一表現分化：道瓊斯指數升328點再創歷史新高，但科技股普遍回調拖累納指及標指下挫。費城半導體指數大跌5.7%，英特爾跌逾8%、AMD跌逾7%、美光跌逾6%。</div>
+  </div>
+</div>
+
+<!-- 🤖 科技快訊 -->
+<div class="section section-tech">
+  <div class="section-title">🤖 科技快訊</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖AI</span>
+    <div class="news-title">DeepSeek完成超70億美元融資 騰訊寧德時代京東網易入局 創中國AI行業紀錄</div>
+    <div class="news-desc">傳DeepSeek完成中國AI行業最大單輪融資超70億美元，騰訊、寧德時代、京東、網易入局但無投票權，創始人仍掌握公司控制權。此輪融資標誌着中國AI產業進入資本密集競爭新階段。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖AI</span>
+    <div class="news-title">ChatGPT市場份額跌破50% Gemini及Claude快速崛起</div>
+    <div class="news-desc">據Sensor Tower《2026年AI產業狀況報告》，ChatGPT全球AI助手市場份額截至5月底降至46.4%，Gemini以27.7%緊隨其後，Claude佔10.3%。AI競爭格局正從一家獨大轉向三強鼎立。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖AI</span>
+    <div class="news-title">微軟考慮採用DeepSeek開源模型 用於Copilot Cowork等產品降成本</div>
+    <div class="news-desc">消息指微軟正考慮採用DeepSeek開源模型用於Copilot Cowork等產品，旨在降低AI使用成本。此舉若落實，將是微軟首次在核心AI產品中引入中國開源模型。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">💻半導體</span>
+    <div class="news-title">高通擬收購AI晶片創企Tenstorrent 估值80-100億美元</div>
+    <div class="news-desc">傳高通正洽購AI晶片初創Tenstorrent，交易估值80億至100億美元。Tenstorrent CEO為傳奇晶片架構師Jim Keller，其AI晶片技術被視為挑戰Nvidia地位的潛在力量。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-space">🚀航天</span>
+    <div class="news-title">SpaceX上市三日飆49% 市值達2.65萬億美元超越亞馬遜</div>
+    <div class="news-desc">SpaceX上市後股價持續暴漲，三日累升49%，市值達2.65萬億美元超越亞馬遜，盤中一度超越微軟。期權首日交易180萬份打破Meta保持紀錄。奧本海默預計星鏈將重塑1.6萬億美元全球通信市場。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-space">🚀航天</span>
+    <div class="news-title">中國成功發射實踐三十一號衛星 長征三號乙火箭西昌升空</div>
+    <div class="news-desc">6月16日17時45分，長征三號乙運載火箭在西昌衛星發射中心成功將實踐三十一號衛星送入預定軌道，用於空間環境探測及相關技術試驗。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">🤖AI</span>
+    <div class="news-title">國產AI晶片加速進入金融業 平頭哥真武部署超10萬卡覆蓋150+機構</div>
+    <div class="news-desc">阿里巴巴旗下平頭哥真武AI晶片在金融行業部署已超10萬卡，覆蓋超過150家金融機構。海光信息已在90%以上金融場景實現算力覆蓋，標誌國產AI晶片商業化進入規模化階段。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-tech">☀️能源</span>
+    <div class="news-title">全鈣鈦礦光伏組件刷新世界紀錄 光電轉換效率達26.2%</div>
+    <div class="news-desc">中國科研團隊研製的大面積全鈣鈦礦光伏組件光電轉換效率達26.2%，刷新世界紀錄。此突破為下一代低成本、高效率太陽能技術商業化奠定基礎。</div>
+  </div>
+</div>
+
+<!-- ⚽ 體育快訊 -->
+<div class="section section-sport">
+  <div class="section-title">⚽ 體育快訊</div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽世界盃</span>
+    <div class="news-title">🏆 美斯帽子戲法！阿根廷3:0大勝阿爾及利亞 分組賽旗開得勝</div>
+    <div class="news-desc">J組焦點戰，38歲球王美斯連中三元，助阿根廷3:0橫掃阿爾及利亞，以完美表現展開衛冕之旅。美斯世界盃總進球增至16球，追平傳奇射手克洛澤的歷史紀錄。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽世界盃</span>
+    <div class="news-title">法國3:1挫塞內加爾 報2002年揭幕戰一敗之仇</div>
+    <div class="news-desc">I組賽事，法國憑姆巴佩、登貝萊等球星建功，3:1擊敗塞內加爾，成功報卻2002年世界盃揭幕戰爆冷落敗之仇。法國隊陣容豪華身價達15.5億歐元，展現奪冠熱門實力。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽世界盃</span>
+    <div class="news-title">挪威4:1大勝伊拉克 夏蘭特建功暫排I組榜首</div>
+    <div class="news-desc">I組另一場，挪威以4:1大勝時隔40年重返世界盃的伊拉克。夏蘭特取得入球，挪威憑較佳得失球暫列I組榜首。伊拉克雖敗猶榮，展現拼勁。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽世界盃</span>
+    <div class="news-title">奧地利vs約旦中午開戰 J組第二場對決</div>
+    <div class="news-desc">北京時間今日中午12時，J組奧地利對陣約旦展開較量。約旦為世界盃新軍首次亮相，奧地利則力求在小組中搶佔有利位置。</div>
+  </div>
+
+  <div class="news-item">
+    <span class="news-tag tag-sport">⚽世界盃</span>
+    <div class="news-title">38歲美斯公開「5大核心」餐單 戒絕垃圾食物12年保持巔峰</div>
+    <div class="news-desc">六度出戰世界盃的美斯公開其「5大核心」健身餐單，包括戒絕垃圾食物12年，堅持使用特定法寶降低壞膽固醇，以38歲之齡仍保持頂級競技狀態。</div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  🌇 下午新聞撮要 | 2026年6月17日 | 由 WorkBuddy AI 自動生成<br>
+  資料來源：RTHK、星島日報、香港01、香港新聞社、新華社、雪球、华盛通等 | 僅供參考
+</div>
+
+</div>
+</body>
+</html>
