@@ -33,7 +33,7 @@ function doGet(e) {
   let result;
   
   // 处理写操作
-  const writeActions = ["add", "confirm", "delete", "buffer_post"];
+  const writeActions = ["add", "confirm", "delete", "buffer_post", "update_url", "update_notes"];
   if (writeActions.indexOf(action) !== -1) {
     result = handleWriteAction(e, action);
   } else {
@@ -59,6 +59,24 @@ function doGet(e) {
       result = { success: true, items: items, count: items.length };
     } else if (action === "test") {
       result = { status: "ok", message: "GAS Web App is working!", timestamp: new Date().toISOString() };
+    } else if (action === "check_postlog") {
+      // 調試用：返回 PostLog sheet 最後幾行
+      try {
+        var ss = SpreadsheetApp.getActiveSpreadsheet();
+        var logSheet = ss.getSheetByName('PostLog');
+        if (!logSheet) {
+          result = { success: true, log: 'PostLog sheet not found (no POST received yet)' };
+        } else {
+          var data = logSheet.getDataRange().getValues();
+          var rows = data.slice(-5).map(function(row) { return row.map(function(cell) { return String(cell); }); });
+          result = { success: true, totalRows: data.length, lastRows: rows };
+        }
+      } catch(err) {
+        result = { success: false, error: err.toString() };
+      }
+    } else if (action === "check_token") {
+      var token = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
+      result = { success: true, token_set: !!token, token_preview: token ? token.substring(0, 6) + '...' : 'NOT SET' };
     } else if (action === "get_sheet_url") {
       // 返回 Spreadsheet URL（方便用戶直接開）
       const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -87,10 +105,162 @@ function doGet(e) {
 }
 
 /**
- * 支援 POST 請求（避免 URL 長度限制）
+ * 支援 POST 請求
+ * 處理 HTML 內容更新（保存編輯後的電郵）
  */
 function doPost(e) {
-  return doGet(e);
+  var callback = (e && e.parameter && e.parameter.callback) ? e.parameter.callback : null;
+  var result;
+  
+  try {
+    // 嘗試解析 JSON payload
+    var postData = {};
+    if (e && e.postData && e.postData.contents) {
+      try {
+        postData = JSON.parse(e.postData.contents);
+      } catch(err) {
+        // 如果不是 JSON，嘗試從 parameter 讀取
+        postData = e.parameter || {};
+      }
+    } else {
+      postData = e.parameter || {};
+    }
+    
+    var action = postData.action || (e.parameter ? e.parameter.action : '') || '';
+    
+    // 更新 HTML 檔案（Google Drive + GitHub）
+    if (action === 'update_html') {
+      result = handleUpdateHtml(postData);
+    } else {
+      // 其他 action 走原有 doGet 邏輯
+      return doGet(e);
+    }
+  } catch(err) {
+    result = { success: false, error: err.toString() };
+  }
+  
+  var json = JSON.stringify(result);
+  if (callback) {
+    return ContentService.createTextOutput(callback + "(" + json + ")")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return jsonResponse(result);
+}
+
+/**
+ * 處理 HTML 內容更新
+ * 1. 更新 Google Drive 上的 HTML 檔案
+ * 2. 更新 GitHub 倉庫中的檔案
+ */
+function handleUpdateHtml(params) {
+  var fileId = params.fileId || '';
+  var content = params.content || '';
+  var githubPath = params.githubPath || '';
+  
+  // 寫日誌到 Spreadsheet（用於調試）
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var logSheet = ss.getSheetByName('PostLog');
+    if (!logSheet) {
+      logSheet = ss.insertSheet('PostLog');
+      logSheet.appendRow(['Timestamp', 'Action', 'FileId', 'GitHubPath', 'ContentLength', 'GDrive', 'GitHub', 'Error']);
+    }
+    logSheet.appendRow([new Date(), 'update_html', fileId, githubPath, content.length, '', '', '']);
+  } catch(e) {}
+  
+  if (!fileId || !content) {
+    return { success: false, error: 'Missing fileId or content' };
+  }
+  
+  var results = { gdrive: false, github: false };
+  
+  // 1. 更新 Google Drive
+  try {
+    var file = DriveApp.getFileById(fileId);
+    file.setContent(content);
+    results.gdrive = true;
+  } catch(err) {
+    results.gdriveError = err.toString();
+  }
+  
+  // 2. 更新 GitHub（如果有提供路徑）
+  if (githubPath) {
+    try {
+      results.github = updateGitHubFile(githubPath, content);
+    } catch(err) {
+      results.githubError = err.toString();
+    }
+  }
+  
+  return {
+    success: results.gdrive || results.github,
+    results: results
+  };
+}
+
+/**
+ * 用 GitHub API 更新倉庫中的檔案
+ * Token 存在腳本屬性 GITHUB_TOKEN 中
+ */
+function updateGitHubFile(path, content) {
+  var token = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
+  if (!token) {
+    return { success: false, error: 'GITHUB_TOKEN not set in script properties' };
+  }
+  
+  var owner = 'eventeasynet';
+  var repo = 'workbuddyClaw';
+  var branch = 'gh-pages';
+  
+  // 1. 先取得檔案的 SHA（用於更新）
+  var getUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(path) + '?ref=' + branch;
+  var getOptions = {
+    method: 'get',
+    headers: {
+      'Authorization': 'token ' + token,
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'WorkBuddy-GAS'
+    },
+    muteHttpExceptions: true
+  };
+  
+  var getResp = UrlFetchApp.fetch(getUrl, getOptions);
+  var getJson = JSON.parse(getResp.getContentText());
+  
+  if (!getJson.sha) {
+    return { success: false, error: 'File not found on GitHub: ' + path, status: getResp.getResponseCode() };
+  }
+  
+  // 2. 更新檔案
+  var putUrl = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/' + encodeURIComponent(path);
+  var encodedContent = Utilities.base64Encode(content, Utilities.Charset.UTF_8);
+  var payload = {
+    message: 'Update ' + path + ' (via Dashboard email editor)',
+    content: encodedContent,
+    sha: getJson.sha,
+    branch: branch
+  };
+  
+  var putOptions = {
+    method: 'put',
+    headers: {
+      'Authorization': 'token ' + token,
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'WorkBuddy-GAS'
+    },
+    contentType: 'application/json',
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  };
+  
+  var putResp = UrlFetchApp.fetch(putUrl, putOptions);
+  var putJson = JSON.parse(putResp.getContentText());
+  
+  if (putResp.getResponseCode() === 200 || putResp.getResponseCode() === 201) {
+    return { success: true, commit: putJson.commit ? putJson.commit.sha : null };
+  } else {
+    return { success: false, error: putJson.message || 'GitHub update failed', status: putResp.getResponseCode() };
+  }
 }
 
 /**
@@ -405,4 +575,39 @@ function fixNews605Url() {
     }
   }
   return "ID not found";
+}
+
+/**
+ * 設定腳本屬性（供 clasp run 呼叫）
+ * 用法：clasp run setScriptProperty -p '["GITHUB_TOKEN", "ghp_xxx"]'
+ */
+function setScriptProperty(key, value) {
+  PropertiesService.getScriptProperties().setProperty(key, value);
+  return "Property '" + key + "' set successfully";
+}
+
+/**
+ * 取得腳本屬性
+ */
+function getScriptProperty(key) {
+  return PropertiesService.getScriptProperties().getProperty(key);
+}
+
+/**
+ * 一次性設定：初始化 GITHUB_TOKEN
+ * 在 GAS 編輯器手動執行一次即可
+ * ⚠️ 執行後請刪除此函數中的 token 值，改用腳本屬性讀取
+ */
+function initGitHubToken() {
+  var token = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
+  if (token) {
+    return "GITHUB_TOKEN already set (preview: " + token.substring(0,6) + "...)";
+  }
+  // 首次設定：在 GAS 編輯器中把下面的空字串替換為你的 token，執行後再改回空字串
+  var newToken = '';
+  if (!newToken) {
+    return "Please set the token value in the code first, then run again.";
+  }
+  PropertiesService.getScriptProperties().setProperty('GITHUB_TOKEN', newToken);
+  return "GITHUB_TOKEN set successfully";
 }

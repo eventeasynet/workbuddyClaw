@@ -830,9 +830,11 @@ function renderReport(areaId, item) {
       var year = dateMatch[1];
       var month = dateMatch[2];
       var day = dateMatch[3];
-      // 根據 type 推測檔案名稱
+      // 根據 type 推測檔案名稱（⚠️ 注意順序：「香港及世界活動」必須在「活動花絮」之前，因為前者也包含「活動」二字）
       if (item.type.indexOf('潛在客戶') >= 0) {
         rawUrl = 'https://dash.vigoradv.com/news/' + year + '-' + month + '-' + day + '_Lead_Intelligence.html';
+      } else if (item.type.indexOf('香港及世界活動') >= 0) {
+        rawUrl = 'https://dash.vigoradv.com/news/' + year + '-' + month + '-' + day + '_Event_Summary.html';
       } else if (item.type.indexOf('活動花絮') >= 0) {
         rawUrl = 'https://dash.vigoradv.com/news/' + year + '-' + month + '-' + day + '_Event_Report.html';
       } else if (item.type.indexOf('新聞') >= 0) {
