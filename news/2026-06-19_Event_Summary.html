@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎪 香港及世界活動 - 6月19日</title>
+  <style>
+    body { font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; background: #fdf2f8; color: #1f2937; }
+    .header { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2); }
+    .header h1 { margin: 0 0 8px 0; font-size: 28px; }
+    .header p { margin: 0; opacity: 0.9; font-size: 14px; }
+    .summary-stats { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+    .stat-pill { background: rgba(255, 255, 255, 0.2); padding: 6px 14px; border-radius: 16px; font-size: 13px; font-weight: 500; }
+    .section-title { background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: white; padding: 16px 20px; border-radius: 8px; margin: 30px 0 16px 0; font-size: 18px; font-weight: 600; }
+    .global-section-title { background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%); color: white; padding: 16px 20px; border-radius: 8px; margin: 30px 0 16px 0; font-size: 18px; font-weight: 600; }
+    .event-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative; border-left: 4px solid #ec4899; }
+    .event-card.global { border-left-color: #8b5cf6; }
+    .lead-score { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .score-high { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+    .score-mid { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }
+    .score-low { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .event-card h3 { margin: 0 0 8px 0; font-size: 17px; color: #1f2937; padding-right: 110px; }
+    .event-card p { margin: 4px 0; font-size: 14px; line-height: 1.6; }
+    .event-card p strong { color: #6b7280; font-weight: 600; }
+    .event-contact { background: #fdf2f8; padding: 10px 12px; border-radius: 6px; margin-top: 10px; font-family: 'Courier New', monospace; font-size: 13px; border: 1px solid #fbcfe8; }
+    .event-contact.global { background: #f5f3ff; border-color: #ddd6fe; }
+    .event-contact a { color: #ec4899; text-decoration: none; }
+    .event-contact.global a { color: #8b5cf6; }
+    .event-contact a:hover { text-decoration: underline; }
+    .email-btn { background: #ec4899; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 13px; font-weight: 500; transition: background 0.2s; }
+    .email-btn:hover { background: #db2777; }
+    .copy-btn { background: white; color: #ec4899; border: 1px solid #ec4899; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+    .copy-btn:hover { background: #fdf2f8; }
+    .edit-btn { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+    .edit-btn:hover { background: #2563eb; }
+    .save-btn { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; display: none; transition: background 0.2s; }
+    .save-btn:hover { background: #059669; }
+    .send-btn { background: #8b5cf6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+    .send-btn:hover { background: #7c3aed; }
+    .email-section { margin-top: 12px; padding: 16px; background: #fdf2f8; border-radius: 8px; border: 1px solid #fbcfe8; }
+    .email-section.global { background: #f5f3ff; border-color: #ddd6fe; }
+    .email-section h4 { margin: 12px 0 8px 0; font-size: 14px; color: #ec4899; }
+    .email-section.global h4 { color: #8b5cf6; }
+    .email-section h4:first-child { margin-top: 0; }
+    .email-section pre { background: white; padding: 12px; border-radius: 6px; border: 1px solid #fbcfe8; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word; margin: 0; color: #1f2937; }
+    .email-section pre.global { border-color: #ddd6fe; }
+    .email-section textarea { width: 100%; min-height: 250px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.6; padding: 12px; border-radius: 6px; border: 2px solid #ec4899; background: white; color: #1f2937; resize: vertical; display: none; box-sizing: border-box; }
+    .email-section textarea.global { border-color: #8b5cf6; }
+    .email-action-bar { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .save-status { font-size: 12px; margin-left: 8px; display: none; font-weight: 500; }
+    .save-status.success { color: #10b981; }
+    .save-status.error { color: #ef4444; }
+    .footer { text-align: center; padding: 30px 20px 10px 20px; color: #6b7280; font-size: 12px; }
+    .footer a { color: #ec4899; text-decoration: none; }
+    @media (max-width: 640px) {
+      body { padding: 12px; }
+      .header h1 { font-size: 22px; }
+      .event-card h3 { padding-right: 0; }
+      .lead-score { position: static; display: inline-block; margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body data-drive-file-id="" data-github-path="news/2026-06-19_Event_Summary.html">
+  <div class="header">
+    <h1>🎪 香港及世界活動</h1>
+    <p>6月19日 生成 | 共找到 14 個香港活動 + 3 個全球活動花絮</p>
+    <div class="summary-stats">
+      <span class="stat-pill">🔥 高優先 7 個</span>
+      <span class="stat-pill">⚡ 中優先 5 個</span>
+      <span class="stat-pill">📝 低優先 2 個</span>
+      <span class="stat-pill">🌍 全球 3 個</span>
+    </div>
+  </div>
+
+  <div class="section-title">🇭🇰 香港及世界活動</div>
+
+  <!-- 1. 永明香港國際龍舟邀請賽 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (數萬參與者)</div>
+    <h3>2026 永明香港國際龍舟邀請賽 (金禧 50 載)</h3>
+    <p><strong>日期：</strong>2026-06-27 至 2026-06-28 (星期六至日)</p>
+    <p><strong>地點：</strong>尖沙咀東部海濱</p>
+    <p><strong>預計人數：</strong>大量參與者 (本地及國際隊伍)</p>
+    <p><strong>主辦：</strong>香港旅遊發展局 × 中國香港龍舟總會</p>
+    <p><strong>簡介：</strong>金禧 50 載盛事，標準龍 500 米賽事，匯聚本地及國際頂尖龍舟隊伍，現場觀眾及嘉賓陣容龐大。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@hkcdba.org">info@hkcdba.org</a> ｜ 🌐 hkcdba.org/2026hkidbr</div>
+    <button class="email-btn" onclick="showEmail('e1')">📧 查看推廣電郵</button>
+    <div id="email-e1" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 2026 永明香港國際龍舟邀請賽嘅報名系統建議
+
+中國香港龍舟總會 您好，
+
+我係 EventEasy.net 團隊，我哋留意到「2026 永明香港國際龍舟邀請賽」即將於 6 月 27 至 28 日喺尖沙咀東部海濱舉行，作為金禧 50 載嘅大型體育盛事，預計將會吸引大量本地及國際隊伍同觀眾參與。
+
+EventEasy.net 係一站式活動管理平台，可以幫您處理賽事報名流程，包括：
+• 智能報名系統 — 為不同組別(公開組、女子組、混合組等)自訂報名表單
+• 多元收款方式 — 支援 FPS、PayMe、銀行轉帳等多種付款渠道
+• 批量匯入名單 — 已有名單可一鍵導入，避免逐個輸入
+• QR Code 簽到 — 當日快速核實參賽者身份
+• AI 數據分析 — 賽後生成詳細參加者分析報告
+
+以您哋今次嘅規模，我哋推薦 500 人方案或以上嘅報名模組，按實際需要擴充即可。EventEasy.net 採用模組化收費，您只需要為實際使用嘅功能付費，靈活又實惠。
+
+歡迎隨時預約 15 分鐘網上示範，我哋可以根據龍舟賽嘅實際流程為您示範最佳實踐方案。
+
+祝賽事圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Registration System Proposal for 2026 HK International Dragon Boat Invitational
+
+Dear Hong Kong China Dragon Boat Association,
+
+We are the EventEasy.net team, and we noticed the 2026 Sun Life Hong Kong International Dragon Boat Invitational Races will be held on June 27-28 at Tsim Sha Tsui East Waterfront. As a Golden Jubilee milestone event, it is expected to attract numerous local and international teams and spectators.
+
+EventEasy.net is an all-in-one event management platform that can help you streamline the registration process:
+• Smart Registration — Custom forms for different categories (Open, Women, Mixed)
+• Multiple Payment Methods — FPS, PayMe, bank transfer supported
+• Bulk Import — Upload existing participant lists in one click
+• QR Code Check-in — Fast verification on race day
+• AI Analytics — Post-event detailed participant analysis report
+
+For an event of this scale, we recommend the 500-person plan or higher. EventEasy.net uses modular pricing, you only pay for the features you actually use.
+
+Feel free to book a 15-minute online demo, and we can show you the best practices tailored to dragon boat race workflows.
+
+Wishing you a successful event!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e1')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e1')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e1" onclick="saveEdit('e1')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e1')">📧 發送</button>
+        <span class="save-status" id="status-e1"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 中華文化節 2026 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (跨季度大型節慶)</div>
+    <h3>中華文化節 2026</h3>
+    <p><strong>日期：</strong>2026-06-01 至 2026-09-30 (跨季度大型活動)</p>
+    <p><strong>地點：</strong>全港多個場地 (康文署場地為主)</p>
+    <p><strong>預計人數：</strong>大量參與者 (本地市民及旅客)</p>
+    <p><strong>主辦：</strong>康樂及文化事務署</p>
+    <p><strong>簡介：</strong>一年一度大型中華文化推廣活動，涵蓋表演藝術、視覺藝術、講座、工作坊等多元節目，歷時四個月。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@lcsd.gov.hk">info@lcsd.gov.hk</a> ｜ 🌐 www.lcsd.gov.hk</div>
+    <button class="email-btn" onclick="showEmail('e2')">📧 查看推廣電郵</button>
+    <div id="email-e2" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 中華文化節 2026 嘅多場次報名系統建議
+
+康樂及文化事務署 您好，
+
+我係 EventEasy.net 團隊，得知「中華文化節 2026」將於 6 月 1 日至 9 月 30 日期間舉行，作為跨季度嘅大型文化盛事，預計將會有大量市民及旅客參與多場演出、展覽、講座及工作坊。
+
+EventEasy.net 嘅一站式活動管理平台特別適合處理多場次、多場地活動：
+• 智能報名系統 — 為每場節目自訂獨立報名表單，支援早鳥價、會員價等不同票種
+• 座位安排 — 支援平面圖模式，可上傳場地平面圖，拖放式安排座位
+• 多元收款方式 — 支援 FPS、PayMe、支付寶等多種本地及內地付款方式
+• 多語言支援 — 系統支援繁體中文、簡體中文、英文，迎合本地及旅客需要
+• AI 數據分析 — 自動分析每場節目嘅參加者結構、報名趨勢
+
+以中華文化節嘅規模，我哋建議 500 人方案或以上，並可按實際場次需要彈性擴充。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據文化節嘅實際運作模式為您示範最佳方案。
+
+祝活動順利！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Registration System Proposal for Chinese Culture Festival 2026
+
+Dear Leisure and Cultural Services Department,
+
+We are the EventEasy.net team. We understand the Chinese Culture Festival 2026 will run from June 1 to September 30, a large-scale cultural celebration expected to attract numerous residents and tourists to multiple performances, exhibitions, talks, and workshops.
+
+EventEasy.net's all-in-one platform is particularly well-suited for managing multi-session, multi-venue events:
+• Smart Registration — Custom forms for each program with early bird, member, and standard pricing tiers
+• Seating Arrangement — Floor plan mode with drag-and-drop for venue layouts
+• Multi-payment — FPS, PayMe, Alipay supported for local and mainland visitors
+• Multi-language — Traditional Chinese, Simplified Chinese, English supported
+• AI Analytics — Auto-generated analysis of attendee demographics and registration trends per session
+
+For a festival of this scale, we recommend the 500-person plan or higher with flexible expansion as needed.
+
+Feel free to book a 15-minute online demo, and we can tailor our proposal to the festival's operational model.
+
+Wishing the festival great success!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e2')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e2')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e2" onclick="saveEdit('e2')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e2')">📧 發送</button>
+        <span class="save-status" id="status-e2"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 鄭秀文 Sammi 啟德演唱會 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (萬人級演唱會)</div>
+    <h3>鄭秀文 Sammi 啟德主場館演唱會 2026</h3>
+    <p><strong>日期：</strong>2026-07-10 至 2026-07-11 (星期五至六)</p>
+    <p><strong>地點：</strong>啟德主場館 (Kai Tak Sports Park)</p>
+    <p><strong>預計人數：</strong>大量參與者 (萬人級場館)</p>
+    <p><strong>主辦：</strong>Tickethk / 製作單位 (待確認)</p>
+    <p><strong>簡介：</strong>Sammi 鄭秀文再次登上啟德主場館舞台，連開兩場個人演唱會，預計吸引大量粉絲及媒體關注。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@tickethk.com">info@tickethk.com</a> ｜ 🌐 www.tickethk.com</div>
+    <button class="email-btn" onclick="showEmail('e3')">📧 查看推廣電郵</button>
+    <div id="email-e3" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 鄭秀文啟德演唱會 2026 嘅 VIP 報名管理建議
+
+主辦單位 您好，
+
+我係 EventEasy.net 團隊，我哋留意到鄭秀文 Sammi 啟德主場館演唱會 2026 將於 7 月 10 至 11 日舉行，作為萬人級嘅大型演唱會，預計將會吸引大量粉絲搶購門票。
+
+EventEasy.net 可以為演唱會活動提供以下支援：
+• 智能報名系統 — 支援多票種(普通票、VIP 票、粉絲區、後排區)分層銷售
+• 早鳥優惠機制 — 自動按時間或名額觸發早鳥價
+• 多元收款方式 — 支援 FPS、PayMe、信用卡 (Stripe) 等
+• 自動發送確認函 — 附 QR Code 入場憑證，支援快速入場
+• AI 數據分析 — 粉絲地區分佈、年齡層分析，助您日後規劃巡演場次
+
+以萬人級嘅活動規模，我們建議 500 人方案或以上，並可按實際門票量彈性擴充。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據演唱會嘅搶票流程為您示範最佳方案。
+
+祝演唱會門票秒殺！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: VIP Registration Management for Sammi Cheng Kai Tak Concert 2026
+
+Dear Organizer,
+
+We are the EventEasy.net team. We noticed that Sammi Cheng's Kai Tak Stadium Concert 2026 will be held on July 10-11. As a large-scale concert, it is expected to attract massive ticket demand from fans.
+
+EventEasy.net can support concert event management with:
+• Smart Registration — Multi-tier ticket sales (Standard, VIP, Fan Zone, Rear)
+• Early Bird Mechanism — Auto-triggered early bird pricing by time or quota
+• Multiple Payments — FPS, PayMe, credit card (Stripe) supported
+• Auto Confirmation Emails — QR code entry passes for fast admission
+• AI Analytics — Fan geography, age distribution analysis for future tour planning
+
+For a venue of this scale, we recommend the 500-person plan or higher with flexible expansion.
+
+Feel free to book a 15-minute online demo, and we can demonstrate the optimal setup for high-demand ticket releases.
+
+Wishing you a sold-out concert!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e3')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e3')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e3" onclick="saveEdit('e3')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e3')">📧 發送</button>
+        <span class="save-status" id="status-e3"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 香港婚紗展 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (近 500 展位)</div>
+    <h3>香港婚紗展暨世界結婚巡禮 2026</h3>
+    <p><strong>日期：</strong>2026-07-10 至 2026-07-12 (星期五至日)</p>
+    <p><strong>地點：</strong>香港會議展覽中心 (灣仔)</p>
+    <p><strong>預計人數：</strong>大量參與者 (近 500 展位，數萬準新人入場)</p>
+    <p><strong>主辦：</strong>香港亞洲展覽(集團)有限公司 / 雋傑國際展覽</p>
+    <p><strong>簡介：</strong>中港台韓日婚慶名店雲集，一站式婚禮服務展覽，勁多優惠及著數，是準新人必到活動。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:wedding@expo.com.hk">wedding@expo.com.hk</a> ｜ 🌐 wedding.expo.com.hk</div>
+    <button class="email-btn" onclick="showEmail('e4')">📧 查看推廣電郵</button>
+    <div id="email-e4" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 香港婚紗展 2026 嘅入場預約系統建議
+
+香港亞洲展覽集團 您好，
+
+我係 EventEasy.net 團隊，我哋留意到「香港婚紗展暨世界結婚巡禮 2026」將於 7 月 10 至 12 日假香港會議展覽中心舉行，作為雲集中港台韓日婚慶名店嘅大型展覽，預計將會吸引大量準新人入場。
+
+EventEasy.net 可以為展覽活動提供以下支援：
+• 智能報名系統 — 為參展商及入場觀眾分開建立報名表單
+• 早鳥優惠機制 — 預先登記免費入場券，自動確認
+• QR Code 簽到 — 入場時掃描 QR Code 即時核實
+• 多元收款方式 — 支援 VIP 通行證、現場升級等多種收費場景
+• AI 數據分析 — 分析準新人地區分佈、預算範圍、關注商戶類型
+
+以婚紗展嘅人流規模，我們建議 500 人方案或以上，並可按實際需要彈性擴充。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據展覽入場流程為您示範最佳方案。
+
+祝展覽場場爆滿！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Visitor Pre-Registration System for HK Wedding Expo 2026
+
+Dear Hong Kong Asia Exhibitions Group,
+
+We are the EventEasy.net team. We noticed the Hong Kong Wedding Expo & World Wedding Tour 2026 will be held on July 10-12 at the Hong Kong Convention and Exhibition Centre. With nearly 500 exhibitor booths from China, HK, Taiwan, Korea, and Japan, the event is expected to attract numerous engaged couples.
+
+EventEasy.net can support exhibition management with:
+• Smart Registration — Separate forms for exhibitors and visitors
+• Early Bird Mechanism — Free pre-registration with auto-confirmation
+• QR Code Check-in — Instant verification on entry
+• Multiple Payment Scenarios — VIP pass, on-site upgrades supported
+• AI Analytics — Visitor geography, budget range, vendor category interests
+
+For an exhibition of this scale, we recommend the 500-person plan or higher with flexible expansion.
+
+Feel free to book a 15-minute online demo, and we can demonstrate the optimal visitor flow setup.
+
+Wishing you a packed exhibition!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e4')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e4')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e4" onclick="saveEdit('e4')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e4')">📧 發送</button>
+        <span class="save-status" id="status-e4"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 香港書展 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (50 萬人次)</div>
+    <h3>2026 香港書展 (第 36 屆)</h3>
+    <p><strong>日期：</strong>2026-07-15 至 2026-07-21 (星期三至二)</p>
+    <p><strong>地點：</strong>香港會議展覽中心 (灣仔)</p>
+    <p><strong>預計人數：</strong>大量參與者 (歷屆約 50 萬人次)</p>
+    <p><strong>主辦：</strong>香港貿易發展局 (HKTDC)</p>
+    <p><strong>簡介：</strong>亞洲最大型書展之一，雲集兩岸三地及國際出版社，多場作家講座及文化活動同期舉行。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:exhibitions@hktdc.org">exhibitions@hktdc.org</a> ｜ 🌐 www.hktdc.com</div>
+    <button class="email-btn" onclick="showEmail('e5')">📧 查看推廣電郵</button>
+    <div id="email-e5" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 2026 香港書展 嘅講座及活動報名管理建議
+
+香港貿易發展局 您好，
+
+我係 EventEasy.net 團隊，我哋留意到第 36 屆「香港書展」將於 7 月 15 至 21 日假香港會議展覽中心舉行，作為亞洲最大型嘅書展活動之一，預計將會吸引大量市民及旅客入場，多場作家講座及文化活動亦會同期舉行。
+
+EventEasy.net 嘅一站式活動管理平台特別適合處理多場次、多場地活動：
+• 智能報名系統 — 為每場講座、工作坊自訂獨立報名表單
+• 多元收款方式 — 支援 VIP 通行證、現場升級等多種收費場景
+• QR Code 簽到 — 講座入場即時核實參加者身份
+• 自動發送確認函 — 講座時間、地點、講者資料自動通知
+• AI 數據分析 — 參加者閱讀偏好、講座熱度分析
+
+以香港書展嘅規模，我們建議 500 人方案或以上，並可按講座場次需要彈性擴充。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據書展嘅活動流程為您示範最佳方案。
+
+祝書展圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Talk & Event Registration for HK Book Fair 2026
+
+Dear Hong Kong Trade Development Council,
+
+We are the EventEasy.net team. We noticed the 36th Hong Kong Book Fair will be held on July 15-21 at the HKCEC. As one of Asia's largest book fairs, it is expected to attract massive attendance with numerous author talks and cultural events.
+
+EventEasy.net's platform is well-suited for managing multi-session, multi-venue events:
+• Smart Registration — Custom forms for each talk and workshop
+• Multiple Payment Scenarios — VIP pass, on-site upgrades supported
+• QR Code Check-in — Instant verification at talk venues
+• Auto Confirmation Emails — Talk time, location, speaker details auto-sent
+• AI Analytics — Reading preferences, talk popularity analysis
+
+For a book fair of this scale, we recommend the 500-person plan or higher.
+
+Feel free to book a 15-minute online demo to see the optimal setup.
+
+Wishing the fair great success!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e5')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e5')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e5" onclick="saveEdit('e5')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e5')">📧 發送</button>
+        <span class="save-status" id="status-e5"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. HKTDC 運動消閒博覽 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (同期大型博覽)</div>
+    <h3>HKTDC 運動消閒博覽 2026</h3>
+    <p><strong>日期：</strong>2026-07-15 至 2026-07-21 (與書展同期)</p>
+    <p><strong>地點：</strong>香港會議展覽中心 (灣仔)</p>
+    <p><strong>預計人數：</strong>大量參與者 (與書展共享人流)</p>
+    <p><strong>主辦：</strong>香港貿易發展局 (HKTDC)</p>
+    <p><strong>簡介：</strong>與香港書展同期舉辦嘅運動及消閒主題博覽會，涵蓋運動用品、健康生活、戶外活動等多元展品。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:exhibitions@hktdc.org">exhibitions@hktdc.org</a> ｜ 🌐 www.hktdc.com</div>
+    <button class="email-btn" onclick="showEmail('e6')">📧 查看推廣電郵</button>
+    <div id="email-e6" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 HKTDC 運動消閒博覽 2026 嘅入場報名建議
+
+香港貿易發展局 您好，
+
+我係 EventEasy.net 團隊，我哋留意到「HKTDC 運動消閒博覽 2026」將於 7 月 15 至 21 日與香港書展同期舉行，預計將會吸引大量運動及健康生活愛好者入場。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為入場觀眾及參展商建立獨立報名表單
+• 多元收款方式 — 支援 VIP 通行證、現場升級等多種收費場景
+• QR Code 簽到 — 入場即時掃描核實
+• 自動發送確認函 — 附 QR Code 入場憑證
+• AI 數據分析 — 入場者運動偏好、消費模式分析
+
+歡迎預約 15 分鐘網上示範，我哋可以根據博覽會入場流程為您示範最佳方案。
+
+祝博覽會場場爆滿！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Visitor Registration for HKTDC Sports & Leisure Expo 2026
+
+Dear Hong Kong Trade Development Council,
+
+We are the EventEasy.net team. We noticed the HKTDC Sports & Leisure Expo 2026 will run alongside the Hong Kong Book Fair on July 15-21, expected to attract numerous sports and wellness enthusiasts.
+
+EventEasy.net can help you with:
+• Smart Registration — Separate forms for visitors and exhibitors
+• Multiple Payments — VIP pass, on-site upgrades supported
+• QR Code Check-in — Instant verification on entry
+• Auto Confirmation — Entry pass with QR code
+• AI Analytics — Visitor sports preferences, spending patterns
+
+Feel free to book a 15-minute online demo to see the optimal setup.
+
+Wishing you a packed exhibition!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e6')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e6')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e6" onclick="saveEdit('e6')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e6')">📧 發送</button>
+        <span class="save-status" id="status-e6"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 古天樂紅館演唱會 -->
+  <div class="event-card">
+    <div class="lead-score score-high">🔥 高優先 (萬人級演唱會)</div>
+    <h3>古天樂 紅磡體育館演唱會 2026</h3>
+    <p><strong>日期：</strong>2026-08-21 至 2026-08-22 (星期五至六)</p>
+    <p><strong>地點：</strong>紅磡體育館 (香港體育館)</p>
+    <p><strong>預計人數：</strong>大量參與者 (紅館約 12,500 座位)</p>
+    <p><strong>主辦：</strong>Tickethk / 製作單位 (待確認)</p>
+    <p><strong>簡介：</strong>古天樂登上紅館舞台，連開兩場個人演唱會，吸引大量粉絲搶購門票。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@tickethk.com">info@tickethk.com</a> ｜ 🌐 www.tickethk.com</div>
+    <button class="email-btn" onclick="showEmail('e7')">📧 查看推廣電郵</button>
+    <div id="email-e7" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 古天樂紅館演唱會 2026 嘅報名系統建議
+
+主辦單位 您好，
+
+我係 EventEasy.net 團隊，我哋留意到古天樂紅磡體育館演唱會 2026 將於 8 月 21 至 22 日舉行，作為紅館萬人級嘅大型演唱會，預計將會吸引大量粉絲搶購門票。
+
+EventEasy.net 可以為演唱會活動提供以下支援：
+• 智能報名系統 — 支援多票種(普通票、VIP 票、握手會、簽名會)分層銷售
+• 早鳥優惠機制 — 自動按時間或名額觸發早鳥價
+• 多元收款方式 — 支援 FPS、PayMe、信用卡 (Stripe) 等
+• 自動發送確認函 — 附 QR Code 入場憑證
+• AI 數據分析 — 粉絲地區分佈、購票行為分析
+
+以紅館嘅規模，我們建議 500 人方案，並可按實際需要彈性擴充。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據演唱會嘅搶票流程為您示範最佳方案。
+
+祝演唱會場場爆滿！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Registration System for Louis Koo Hung Hom Concert 2026
+
+Dear Organizer,
+
+We are the EventEasy.net team. We noticed Louis Koo's Hung Hom Coliseum Concert 2026 will be held on August 21-22. As a large-scale concert at the iconic Hung Hom venue (12,500 seats), it is expected to attract massive ticket demand.
+
+EventEasy.net can support concert event management with:
+• Smart Registration — Multi-tier tickets (Standard, VIP, Meet & Greet)
+• Early Bird Mechanism — Auto-triggered early bird pricing
+• Multiple Payments — FPS, PayMe, credit card (Stripe) supported
+• Auto Confirmation — Entry pass with QR code
+• AI Analytics — Fan geography, purchase behavior analysis
+
+For a Hung Hom-scale event, we recommend the 500-person plan with flexible expansion.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a sold-out concert!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e7')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e7')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e7" onclick="saveEdit('e7')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e7')">📧 發送</button>
+        <span class="save-status" id="status-e7"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. HKGCC 雞尾酒會 -->
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (商會活動)</div>
+    <h3>HKGCC 中國委員會雞尾酒酒會 2026</h3>
+    <p><strong>日期：</strong>2026-07-08 (星期三)</p>
+    <p><strong>地點：</strong>香港總商會 (HKGCC) 會所 / 灣仔</p>
+    <p><strong>預計人數：</strong>100-300 商界人士</p>
+    <p><strong>主辦：</strong>香港總商會 (HKGCC) 中國委員會</p>
+    <p><strong>簡介：</strong>香港總商會中國委員會定期舉辦嘅商業社交活動，雲集本地及內地商界領袖，提供交流機會。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@chamber.org.hk">info@chamber.org.hk</a> ｜ 🌐 www.chamber.org.hk</div>
+    <button class="email-btn" onclick="showEmail('e8')">📧 查看推廣電郵</button>
+    <div id="email-e8" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 HKGCC 中國委員會活動 嘅會員報名系統建議
+
+香港總商會 您好，
+
+我係 EventEasy.net 團隊，我哋留意到 HKGCC 中國委員會雞尾酒酒會 2026 將於 7 月 8 日舉行，作為本地及內地商界嘅重要社交活動，預計將會吸引大量商界人士參與。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為會員及非會員建立分層報名表單
+• 多元收款方式 — 支援會員價、非會員價、現場付款
+• QR Code 簽到 — 會員快速核實身份入場
+• 自動發送確認函 — 活動詳情及場地資訊自動通知
+• AI 數據分析 — 會員公司類型、職位分佈分析
+
+以商會活動嘅規模，我們建議 200-500 人方案。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據商會活動流程為您示範最佳方案。
+
+祝活動順利！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Member Registration for HKGCC China Committee Cocktail 2026
+
+Dear Hong Kong General Chamber of Commerce,
+
+We are the EventEasy.net team. We noticed the HKGCC China Committee Cocktail 2026 will be held on July 8. As an important business networking event for local and mainland business leaders, it is expected to attract numerous participants.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for members and non-members
+• Multiple Payments — Member rate, non-member rate, on-site payment
+• QR Code Check-in — Fast member verification on entry
+• Auto Confirmation — Event details and venue info auto-sent
+• AI Analytics — Member company types, position distribution
+
+For a chamber event, we recommend the 200-500 person plan.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful event!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e8')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e8')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e8" onclick="saveEdit('e8')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e8')">📧 發送</button>
+        <span class="save-status" id="status-e8"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. LEAP East -->
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (國際科技展)</div>
+    <h3>LEAP East 國際科技與資訊技術展 2026</h3>
+    <p><strong>日期：</strong>2026-07-08 至 2026-07-10 (星期三至五)</p>
+    <p><strong>地點：</strong>香港會議展覽中心 (灣仔)</p>
+    <p><strong>預計人數：</strong>100-300 科技及商務專業人士</p>
+    <p><strong>主辦：</strong>LEAP (Saudi Arabia 主辦嘅全球科技展)</p>
+    <p><strong>簡介：</strong>LEAP 喺亞太區嘅旗艦展會，涵蓋 AI、機器人、金融科技、生物科技、智慧城市等前沿科技領域。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:hello@leap.tech">hello@leap.tech</a> ｜ 🌐 www.leap.tech</div>
+    <button class="email-btn" onclick="showEmail('e9')">📧 查看推廣電郵</button>
+    <div id="email-e9" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 LEAP East 2026 嘅專業觀眾預登記系統建議
+
+LEAP East 主辦團隊 您好，
+
+我係 EventEasy.net 團隊，我哋留意到「LEAP East 國際科技與資訊技術展 2026」將於 7 月 8 至 10 日假香港會議展覽中心舉行，作為 LEAP 喺亞太區嘅旗艦展會，預計將會吸引大量科技及商務專業人士參與。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為專業觀眾、媒體、講者建立分層表單
+• 多元收款方式 — 支援 VIP 通行證、會議通行證等多種收費
+• QR Code 簽到 — 入場即時核實身份
+• 多語言支援 — 繁體中文、簡體中文、英文，迎合國際觀眾
+• AI 數據分析 — 觀眾行業、職位、關注領域分析
+
+以國際科技展嘅規模，我們建議 500 人方案或以上。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據科技展嘅專業觀眾流程為您示範最佳方案。
+
+祝展會圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Pro Visitor Pre-Registration for LEAP East 2026
+
+Dear LEAP East Organizing Team,
+
+We are the EventEasy.net team. We noticed LEAP East 2026 will be held on July 8-10 at the HKCEC. As LEAP's APAC flagship event, it is expected to attract numerous tech and business professionals.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for professional visitors, media, and speakers
+• Multiple Payments — VIP pass, conference pass supported
+• QR Code Check-in — Instant verification on entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English for international visitors
+• AI Analytics — Visitor industry, position, focus area analysis
+
+For an international tech expo, we recommend the 500-person plan or higher.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful expo!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e9')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e9')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e9" onclick="saveEdit('e9')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e9')">📧 發送</button>
+        <span class="save-status" id="status-e9"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. AmCham 活動 -->
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (商會活動)</div>
+    <h3>AmCham Hong Kong 商務活動 2026</h3>
+    <p><strong>日期：</strong>2026-06-23 (星期二) 16:00-17:00</p>
+    <p><strong>地點：</strong>香港美國商會 (AmCham HK)</p>
+    <p><strong>預計人數：</strong>100-200 國際商務人士</p>
+    <p><strong>主辦：</strong>The American Chamber of Commerce in Hong Kong</p>
+    <p><strong>簡介：</strong>AmCham HK 定期舉辦嘅商務活動，提供國際商務交流及專業發展機會。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:events@amcham.org.hk">events@amcham.org.hk</a> ｜ 🌐 www.amcham.org.hk/events</div>
+    <button class="email-btn" onclick="showEmail('e10')">📧 查看推廣電郵</button>
+    <div id="email-e10" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 AmCham 商務活動 嘅會員預約報名系統建議
+
+香港美國商會 您好，
+
+我係 EventEasy.net 團隊，我哋留意到 AmCham Hong Kong 將於 6 月 23 日舉辦商務活動，作為香港主要嘅國際商會之一，預計將會吸引大量國際商務專業人士參與。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為會員及非會員建立分層表單
+• 多元收款方式 — 支援會員價、嘉賓價
+• QR Code 簽到 — 會員快速入場
+• 多語言支援 — 繁體中文、簡體中文、英文，迎合國際會員
+• AI 數據分析 — 會員行業、職位分析
+
+以商會活動嘅規模，我們建議 200-500 人方案。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據貴會嘅活動流程為您示範最佳方案。
+
+祝活動順利！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Member Pre-Registration for AmCham Hong Kong Events
+
+Dear AmCham Hong Kong,
+
+We are the EventEasy.net team. We noticed AmCham Hong Kong will hold a business event on June 23. As one of Hong Kong's leading international chambers, the event is expected to attract numerous international business professionals.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for members and non-members
+• Multiple Payments — Member rate, guest rate supported
+• QR Code Check-in — Fast member entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English for international members
+• AI Analytics — Member industry, position analysis
+
+For chamber events, we recommend the 200-500 person plan.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful event!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e10')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e10')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e10" onclick="saveEdit('e10')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e10')">📧 發送</button>
+        <span class="save-status" id="status-e10"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. WikiEXPO HK 2026 -->
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (Web3 行業活動)</div>
+    <h3>WikiEXPO Hong Kong 2026</h3>
+    <p><strong>日期：</strong>2026-07-23 至 2026-07-24 (星期四至五)</p>
+    <p><strong>地點：</strong>香港富豪酒店 (Hopewell Hotel)</p>
+    <p><strong>預計人數：</strong>100-300 Web3 / 金融科技專業人士</p>
+    <p><strong>主辦：</strong>WikiEXPO / 業界合辦</p>
+    <p><strong>簡介：</strong>雲集全球 Web3、金融科技、區塊鏈行業專家嘅國際展覽及交流活動。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:contact@wikiexpo.com">contact@wikiexpo.com</a> ｜ 🌐 wikiexpo.com</div>
+    <button class="email-btn" onclick="showEmail('e11')">📧 查看推廣電郵</button>
+    <div id="email-e11" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 WikiEXPO HK 2026 嘅專業觀眾報名系統建議
+
+WikiEXPO 主辦團隊 您好，
+
+我係 EventEasy.net 團隊，我哋留意到「WikiEXPO Hong Kong 2026」將於 7 月 23 至 24 日假香港富豪酒店舉行，作為 Web3 及金融科技行業嘅國際展覽活動，預計將會吸引大量業界專業人士參與。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為專業觀眾、講者、媒體建立分層表單
+• 多元收款方式 — 支援 VIP 通行證、會議通行證、贊助商通行證
+• QR Code 簽到 — 入場即時核實身份
+• 多語言支援 — 繁體中文、簡體中文、英文，迎合國際觀眾
+• AI 數據分析 — 觀眾行業、職位、關注領域分析
+
+歡迎預約 15 分鐘網上示範，我哋可以根據 WikiEXPO 嘅專業觀眾流程為您示範最佳方案。
+
+祝展會圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Pro Visitor Registration for WikiEXPO HK 2026
+
+Dear WikiEXPO Organizing Team,
+
+We are the EventEasy.net team. We noticed WikiEXPO Hong Kong 2026 will be held on July 23-24 at the Hopewell Hotel. As an international exhibition for Web3 and fintech professionals, it is expected to attract numerous industry participants.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for pro visitors, speakers, media
+• Multiple Payments — VIP pass, conference pass, sponsor pass supported
+• QR Code Check-in — Instant verification on entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English for international visitors
+• AI Analytics — Visitor industry, position, focus area analysis
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful expo!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e11')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e11')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e11" onclick="saveEdit('e11')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e11')">📧 發送</button>
+        <span class="save-status" id="status-e11"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. 香港結婚節暨秋日婚紗展 -->
+  <div class="event-card">
+    <div class="lead-score score-mid">⚡ 中優先 (百個展位)</div>
+    <h3>第 123 屆香港結婚節暨秋日婚紗展 2026</h3>
+    <p><strong>日期：</strong>2026-08-07 至 2026-08-09 (星期五至日)</p>
+    <p><strong>地點：</strong>香港會議展覽中心 (灣仔)</p>
+    <p><strong>預計人數：</strong>大量參與者 (過百攤位)</p>
+    <p><strong>主辦：</strong>香港亞洲展覽(集團)有限公司</p>
+    <p><strong>簡介：</strong>秋日婚嫁旺季嘅大型展覽，雲集本地及海外婚慶商戶，為準新人提供一站式婚禮籌備服務。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@wedding-show.com.hk">info@wedding-show.com.hk</a> ｜ 🌐 wedding-show.com.hk</div>
+    <button class="email-btn" onclick="showEmail('e12')">📧 查看推廣電郵</button>
+    <div id="email-e12" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 香港結婚節暨秋日婚紗展 2026 嘅入場預約建議
+
+香港亞洲展覽集團 您好，
+
+我係 EventEasy.net 團隊，我哋留意到「第 123 屆香港結婚節暨秋日婚紗展 2026」將於 8 月 7 至 9 日假香港會議展覽中心舉行，作為秋日婚嫁旺季嘅大型展覽，預計將會吸引大量準新人入場。
+
+EventEasy.net 可以為展覽活動提供以下支援：
+• 智能報名系統 — 為參展商及入場觀眾分開建立報名表單
+• 早鳥優惠機制 — 預先登記免費入場券，自動確認
+• QR Code 簽到 — 入場時掃描 QR Code 即時核實
+• 多元收款方式 — 支援 VIP 通行證、現場升級等多種收費場景
+• AI 數據分析 — 分析準新人地區分佈、預算範圍
+
+歡迎預約 15 分鐘網上示範，我哋可以根據展覽入場流程為您示範最佳方案。
+
+祝展覽場場爆滿！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Visitor Pre-Registration for HK Wedding Festival 2026
+
+Dear Hong Kong Asia Exhibitions Group,
+
+We are the EventEasy.net team. We noticed the 123rd Hong Kong Wedding Festival & Autumn Bridal Expo 2026 will be held on August 7-9 at the HKCEC. As a major autumn wedding season exhibition, it is expected to attract numerous engaged couples.
+
+EventEasy.net can support exhibition management with:
+• Smart Registration — Separate forms for exhibitors and visitors
+• Early Bird Mechanism — Free pre-registration with auto-confirmation
+• QR Code Check-in — Instant verification on entry
+• Multiple Payments — VIP pass, on-site upgrades supported
+• AI Analytics — Visitor geography, budget range analysis
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a packed exhibition!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e12')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e12')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e12" onclick="saveEdit('e12')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e12')">📧 發送</button>
+        <span class="save-status" id="status-e12"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13. HKGCC Agentic AI 研討會 -->
+  <div class="event-card">
+    <div class="lead-score score-low">📝 低優先 (商會研討會)</div>
+    <h3>HKGCC Agentic AI 商業應用研討會 2026</h3>
+    <p><strong>日期：</strong>2026-06-23 (星期二)</p>
+    <p><strong>地點：</strong>香港總商會 (HKGCC) 會議室</p>
+    <p><strong>預計人數：</strong>50-100 企業管理層</p>
+    <p><strong>主辦：</strong>香港總商會 (HKGCC)</p>
+    <p><strong>簡介：</strong>聚焦 Agentic AI 喺商業應用嘅專題研討會，邀請業界專家分享 AI 代理技術趨勢及實戰案例。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@chamber.org.hk">info@chamber.org.hk</a> ｜ 🌐 www.chamber.org.hk</div>
+    <button class="email-btn" onclick="showEmail('e13')">📧 查看推廣電郵</button>
+    <div id="email-e13" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 HKGCC Agentic AI 研討會 嘅會員預約系統建議
+
+香港總商會 您好，
+
+我係 EventEasy.net 團隊，我哋留意到 HKGCC 將於 6 月 23 日舉辦「Agentic AI 商業應用研討會」，作為聚焦 AI 代理技術嘅專題研討會，預計將會吸引企業管理層及技術決策者參與。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為會員及非會員建立分層表單
+• 多元收款方式 — 支援會員價、非會員價
+• QR Code 簽到 — 會員快速入場
+• 自動發送確認函 — 研討會詳情、講者資料、地圖自動通知
+• AI 數據分析 — 參加者公司類型、職位分析
+
+以研討會嘅規模，我們建議 100-200 人方案。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據研討會流程為您示範最佳方案。
+
+祝研討會順利！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Member Registration for HKGCC Agentic AI Seminar
+
+Dear Hong Kong General Chamber of Commerce,
+
+We are the EventEasy.net team. We noticed HKGCC will hold an Agentic AI Business Application Seminar on June 23. As a focused seminar on AI agent technology, it is expected to attract corporate executives and technical decision makers.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for members and non-members
+• Multiple Payments — Member rate, non-member rate
+• QR Code Check-in — Fast member entry
+• Auto Confirmation — Seminar details, speaker info, map auto-sent
+• AI Analytics — Attendee company type, position analysis
+
+For a seminar, we recommend the 100-200 person plan.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful seminar!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e13')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e13')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e13" onclick="saveEdit('e13')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e13')">📧 發送</button>
+        <span class="save-status" id="status-e13"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14. 雋傑國際展覽 8月展 -->
+  <div class="event-card">
+    <div class="lead-score score-low">📝 低優先 (專業展覽)</div>
+    <h3>雋傑國際展覽 2026 秋季展期</h3>
+    <p><strong>日期：</strong>2026 年秋季多場展覽 (持續更新)</p>
+    <p><strong>地點：</strong>香港會議展覽中心 / 灣仔</p>
+    <p><strong>預計人數：</strong>數百專業買家及入場人士</p>
+    <p><strong>主辦：</strong>雋傑國際展覽有限公司 (超過 30 年辦展經驗)</p>
+    <p><strong>簡介：</strong>雋傑國際展覽自 1990 年成立，累積主辦超過 80 個展覽嘅豐富經驗，秋季多場專業展覽陸續登場。</p>
+    <div class="event-contact">✉️ 聯絡：<a href="mailto:info@expo.com.hk">info@expo.com.hk</a> ｜ 🌐 expo.com.hk</div>
+    <button class="email-btn" onclick="showEmail('e14')">📧 查看推廣電郵</button>
+    <div id="email-e14" class="email-section" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 雋傑國際展覽 秋季展期 嘅入場預約系統建議
+
+雋傑國際展覽有限公司 您好，
+
+我係 EventEasy.net 團隊，我哋留意到 雋傑國際展覽 自 1990 年成立以來已累積主辦超過 80 個展覽嘅豐富經驗，秋季展期即將陸續展開，預計將會吸引大量專業買家及入場人士。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為參展商及入場觀眾分開建立報名表單
+• 多元收款方式 — 支援 VIP 通行證、現場升級等多種收費場景
+• QR Code 簽到 — 入場即時核實身份
+• 多語言支援 — 繁體中文、簡體中文、英文，迎合本地及國際買家
+• AI 數據分析 — 入場者行業、地區、興趣分析
+
+以專業展覽嘅規模，我們建議 200-500 人方案，並可按實際需要彈性擴充。
+
+歡迎預約 15 分鐘網上示範，我哋可以根據展覽入場流程為您示範最佳方案。
+
+祝展覽場場爆滿！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Visitor Pre-Registration for Junjie International Exhibitions 2026
+
+Dear Junjie International Exhibitions Ltd,
+
+We are the EventEasy.net team. We noticed that Junjie International Exhibitions, established in 1990, has organized over 80 major exhibitions with rich experience. The autumn exhibition season is about to begin, expected to attract numerous professional buyers and visitors.
+
+EventEasy.net can help you with:
+• Smart Registration — Separate forms for exhibitors and visitors
+• Multiple Payments — VIP pass, on-site upgrades supported
+• QR Code Check-in — Instant verification on entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English for local and international buyers
+• AI Analytics — Visitor industry, region, interest analysis
+
+For professional exhibitions, we recommend the 200-500 person plan with flexible expansion.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you packed exhibitions!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('e14')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('e14')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-e14" onclick="saveEdit('e14')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('e14')">📧 發送</button>
+        <span class="save-status" id="status-e14"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全球活動花絮 -->
+  <div class="global-section-title">🌍 全球活動花絮</div>
+
+  <!-- G1. FIFA World Cup 2026 淘汰賽 -->
+  <div class="event-card global">
+    <div class="lead-score score-high">🔥 高優先 (全球盛事)</div>
+    <h3>FIFA World Cup 2026 淘汰賽階段</h3>
+    <p><strong>日期：</strong>2026-06-29 至 2026-07-19 (淘汰賽)</p>
+    <p><strong>地點：</strong>美國/加拿大/墨西哥 16 個主辦城市</p>
+    <p><strong>預計人數：</strong>大量參與者 (全球數十億觀眾)</p>
+    <p><strong>主辦：</strong>FIFA (國際足協)</p>
+    <p><strong>簡介：</strong>史上首次 48 隊參賽嘅 FIFA 世界盃，淘汰賽階段由 32 強打至 7 月 19 日總決賽 (MetLife Stadium)。</p>
+    <div class="event-contact global">✉️ 聯絡：<a href="mailto:media@fifa.org">media@fifa.org</a> ｜ 🌐 www.fifa.com</div>
+    <button class="email-btn" onclick="showEmail('g1')">📧 查看推廣電郵</button>
+    <div id="email-g1" class="email-section global" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 FIFA 球迷活動嘅報名系統建議
+
+FIFA 活動團隊 您好，
+
+我係 EventEasy.net 團隊，2026 FIFA 世界盃淘汰賽即將展開，作為史上首次 48 隊參賽嘅世界盃，預計將會吸引全球數十億觀眾關注，多場官方球迷活動亦會喺全球主辦城市同步舉行。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為球迷區活動、官方觀賽派對、嘉年華建立分層表單
+• 多元收款方式 — 支援 VIP 通行證、家庭票、團體票等多種收費
+• QR Code 簽到 — 入場即時核實身份
+• 多語言支援 — 繁體中文、簡體中文、英文、西班牙文等，迎合全球球迷
+• AI 數據分析 — 球迷地區、語言、票種偏好分析
+
+以世界盃嘅規模，我們建議 500 人方案或以上，並可按活動需要全球彈性擴充。
+
+歡迎預約 15 分鐘網上示範。
+
+祝賽事圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Fan Zone Registration for FIFA World Cup 2026
+
+Dear FIFA Events Team,
+
+We are the EventEasy.net team. The FIFA World Cup 2026 knockout stage is approaching. As the first 48-team World Cup in history, it is expected to attract billions of viewers globally, with multiple official fan events across all host cities.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for fan zones, official viewing parties, carnivals
+• Multiple Payments — VIP pass, family ticket, group ticket supported
+• QR Code Check-in — Instant verification on entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English, Spanish, etc. for global fans
+• AI Analytics — Fan region, language, ticket type analysis
+
+For a World Cup-scale event, we recommend the 500-person plan or higher with global flexible expansion.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful tournament!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('g1')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('g1')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-g1" onclick="saveEdit('g1')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('g1')">📧 發送</button>
+        <span class="save-status" id="status-g1"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- G2. Tomorrowland Belgium 2026 -->
+  <div class="event-card global">
+    <div class="lead-score score-high">🔥 高優先 (全球最大音樂節)</div>
+    <h3>Tomorrowland Belgium 2026 (20 週年)</h3>
+    <p><strong>日期：</strong>2026-07-17 至 2026-07-19 及 2026-07-24 至 2026-07-26 (兩個週末)</p>
+    <p><strong>地點：</strong>比利時 Boom (De Schorre)</p>
+    <p><strong>預計人數：</strong>大量參與者 (全球數十萬樂迷)</p>
+    <p><strong>主辦：</strong>Tomorrowland (ID&T 旗下)</p>
+    <p><strong>簡介：</strong>全球最大型電子音樂節之一，20 週年紀念版，Calvin Harris 首度擔任主舞台壓軸，連同數百位國際 DJ 演出。</p>
+    <div class="event-contact global">✉️ 聯絡：<a href="mailto:info@tomorrowland.com">info@tomorrowland.com</a> ｜ 🌐 belgium.tomorrowland.com</div>
+    <button class="email-btn" onclick="showEmail('g2')">📧 查看推廣電郵</button>
+    <div id="email-g2" class="email-section global" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 Tomorrowland 2026 嘅預售票及套票管理建議
+
+Tomorrowland 主辦團隊 您好，
+
+我係 EventEasy.net 團隊，得知 Tomorrowland Belgium 2026 將於 7 月 17 至 19 日及 7 月 24 至 26 日兩個週末舉行，作為 20 週年紀念版音樂節，預計將會吸引全球數十萬樂迷參與。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為預售票、全日票、露營套票、夢幻套票建立分層表單
+• 多元收款方式 — 支援全球信用卡、PayPal、SEPA 等
+• QR Code 簽到 — 入場即時核實身份
+• 多語言支援 — 繁體中文、簡體中文、英文、法文、荷蘭文，迎合全球樂迷
+• AI 數據分析 — 樂迷地區、票種、住宿偏好分析
+
+以音樂節嘅規模，我們建議 500 人方案或以上，並可按活動需要全球彈性擴充。
+
+歡迎預約 15 分鐘網上示範。
+
+祝音樂節圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Pre-Sale & Package Management for Tomorrowland 2026
+
+Dear Tomorrowland Organizing Team,
+
+We are the EventEasy.net team. Tomorrowland Belgium 2026 will be held over two weekends (July 17-19 and July 24-26). As the 20th anniversary edition, it is expected to attract hundreds of thousands of music lovers globally.
+
+EventEasy.net can help you with:
+• Smart Registration — Tiered forms for pre-sale, full-day pass, camping package, dreamVille package
+• Multiple Payments — Global credit cards, PayPal, SEPA supported
+• QR Code Check-in — Instant verification on entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English, French, Dutch for global fans
+• AI Analytics — Fan region, ticket type, accommodation preference analysis
+
+For a festival of this scale, we recommend the 500-person plan or higher with global flexible expansion.
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful festival!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('g2')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('g2')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-g2" onclick="saveEdit('g2')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('g2')">📧 發送</button>
+        <span class="save-status" id="status-g2"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- G3. Edinburgh Festival Fringe 2026 -->
+  <div class="event-card global">
+    <div class="lead-score score-mid">⚡ 中優先 (全球最大藝術節)</div>
+    <h3>Edinburgh Festival Fringe 2026</h3>
+    <p><strong>日期：</strong>2026-08-07 至 2026-08-31 (歷時近一個月)</p>
+    <p><strong>地點：</strong>蘇格蘭愛丁堡 (全城多個場地)</p>
+    <p><strong>預計人數：</strong>大量參與者 (全球最大藝術節)</p>
+    <p><strong>主辦：</strong>Edinburgh Festival Fringe Society</p>
+    <p><strong>簡介：</strong>全球最大型藝術節，涵蓋劇場、喜劇、舞蹈、音樂、藝人等多個範疇，吸引全球表演者及觀眾參與。</p>
+    <div class="event-contact global">✉️ 聯絡：<a href="mailto:info@edfringe.com">info@edfringe.com</a> ｜ 🌐 www.edfringe.com</div>
+    <button class="email-btn" onclick="showEmail('g3')">📧 查看推廣電郵</button>
+    <div id="email-g3" class="email-section global" style="display:none;">
+      <h4>【繁體中文版本】</h4>
+      <pre data-email-zh>標題：關於 Edinburgh Fringe 2026 嘅場次預訂系統建議
+
+Edinburgh Festival Fringe Society 您好，
+
+我係 EventEasy.net 團隊，得知「Edinburgh Festival Fringe 2026」將於 8 月 7 至 31 日期間舉行，作為全球最大型嘅藝術節，預計將會有大量本地及國際表演者同觀眾參與多場演出。
+
+EventEasy.net 嘅一站式活動管理平台可以幫助您：
+• 智能報名系統 — 為每場演出、工作坊自訂獨立報名表單
+• 多元收款方式 — 支援全球信用卡、PayPal 等
+• 座位安排 — 支援平面圖模式，可上傳場地平面圖
+• QR Code 簽到 — 入場即時核實
+• 多語言支援 — 繁體中文、簡體中文、英文，迎合全球觀眾
+• AI 數據分析 — 觀眾偏好、場次熱度分析
+
+歡迎預約 15 分鐘網上示範，我哋可以根據 Fringe 嘅場次管理流程為您示範最佳方案。
+
+祝藝術節圓滿成功！
+
+EventEasy.net 團隊
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-zh-edit style="display:none"></textarea>
+      <h4>【英文版本】</h4>
+      <pre data-email-en>Subject: Show Booking System for Edinburgh Fringe 2026
+
+Dear Edinburgh Festival Fringe Society,
+
+We are the EventEasy.net team. We understand the Edinburgh Festival Fringe 2026 will run from August 7-31. As the world's largest arts festival, it is expected to attract numerous local and international performers and audiences across multiple shows.
+
+EventEasy.net can help you with:
+• Smart Registration — Custom forms for each show and workshop
+• Multiple Payments — Global credit cards, PayPal supported
+• Seating Arrangement — Floor plan mode with venue layout uploads
+• QR Code Check-in — Instant verification on entry
+• Multi-language — Traditional Chinese, Simplified Chinese, English for global audiences
+• AI Analytics — Audience preferences, show popularity analysis
+
+Feel free to book a 15-minute online demo.
+
+Wishing you a successful festival!
+
+EventEasy.net Team
+eventeasynet@gmail.com
+https://eventeasy.net</pre>
+      <textarea data-email-en-edit style="display:none"></textarea>
+      <div class="email-action-bar">
+        <button class="copy-btn" onclick="copyEmail('g3')">📋 複製電郵</button>
+        <button class="edit-btn" onclick="toggleEdit('g3')">✏️ 編輯電郵</button>
+        <button class="save-btn" id="save-g3" onclick="saveEdit('g3')">💾 保存</button>
+        <button class="send-btn" onclick="sendEmail('g3')">📧 發送</button>
+        <span class="save-status" id="status-g3"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>📅 報告生成時間：2026-06-19 09:00 ｜ 下一份報告：2026-06-20 09:00</p>
+    <p>由 <a href="https://eventeasy.net">EventEasy.net</a> 自動化系統生成 ｜ <a href="https://dash.vigoradv.com/">Dashboard</a></p>
+  </div>
+
+  <script>
+    var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec';
+
+    function showEmail(id) {
+      var el = document.getElementById('email-' + id);
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function copyEmail(id) {
+      var section = document.getElementById('email-' + id);
+      var zh = section.querySelector('pre[data-email-zh]').textContent;
+      var en = section.querySelector('pre[data-email-en]').textContent;
+      navigator.clipboard.writeText(zh + '\n\n---\n\n' + en).then(function() {
+        var btn = event.target;
+        var orig = btn.textContent;
+        btn.textContent = '✅ 已複製！';
+        setTimeout(function() { btn.textContent = orig; }, 2000);
+      });
+    }
+
+    function toggleEdit(id) {
+      var section = document.getElementById('email-' + id);
+      var preZh = section.querySelector('pre[data-email-zh]');
+      var preEn = section.querySelector('pre[data-email-en]');
+      var taZh = section.querySelector('textarea[data-email-zh-edit]');
+      var taEn = section.querySelector('textarea[data-email-en-edit]');
+      var editBtn = section.querySelector('.edit-btn');
+      var saveBtn = document.getElementById('save-' + id);
+      if (taZh.style.display === 'none' || taZh.style.display === '') {
+        taZh.value = preZh.textContent; taEn.value = preEn.textContent;
+        preZh.style.display = 'none'; preEn.style.display = 'none';
+        taZh.style.display = 'block'; taEn.style.display = 'block';
+        editBtn.textContent = '👁️ 取消編輯'; editBtn.style.background = '#6b7280';
+        saveBtn.style.display = 'inline-block';
+      } else {
+        preZh.style.display = 'block'; preEn.style.display = 'block';
+        taZh.style.display = 'none'; taEn.style.display = 'none';
+        editBtn.textContent = '✏️ 編輯電郵'; editBtn.style.background = '#3b82f6';
+        saveBtn.style.display = 'none';
+      }
+    }
+
+    function saveEdit(id) {
+      var section = document.getElementById('email-' + id);
+      var preZh = section.querySelector('pre[data-email-zh]');
+      var preEn = section.querySelector('pre[data-email-en]');
+      var taZh = section.querySelector('textarea[data-email-zh-edit]');
+      var taEn = section.querySelector('textarea[data-email-en-edit]');
+      var statusEl = document.getElementById('status-' + id);
+      preZh.textContent = taZh.value; preEn.textContent = taEn.value;
+      preZh.style.display = 'block'; preEn.style.display = 'block';
+      taZh.style.display = 'none'; taEn.style.display = 'none';
+      section.querySelector('.edit-btn').textContent = '✏️ 編輯電郵';
+      section.querySelector('.edit-btn').style.background = '#3b82f6';
+      document.getElementById('save-' + id).style.display = 'none';
+      statusEl.textContent = '⏳ 保存中...'; statusEl.className = 'save-status'; statusEl.style.display = 'inline';
+      var fileId = document.body.getAttribute('data-drive-file-id') || '';
+      var githubPath = document.body.getAttribute('data-github-path') || '';
+      var updatedHtml = document.documentElement.outerHTML;
+      fetch(GAS_API_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'update_html', fileId: fileId, content: '<!DOCTYPE html>\n' + updatedHtml, githubPath: githubPath })
+      }).then(function() {
+        statusEl.textContent = '✅ 已保存（GDrive + GitHub）'; statusEl.className = 'save-status success';
+        setTimeout(function() { statusEl.style.display = 'none'; }, 5000);
+      }).catch(function(err) {
+        statusEl.textContent = '❌ 保存失敗：' + err.message; statusEl.className = 'save-status error';
+      });
+    }
+
+    function sendEmail(id) {
+      var section = document.getElementById('email-' + id);
+      var preZh = section.querySelector('pre[data-email-zh]');
+      var preEn = section.querySelector('pre[data-email-en]');
+      var taZh = section.querySelector('textarea[data-email-zh-edit]');
+      var taEn = section.querySelector('textarea[data-email-en-edit]');
+      var zhText = (taZh && taZh.style.display !== 'none') ? taZh.value : preZh.textContent;
+      var enText = (taEn && taEn.style.display !== 'none') ? taEn.value : preEn.textContent;
+      var card = section.closest('.event-card');
+      var emailLink = card ? card.querySelector('.event-contact a[href^="mailto:"]') : null;
+      var recipient = emailLink ? emailLink.textContent.trim() : '';
+      var useZh = confirm('📧 發送電郵\n\n✅ 確定 = 繁體中文版本\n❌ 取消 = 英文版本');
+      var body = useZh ? zhText : enText;
+      var subject = useZh ? '關於活動嘅報名系統建議' : 'Registration System Proposal';
+      var mailto = 'mailto:' + encodeURIComponent(recipient) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      if (mailto.length > 2000) {
+        navigator.clipboard.writeText(body).then(function() {
+          alert('📋 電郵內容已複製到剪貼簿！\n\n請手動打開郵件客戶端發送。\n收件人：' + recipient);
+        });
+      } else {
+        window.location.href = mailto;
+      }
+    }
+  </script>
+</body>
+</html>
