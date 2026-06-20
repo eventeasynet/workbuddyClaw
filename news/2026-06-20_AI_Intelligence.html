@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 AI 行業情報速遞 — 2026年6月20日</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans HK', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+
+  .header {
+    text-align: center;
+    padding: 40px 20px 30px;
+    background: linear-gradient(135deg, #f8f7ff 0%, #ede9fe 50%, #f8f7ff 100%);
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #e5e0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .header h1 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #1e1b4b;
+    position: relative;
+    z-index: 1;
+  }
+  .header .date-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #5b21b6;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .header .hot-banner {
+    display: inline-block;
+    background: linear-gradient(90deg, #dc2626, #f59e0b);
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 6px;
+    font-size: 0.78em;
+    margin-top: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+  }
+
+  .category { margin-bottom: 28px; }
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid;
+  }
+  .category-header .icon { font-size: 1.5em; }
+  .category-header h2 { font-size: 1.25em; font-weight: 700; }
+
+  .cat-tech .category-header { border-color: #818cf8; color: #4338ca; }
+  .cat-tech .card { border-left: 4px solid #818cf8; }
+  .cat-video .category-header { border-color: #f472b6; color: #be185d; }
+  .cat-video .card { border-left: 4px solid #f472b6; }
+  .cat-drama .category-header { border-color: #fb923c; color: #c2410c; }
+  .cat-drama .card { border-left: 4px solid #fb923c; }
+  .cat-govt .category-header { border-color: #34d399; color: #047857; }
+  .cat-govt .card { border-left: 4px solid #34d399; }
+  .cat-industry .category-header { border-color: #60a5fa; color: #1d4ed8; }
+  .cat-industry .card { border-left: 4px solid #60a5fa; }
+
+  .card {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .card h3 { font-size: 1.05em; font-weight: 600; margin-bottom: 6px; color: #1e1b4b; }
+  .card .source {
+    display: inline-block;
+    font-size: 0.75em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .cat-tech .source { background: #eef2ff; color: #4338ca; }
+  .cat-video .source { background: #fdf2f8; color: #be185d; }
+  .cat-drama .source { background: #fff7ed; color: #c2410c; }
+  .cat-govt .source { background: #ecfdf5; color: #047857; }
+  .cat-industry .source { background: #eff6ff; color: #1d4ed8; }
+  .card p { font-size: 0.92em; color: #374151; line-height: 1.65; }
+  .card .highlight { font-weight: 600; color: #1e1b4b; }
+  .card .badge-urgent {
+    display: inline-block;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .card .badge-new {
+    display: inline-block;
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: #9ca3af;
+    font-size: 0.8em;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .summary-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #4b5563;
+  }
+  .summary-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .dot-tech { background: #818cf8; }
+  .dot-video { background: #f472b6; }
+  .dot-drama { background: #fb923c; }
+  .dot-govt { background: #34d399; }
+  .dot-industry { background: #60a5fa; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>📡 AI 行業情報速遞</h1>
+    <div class="date-badge">2026年6月20日（星期六）</div>
+    <div class="hot-banner">🔥 今日頭條：諾貝爾獎得主 AlphaFold 之父加入 Anthropic · 阿里世界模型 HappyOyster 1.0 發布 · SpaceX 600億收購 Cursor</div>
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-item"><span class="dot dot-tech"></span>AI創作技術 3則</div>
+    <div class="summary-item"><span class="dot dot-video"></span>短視頻 3則</div>
+    <div class="summary-item"><span class="dot dot-drama"></span>AI漫劇 3則</div>
+    <div class="summary-item"><span class="dot dot-govt"></span>政府補貼 3則</div>
+    <div class="summary-item"><span class="dot dot-industry"></span>行業動態 3則</div>
+  </div>
+
+  <!-- 🔬 AI 創作技術 -->
+  <div class="category cat-tech">
+    <div class="category-header">
+      <span class="icon">🔬</span>
+      <h2>AI 創作技術</h2>
+    </div>
+
+    <div class="card">
+      <h3>阿里 HappyOyster 1.0「快樂生蠔」：一句話生成可探索可互動數字世界<span class="badge-new">NEW</span><span class="badge-urgent">重磅</span></h3>
+      <span class="source">IT之家 / 新浪財經 · 6月17日</span>
+      <p>阿里雲正式推出可實時構建和交互的開放式世界模型 <span class="highlight">HappyOyster 1.0（快樂生蠔）</span>。基於原生多模態架構，支援文本、圖片及音影片輸入，一句話即可生成完整、可探索、可互動的數字世界。區別於傳統一次性渲染流程，可在生成過程中持續接收用戶指令並實時響應，深度學習物理世界運行規律，主動推演從動作到反饋的因果鏈條，人物與環境保持一致性。此前 4 月內測版代號 HappyHorse，此次為正式版發布。</p>
+    </div>
+
+    <div class="card">
+      <h3>DeepSeek 識圖模式全量上線：多模態理解能力大幅超越 OCR<span class="badge-new">NEW</span></h3>
+      <span class="source">IT之家 · 6月18日</span>
+      <p>DeepSeek 多模態研究員 Xiaokang Chen 宣佈，<span class="highlight">DeepSeek 識圖模式已在網頁端和 App 端正式全量上線</span>，與快速模式、專家模式並列為三大核心模式。開啟後用戶可直接上傳圖片讓 DeepSeek 進行深度理解，能力邊界遠超簡單文字提取（OCR），涵蓋圖像內容分析、邏輯推理、場景解讀等多層次多模態理解。此功能此前僅在部分場景可用，現已面向所有用戶開放。</p>
+    </div>
+
+    <div class="card">
+      <h3>谷歌 DiffusionGemma 開源：颠覆自回歸範式，單次並行生成 256 Token<span class="badge-new">NEW</span></h3>
+      <span class="source">Google DeepMind / 搜狐 · 6月</span>
+      <p>Google DeepMind 開源全新實驗性模型 <span class="highlight">DiffusionGemma</span>，颠覆傳統大模型逐字自回歸生成範式，採用離散擴散技術重構文本生成邏輯。支援單次並行生成 256 個 Token 文本塊，最高實現 4 倍生成提速。26B總參數、3.8B 激活參數 MoE 架構，量化後僅需 18GB 顯存即可本地部署。Apache 2.0 開源協議，兼容 vLLM、Unsloth 等主流推理框架，原生支援文本、圖像、長影片多模態輸入，補齊本地端 AI 部署短板。</p>
+    </div>
+  </div>
+
+  <!-- 🎬 短視頻 -->
+  <div class="category cat-video">
+    <div class="category-header">
+      <span class="icon">🎬</span>
+      <h2>短視頻</h2>
+    </div>
+
+    <div class="card">
+      <h3>快手開源 Keye-VL-2.0：256K超長上下文，3B激活成本解析數小時影片<span class="badge-new">NEW</span></h3>
+      <span class="source">騰訊新聞 / 知乎 · 6月17日</span>
+      <p>快手正式開源 <span class="highlight">Keye-VL-2.0-30B-A3B 多模態大模型</span>，首創將深度稀疏注意力（DSA）融入多模態架構，實現 256K 超長上下文處理能力，可直接解析數小時長影片。30B MoE 混合專家架構，運行時僅激活 3B 參數，推理性價比行業領先。原生搭載代碼編寫、工具調用、網頁搜尋等高階 Agent 能力，為短影片分析、長影片覆盤、影片自動化創作等場景提供底層支撐，已同步上線 Hugging Face 和 GitHub。</p>
+    </div>
+
+    <div class="card">
+      <h3>Seedance 2.0 mini 上線：火山引擎高性價比影片生成，單秒成本約 0.5 元<span class="badge-new">NEW</span></h3>
+      <span class="source">AIHub · 6月16日</span>
+      <p>火山引擎上線 <span class="highlight">Seedance 2.0 mini 影片生成模型</span>，支援圖生影片、影片生影片等能力，按 720P 折算單秒生成成本約 0.5 元，適用於電商、行銷、UGC 和批量影片內容生產。此版本定位為高性價比輕量化版本，與此前 Seedance 2.0 全鏈路版本形成梯隊組合，大幅降低短影片創作者的 AI 影片生成成本門檻。</p>
+    </div>
+
+    <div class="card">
+      <h3>豆包實時語音模型 Seeduplex 3.0 API 上線：全雙工端到端語音大模型<span class="badge-new">NEW</span></h3>
+      <span class="source">火山引擎 · 6月18日</span>
+      <p>火山引擎正式上線 <span class="highlight">豆包實時語音模型 3.0（Seeduplex）API</span> 並開啟邀測。作為原生全雙工端到端語音大模型，具備精準遵循、抗干擾、動態判停三大優勢，支援在實時對話中調用工具完成任務，實現「邊聽邊說邊辦事」。判停延遲縮短約 250ms，複雜場景搶話比例下降 40%，為短影片配音、直播互動、語音助手等場景提供底層支撐。</p>
+    </div>
+  </div>
+
+  <!-- 📺 AI 漫劇 -->
+  <div class="category cat-drama">
+    <div class="category-header">
+      <span class="icon">📺</span>
+      <h2>AI 漫劇</h2>
+    </div>
+
+    <div class="card">
+      <h3>AI 短漫劇海外 IAA 暴漲 113%：「混變時代」正式來臨<span class="badge-urgent">重磅</span></h3>
+      <span class="source">騰訊新聞 / 短劇內行人 · 6月16日</span>
+      <p>谷歌上海閉門會議數據顯示，AI 短漫劇賽道 <span class="highlight">IAA（廣告變現）季度環比暴漲 113%</span>，遠超 IAP（內購）的 1% 增長。55% 用戶願為 AI 短劇付費，但 45%「只看不充值」的用戶成為廣告變現基本盤。AI 漫劇 ROI 做到真人短劇的兩倍。谷歌大中華區指出，短劇 APP 用戶停留時間遠超其他品類，「3 秒一個爽點、5 秒一個爆點」為廣告變現創造最佳土壤。純 IAP 時代正在過去，<span class="highlight">「IAP + IAA 混變」成為主流</span>。</p>
+    </div>
+
+    <div class="card">
+      <h3>4月單月新增 AI 漫劇 4.4 萬部、播放量超 1,300 億：產能爆發後轉向「少而精」<span class="badge-new">NEW</span></h3>
+      <span class="source">DataEye / 短劇內行人 · 6月</span>
+      <p>2026 年 1-4 月國內新增漫劇持續飆升，<span class="highlight">4 月單月新增 4.4 萬部，播放量超 1,300 億</span>。但平台審核門檻提升、分成係數調整，低質擦邊內容被大量出清，行業從「鋪量」轉向「少而精」。美國 Holy Water 用 AI 劇做「排雷器」——AI版《Young Elite》反饋好就翻拍真人版，單季收入超 900萬美元；印度 DashReels 首部 AI 漫劇《Raftaar》完播率 75%，比普通短劇高出 90%。</p>
+    </div>
+
+    <div class="card">
+      <h3>版權保護成出海護城河：小五兄弟推出「劇權寶」，近 8000 帳號 20+語言覆蓋</h3>
+      <span class="source">短劇內行人 · 6月</span>
+      <p>小五兄弟郭幸杏透露：國內每天上新 80 部短劇，盜版團隊當天即下載譯成六國語言發布。為此小五兄弟推出 <span class="highlight">「劇權寶」CMS 系統</span>，讓版權方自行上傳內容、開啟保護、下架盜版。發行端矩陣近 8000 帳號，一部劇可做成 20+語言覆蓋 200+ 频道。版權不再是「幫你管」的增值服務，而是「你自己可控」的生存底線。對出海短漫劇團隊而言，缺乏版權保護可能意味著「只是給盜版打工」。</p>
+    </div>
+  </div>
+
+  <!-- 💰 政府補貼 -->
+  <div class="category cat-govt">
+    <div class="category-header">
+      <span class="icon">💰</span>
+      <h2>政府補貼</h2>
+    </div>
+
+    <div class="card">
+      <h3>香港 AI 助計劃 30 億元持續推進：數碼港超算中心算力資助申請開放<span class="badge-new">NEW</span></h3>
+      <span class="source">數字政策辦公室 / SME Link · 6月</span>
+      <p>香港特区政府撥款 <span class="highlight">30億元推行為期三年的AI資助計劃</span>，資助本地院校、研發機構、政府部門及企業善用數碼港 AI 超算中心算力。2024年8月已委任AI資助計劃委員會，負責評審算力資助申請的具體額度和條件。計劃旨在推動本地AI生態圈發展，降低中小企業使用AI算力的成本門檻。合資格機構可向數字政策辦公室提交申請。</p>
+    </div>
+
+    <div class="card">
+      <h3>BUD專項基金 6/15 起新增6國資助地域：沙特、埃及、匈牙利等<span class="badge-new">NEW</span></h3>
+      <span class="source">BUD官網 · 6月15日</span>
+      <p>香港生產力促進局宣佈，自 2026年6月15日起，<span class="highlight">BUD專項基金擴大資助地域範圍</span>至覆蓋沙特阿拉伯、孟加拉國、埃及、匈牙利、巴基斯坦、哈薩克斯坦6個新市場。一般申請和申請易均可受惠，每個項目最高資助額 100萬港元。此舉為港企開拓中東、中亞等新興市場提供直接資金支援，AI技術出口相關項目亦可申請。</p>
+    </div>
+
+    <div class="card">
+      <h3>深圳 AI 補貼 2026 修訂版：10類項目扶持，中小型企業門檻降低<span class="badge-new">NEW</span></h3>
+      <span class="source">騰訊新聞 · 5月15日</span>
+      <p>深圳市工信局發布《打造人工智能先鋒城市項目扶持計劃操作規程（2026年修訂版）》，涵蓋 <span class="highlight">10類具體項目扶持</span>，有效期至 2027年6月30日。新規降低申報門檻，此前無法申請的中小型AI企業現可受惠。同時廣東、上海、江蘇三地AI補貼集中出台，最高800萬元標杆項目獎補，製造業貸款貼息最高2個百分點，科技保險保費補貼最高50%。</p>
+    </div>
+  </div>
+
+  <!-- 🌐 行業動態 -->
+  <div class="category cat-industry">
+    <div class="category-header">
+      <span class="icon">🌐</span>
+      <h2>行業動態</h2>
+    </div>
+
+    <div class="card">
+      <h3>諾貝爾獎得主 John Jumper 加入 Anthropic：谷歌 AI 人才大壩決堤<span class="badge-urgent">重磅</span><span class="badge-new">今日</span></h3>
+      <span class="source">36氪 / 智東西 · 6月20日</span>
+      <p><span class="highlight">AlphaFold之父、2024年諾貝爾化學獎得主 John Jumper 今日官宣加入 Anthropic</span>。Jumper 博士畢業6個月即領隊 AlphaFold，7年後拿下諾貝爾獎。谷歌三天內連失兩位AI传奇人物——Jumper 流向 Anthropic，另一位流向 OpenAI——暴露其广告商业模式与AI使命的根本错位。AI行业人才版图正经历不可逆重组，Anthropic 在安全对齐与科研人才方面持续领先。</p>
+    </div>
+
+    <div class="card">
+      <h3>SpaceX 600億美元收購 Cursor：AI編程賽道史上最大併購<span class="badge-urgent">重磅</span></h3>
+      <span class="source">搜狐 / ITBear · 6月16日</span>
+      <p>SpaceX宣佈以 <span class="highlight">600億美元全股票交易收購AI編程助手Cursor母公司 Anysphere</span>，距其歷史性納斯達克IPO僅數日。Cursor整體估值達600億美元，股東將按SpaceX前七個交易日平均股價獲得A類股份。此交易標誌AI編程工具從輔助角色躍升為企業級核心基建，Claude Code、Codex、Cursor四強争霸格局被打破——SpaceX+Cursor組合將重新定義AI編程市場。</p>
+    </div>
+
+    <div class="card">
+      <h3>演語科技（EVOKEN）完成近3億美元B+輪融資：AI創意矩陣估值破20億<span class="badge-new">NEW</span></h3>
+      <span class="source">新京報 / 投界 · 6月18日</span>
+      <p>演語科技（EVOKEN）完成 <span class="highlight">近3億美元（約20億人民幣）B+輪融資</span>，投後估值超20億美元。由 Granite Asia、騰訊、順為資本聯合領投，蚂蚁集團、紅杉中國等老股東持續加碼。旗下 LibLibAI 累計用戶超3000萬，LibTV 上線兩月收入增超13倍，星流累計服務千萬用戶。ARR接近3億美元，預計2026年底突破6億美元。刷新国内AI應用層單輪融資紀錄。</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>📡 本報告由 WorkBuddy AI 自動生成 · 數據截至 2026年6月20日 13:00 HKT</p>
+    <p>資訊來源：36氪、IT之家、智東西、騰訊新聞、搜狐、AIHub、新浪財經、數字政策辦公室、BUD官網</p>
+    <p>© 2026 EventEasy.net · 僅供參考，不構成投資建議</p>
+  </div>
+
+</div>
+</body>
+</html>
