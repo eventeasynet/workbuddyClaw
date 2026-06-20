@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📋 各界標書情報 - 6月20日</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: #1a1a2e;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.header {
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; opacity: 0.85; }
+.header .date-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.section {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #0891b2;
+}
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #67e8f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tender-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border:1px solid #e5e7eb;
+  transition: all 0.3s;
+}
+.tender-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.tender-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tender-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.tag-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.tender-tag {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.tender-tag.ad { background: #dbeafe; color: #1d4ed8; }
+.tender-tag.video { background: #ede9fe; color: #7c3aed; }
+.tender-tag.print { background: #fef3c7; color: #b45309; }
+.tender-tag.ai { background: #dcfce7; color: #16a34a; }
+.tender-tag.micro-drama { background: #fce7f3; color: #db2777; }
+.tender-tag.system { background: #e0e7ff; color: #4338ca; }
+.tender-tag.other { background: #f3f4f6; color: #6b7280; }
+.tender-tag.hk { background: #fef9c3; color: #854d0e; }
+.tender-tag.awarded { background: #fef3c7; color: #b45309; }
+.tender-deadline {
+  font-size: 14px;
+  font-weight: 700;
+  color: #dc2626;
+}
+.tender-detail {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+.tender-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  flex-wrap: wrap;
+}
+.highlight-box {
+  background: linear-gradient(135deg, #ecfeff, #cffafe);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+  border:1px solid #67e8f9;
+}
+.highlight-box .title {
+  font-weight: 700;
+  color: #0e7490;
+  margin-bottom: 8px;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #0891b2;
+  text-decoration: none;
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #ecfeff;
+}
+.source-link:hover { background: #cffafe; }
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+}
+/* === 已批出項目專用樣式（金色/琥珀主題） === */
+.awarded-section {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #f59e0b;
+}
+.awarded-section .section-title {
+  color: #b45309;
+  border-bottom-color: #fcd34d;
+}
+.awarded-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #fde68a;
+  transition: all 0.3s;
+}
+.awarded-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.awarded-price {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.awarded-winner {
+  color: #059669;
+  font-weight: 600;
+}
+.awarded-budget {
+  color: #6b7280;
+  font-size: 13px;
+  text-decoration: line-through;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📋 各界標書情報</h1>
+  <div class="subtitle">廣告投放 / 影視製作 / 平面廣告 / AI項目 / 微劇 / 系統開發</div>
+  <div class="date-badge">📅 2026年6月20日（星期五）</div>
+</div>
+
+<!-- 📺 廣告投放標書 -->
+<div class="section">
+  <div class="section-title">📺 廣告投放標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">Brand Hong Kong 數碼媒體推廣服務</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港特區政府 新聞處（Information Services Department）<br>
+      <strong>📋 項目簡述：</strong>為「Brand Hong Kong」品牌提供數碼媒體推廣服務，涵蓋社交媒體、數碼廣告投放、內容創作等，提升香港國際形象<br>
+      <strong>💰 預算金額：</strong>未公佈（政府採購項目）
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：Tender Impulse</span>
+    </div>
+    <a class="source-link" href="https://tenderimpulse.com/government-tenders/hong-kong/tender-for-provision-of-services-for-digital-media-promotion-of-brand-hong-kong-12574473" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC BODW 及 DFA 獎項統一傳播服務</div>
+      <div class="tender-deadline">⏰ 截標：2026年7月2日 17:00</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港設計中心（HKDC）<br>
+      <strong>📋 項目簡述：</strong>為設計營商周（BODW）及 DFA 設計獎提供整體公關傳播服務，包含品牌宣傳、媒體對接、活動傳播等。6月8日14:00於 DX design hub 舉行簡介會<br>
+      <strong>💰 預算金額：</strong>未公佈
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKDC 官網</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag other">數碼營銷</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC DX design hub 及 DESIGN@HKG 統一傳播服務</div>
+      <div class="tender-deadline">⏰ 截標：2026年7月2日 17:00</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港設計中心（HKDC）<br>
+      <strong>📋 項目簡述：</strong>為 DX design hub 和 DESIGN@HKG 項目提供公關傳播服務，覆蓋線上線下宣傳推廣、公眾溝通。6月8日14:30簡介會<br>
+      <strong>💰 預算金額：</strong>未公佈
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKDC 官網</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">深圳市安全生產和工伤預防宣傳項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>深圳市應急管理局<br>
+      <strong>📋 項目簡述：</strong>安全生產及工伤預防相關的宣傳推廣項目（已截止6月8日）<br>
+      <strong>💰 預算金額：</strong>未公佈
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：深圳市應急管理局</span>
+    </div>
+    <a class="source-link" href="https://www.dnezb.com/detail/40609131" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 🎬 影視製作標書 -->
+<div class="section">
+  <div class="section-title">🎬 影視製作標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag video">影視製作</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC 2026及2027年度 BODW 電視廣播、視頻製作、直播編碼及活動製作服務</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港設計中心（HKDC）<br>
+      <strong>📋 項目簡述：</strong>為設計營商周2026及2027提供全套電視轉播、視頻內容製作、直播技術支持及線下活動落地執行服務。需分技術及財務提案兩份提交<br>
+      <strong>⏰ 截標：</strong>已截止（2026年6月3日），但覆蓋2026+2027兩年度
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKDC 官網</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag video">影視製作</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">2026年安全宣傳片製作</div>
+      <div class="tender-deadline">⏰ 截標：2026年6月25日 09:30</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>深圳市應急管理局<br>
+      <strong>📋 項目簡述：</strong>製作安全宣傳影片，包含安全生產宣傳、安全教育視頻等內容。專門面向中小微企業採購，不接受大型企業及聯合體投標<br>
+      <strong>💰 預算金額：</strong>¥797,200（人民幣柒拾玖萬柒仟貳佰元）<br>
+      <strong>📋 編號：</strong>1243-456OTC2605205
+    </div>
+    <div class="tender-meta">
+      <span>🏢 代理：深圳市東方招標有限公司</span>
+      <span>📍 深圳福田</span>
+    </div>
+    <a class="source-link" href="https://yjgl.sz.gov.cn/zwgk/xxgkml/qt/tzgg/content/post_12844211.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag video">影視製作</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">2026年工伤預防系列宣傳短片製作投播項目</div>
+      <div class="tender-deadline">⏰ 截標：2026年6月29日 13:30</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>上海市相關部門<br>
+      <strong>📋 項目簡述：</strong>工伤預防系列宣傳短片製作及投放播出，競爭性磋商方式採購<br>
+      <strong>📋 編號：</strong>310000000260331199787-00343939
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：中國政府採購網</span>
+    </div>
+    <a class="source-link" href="http://www.ccgp.gov.cn/cggg/dfgg/jzxcs/202606/t20260618_26778115.htm" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag video">影視製作</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">福州市視頻拍攝製作採購</div>
+      <div class="tender-deadline">⏰ 截標：2026年6月23日 17:00</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>福州市相關部門<br>
+      <strong>📋 項目簡述：</strong>視頻拍攝製作服務採購，投標截止6月23日<br>
+      <strong>💰 預算金額：</strong>未公佈
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：福州新聞網</span>
+    </div>
+    <a class="source-link" href="https://news.fznews.com.cn/node/15694/20260617/6a324e55bb609.shtml" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 🖨️ 平面廣告製作標書 -->
+<div class="section">
+  <div class="section-title">🖨️ 平面廣告製作標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag print">平面廣告</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">規劃署展城館展品設計、製作及維修保養服務</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港規劃署<br>
+      <strong>📋 項目簡述：</strong>展城館一樓及二樓展品設計、製作及維修保養。已批出合約 — 一樓 HK$14,355,000（OVAL Design Limited）、二樓 HK$19,785,000（OVAL Design Limited）<br>
+      <strong>💰 合約金額：</strong>合共 HK$34,140,000
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：規劃署官網</span>
+    </div>
+    <a class="source-link" href="https://www.pland.gov.hk/pland_tc/consultancies_and_tender/tender_notice/index.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag print">平面廣告</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">南航2026年—2029年辦公印刷（廣州地區）採購項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>中國南方航空股份有限公司<br>
+      <strong>📋 項目簡述：</strong>辦公印刷品採購，3年合約期<br>
+      <strong>🏢 中標公司：</strong>博恒文化傳媒有限公司<br>
+      <strong>💰 中標金額：</strong>未公佈
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：天眼查/搜狐</span>
+      <span>📅 6月1日評標公示</span>
+    </div>
+    <a class="source-link" href="https://www.sohu.com/a/1032083772_121319643" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag print">平面廣告</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">浙大二院多院區醫療印刷品採購及配送服務</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>浙江大學醫學院附屬第二醫院<br>
+      <strong>📋 項目簡述：</strong>多院區醫療印刷品採購及配送服務<br>
+      <strong>💰 預算金額：</strong>¥1,950,000<br>
+      <strong>⏰ 預計招標：</strong>2026年6月至7月
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：千里馬招標網</span>
+    </div>
+    <a class="source-link" href="http://www.qianlima.com/gjxx/28721/index_0_1.html" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 🤖 AI 相關項目標書 -->
+<div class="section">
+  <div class="section-title">🤖 AI 相關項目標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKMA 承投整合資料庫平台的概念驗證</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港金融管理局（HKMA）<br>
+      <strong>📋 項目簡述：</strong>整合資料庫平台的概念驗證（PoC），探索 AI/大數據在金融監管中的應用<br>
+      <strong>📅 刊登日期：</strong>2026年5月29日
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKMA 憲報公告</span>
+    </div>
+    <a class="source-link" href="https://www.hkma.gov.hk/chi/about-us/tender-invitations/" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKMA 承投身分及訪問管理實施項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港金融管理局（HKMA）<br>
+      <strong>📋 項目簡述：</strong>身分及訪問管理（IAM）實施項目，涉及 AI/智能身份驗證及安全訪問控制系統<br>
+      <strong>📅 刊登日期：</strong>2026年5月8日
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKMA 憲報公告</span>
+    </div>
+    <a class="source-link" href="https://www.hkma.gov.hk/chi/about-us/tender-invitations/" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">中國航發動力 AI 小算力建設項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>中國航發動力股份有限公司<br>
+      <strong>📋 項目簡述：</strong>人工智能小算力建設項目招標，資金100%自有<br>
+      <strong>📅 刊登日期：</strong>2026年6月18日
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：AI Product Hub</span>
+    </div>
+    <a class="source-link" href="https://aiproducthub.cn/newsflash/aaecc-aero-engine-ai-small-compute-procurement-2026-june/" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">2026年「人工智能+」農業數智化轉型項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>新疆尉犁縣/庫車市相關部門<br>
+      <strong>📋 項目簡述：</strong>「空-地」農業全域感知數碼化應用，AI+農業數智化轉型項目<br>
+      <strong>📅 刊登日期：</strong>2026年6月19日
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：採購與招標網</span>
+    </div>
+    <a class="source-link" href="https://data.chinabidding.com.cn/zbgg/U-vzJZ6Ps.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">香港 AI x 網絡安全挑戰賽（由數字政策辦主辦）</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 主辦機構：</strong>香港數字政策辦公室 + 香港網絡安全專業協會 + 中國移動香港<br>
+      <strong>📋 項目簡述：</strong>首屆 AI x 網絡安全挑戰賽，聚焦 AI 與網絡安全實戰融合，線上+線下雙線賽制。5月已開放報名，6月進行線上初賽<br>
+      <strong>💡 機會：</strong>相關 AI 安全解決方案供應商可參與合作或贊助
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：ZONE.CI / 數字政策辦</span>
+    </div>
+    <a class="source-link" href="https://zone.ci/secarticles/wx/538027.html" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 🎭 微劇/短劇項目 -->
+<div class="section">
+  <div class="section-title">🎭 微劇/短劇項目</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag micro-drama">微劇</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">2026「星耀影都」全國微短劇創投季</div>
+      <div class="tender-deadline">⏰ 截止：2026年6月30日</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 主辦機構：</strong>中國影都（北京怀柔）<br>
+      <strong>📋 項目簡述：</strong>總資金800萬！四大單元六大赛道：真人微短劇剧本、AIGC漫劇、真人微短劇摄制、品質微短劇。依托剪映、紅果短劇等全鏈條資源<br>
+      <strong>💰 總資金：</strong>¥800萬<br>
+      <strong>⏰ 截止：</strong>前三單元6月30日，第四單元8月1日起
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：新京報</span>
+    </div>
+    <a class="source-link" href="https://www.bjnews.com.cn/detail/1780294764129406.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag micro-drama">微劇</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">鄭州文化投資建設有限公司微短劇製作項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>鄭州文化投資建設有限公司<br>
+      <strong>📋 項目簡述：</strong>製作一部綠博園與8號線交旅融合主題文旅短劇，合同簽訂後90日曆天完成<br>
+      <strong>💰 預算金額：</strong>¥500,000<br>
+      <strong>📋 編號：</strong>WLT-WT-FW-202503(CS)
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：方大國際工程咨詢</span>
+    </div>
+    <a class="source-link" href="http://www.hnfdgl.com/Newsxq/2195.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag micro-drama">微劇</span>
+      <span class="tender-tag ai">AI+</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">上海微短劇大會 — AI+微短劇服務中心啟動</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 主辦機構：</strong>上海市文化和旅遊局（上海市廣播電視局）<br>
+      <strong>📋 項目簡述：</strong>發布上海微短劇「繁花」3.0計劃，啟動首屆微短劇剧本征集大賽。徐匯區啟動「AI+微短劇服務中心」，靜安區發布「劇商融合」微短劇賦能城區IP計劃<br>
+      <strong>💡 機會：</strong>AI+微短劇結合是新趨勢，可關注後續招標機會
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：新聞報導</span>
+    </div>
+    <a class="source-link" href="https://so.html5.qq.com/page/real/search_news?docid=70000021_38169b128fc83552" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag micro-drama">微劇</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">江蘇主題微短劇項目申報</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 主辦機構：</strong>江蘇省廣播電視局<br>
+      <strong>📋 項目簡述：</strong>根據國家廣電總局「微短劇+」行動計劃，開放主題微短劇項目申報，需填報項目名稱、投資額度、計劃完成時間、播出平台等<br>
+      <strong>💡 機會：</strong>適合有微短劇製作能力的公司申報
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：江蘇省廣電局</span>
+    </div>
+    <a class="source-link" href="http://jsgd.jiangsu.gov.cn/module/download/downfile.jsp?classid=0&filename=d558c01d8b834d52a80624ef1f7670ad.docx" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 🖥️ 系統開發標書 -->
+<div class="section">
+  <div class="section-title">🖥️ 系統開發標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag awarded">🔥 重點</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKMA 承投共用資料提交平台的應用程式開發及支援服務</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港金融管理局（HKMA）<br>
+      <strong>📋 項目簡述：</strong>開發共用資料提交平台（Common Data Submission Platform）的應用程式及提供後續支援服務，涉及金融數據報送系統的數碼化升級<br>
+      <strong>📅 刊登日期：</strong>2026年6月12日<br>
+      <strong>💡 重要性：</strong>這是 HKMA 重大 IT 系統採購項目，涉及金融監管數據平台開發
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKMA 憲報公告</span>
+    </div>
+    <a class="source-link" href="https://www.hkma.gov.hk/chi/about-us/tender-invitations/" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC 財務及採購系統部署服務</div>
+      <div class="tender-deadline">⏰ 截標：2026年7月13日 18:00</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港設計中心（HKDC）<br>
+      <strong>📋 項目簡述：</strong>部署全新的財務管理和採購管理系統，包含系統定制、上線實施、人員培訓及後續運維支持。需分技術及財務提案兩份提交<br>
+      <strong>💡 聯絡：</strong>Terry Chin（高級財務經理）、Karen Chow（財務經理）
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKDC 官網</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">DPO 網絡安全設備供應及相關服務</div>
+      <div class="tender-deadline">⏰ 截標：2026年7月9日 12:00</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港數字政策辦公室（Digital Policy Office, DPO）<br>
+      <strong>📋 項目簡述：</strong>為數字政策辦供應網絡安全設備（Network Security Appliances）及提供相關服務<br>
+      <strong>📋 編號：</strong>DPO-085-066-004-030
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：DPO 官網</span>
+    </div>
+    <a class="source-link" href="https://www.digitalpolicy.gov.hk/en/our_work/digital_infrastructure/business_window/tender_eoi_rfp/" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">香港中文大學(深圳)醫院配套醫療設備及信息化(一期)網絡系統</div>
+      <div class="tender-deadline">⏰ 截標：2026年6月29日 08:30</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港中文大學(深圳)醫院<br>
+      <strong>📋 項目簡述：</strong>醫院配套醫療設備及信息化一期網絡系統採購，包含網絡基礎設施、信息安全系統等<br>
+      <strong>💰 預算金額：</strong>¥9,718,900<br>
+      <strong>📋 編號：</strong>SZCG2026000654
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：中國政府採購網</span>
+    </div>
+    <a class="source-link" href="http://www.ccgp.gov.cn/cggg/dfgg/gkzb/202606/t20260618_26775309.htm" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKMA 提供硬體安全模組及金鑰管理系統方案實施</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港金融管理局（HKMA）<br>
+      <strong>📋 項目簡述：</strong>硬體安全模組（HSM）及金鑰管理系統（KMS）方案實施，涉及金融安全基礎設施<br>
+      <strong>🏛️ 已批出：</strong>2026年5月15日公佈合約公告
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKMA 憲報公告</span>
+    </div>
+    <a class="source-link" href="https://www.hkma.gov.hk/chi/about-us/tender-invitations/" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">人保科技預算編制系統開發項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>中国人民保險集團（人保科技）<br>
+      <strong>📋 項目簡述：</strong>預算編制系統軟件開發<br>
+      <strong>🏛️ 已批出：</strong>金蝶軟件(中國)有限公司中標，¥188萬
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：天眼查/搜狐</span>
+      <span>📅 6月2日公告</span>
+    </div>
+    <a class="source-link" href="https://www.sohu.com/a/1032575383_121319643" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 📋 其他相關標書 -->
+<div class="section">
+  <div class="section-title">📋 其他相關標書</div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag other">活動策劃</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">規劃署展城館管理及輔助服務</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港規劃署<br>
+      <strong>📋 項目簡述：</strong>展城館管理及輔助服務，36個月合約<br>
+      <strong>🏛️ 已批出：</strong>中國海外物業服務有限公司，HK$26,494,960（2024年4月至2027年4月）
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：規劃署官網</span>
+    </div>
+    <a class="source-link" href="https://www.pland.gov.hk/pland_tc/consultancies_and_tender/tender_notice/index.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag other">數碼營銷</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">深圳南山外國語學校 AI 數智技術服務項目</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>深圳市南山外國語學校(集團)第二實驗學校<br>
+      <strong>📋 項目簡述：</strong>2026年體系化 AI 數智技術服務項目，AI+教育數智化<br>
+      <strong>🏛️ 已批出：</strong>深圳新成思達教育科技有限公司中標，¥44.6萬
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：南山政府網</span>
+      <span>📅 6月9日公告</span>
+    </div>
+    <a class="source-link" href="http://www.szns.gov.cn/xxgk/bmxxgk/qjyj/qtgk_157913/jypx/tzgg/zbzbgg/content/post_12829365.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="tender-card">
+    <div class="tag-row">
+      <span class="tender-tag other">數碼營銷</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">HKDC 內地數碼營銷服務（小紅書/微信/微博）</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 招標機構：</strong>香港設計中心（HKDC）<br>
+      <strong>📋 項目簡述：</strong>為 BODW、城中設計營商周、DFA 設計獎、DX design hub 提供內地市場數碼營銷服務，覆蓋小紅書、微信、微博等平台<br>
+      <strong>⏰ 截標：</strong>已截止（5月15日），可關注下次招標周期
+    </div>
+    <div class="tender-meta">
+      <span>📋 來源：HKDC 官網</span>
+    </div>
+    <a class="source-link" href="https://www.hkdesigncentre.org/en/about/business-opportunities/open-tender" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 🏛️ 已批出項目參考 -->
+<div class="awarded-section">
+  <div class="section-title">🏛️ 已批出項目參考</div>
+  <p style="font-size:13px; color:#92400e; margin-bottom:16px;">📊 以下項目已完成招標程序並公佈中標結果，中標金額可作為日後投標定價參考</p>
+
+  <div class="awarded-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag awarded">🏛️ 已批出</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">規劃署雲平台系統軟件升級及支援服務</div>
+      <div class="awarded-price">💰 HK$609.9萬</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 中標公司：</strong><span class="awarded-winner">ATech Communication (HK) Limited</span><br>
+      <strong>💰 中標金額：</strong>HK$6,099,200<br>
+      <strong>📅 批出日期：</strong>2025年11月14日<br>
+      <strong>📋 項目：</strong>為規劃署的雲平台系統軟件提供升級及支援服務
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港規劃署</span>
+      <span>📋 編號：PLNT2/2025</span>
+    </div>
+    <a class="source-link" href="https://www.pland.gov.hk/pland_tc/consultancies_and_tender/tender_notice/index.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="awarded-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag awarded">🏛️ 已批出</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">規劃署地理資訊系統（GIS）軟件保養服務</div>
+      <div class="awarded-price">💰 HK$705.4萬</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 中標公司：</strong><span class="awarded-winner">環研中國（香港）有限公司</span><br>
+      <strong>💰 中標金額：</strong>HK$7,054,505<br>
+      <strong>📅 批出日期：</strong>2026年1月22日<br>
+      <strong>📋 項目：</strong>為規劃署的 GIS 軟件提供保養服務
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港規劃署</span>
+      <span>📋 編號：PLNT5/2025</span>
+    </div>
+    <a class="source-link" href="https://www.pland.gov.hk/pland_tc/consultancies_and_tender/tender_notice/index.html" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="awarded-card">
+    <div class="tag-row">
+      <span class="tender-tag ad">廣告投放</span>
+      <span class="tender-tag awarded">🏛️ 已批出</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">中國建設銀行2026年央視廣告資源採購</div>
+      <div class="awarded-price">💰 ¥1.34億</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 中標公司：</strong><span class="awarded-winner">北京敦和國際影視傳媒有限公司</span><br>
+      <strong>💰 中標金額：</strong>¥134,000,000<br>
+      <strong>📅 批出日期：</strong>2026年6月1日<br>
+      <strong>📋 項目：</strong>建設銀行央視廣告資源採購
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：中國建設銀行股份有限公司</span>
+    </div>
+    <a class="source-link" href="http://stock.stockstar.com/RB2026060400019150.shtml" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="awarded-card">
+    <div class="tag-row">
+      <span class="tender-tag ai">AI項目</span>
+      <span class="tender-tag awarded">🏛️ 已批出</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">中移動2026-2027年大模型訓練數據集成服務</div>
+      <div class="awarded-price">💰 ¥1.2156億</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 中標公司：</strong><span class="awarded-winner">北京智譜華章科技股份有限公司 + 海天瑞聲</span><br>
+      <strong>💰 中標金額：</strong>累計¥121,562,000（智譜標包1+2，海天瑞聲標包3+4）<br>
+      <strong>📅 批出日期：</strong>2026年6月11日<br>
+      <strong>📋 項目：</strong>大模型訓練數據集成服務4套，含文本數據、圖像數據、音頻數據、多模態數據
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：中移動信息技術有限公司</span>
+    </div>
+    <a class="source-link" href="https://zhuanlan.zhihu.com/p/2048527865088570115" target="_blank">🔗 來源連結</a>
+  </div>
+
+  <div class="awarded-card">
+    <div class="tag-row">
+      <span class="tender-tag system">系統開發</span>
+      <span class="tender-tag hk">🇭🇰 香港</span>
+      <span class="tender-tag awarded">🏛️ 已批出</span>
+    </div>
+    <div class="tender-header">
+      <div class="tender-name">規劃署辦公室自動化軟件供應</div>
+      <div class="awarded-price">💰 HK$423.1萬</div>
+    </div>
+    <div class="tender-detail">
+      <strong>🏢 中標公司：</strong><span class="awarded-winner">香港寬頻科技有限公司</span><br>
+      <strong>💰 中標金額：</strong>HK$4,231,468<br>
+      <strong>📅 批出日期：</strong>2026年1月22日<br>
+      <strong>📋 項目：</strong>為規劃署供應辦公室自動化軟件
+    </div>
+    <div class="tender-meta">
+      <span>🏢 招標機構：香港規劃署</span>
+      <span>📋 編號：PLNT4/2025</span>
+    </div>
+    <a class="source-link" href="https://www.pland.gov.hk/pland_tc/consultancies_and_tender/tender_notice/index.html" target="_blank">🔗 來源連結</a>
+  </div>
+</div>
+
+<!-- 重點提醒 -->
+<div class="highlight-box">
+  <div class="title">⚠️ 今日重點標書提醒</div>
+  <ul style="font-size:14px; color:#0e7490; line-height:2;">
+    <li>🔥 <strong>HKMA 共用資料提交平台應用程式開發</strong> — 金融監管數據平台重大項目（6月12日刊登）</li>
+    <li>🔥 <strong>HKDC 財務及採購系統部署</strong> — 截標7月13日，ERP/採購系統部署</li>
+    <li>🔥 <strong>DPO 網絡安全設備</strong> — 截標7月9日，數字政策辦重大採購</li>
+    <li>🔥 <strong>深圳安全宣傳片製作</strong> — ¥79.72萬，截標6月25日</li>
+    <li>🔥 <strong>港中大(深圳)醫院網絡系統</strong> — ¥971.89萬，截標6月29日</li>
+    <li>🔥 <strong>星耀影都微短劇創投季</strong> — ¥800萬總資金，6月30日截止</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <p>📋 各界標書情報 — 由 EventEasy.net AI 系統自動搜集生成</p>
+  <p>📅 2026年6月20日 | 數據來源：香港政府憲報、HKMA、DPO、HKDC、規劃署、中國政府採購網等</p>
+  <p style="margin-top:8px;">💡 <strong>定價參考：</strong>規劃署雲平台升級 HK$610萬 / GIS保養 HK$705萬 / 辦公自動化 HK$423萬</p>
+</div>
+
+</body>
+</html>
