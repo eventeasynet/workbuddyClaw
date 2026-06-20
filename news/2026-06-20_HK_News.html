@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📰 上午新聞 - 6月20日（週六）</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans CJK TC','PingFang HK','Noto Sans TC',sans-serif;background:#f0f4f8;color:#2d3748;line-height:1.7;max-width:800px;margin:0 auto;padding:16px}
+.header{background:linear-gradient(135deg,#1a365d 0%,#2b6cb0 100%);color:#fff;padding:24px 20px;border-radius:12px;margin-bottom:20px;position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,0.05);border-radius:50%}
+.header h1{font-size:1.6em;font-weight:900;margin-bottom:6px;letter-spacing:1px}
+.header .meta{font-size:.85em;color:rgba(255,255,255,0.8);display:flex;gap:12px;flex-wrap:wrap}
+.header .meta span{background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:20px;font-size:.8em}
+.section{background:#fff;border-radius:10px;padding:18px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);border-left:4px solid #2b6cb0}
+.section h2{font-size:1.25em;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section h2 .icon{font-size:1.3em}
+.news-item{padding:10px 0;border-bottom:1px solid #e2e8f0;position:relative}
+.news-item:last-child{border-bottom:none}
+.news-item .badge{display:inline-block;padding:1px 8px;border-radius:12px;font-size:.7em;font-weight:700;margin-right:6px;color:#fff}
+.badge-urgent{background:#e53e3e}
+.badge-weather{background:#38a169}
+.badge-finance{background:#d69e2e}
+.badge-tech{background:#4299e1}
+.badge-property{background:#805ad5}
+.badge-intl{background:#3182ce}
+.badge-social{background:#e53e3e}
+.badge-edu{background:#38b2ac}
+.badge-politics{background:#2d3748}
+.badge-space{background:#667eea}
+.badge-crime{background:#c53030}
+.badge-transport{background:#dd6b20}
+.badge-health{background:#48bb78}
+.badge-sports{background:#ed8936}
+.news-item .title{font-weight:700;font-size:.95em;margin-bottom:3px}
+.news-item .summary{font-size:.85em;color:#718096;line-height:1.6}
+.news-item .source{font-size:.75em;color:#a0aec0;margin-top:3px}
+.hk-section{border-left-color:#e53e3e}
+.cn-section{border-left-color:#d69e2e}
+.intl-section{border-left-color:#3182ce}
+.fin-section{border-left-color:#d69e2e}
+.tech-section{border-left-color:#4299e1}
+.sport-section{border-left-color:#ed8936}
+.tag-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.tag-bar span{background:#edf2f7;color:#4a5568;padding:3px 10px;border-radius:20px;font-size:.75em;font-weight:700}
+.highlight{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-left-color:#d69e2e;padding:20px}
+.highlight h2{color:#92400e}
+.market-box{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:12px 0}
+.market-card{background:#f7fafc;border-radius:8px;padding:10px;text-align:center;border:1px solid #e2e8f0}
+.market-card .label{font-size:.75em;color:#718096}
+.market-card .value{font-size:1.1em;font-weight:900;margin-top:3px}
+.market-card .change{font-size:.8em;margin-top:2px}
+.up{color:#e53e3e}.down{color:#38a169}
+.footer{text-align:center;padding:16px;color:#a0aec0;font-size:.8em;border-top:1px solid #e2e8f0;margin-top:20px}
+@media(max-width:600px){
+  .header h1{font-size:1.3em}
+  .section{padding:14px 16px}
+  .market-box{grid-template-columns:1fr 1fr}
+  .header .meta{gap:6px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📰 上午新聞撮要</h1>
+  <div class="meta">
+    <span>2026年6月20日（週六）</span>
+    <span>每日 08:00 生成</span>
+    <span>港聞 + 中國 + 國際 + 財經 + 科技 + 體育</span>
+  </div>
+</div>
+
+<div class="tag-bar">
+  <span>🚨突發</span><span>🌤️天氣</span><span>📉財經</span><span>🤖科技</span><span>🏘️地產</span><span>🕊️國際</span><span>👥社會</span><span>🚗交通</span><span>🏛️政情</span><span>🚀航天</span><span>⚽體育</span><span>🇭🇰港聞</span><span>🇨🇳中國</span>
+</div>
+
+<!-- 🇭🇰 本港新聞 -->
+<div class="section hk-section">
+  <h2><span class="icon">🇭🇰</span> 本港新聞</h2>
+
+  <div class="news-item">
+    <span class="badge badge-urgent">🚨突發</span>
+    <div class="title">灣仔爆食水管湧出泥水淹路面　跑馬地圈電車服務暫停</div>
+    <div class="summary">灣仔道與天樂里交界10吋食水管凌晨5時許爆裂，大量食水夾雜泥沙湧出路面，兩輛電車一度受阻停駛，跑馬地圈電車服務暫停。水務署趕赴現場緊急搶修。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-urgent">🚨突發</span>
+    <div class="title">端午節扒龍舟再現撞船意外　划手被撞至瞓身避唔到</div>
+    <div class="summary">端午節龍舟競賽期間發生撞船意外，划手被撞至瞓身，場面驚險。網民形容為「薩莉亞2.0」，呼籲加強安全措施。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">青山灣泳灘男子疑游龍舟水遇溺　消防拯救岸邊心外壓惜不治</div>
+    <div class="summary">青山灣泳灘一名男子疑因游龍舟水遇溺，消防接報後到場將男子救上岸實施心肺復甦，但最終搶救無效不治。</div>
+    <div class="source">香港01 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-urgent">🚨突發</span>
+    <div class="title">西九龍公路3車串燒釀3傷　私家車捱切線車撞再遭巴士撼至翻側</div>
+    <div class="summary">西九龍公路發生嚴重3車相撞事故，私家車被切線車撞停後再遭巴士追尾翻側，3人受傷。行車記錄器影片曝光，場面驚險。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-weather">🌤️天氣</span>
+    <div class="title">天文台：初時有幾陣驟雨　日間炎熱市區最高約32°C</div>
+    <div class="summary">今日初時有幾陣驟雨，日間炎熱，市區最高氣溫約32°C，新界再高一兩度。天文台清晨录得29°C，相對湿度82%。端午長周末天氣炎熱，市民注意補水。</div>
+    <div class="source">天文台 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">海關機場破兩旅客販毒案　檢1,600萬元K仔兩男子被捕</div>
+    <div class="summary">海關在機場破獲兩宗旅客販毒案，檢獲約1,600萬元氯胺酮（K仔），兩名男子被捕。案件反映毒品走私以旅客方式入境的趨勢。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">海關聯警破新田地下製煙工廠　檢逾千萬元私煙及生產線　6男女被捕</div>
+    <div class="summary">海關聯同警方破獲新田一處地下製煙工廠，檢获逾千萬元私煙及生產線設備，拘捕6名男女。地下私煙工廠規模越趨專業化。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">政府擬規管彈珠機後現「放機潮」　店主棄機轉行料多同行離場</div>
+    <div class="summary">政府計劃規管彈珠機後業內出現「放機潮」，有店主已棄機轉行。業界估計規管落實後將有更多營運者退出市場。</div>
+    <div class="source">香港01 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-transport">🚗交通</span>
+    <div class="title">荃灣的士路中心落客搬行李惹熱議　運輸署：營辦商即時終止與司機合作</div>
+    <div class="summary">荃灣的士在路中心落客兼搬行李事件引發熱議。Amigo車隊稱乘客多次強烈要求立即落車，司機已報案。運輸署表示營辦商已即時終止與涉事司機合作。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">沙田龍舟競賽氣氛熱烈　蔡加敏：樂見新一代加深認識中華傳統文化</div>
+    <div class="summary">沙田龍舟競賽端午節氣氛熱烈，民建聯蔡加敏到場支持，表示樂見新一代加深認識中華傳統文化。全港多區同步舉辦龍舟賽事。</div>
+    <div class="source">星島頭條 · 6月20日</div>
+  </div>
+</div>
+
+<!-- 🇨🇳 中國新聞 -->
+<div class="section cn-section">
+  <h2><span class="icon">🇨🇳</span> 中國新聞</h2>
+
+  <div class="news-item">
+    <span class="badge badge-politics">🏛️政情</span>
+    <div class="title">商務部：6月20日零時起　自澳大利亞進口牛肉加征55%關稅</div>
+    <div class="summary">商務部發布2026年度牛肉保障措施執行提示信息（五），6月20日零時起自澳大利亞進口牛肉將在現行適用關稅稅率基礎上加征55%關稅，保障國內牛肉產業。</div>
+    <div class="source">央廣網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-finance">📉財經</span>
+    <div class="title">6月底前下達全部2000億設備更新項目 + 625億以舊換新資金</div>
+    <div class="summary">國家發改委表示6月底前將下達全部2000億元設備更新項目清單和第三批625億元消費品以舊換新資金，「兩新」政策持續釋放效能。</div>
+    <div class="source">央廣網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-tech">🤖科技</span>
+    <div class="title">銀行業保險業AI安全開發應用指導意見出台　32項規範</div>
+    <div class="summary">金融監管總局出台銀行業保險業人工智能安全開發應用指導意見，涵蓋治理架構、開發應用、數據治理、算力建設、風險管理等32項指導性意見，要求建立健全AI全生命周期管理體系。</div>
+    <div class="source">央廣網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">就業優先「十五五」規劃——國家發改委人社部答記者問</div>
+    <div class="summary">國家發改委及人社部就《實施就業優先戰略「十五五」規劃》答記者問，提出未來五年多措並舉擴大就業容量、提升就業質量、加強群體保障。</div>
+    <div class="source">新華社 · 6月17日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-property">🏘️地產</span>
+    <div class="title">一線城市樓市釋放積極信號　前5月全國出台房產政策超430條</div>
+    <div class="summary">中指研究院數據顯示5月底一線城市購房意願持續改善，今年前5個月各省市出台房地產政策超430條，涉及優化限制性政策、公積金貸款、購房補貼等。</div>
+    <div class="source">央廣網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">全國鐵路7月1日起實行新列車運行圖</div>
+    <div class="summary">國鐵集團宣布7月1日起全國鐵路實行新的列車運行圖，中歐班列年開行量十年增10.8倍，運輸網絡基本覆蓋亞歐全境。</div>
+    <div class="source">新華社 · 6月17日</div>
+  </div>
+</div>
+
+<!-- 🕊️ 國際新聞 -->
+<div class="section intl-section">
+  <h2><span class="icon">🕊️</span> 國際新聞</h2>
+
+  <div class="news-item">
+    <span class="badge badge-urgent">🚨突發</span>
+    <div class="title">美伊諒解備忘錄正式生效　霍爾木茲海峽全面開放</div>
+    <div class="summary">美伊雙方6月17日以遠程方式完成諒解備忘錄簽署，6月19日在瑞士舉行正式外交儀式。協議立即生效：永久停止所有戰線軍事行動、解除海上封锁、伊朗凍結資產開始解凍，60天內啟動核問題談判。霍爾木茲海峽全面開放。</div>
+    <div class="source">財新網 · 人民日报 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">日本東京小學火災　8名學生受傷74輛消防車出動</div>
+    <div class="summary">6月19日上午日本東京北區一所小學發生火災，過火面積約200平方米。消防出動74輛車滅火，8名學生受傷，大火基本被撲滅。</div>
+    <div class="source">央視網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-intl">🕊️國際</span>
+    <div class="title">重磅白皮書展現改革完善全球治理的大國担当</div>
+    <div class="summary">新華社6月18日發布重磅白皮書，展現中國改革完善全球治理體系的大國担当，提出全球治理倡議。</div>
+    <div class="source">新華社 · 6月18日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-social">👥社會</span>
+    <div class="title">青海大柴旦地震震區見聞——寒雨夜堅守</div>
+    <div class="summary">青海海西州大柴旦6.3級地震後，震區寒雨夜救援隊持續堅守。兩部門派出工作組赴震區指導抗震救災。1死8傷。</div>
+    <div class="source">新華社 · 6月18日</div>
+  </div>
+</div>
+
+<!-- 📈 財經新聞 -->
+<div class="section fin-section">
+  <h2><span class="icon">📈</span> 財經新聞</h2>
+
+  <div class="market-box">
+    <div class="market-card">
+      <div class="label">恆指</div>
+      <div class="value">23,924</div>
+      <div class="change down">-1.59%（6/18收）</div>
+    </div>
+    <div class="market-card">
+      <div class="label">道指</div>
+      <div class="value">52,693</div>
+      <div class="change up">+0.63% 六連漲新高</div>
+    </div>
+    <div class="market-card">
+      <div class="label">納指</div>
+      <div class="value">26,517</div>
+      <div class="change up">+1.91%</div>
+    </div>
+    <div class="market-card">
+      <div class="label">標普</div>
+      <div class="value">7,500</div>
+      <div class="change up">+1.08%</div>
+    </div>
+    <div class="market-card">
+      <div class="label">WTI原油</div>
+      <div class="value">$72↓</div>
+      <div class="change down">跌破74 年內新低</div>
+    </div>
+    <div class="market-card">
+      <div class="label">黃金</div>
+      <div class="value">回落</div>
+      <div class="change down">現貨金走低</div>
+    </div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-finance">📉財經</span>
+    <div class="title">美股道指六連漲創新高　芯片股領漲納指+1.91%</div>
+    <div class="summary">美股6/18收市：道指+0.63%報52,693.80創歷史新高（六連漲），納指+1.91%報26,517.93，標普+1.08%報7,500.58。芯片股全面領漲：英特爾+10.64%、費城半導體+6.42%，閃迪、台積電、美光、應用材料均創收盤新高。美伊協議生效推升金融/工業股。</div>
+    <div class="source">新浪財經 · 百家號 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-finance">📉財經</span>
+    <div class="title">恆指6/18收23,924跌1.59%　港股6/19-21端午休市</div>
+    <div class="summary">恆指最後交易日6月18日收23,924跌1.59%，恒生科技指數4,669。港股6月19至21日端午節休市，下周一6/22復市。</div>
+    <div class="source">匯豐理財 · 6月18日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-finance">📉財經</span>
+    <div class="title">WTI跌破74美元創年內新低　美伊協議+需求憂慮雙殺</div>
+    <div class="summary">美伊諒解備忘錄生效消除地緣尾部風險，霍爾木茲海峽全面開放令伊朗石油回歸市場，叠加全球需求憂慮，WTI原油跌破74美元/桶創3月4日以來新低。布倫特原油跌至77.60美元。</div>
+    <div class="source">新浪財經 · 百家號 · 6月18日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-finance">📉財經</span>
+    <div class="title">德勤：港交所料躋身全球新股融資額三甲</div>
+    <div class="summary">德勤中國發布報告指港交所憑藉2026上半年成績單，有條件在年底保持全球新股融資額前三。SpaceX史上最大IPO推升上半年全球新股表現。</div>
+    <div class="source">中新社 · 6月17日</div>
+  </div>
+</div>
+
+<!-- 🤖 科技快訊 -->
+<div class="section tech-section">
+  <h2><span class="icon">🤖</span> 科技快訊</h2>
+
+  <div class="news-item">
+    <span class="badge badge-tech">🤖科技</span>
+    <div class="title">工信部：2026年AI芯片市場規模劍指2,000億元　邊緣推理成破局關鍵</div>
+    <div class="summary">工信部6月9日發布《2026年人工智能芯片產業發展白皮書》，預測國內AI芯片市場規模2026年突破2,000億元，邊緣推理芯片領域取得顯著進展。</div>
+    <div class="source">RayByte · 6月10日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-tech">🤖科技</span>
+    <div class="title">銀行業保險業AI安全32項指導意見出台</div>
+    <div class="summary">金融監管總局出台銀行業保險業AI安全開發應用指導意見，32項規範涵蓋治理架構、開發應用、數據治理、算力建設、風險管理等，要求建立AI全生命周期管理體系。</div>
+    <div class="source">央廣網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-space">🚀航天</span>
+    <div class="title">中國成功發射實踐三十一號衛星</div>
+    <div class="summary">中國在6月16日成功發射實踐三十一號衛星，相關技術應用於對地觀測和通信等領域。</div>
+    <div class="source">新華社 · 6月16日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-tech">🤖科技</span>
+    <div class="title">自動駕駛系統安全國標進一步征求意见</div>
+    <div class="summary">事關自動駕駛系統安全的相關國家標準進一步征求意见，為AI安全與智能交通產業規範化奠定基礎。</div>
+    <div class="source">新華社 · 6月16日</div>
+  </div>
+</div>
+
+<!-- ⚽ 體育快訊 -->
+<div class="section sport-section">
+  <h2><span class="icon">⚽</span> 體育快訊</h2>
+
+  <div class="news-item">
+    <span class="badge badge-sports">⚽體育</span>
+    <div class="title">世界盃6/19賽果：加拿大6-0卡塔爾（戴維帽子戲法）· 墨西哥1-0韓國 · 瑞士4-1波黑 · 捷克1-1南非</div>
+    <div class="summary">6月19日4場世界盃：加拿大6-0大勝卡塔爾，喬納森·戴維完成帽子戲法；墨西哥1-0韓國锁定小组頭名；瑞士4-1波黑曼贊比梅開二度；捷克1-1南非薩迪萊克破門莫科納點射扳平。</div>
+    <div class="source">中新網 · 6月19日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-sports">⚽體育</span>
+    <div class="title">世界盃6/20：美國2-0澳洲　今晚巴西vs海地（8:30）· 土耳其vs巴拉圭（11:00）</div>
+    <div class="summary">6月20日美國2-0澳洲（弗里曼入球+烏龍大禮）。今晚C組第2輪：巴西vs海地8:30、D組土耳其vs巴拉圭11:00。</div>
+    <div class="source">央視網 · 6月20日</div>
+  </div>
+
+  <div class="news-item">
+    <span class="badge badge-sports">⚽體育</span>
+    <div class="title">端午龍舟競賽全港上演　尖沙咀國際龍舟邀請賽6/27-28</div>
+    <div class="summary">端午節全港多區龍舟賽事熱烈上演（沙田、大埔、香港仔等）。永明香港國際龍舟邀請賽6月27-28日尖沙咀東部海傍舉行。龍舟嘉年華6/19起連辦13天。</div>
+    <div class="source">星島 · 香港旅發局 · 6月20日</div>
+  </div>
+</div>
+
+<!-- 重點摘要 -->
+<div class="section highlight">
+  <h2><span class="icon">⚡</span> 今日重點</h2>
+  <div class="news-item">
+    <div class="title">🚨 灣仔爆水管淹路 + 龍舟撞船意外 + 青山灣遇溺亡 — 端午長周末突發頻生</div>
+    <div class="summary">端午長周末多宗突發：灣仔10吋食水管爆裂致電車停駛、龍舟競賽撞船、青山灣游龍舟水遇溺不治、西九龍公路3車相撞翻側。炎熱天氣+驟雨交替，市民外出需注意安全。</div>
+  </div>
+  <div class="news-item">
+    <div class="title">🕊️ 美伊諒解備忘錄正式生效 — 霍爾木茲海峽全面開放、油價創年內新低</div>
+    <div class="summary">美伊6/17遠程簽署+6/19瑞士正式儀式，協議立即生效。停止所有戰線軍事行動、解除海上封锁、60天核談判。WTI跌破74美元年內新低，道指六連漲創新高。</div>
+  </div>
+  <div class="news-item">
+    <div class="title">🇨🇳 中國6/20起對澳牛肉加征55%關稅 + AI安全32項指導意見 + 2000億設備更新月底下達</div>
+    <div class="summary">商務部6/20零時起對澳牛肉加征55%保障關稅；金融監管總局出台AI安全32項指導意見；發改委6月底前下達2000億設備更新+625億以舊換新資金。</div>
+  </div>
+</div>
+
+<div class="footer">
+  📰 上午新聞撮要 · 每日 08:00 自動生成 · GitHub Pages 渲染<br>
+  恆指 23,924 (↓1.59%) · 道指 52,693 (↑0.63%新高) · 納指 26,517 (↑1.91%) · WTI $72↓ · 黃金回落<br>
+  港股6/19-21端午休市 · 下周一6/22復市
+</div>
+
+</body>
+</html>
