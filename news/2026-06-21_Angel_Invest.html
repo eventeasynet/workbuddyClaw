@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👼 天使投資情報 - 6月21日</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans CJK TC', 'PingFang HK', 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: #1a1a2e;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.header {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.header h1 { font-size: 24px; margin-bottom: 8px; }
+.header .subtitle { font-size: 14px; opacity: 0.85; }
+.header .date-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.section {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #d97706;
+}
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #fbbf24;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.deal-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s;
+}
+.deal-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.deal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.deal-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+.deal-tag {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.deal-tag.seed { background: #fef3c7; color: #b45309; }
+.deal-tag.series-a { background: #dbeafe; color: #1d4ed8; }
+.deal-tag.pre-seed { background: #ede9fe; color: #7c3aed; }
+.deal-tag.fund { background: #dcfce7; color: #16a34a; }
+.deal-tag.angel-plus { background: #fce7f3; color: #be185d; }
+.deal-amount {
+  font-size: 18px;
+  font-weight: 700;
+  color: #d97706;
+}
+.deal-detail {
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.8;
+  margin: 8px 0;
+}
+.deal-meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  flex-wrap: wrap;
+}
+.highlight-box {
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid #fbbf24;
+}
+.highlight-box .title {
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 8px;
+}
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #fffbeb;
+  color: #b45309;
+  margin: 4px;
+}
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #d97706;
+  text-decoration: none;
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #fffbeb;
+}
+.source-link:hover { background: #fef3c7; }
+.footer {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+}
+.investor-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.investor-item {
+  padding: 3px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  background: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+}
+table.trend-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+table.trend-table th {
+  background: #fef3c7;
+  color: #b45309;
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 13px;
+  border-bottom: 2px solid #fbbf24;
+}
+table.trend-table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #e5e7eb;
+}
+table.trend-table tr:hover td { background: #fffbeb; }
+.ipo-highlight {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.ipo-highlight .big-number {
+  font-size: 36px;
+  font-weight: 900;
+  color: #b45309;
+  display: block;
+}
+.ipo-highlight .label { font-size: 14px; color: #92400e; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>👼 天使投資情報日報</h1>
+  <div class="subtitle">搜羅全球天使投資市場最新動態 — 項目 · 基金 · 趨勢 · 退出 · 政策</div>
+  <div class="date-badge">📅 2026年6月21日（星期日）</div>
+</div>
+
+<!-- Section 1: 焦點項目 -->
+<div class="section">
+  <div class="section-title">💰 今日焦點項目</div>
+
+  <!-- Deal 1: Ent -->
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">Ent — AI 安全自主代理</div>
+      <div><span class="deal-tag seed">Seed 輪</span></div>
+    </div>
+    <div class="deal-amount">$100M | 估值 $500M</div>
+    <div class="deal-detail">
+      前微軟資深團隊創立的 AI 安全初創，打造能自主檢測與響應威脅的 AI 安全代理。本輪融資達 1 億美元，為本週最大種子輪交易，反映市場對 AI 原生安全方案的巨大需求。公司估值已達 5 億美元，躋身獨角獸預備隊。
+    </div>
+    <div class="investor-list">
+      <span class="investor-item">未披露機構投資人</span>
+    </div>
+    <a href="https://aifunding.me/deals" target="_blank" class="source-link">🔗 AI Funding Tracker</a>
+    <div class="deal-meta">
+      <span>📅 2026-06-16</span>
+      <span>🤖 AI Security</span>
+    </div>
+  </div>
+
+  <!-- Deal 2: 大曉機器人 -->
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">大曉機器人（ACE ROBOTICS）</div>
+      <div><span class="deal-tag angel-plus">天使+輪</span></div>
+    </div>
+    <div class="deal-amount">數億美元（天使+輪） | 上半年累計融資數億美元</div>
+    <div class="deal-detail">
+      由商湯科技聯合創始人王曉剛出任董事長、澳洲科學院院士陶大程擔任首席科學家的具身智能企業。開源「開悟 Kairos 3.0」世界模型，在 4 項全球基準測試中達 SOTA，是全球首個可端側驅動具身智能本體控制的世界模型。本輪吸引吉利資本、達晨財智、深創投、上海科創基金、沐曦股份、復星銳正、華控基金、螞蟻集團等逾十家頂級機構。
+    </div>
+    <div class="investor-list">
+      <span class="investor-item">吉利資本</span>
+      <span class="investor-item">達晨財智</span>
+      <span class="investor-item">深創投</span>
+      <span class="investor-item">商湯國香資本</span>
+      <span class="investor-item">上海科創基金</span>
+      <span class="investor-item">螞蟻集團</span>
+    </div>
+    <a href="https://finance.sina.com.cn/jjxw/2026-06-15/doc-inicnisu6784647.shtml" target="_blank" class="source-link">🔗 新華財經</a>
+    <div class="deal-meta">
+      <span>📅 2026-06-15</span>
+      <span>🤖 具身智能</span>
+      <span>📍 中國上海</span>
+    </div>
+  </div>
+
+  <!-- Deal 3: Poetic -->
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">Poetic — AI 創意寫作平台</div>
+      <div><span class="deal-tag series-a">A 輪</span></div>
+    </div>
+    <div class="deal-amount">$50M</div>
+    <div class="deal-detail">
+      AI 驅動的創意寫作與故事生成平台，獲頂級機構 Kleiner Perkins、Founders Fund、First Harmonic 及 OpenAI 聯合投資。Poetic 利用大語言模型輔助作家創作，從短篇小說到劇本，已積累數十萬創作者用戶。OpenAI 的參投顯示其對 AI 內容創作生態的戰略佈局。
+    </div>
+    <div class="investor-list">
+      <span class="investor-item">Kleiner Perkins</span>
+      <span class="investor-item">Founders Fund</span>
+      <span class="investor-item">OpenAI</span>
+      <span class="investor-item">First Harmonic</span>
+    </div>
+    <a href="https://buttondown.com/AngelRegistry/archive/angel-registry-update-june-11-2026/" target="_blank" class="source-link">🔗 Angel Registry</a>
+    <div class="deal-meta">
+      <span>📅 2026-06-11</span>
+      <span>✍️ AI 創意寫作</span>
+    </div>
+  </div>
+
+  <!-- Highlight: 中國5月天使輪全景 -->
+  <div class="highlight-box">
+    <div class="title">📊 中國5月天使輪全景：52 家初創獲投，硬科技全線爆發</div>
+    <div class="deal-detail">
+      2026年5月中國天使輪融資創下年內新高，共 52 家初創企業完成天使/天使+輪融資。資金集中押注：<strong>具身智能（10+家）</strong>、<strong>AI與算力芯片（8家）</strong>、<strong>商業航天（7家）</strong>、<strong>生物醫藥（6家）</strong>。從千萬元級到大額數億元，從百億產業集團到一線創投出手之快、金額之大，顯示中國早期科創窗口全面打開。
+      <br><br>
+      亮點包括：矩量光啟 2 億元佈局超導量子計算、鈞合原子數億元小型核電堆、東曦聚變數億元激光聚變、神復健行超 3 億元微創腦脊神經橋。
+    </div>
+    <a href="https://k.sina.cn/article_7879996919_1d5af35f702001zhm2.html" target="_blank" class="source-link">🔗 新浪新聞</a>
+  </div>
+</div>
+
+<!-- Section 2: 天使基金動態 -->
+<div class="section">
+  <div class="section-title">🏦 天使基金動態</div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">深圳新勢能二期天使基金 — 3.15億佈局低空經濟</div>
+      <div><span class="deal-tag fund">新基金</span></div>
+    </div>
+    <div class="deal-amount">規模 3.15 億元人民幣</div>
+    <div class="deal-detail">
+      2026年3月於深圳龍華區低空經濟產業發展簽約大會上成立，為全國首支聚焦低空經濟的天使基金。在市天使基金引導下整合產業資源，重點投資 eVTOL、無人機、空天通信等低空經濟早期創新項目。深圳作為中國「低空經濟第一城」，政策疊加資本雙輪驅動，賽道正進入爆發前夜。
+    </div>
+    <a href="https://baike.baidu.com/item/深圳市新势能二期天使基金/67546970" target="_blank" class="source-link">🔗 百度百科</a>
+    <div class="deal-meta">
+      <span>📅 2026-03-24 成立</span>
+      <span>🛩️ 低空經濟</span>
+      <span>📍 深圳龍華</span>
+    </div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">YC 秋季批次開放申請 + 穩定幣融資選項</div>
+      <div><span class="deal-tag fund">加速器</span></div>
+    </div>
+    <div class="deal-amount">每項目 $500K</div>
+    <div class="deal-detail">
+      Y Combinator 2026 秋季批次已開放申請（截止 7月27日），並宣佈允許創始人選擇以穩定幣 USDC 形式接收融資，支援以太坊、Solana 等多條區塊鏈。此舉大幅簡化國際創始人跨境收款流程，也反映加密貨幣在創投生態的持續滲透。YC 持續保持每項目 $500K 的標準投資額。
+    </div>
+    <a href="https://www.ycombinator.com/apply/" target="_blank" class="source-link">🔗 Y Combinator</a>
+    <div class="deal-meta">
+      <span>📅 截止 2026-07-27</span>
+      <span>🌍 全球</span>
+      <span>📍 三藩市</span>
+    </div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">英諾天使基金 — 2026 年早期硬科技最活躍玩家</div>
+      <div><span class="deal-tag fund">活躍GP</span></div>
+    </div>
+    <div class="deal-detail">
+      英諾天使基金持續領投多個 2026 年中國天使輪項目，包括熵旋芯智（存算一體 MRAM 芯片，數千萬）、Booster Robotics（人形機器人）等。基金以「投早、投小、投硬科技」為策略，2025-2026年在具身智能、芯片設計、量子計算等賽道佈局密度居國內天使基金前列。
+    </div>
+    <a href="https://baike.baidu.com/item/英诺天使基金/19527651" target="_blank" class="source-link">🔗 百度百科</a>
+    <div class="deal-meta">
+      <span>📅 2026 年持續活躍</span>
+      <span>🔬 硬科技</span>
+      <span>📍 北京</span>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div class="title">💡 天使辛迪加趨勢：2026年規模大增35%</div>
+    <div class="deal-detail">
+      2026 年天使辛迪加（Angel Syndicate）持續崛起，交易規模年增 35%，現已可與 VC 在種子輪中聯合領投。SPV 結構簡化初創公司股權表，使更多個人天使能參與機構級交易。典型模式：有經驗的領投人發掘項目→盡職調查→談判條款→邀請其他投資人通過 SPV 參投，降低個人天使的門檻與風險。
+    </div>
+    <a href="https://angelinvestorsnetwork.com/angel-investing/angel-investor-syndicate-seed-funding-soars-in-2026" target="_blank" class="source-link">🔗 Angel Investors Network</a>
+  </div>
+</div>
+
+<!-- Section 3: 行業趨勢 -->
+<div class="section">
+  <div class="section-title">📊 行業趨勢</div>
+
+  <table class="trend-table">
+    <tr>
+      <th>熱門賽道</th>
+      <th>2026年趨勢</th>
+      <th>核心數據</th>
+    </tr>
+    <tr>
+      <td>🤖 具身智能 / 機器人</td>
+      <td>持續領跑天使投資，A輪爆發期</td>
+      <td>中國5月10+家獲投；大曉機器人累融數億美元；全球具身智能460億資金7成流入Top20</td>
+    </tr>
+    <tr>
+      <td>🧠 AI / 大模型</td>
+      <td>佔全球天使交易48%，AI 安全成新黑馬</td>
+      <td>全球AI融資$337B/395筆；Ent $100M Seed破紀錄；AI安全融資額年增42%</td>
+    </tr>
+    <tr>
+      <td>🔬 生物醫藥 / 腦科學</td>
+      <td>腦機接口、抗衰老、基因療法崛起</td>
+      <td>神復健行超3億天使輪；神機妙控腦機接口數千萬；無盡方舟AI抗衰老</td>
+    </tr>
+    <tr>
+      <td>🚀 商業航天 / 低空經濟</td>
+      <td>融資爆發期，中國7家航天初創獲天使輪</td>
+      <td>SpaceX IPO $85.7B創歷史紀錄；深圳低空天使基金3.15億成立</td>
+    </tr>
+    <tr>
+      <td>⚛️ 量子計算</td>
+      <td>從實驗室走向產業化，天使資金湧入</td>
+      <td>矩量光啟2億天使輪；東曦聚變數億激光聚變</td>
+    </tr>
+  </table>
+
+  <div class="highlight-box">
+    <div class="title">🔥 2026 Q1 全球風投創歷史新高</div>
+    <div class="deal-detail">
+      據 Crunchbase 數據，2026年Q1全球創業融資創歷史新高，五大風險投資輪中有四個發生在這一季度。早期階段由 AI、機器人、國防科技和生物科技推動，AI 主導地位持續鞏固，但 Web3 資金回暖跡象明顯（a16z crypto 領投 Morpho $175M），Fintech 也出現復甦。
+    </div>
+    <a href="https://techstartups.com/2026/06/01/venture-capital-startup-funding-roundup-june-1-2026/" target="_blank" class="source-link">🔗 TechStartups</a>
+  </div>
+
+  <div class="highlight-box">
+    <div class="title">🌐 全球視野：歐洲天使交易激增</div>
+    <div class="deal-detail">
+      本週 AI 融資追蹤顯示歐洲初創異常活躍 — 德國、比利時、奧地利、法國、意大利、丹麥、瑞典均有種子輪/Pre-Seed 交易。典型案例如：fonio.ai（奧地利史上第二大種子輪 $17M）、Frontier Health（倫敦 $16M，Atomico 領投）、Tonada（斯德哥爾摩 $3M Pre-Seed，前 Spotify 工程師創立）。歐洲正成為全球天使投資的第二熱土。
+    </div>
+    <a href="https://aifunding.me/deals" target="_blank" class="source-link">🔗 AI Funding Tracker</a>
+  </div>
+</div>
+
+<!-- Section 4: 成功案例/退出 -->
+<div class="section">
+  <div class="section-title">🏆 成功案例 / 退出</div>
+
+  <!-- SpaceX IPO -->
+  <div class="ipo-highlight">
+    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+      <div>
+        <span class="big-number">$85.7B</span>
+        <span class="label">史上最大 IPO</span>
+      </div>
+      <div style="flex:1; min-width:250px;">
+        <div style="font-size:18px; font-weight:700; color:#1a1a2e; margin-bottom:8px;">🚀 SpaceX 正式登陸納斯達克（SPCX）</div>
+        <div style="font-size:14px; color:#4b5563;">
+          6月12日定價 $135/股，開盤飆升至 $150（+11%），收盤 $160.95（+19%）。最終募資 $85.7B。<br>
+          Elon Musk 成為全球首位萬億富豪。4,400 名員工成為百萬富翁。<br>
+          上市數日後 SpaceX 以 $60B 股票收購 Cursor，市值一度突破 $2.7T 超越亞馬遜。
+        </div>
+        <a href="https://techcrunch.com/2026/06/16/spacex-is-public-everything-you-need-to-know-post-ipo/" target="_blank" class="source-link">🔗 TechCrunch</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payoneer / Nuvei -->
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">Nuvei 以 $2.75B 收購 Payoneer</div>
+      <div><span class="deal-tag series-a">M&A 退出</span></div>
+    </div>
+    <div class="deal-amount">$2.75B（$7.40/股）</div>
+    <div class="deal-detail">
+      加拿大支付處理商 Nuvei 宣佈以 $27.5 億美元全現金收購跨境支付平台 Payoneer（Nasdaq: PAYO）。對早期投資者而言，Payoneer 從 2005 年創立到 2021 年 SPAC 上市再到此次被收購，完成了完整的投資退出閉環。預計 2027 年中完成交易，顯示 Fintech 領域的整合正在加速。
+    </div>
+    <a href="https://www.payoneer.com/newsroom/nuvei-to-acquire-payoneer-for-2-75-billion-creating-a-leading-global-platform-for-local-and-cross-border-commerce/" target="_blank" class="source-link">🔗 Payoneer 官方新聞稿</a>
+    <div class="deal-meta">
+      <span>📅 2026-06-15 宣佈</span>
+      <span>💳 Fintech</span>
+      <span>預計 2027 年中完成</span>
+    </div>
+  </div>
+
+  <!-- Morpho -->
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">Morpho — 加密金融基建融資 $175M</div>
+      <div><span class="deal-tag series-a">成長輪</span></div>
+    </div>
+    <div class="deal-amount">$175M</div>
+    <div class="deal-detail">
+      為華爾街機構提供加密金融基建的法國初創 Morpho，完成由 a16z crypto 領投、Paradigm 與 Ribbit Capital 參投的 $1.75 億融資。Morpho 將傳統金融的借貸協議引入加密領域，代表 Web3 基礎設施從投機走向機構級應用的趨勢，早期天使有機會在此輪實現部分退出。
+    </div>
+    <a href="https://fortune.com/2026/06/09/morpho-fundraise-a16z-crypto-paradigm-ribbit-capital-175-million/" target="_blank" class="source-link">🔗 Fortune</a>
+    <div class="deal-meta">
+      <span>📅 2026-06-09</span>
+      <span>🔗 Web3 / DeFi</span>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <div class="title">📈 2026 天使退出趨勢</div>
+    <div class="deal-detail">
+      <strong>天使退出率約 13%</strong>（較 2025 年略升），主要退出路徑仍以 M&A 為主（佔 60%+），IPO 退出佔比因 SpaceX 等巨型 IPO 有所提升。平均天使投資持有期 6-8 年。專家建議：從投資第一天就規劃退出策略，關注 IP（知識產權）對退出估值的放大效應。
+    </div>
+    <a href="https://www.angelblog.net/exit-strategy-examples/" target="_blank" class="source-link">🔗 Angel Blog</a>
+  </div>
+</div>
+
+<!-- Section 5: 政策與資源 -->
+<div class="section">
+  <div class="section-title">📋 政策與資源</div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">深圳天使母基金 2026 版新規 — 全面取消強制返投</div>
+      <div><span class="deal-tag fund">重大政策</span></div>
+    </div>
+    <div class="deal-detail">
+      2026年3月深圳天使母基金發布《辦法2026》，創投圈重磅改革：
+      <br>✅ <strong>取消 1.75 倍強制返投</strong> — 改為「後置激勵」取代「前置強制」
+      <br>✅ <strong>取消 GP 深圳註冊硬性要求</strong> — 放開基金管理人地域限制
+      <br>✅ <strong>存續期延至 15 年</strong> — 為早期投資提供更充裕的退出時間
+      <br>✅ <strong>建立循環投資機制</strong> — 退出資金可再投資新項目
+      <br>業界評價：這是國內百億級政府引導基金中最大膽的探索，有望引領全國創投政策鬆綁潮流。
+    </div>
+    <a href="https://baijiahao.baidu.com/s?id=1860962639237737466" target="_blank" class="source-link">🔗 百度百家號</a>
+    <div class="deal-meta">
+      <span>📅 2026-03-26 發佈</span>
+      <span>📍 深圳</span>
+    </div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">中國天使投資稅收優惠 — 70% 投資額抵扣</div>
+      <div><span class="deal-tag fund">稅收政策</span></div>
+    </div>
+    <div class="deal-detail">
+      中國對合資格天使投資個人提供 <strong>70% 投資額抵扣</strong> 應納稅所得額的政策持續有效。關鍵條件：持股滿 24 個月、投資於符合條件的高新技術初創企業。海南自貿港、大灣區等地區另有區域性加碼優惠，合夥企業可穿透至個人享受稅收優惠。稅務專家建議天使投資人提早規劃退出時點以最大化抵扣效益。
+    </div>
+    <a href="https://www.giaxiglobal.com/knowledge/Tax/10707.html" target="_blank" class="source-link">🔗 GIAXI Global</a>
+    <div class="deal-meta">
+      <span>📅 2026 年持續有效</span>
+      <span>🏛️ 國家稅務總局</span>
+    </div>
+  </div>
+
+  <div class="deal-card">
+    <div class="deal-header">
+      <div class="deal-name">北京中關村 — 引導新設基金落地，徵集 2026 年度項目</div>
+      <div><span class="deal-tag fund">招商政策</span></div>
+    </div>
+    <div class="deal-detail">
+      北京市科委發佈 2026 年度引導新設立基金落地項目徵集通知，鼓勵投資機構在北京設立私募股權投資基金，積極募集長期資金（主權基金、社保基金、保險資金、銀行理財等）。此舉配合中關村科技金融深度融合支持政策，為北京創投生態注入新資金來源。
+    </div>
+    <a href="https://kw.beijing.gov.cn/zwgk/zcwj/202601/t20260104_4396541.html" target="_blank" class="source-link">🔗 北京市科委</a>
+    <div class="deal-meta">
+      <span>📅 2026-01-04 發佈</span>
+      <span>📍 北京</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div style="font-weight:700; color:#b45309; margin-bottom:8px;">👼 天使投資情報 — 由 WorkBuddy 自動生成</div>
+  <div>報告日期：2026年6月21日 | 數據來源：Angel Registry、AI Funding Tracker、新浪財經、TechCrunch、Fortune 等</div>
+  <div style="margin-top:8px; font-size:11px; color:#9ca3af;">⚠️ 本報告僅供參考，不構成投資建議。投資涉及風險，請自行評估。</div>
+</div>
+
+</body>
+</html>
