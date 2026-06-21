@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 潛在客戶情報 - 6月21日</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Segoe UI', sans-serif;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff7ed;
+      color: #1f2937;
+    }
+    .header {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: white;
+      padding: 32px 28px;
+      border-radius: 12px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+    }
+    .header h1 { font-size: 26px; margin-bottom: 6px; }
+    .header p { opacity: 0.9; font-size: 14px; }
+    .header .stats {
+      display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap;
+    }
+    .header .stat-badge {
+      padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+      background: rgba(255,255,255,0.2);
+    }
+    .section-title {
+      font-size: 20px; margin: 28px 0 14px; padding-bottom: 8px;
+      border-bottom: 2px solid #fed7aa;
+    }
+    .lead-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      border-left: 5px solid #f97316;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s;
+    }
+    .lead-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .score-high { border-left-color: #ef4444; }
+    .score-mid { border-left-color: #eab308; }
+    .score-low { border-left-color: #22c55e; }
+    .score-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .score-high .score-tag { background: #fef2f2; color: #ef4444; }
+    .score-mid .score-tag { background: #fefce8; color: #ca8a04; }
+    .score-low .score-tag { background: #f0fdf4; color: #16a34a; }
+    .lead-card h3 { font-size: 17px; margin-bottom: 6px; color: #1f2937; }
+    .lead-card p { font-size: 14px; color: #4b5563; margin-bottom: 4px; line-height: 1.5; }
+    .lead-card .meta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0; }
+    .lead-card .meta-item {
+      font-size: 13px; color: #6b7280;
+      background: #f9fafb; padding: 4px 10px; border-radius: 6px;
+    }
+    .contact-box {
+      background: #fff7ed;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 13px;
+      border: 1px solid #fed7aa;
+      word-break: break-all;
+    }
+    .contact-box.no-email { background: #fef2f2; border-color: #fecaca; color: #ef4444; }
+    .btn-row { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .email-btn {
+      background: #f97316; color: white; border: none;
+      padding: 8px 18px; border-radius: 8px; cursor: pointer;
+      font-size: 13px; font-weight: 600;
+      transition: background 0.2s;
+    }
+    .email-btn:hover { background: #ea580c; }
+    .email-preview {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      background: #fffbeb;
+      border-radius: 8px;
+      border: 1px solid #fde68a;
+    }
+    .email-preview h4 {
+      font-size: 13px; color: #92400e; margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .email-preview pre {
+      background: white;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #374151;
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+      border: 1px solid #fde68a;
+      margin-bottom: 10px;
+    }
+    .copy-btn {
+      background: #f59e0b; color: white; border: none;
+      padding: 6px 14px; border-radius: 6px; cursor: pointer;
+      font-size: 12px; font-weight: 600;
+    }
+    .copy-btn:hover { background: #d97706; }
+    .footer {
+      text-align: center; padding: 30px 0 20px;
+      color: #9ca3af; font-size: 12px; border-top: 1px solid #fed7aa; margin-top: 30px;
+    }
+    .summary-box {
+      background: white; border-radius: 10px; padding: 18px 22px;
+      margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center;
+    }
+    .summary-box .count { font-size: 32px; font-weight: 800; }
+    .summary-box .count-high { color: #ef4444; }
+    .summary-box .count-mid { color: #ca8a04; }
+    .summary-box .count-low { color: #16a34a; }
+    .summary-box .count-item { text-align: center; flex: 1; min-width: 80px; }
+    .summary-box .count-label { font-size: 12px; color: #6b7280; margin-top: 2px; }
+  </style>
+</head>
+<body data-drive-file-id="" data-github-path="news/2026-06-21_Lead_Intelligence.html">
+
+<div class="header">
+  <h1>🎯 潛在客戶情報</h1>
+  <p>2026年6月21日（星期日）生成 | 共搵到 18 個潛在客戶</p>
+  <div class="stats">
+    <span class="stat-badge">🔥 高優先 x6</span>
+    <span class="stat-badge">⚡ 中優先 x6</span>
+    <span class="stat-badge">📝 低優先 x6</span>
+  </div>
+</div>
+
+<div class="summary-box">
+  <div class="count-item">
+    <div class="count count-high">6</div>
+    <div class="count-label">🔥 高優先 (500+)</div>
+  </div>
+  <div class="count-item">
+    <div class="count count-mid">6</div>
+    <div class="count-label">⚡ 中優先 (100-500)</div>
+  </div>
+  <div class="count-item">
+    <div class="count count-low">6</div>
+    <div class="count-label">📝 低優先 (<100)</div>
+  </div>
+</div>
+
+<!-- ==================== 🔥 高優先 ==================== -->
+<h2 class="section-title">🔥 高優先 (500+ 人)</h2>
+
+<!-- Lead 1: HKMU -->
+<div class="lead-card score-high">
+  <div class="score-tag">🔥 高優先 (預計 ~1,200+ 畢業生)</div>
+  <h3>🏫 香港都會大學 (HKMU)</h3>
+  <p><strong>活動：</strong>第38屆夏季畢業典禮（6場，覆蓋5個學院）</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年7月22日 & 8月18日</span>
+    <span class="meta-item">📍 灣仔伊利沙伯體育館</span>
+  </div>
+  <p>李兆基商業管理學院、護理及健康學院、人文社會科學院、教育及語文學院、科技學院，分別舉行專場典禮。畢業生已需於5月20日前透過 MyHKMU 確認出席。</p>
+  <div class="contact-box">✉️ 聯絡：reg@hkmu.edu.hk（教務處）| 查詢電話：2768 6633</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.hkmu.edu.hk/reg/tc/summercongregation/" target="_blank">https://www.hkmu.edu.hk/reg/tc/summercongregation/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead1')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead1')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead1">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於香港都會大學第38屆畢業典禮嘅網上報名系統建議
+
+香港都會大學教務處你好，
+
+我係 EventEasy.net 嘅團隊成員。我哋提供專為大型院校活動設計嘅一站式管理平台，可以幫你輕鬆處理過千畢業生及親友嘅報名、嘉賓管理、現場簽到等全流程。
+
+EventEasy.net 點解適合都大畢業典禮？
+
+✅ 智能報名系統
+- 自定義報名表單（42 個可選字段）
+- 支援多種票種設定（畢業生票、親友票、VIP 票等）
+- 多種收款方式（銀行轉賬、PayMe、FPS、微信、支付寶）
+
+✅ 嘉賓管理同簽到
+- 批量匯入畢業生名單（支援 Excel/CSV）
+- 每位嘉賓自動生成專屬簽到 QR Code
+- 支援「+1 同行者」管理（親友陪同入場）
+
+✅ 座位安排系統（可選）
+- 手動拖放或智能分配座位
+- 上傳伊利沙伯體育館平面圖作為背景
+- 按學院/學系自動分區
+
+✅ AI 數據分析（可選）
+- 自動生成報名趨勢、出席率分析
+- 畢業生出席統計、學院分佈
+
+我哋嘅定價好彈性：按模塊、按人數付費。20 人以下活動完全免費！
+
+如果有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘），示範點樣用 EventEasy.net 處理畢業典禮報名。
+
+祝 畢業典禮籌備順利！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Online Registration Platform Proposal for HKMU 38th Summer Congregation
+
+Dear HKMU Registry,
+
+I am writing from the EventEasy.net team. We provide an all-in-one event management platform designed for large-scale institutional events, helping you seamlessly handle registration, guest management, and on-site check-in for over 1,200 graduates and their guests.
+
+Why EventEasy.net is suitable for HKMU's Congregation:
+
+✅ Smart Registration System
+- Customizable registration forms (42 optional fields)
+- Support for multiple ticket types (graduate, guest, VIP)
+- Multiple payment methods (bank transfer, PayMe, FPS, WeChat Pay, Alipay)
+
+✅ Guest Management & Check-in
+- Batch import graduate lists (Excel/CSV supported)
+- Automatic generation of unique check-in QR codes
+- Support for +1 companion management
+
+✅ Seat Arrangement (Optional)
+- Manual drag-and-drop or smart allocation
+- Upload venue floor plan as background
+- Auto-grouping by faculty/department
+
+✅ AI Data Analytics (Optional)
+- Automatic registration trend and attendance analysis
+- Graduate attendance statistics by faculty
+
+Our pricing is flexible: pay by module and by attendee count. Events under 20 attendees are completely FREE!
+
+If interested, I can arrange a free 20-minute demo to show how EventEasy.net can handle your congregation registration.
+
+Best regards,
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead1')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 2: 北部都會區馬拉松 -->
+<div class="lead-card score-high">
+  <div class="score-tag">🔥 高優先 (預計 ~5,000+ 跑手)</div>
+  <h3>🏟️ 新界鄉議局 — 北部都會區馬拉松 2026</h3>
+  <p><strong>活動：</strong>鄉議局100周年 北部都會區馬拉松（首屆）</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年11月1日（星期日）</span>
+    <span class="meta-item">📍 沙田鄉議局大樓 → 粉嶺繞道 → 北區運動場</span>
+  </div>
+  <p>全馬、半馬挑戰組、10公里等多個組別，6月18日起分階段公開接受報名。全馬 HK$470，半馬 HK$370。路線途經吐露港、大埔、粉嶺繞道等多個新界地標。</p>
+  <div class="contact-box">✉️ 報名網站：hknmm.com | 主辦：新界鄉議局</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://hknmm.com/zh-hant/important-notes" target="_blank">https://hknmm.com</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead2')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead2')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead2">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於北部都會區馬拉松 2026 嘅網上報名系統建議
+
+新界鄉議局 你好，
+
+我係 EventEasy.net 嘅團隊成員。恭喜鄉議局成立 100 周年！我哋留意到首屆北部都會區馬拉松即將舉行，作為一項預計 5,000+ 跑手參與嘅大型賽事，一個穩定可靠嘅報名系統至關重要。
+
+EventEasy.net 點解適合北部都會區馬拉松？
+
+✅ 智能報名系統
+- 自定義報名表單，支援多種組別（全馬、半馬、10K 等）
+- 每組獨立設定人數上限、價格、早鳥優惠
+- 多種收款方式（信用卡、PayMe、FPS、銀行轉賬）
+
+✅ 跑手管理
+- 批量匯入/匯出跑手名單
+- 自動生成專屬選手編號及 QR Code
+- 支援團體報名管理
+
+✅ 現場簽到
+- QR Code 掃描快速入場
+- 平板自助簽到（適合起點/終點多個簽到站）
+
+✅ AI 數據分析（可選）
+- 報名趨勢、組別分佈、年齡/性別統計
+- 賽後自動生成參與度報告
+
+我哋嘅定價好彈性：按模塊、按人數付費，毋須為不需要嘅功能買單。
+
+如果有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘），示範點樣用 EventEasy.net 處理大型賽事報名。
+
+祝 首屆北都馬拉松圓滿成功！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Online Registration Platform Proposal for Northern Metropolis Marathon 2026
+
+Dear Heung Yee Kuk,
+
+Congratulations on the 100th anniversary of Heung Yee Kuk! We noticed the inaugural Northern Metropolis Marathon 2026 is coming up. With over 5,000+ expected runners, a reliable registration system is critical.
+
+Why EventEasy.net is suitable for the Northern Metropolis Marathon:
+
+✅ Smart Registration System
+- Customizable forms with support for multiple race categories (Full, Half, 10K)
+- Independent capacity limits, pricing, and early-bird discounts per category
+- Multiple payment methods (credit card, PayMe, FPS, bank transfer)
+
+✅ Runner Management
+- Batch import/export participant lists
+- Automatic generation of unique bib numbers and QR codes
+- Group/team registration support
+
+✅ On-Site Check-in
+- Quick QR code scanning for entry
+- Self-service tablet kiosks at multiple check points
+
+✅ AI Data Analytics (Optional)
+- Registration trends, category distribution, demographic analysis
+- Post-race engagement report
+
+Our pricing is flexible: pay by module and by participant count.
+
+If interested, I can arrange a free 20-minute demo to show how EventEasy.net can handle large-scale race registration.
+
+Best regards,
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead2')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 3: Oxfam Trailwalker -->
+<div class="lead-card score-high">
+  <div class="score-tag">🔥 高優先 (預計 ~1,000+ 參加者)</div>
+  <h3>⛪ 樂施會 — 樂施毅行者 2026（50 週年）</h3>
+  <p><strong>活動：</strong>樂施毅行者 2026 — 全港最大型遠足籌款活動</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年11月20-22日</span>
+    <span class="meta-item">📍 麥理浩徑 100 公里</span>
+  </div>
+  <p>四人一隊，48 小時內完成 100 公里麥理浩徑。適逢樂施會 50 週年，主題為「每年不變的約定—樂施同行50年，為改變而行」。</p>
+  <div class="contact-box">✉️ 聯絡：otwinfo@oxfam.org.hk | ☎️ (852) 2520 2525</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.oxfamtrailwalker.org.hk/" target="_blank">https://www.oxfamtrailwalker.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead3')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead3')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead3">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於樂施毅行者 2026 嘅網上報名及籌款系統建議
+
+樂施會毅行者團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。適逢樂施會 50 週年，毅行者作為香港最具代表性嘅慈善籌款活動，我哋嘅一站式平台可以幫助簡化報名同籌款管理流程。
+
+EventEasy.net 點解適合樂施毅行者？
+
+✅ 智能報名系統
+- 支援隊伍報名（4 人一隊），自動收集隊員資料
+- 自定義隊伍類別（公開組、公司組、專業組等）
+- 多種收款方式（報名費 + 捐款）
+
+✅ 參加者管理
+- 批量管理隊伍及個別隊員
+- 自動生成隊伍編號、QR Code
+- 支援替補隊員管理
+
+✅ 現場簽到
+- 起點/檢查站 QR Code 掃描
+- 即時追蹤隊伍進度
+
+✅ 互動遊戲（可選）
+- 12 款互動遊戲，可於起點/終點嘉年華使用
+- 提升現場氣氛及參加者體驗
+
+我哋嘅定價好彈性：按模塊、按人數付費。對於慈善機構，我哋可以提供特別優惠。
+
+如果有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘）。
+
+祝 毅行者 50 週年活動順利！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Online Registration & Fundraising Platform Proposal for Oxfam Trailwalker 2026
+
+Dear Oxfam Trailwalker Team,
+
+I'm writing from the EventEasy.net team. As Oxfam celebrates its 50th anniversary and Trailwalker remains Hong Kong's most iconic charity fundraising event, our platform can help streamline your registration and fundraising management.
+
+Why EventEasy.net suits Oxfam Trailwalker:
+
+✅ Smart Registration System
+- Team registration support (4 members per team) with member data collection
+- Custom team categories (Open, Corporate, Professional)
+- Multiple payment methods (registration fee + donation)
+
+✅ Participant Management
+- Bulk manage teams and individual members
+- Auto-generate team numbers and QR codes
+- Substitute member management
+
+✅ On-Site Check-in
+- QR code scanning at start line and checkpoints
+- Real-time team progress tracking
+
+✅ Interactive Games (Optional)
+- 12 interactive games for start/finish carnival
+- Enhance event atmosphere and participant experience
+
+Our pricing is flexible: pay by module and by participant count. Special rates available for charity organizations.
+
+If interested, I can arrange a free 20-minute demo.
+
+Best regards,
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead3')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 4: HKU Congregation -->
+<div class="lead-card score-high">
+  <div class="score-tag">🔥 高優先 (預計 ~2,000+ 畢業生)</div>
+  <h3>🏫 香港大學 (HKU) — 第217屆學位頒授典禮</h3>
+  <p><strong>活動：</strong>2026 年夏季學位頒授典禮（各學院分場舉行）</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年7月（法學院 7/13、工程學院 7/29）</span>
+    <span class="meta-item">📍 香港大學 Grand Hall / 各學院場地</span>
+  </div>
+  <p>港大每年舉辦兩次學位頒授典禮，由各學院自行舉辦。法學院、工程學院已公佈具體日期，其他學院陸續公佈。</p>
+  <div class="contact-box">✉️ 聯絡：webadm@hku.hk（大學查詢）| 各學院聯絡需個別查詢</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.hku.hk/congregation-information/" target="_blank">https://www.hku.hk/congregation-information/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead4')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead4')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead4">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於香港大學學位頒授典禮嘅網上報名系統建議
+
+香港大學教務處你好，
+
+我係 EventEasy.net 嘅團隊成員。我哋嘅一站式活動管理平台可以協助港大各學院處理畢業典禮嘅報名同嘉賓管理。
+
+EventEasy.net 點解適合港大畢業典禮？
+
+✅ 智能報名系統
+- 支援多學院、多場次獨立管理
+- 自定義報名表單（42 個可選字段）
+- 畢業生票、親友票分開管理，每場獨立人數上限
+
+✅ 嘉賓管理
+- 批量匯入畢業生名單
+- 親友「+1/+2」同行者管理
+- 自動生成 QR Code 簽到
+
+✅ 座位安排（可選）
+- 按學院/學系自動分區
+- 上傳場地平面圖，手動拖放調整
+
+✅ AI 數據分析（可選）
+- 出席率統計、學院分佈分析
+
+我哋嘅定價好彈性：按模塊、按人數付費。20 人以下活動完全免費！
+
+如果有興趣，可以安排一次免費 Demo 示範。
+
+祝 典禮籌備順利！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Online Registration Platform for HKU 217th Congregation
+
+Dear HKU Registry,
+
+I'm writing from the EventEasy.net team. Our all-in-one platform can help HKU faculties manage congregation registration and guest management seamlessly.
+
+Why EventEasy.net suits HKU Congregation:
+
+✅ Smart Registration System
+- Multi-faculty, multi-session independent management
+- Customizable forms (42 optional fields)
+- Separate graduate/guest ticket management with per-session capacity
+
+✅ Guest Management
+- Batch import graduate lists
+- +1/+2 companion management
+- Auto QR code generation for check-in
+
+✅ Seat Arrangement (Optional)
+- Auto-grouping by faculty/department
+- Upload venue floor plan with drag-and-drop adjustment
+
+✅ AI Analytics (Optional)
+- Attendance statistics, faculty distribution analysis
+
+Flexible pricing: pay by module and by attendee count. Under 20 attendees is FREE!
+
+A free 20-minute demo is available upon request.
+
+Best regards,
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead4')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 5: VTC Graduation -->
+<div class="lead-card score-high">
+  <div class="score-tag">🔥 高優先 (預計 ~3,000+ 畢業生)</div>
+  <h3>🏫 職業訓練局 (VTC) — 2026年度畢業典禮</h3>
+  <p><strong>活動：</strong>IVE/HKDI/HKIIT/YC 等多間院校聯合畢業典禮</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年11月28日 & 12月5日</span>
+    <span class="meta-item">📍 各院校禮堂 / VTC 青衣大樓禮堂</span>
+  </div>
+  <p>涵蓋香港專業教育學院（IVE）9 間分校、香港知專設計學院 (HKDI)、香港資訊科技學院 (HKIIT)、青年學院等。分兩天舉行，覆蓋全港多個校園。</p>
+  <div class="contact-box">✉️ 各院校秘書處（無統一公開電郵）| 畢業生需經 MyPortal 回覆出席</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.vtc.edu.hk/graduation/" target="_blank">https://www.vtc.edu.hk/graduation/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead5')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead5')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead5">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於 VTC 2026 年度畢業典禮嘅網上報名及管理系統建議
+
+VTC 畢業典禮統籌團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。VTC 旗下院校眾多，畢業典禮橫跨兩天、多個校園，一個統一嘅報名管理平台可以大大減輕行政負擔。
+
+EventEasy.net 點解適合 VTC 畢業典禮？
+
+✅ 智能報名系統
+- 支援多院校、多場次、多地點獨立管理
+- 自定義報名表單（42 個可選字段）
+- 畢業生/嘉賓分開管理
+
+✅ 批量管理
+- 批量匯入畢業生名單（支援 Excel/CSV）
+- 自動按院校分配場次
+- 畢業禮袍尺碼收集功能
+
+✅ 現場簽到
+- QR Code 掃描快速入場
+- 支援多地點同步簽到
+
+✅ AI 數據分析（可選）
+- 整體出席率及各院校統計
+
+我哋嘅定價好彈性：按模塊、按人數付費，適合大規模聯合典禮。
+
+如果有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘）。
+
+祝 畢業典禮籌備順利！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Online Registration Platform Proposal for VTC Graduation Ceremony 2026
+
+Dear VTC Graduation Coordination Team,
+
+I'm writing from the EventEasy.net team. With multiple institutions and campuses spanning two ceremony days, a unified registration management platform can significantly reduce your administrative burden.
+
+Why EventEasy.net suits VTC Graduation:
+
+✅ Smart Registration System
+- Multi-institution, multi-session, multi-venue independent management
+- Customizable forms (42 optional fields)
+- Separate graduate/guest management
+
+✅ Batch Management
+- Batch import graduate lists (Excel/CSV)
+- Auto-assign sessions by institution
+- Graduation gown size collection
+
+✅ On-Site Check-in
+- QR code quick entry
+- Multi-venue synchronized check-in
+
+✅ AI Analytics (Optional)
+- Overall attendance & per-institution statistics
+
+Flexible pricing: pay by module and by attendee count.
+
+A free 20-minute demo is available upon request.
+
+Best regards,
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead5')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 6: 香港音樂劇節 -->
+<div class="lead-card score-high">
+  <div class="score-tag">🔥 高優先 (預計 20,000+ 觀眾)</div>
+  <h3>🎭 西九文化區 — 香港音樂劇節 2026</h3>
+  <p><strong>活動：</strong>首屆香港音樂劇節 — 匯集百老匯劇目、本地製作、亞洲巡迴</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年11月1日 - 2027年2月8日</span>
+    <span class="meta-item">📍 西九文化區（多個場地）</span>
+  </div>
+  <p>逾 20 個節目、超過 60 場演出及活動、近 100 位國際及本地藝術家參與。涵蓋百老匯劇目、本地傑出製作、亞洲巡迴音樂劇、大師班等。</p>
+  <div class="contact-box">✉️ 西九文化區票務：ticketing@wkcda.hk | 一般查詢：enquiry@wkcda.hk</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.westk.hk/tc/event/hong-kong-musicalcon-2026" target="_blank">https://www.westk.hk/tc/event/hong-kong-musicalcon-2026</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead6')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead6')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead6">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於香港音樂劇節 2026 嘅活動報名及門票管理系統建議
+
+西九文化區活動團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。首屆香港音樂劇節規模宏大（20+ 節目、60+ 場次、20,000+ 觀眾），一個強大嘅報名及門票管理系統至關重要。
+
+EventEasy.net 點解適合香港音樂劇節？
+
+✅ 智能報名及門票系統
+- 支援多節目、多場次、多票種獨立管理
+- 早鳥票、VIP 票、套票設定
+- 多種收款方式（信用卡、PayMe、FPS、微信、支付寶）
+
+✅ 觀眾管理
+- 自動生成電子門票及 QR Code
+- 批量發送確認郵件及活動提醒
+- 出席率即時統計
+
+✅ 現場簽到
+- 多場地 QR Code 掃描入場
+- 平板自助簽到，適合多個入口
+
+✅ AI 數據分析（可選）
+- 各節目售票趨勢、觀眾人口統計
+- 熱門節目/場次分析
+
+我哋嘅定價好彈性：按模塊、按人數付費。
+
+如果有興趣了解多啲，我可以安排一次免費 Demo（約 20 分鐘）。
+
+祝 首屆音樂劇節圓滿成功！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Online Registration & Ticketing Platform Proposal for Hong Kong MusicalCon 2026
+
+Dear West Kowloon Events Team,
+
+I'm writing from the EventEasy.net team. With 20+ programs, 60+ shows, and 20,000+ expected attendees, the inaugural Hong Kong MusicalCon needs a robust registration and ticketing system.
+
+Why EventEasy.net suits Hong Kong MusicalCon:
+
+✅ Smart Registration & Ticketing
+- Multi-program, multi-session, multi-ticket-type independent management
+- Early-bird, VIP, and package ticket support
+- Multiple payment methods (credit card, PayMe, FPS, WeChat Pay, Alipay)
+
+✅ Audience Management
+- Auto-generate e-tickets with QR codes
+- Batch confirmation emails and event reminders
+- Real-time attendance statistics
+
+✅ On-Site Check-in
+- Multi-venue QR code scanning
+- Self-service tablet kiosks at multiple entrances
+
+✅ AI Analytics (Optional)
+- Per-program sales trends, audience demographics
+- Popular show/session analysis
+
+Flexible pricing: pay by module and by attendee count.
+
+A free 20-minute demo is available.
+
+Best regards,
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead6')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- ==================== ⚡ 中優先 ==================== -->
+<h2 class="section-title">⚡ 中優先 (100-500 人)</h2>
+
+<!-- Lead 7: 龍舟賽 -->
+<div class="lead-card score-mid">
+  <div class="score-tag">⚡ 中優先 (預計 ~4,000 運動員)</div>
+  <h3>🚣 香港旅遊發展局 — 永明香港國際龍舟邀請賽（50 週年）</h3>
+  <p><strong>活動：</strong>國際龍舟邀請賽 — 維港天際線下競技</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年6月27-28日</span>
+    <span class="meta-item">📍 尖沙咀海濱（維多利亞港）</span>
+  </div>
+  <p>來自多國 170+ 隊伍、約 4,000 名運動員。適逢賽事 50 週年，規模盛大。主辦：香港旅遊發展局、中國香港龍舟總會。</p>
+  <div class="contact-box">✉️ 香港旅遊發展局：info@hktb.com | 中國香港龍舟總會：info@dragonboat.org.hk</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.discoverhongkong.com/dragonboat" target="_blank">https://www.discoverhongkong.com/dragonboat</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead7')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead7')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead7">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於國際龍舟邀請賽嘅網上隊伍報名系統建議
+
+香港旅遊發展局 / 中國香港龍舟總會你好，
+
+我係 EventEasy.net 嘅團隊成員。恭喜龍舟賽 50 週年！我哋嘅平台可以協助管理 170+ 隊伍、4,000+ 運動員嘅報名流程。
+
+EventEasy.net 點解適合龍舟邀請賽？
+
+✅ 智能報名系統
+- 支援隊伍報名（每隊設定人數上限）
+- 多個比賽組別獨立管理
+- 多種收款方式
+
+✅ 隊伍及運動員管理
+- 批量匯入隊伍名單
+- 自動生成隊伍編號及選手 QR Code
+- 隊員替換管理
+
+✅ 現場簽到
+- QR Code 掃描簽到
+- 多個簽到站同步運作
+
+✅ AI 數據分析（可選）
+- 各國/地區參與統計
+- 賽事參與度分析
+
+我哋嘅定價好彈性：按模塊、按人數付費。
+
+如果有興趣，可以安排免費 Demo。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Team Registration Platform for International Dragon Boat Races
+
+Dear HKTB / Hong Kong China Dragon Boat Association,
+
+Congratulations on the 50th anniversary! Our platform can help manage registration for 170+ teams and 4,000+ athletes.
+
+Why EventEasy.net suits the Dragon Boat Races:
+
+✅ Smart Registration
+- Team registration with per-team capacity limits
+- Independent management of multiple race categories
+- Multiple payment methods
+
+✅ Team & Athlete Management
+- Batch import team rosters
+- Auto-generate team codes and athlete QR codes
+- Team member substitution
+
+✅ On-Site Check-in
+- QR code scanning at multiple check-in stations
+
+Flexible pricing: pay by module and by participant count.
+
+A free demo is available upon request.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead7')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 8: CGCC -->
+<div class="lead-card score-mid">
+  <div class="score-tag">⚡ 中優先 (預計 ~500-700 嘉賓)</div>
+  <h3>🏢 香港中華總商會 (CGCC)</h3>
+  <p><strong>活動：</strong>週年晚宴及各類商務活動</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年下半年（預期）</span>
+    <span class="meta-item">📍 香港會議展覽中心</span>
+  </div>
+  <p>中總剛於 2025 年 10 月舉行 125 週年晚宴（700+ 嘉賓），為本港最具影響力商會之一。舉辦定期商務交流、研討會及年度晚宴。</p>
+  <div class="contact-box">✉️ 聯絡：cgcc@cgcc.org.hk | ☎️ (852) 2525 6385</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.cgcc.org.hk/" target="_blank">https://www.cgcc.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead8')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead8')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead8">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於中總商務活動嘅網上報名及管理系統建議
+
+香港中華總商會秘書處你好，
+
+我係 EventEasy.net 嘅團隊成員。中總經常舉辦各類大型晚宴、研討會及商務交流活動，我哋嘅一站式平台可以幫助簡化報名及嘉賓管理。
+
+EventEasy.net 點解適合中總？
+
+✅ 智能報名系統
+- 自定義報名表單，支援 VIP 桌、會員桌等分類
+- 多種票種設定（會員價、嘉賓價、贊助商桌等）
+- 多種收款方式
+
+✅ 嘉賓管理
+- 批量匯入嘉賓名單
+- 自動生成 QR Code 簽到
+- 支援「+1」同行者管理
+
+✅ 座位安排系統
+- 智能分配或手動拖放座位
+- 按商會職位/公司分類
+- 上傳會展中心平面圖
+
+✅ AI 數據分析（可選）
+- 出席率統計、會員參與度分析
+
+我哋嘅定價好彈性：按模塊、按人數付費。
+
+如果有興趣，可以安排免費 Demo。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Event Registration Platform for CGCC Business Events
+
+Dear CGCC Secretariat,
+
+I'm writing from the EventEasy.net team. With regular large-scale dinners, seminars, and business networking events, our platform can streamline registration and guest management.
+
+Why EventEasy.net suits CGCC:
+
+✅ Smart Registration
+- Customizable forms with VIP/member table categorization
+- Multiple ticket types (member, guest, sponsor table)
+- Multiple payment methods
+
+✅ Guest Management
+- Batch import guest lists
+- Auto QR code generation for check-in
+- +1 companion management
+
+✅ Seat Arrangement
+- Smart or manual drag-and-drop allocation
+- Classify by chamber position/company
+- Upload HKCEC floor plan
+
+Flexible pricing: pay by module and by attendee count.
+
+A free demo is available.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead8')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 9: AmCham -->
+<div class="lead-card score-mid">
+  <div class="score-tag">⚡ 中優先 (預計 100-300 人/活動)</div>
+  <h3>🏢 香港美國商會 (AmCham HK)</h3>
+  <p><strong>活動：</strong>定期商務委員會會議、年度晚宴、業界交流活動</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 全年持續</span>
+    <span class="meta-item">📍 中環、香港各地</span>
+  </div>
+  <p>AmCham 為香港最大國際商會之一，經常舉辦各類商務活動、午餐會、研討會及年度盛大晚宴。</p>
+  <div class="contact-box">✉️ 聯絡：amcham@amcham.org.hk | ☎️ 2530 6900</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.amcham.org.hk/" target="_blank">https://www.amcham.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead9')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead9')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead9">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於 AmCham 活動嘅網上報名管理系統建議
+
+香港美國商會活動團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。AmCham 每年舉辦大量商務活動，我哋嘅平台可以幫助統一管理報名流程。
+
+EventEasy.net 點解適合 AmCham？
+
+✅ 智能報名系統
+- 支援多活動同時管理
+- 會員/非會員分開定價
+- 多種收款方式
+
+✅ 嘉賓管理
+- 批量發送活動邀請及確認郵件
+- QR Code 簽到
+- 出席記錄自動保存
+
+✅ AI 數據分析（可選）
+- 會員活動參與度趨勢
+- 各類活動受歡迎程度分析
+
+我哋嘅定價好彈性：按模塊、按人數付費。
+
+如果有興趣，可以安排免費 Demo。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Event Registration Platform for AmCham HK Events
+
+Dear AmCham HK Events Team,
+
+I'm writing from the EventEasy.net team. With AmCham hosting so many business events annually, our platform can unify your registration process.
+
+Why EventEasy.net suits AmCham:
+
+✅ Smart Registration
+- Multi-event simultaneous management
+- Member/non-member differential pricing
+- Multiple payment methods
+
+✅ Guest Management
+- Batch event invitations and confirmations
+- QR code check-in
+- Auto-saved attendance records
+
+✅ AI Analytics (Optional)
+- Member engagement trends
+- Event popularity analysis
+
+Flexible pricing: pay by module and by attendee count.
+
+A free demo is available.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead9')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 10: 羽毛球總會 -->
+<div class="lead-card score-mid">
+  <div class="score-tag">⚡ 中優先 (預計 200-400 參賽者)</div>
+  <h3>🏸 中國香港羽毛球總會</h3>
+  <p><strong>活動：</strong>YONEX-SUNRISE 2026 全港羽毛球錦標賽 及 各類本地賽事</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 全年多項賽事</span>
+    <span class="meta-item">📍 香港體育館 / 各區體育中心</span>
+  </div>
+  <p>成立於 1934 年，現有 84 個屬會。每年舉辦全港錦標賽（1-5月）、聯賽（9-10月）等多項大型賽事。</p>
+  <div class="contact-box">✉️ 聯絡：bahkc@bahkc.org.hk | ☎️ 2504-8318</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://hkbadmintonassn.org.hk/" target="_blank">https://hkbadmintonassn.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead10')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead10')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead10">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於羽毛球賽事嘅網上報名系統建議
+
+中國香港羽毛球總會你好，
+
+我係 EventEasy.net 嘅團隊成員。貴會每年舉辦多項大型賽事，我哋嘅平台可以幫助簡化選手報名同賽事管理。
+
+EventEasy.net 點解適合羽毛球總會？
+
+✅ 智能報名系統
+- 支援多組別、多級別賽事管理（A/B/C/D/E/新秀組）
+- 個人賽及隊際賽獨立設定
+- 多種收款方式（報名費）
+
+✅ 選手管理
+- 批量管理參賽選手
+- 自動生成賽程編號及 QR Code
+- 屬會管理功能
+
+✅ 現場簽到
+- QR Code 掃描快速簽到
+- 支援多場地同步
+
+✅ AI 數據分析（可選）
+- 參賽人數趨勢、各組別統計
+
+我哋嘅定價好彈性：按模塊、按人數付費。
+
+如果有興趣，可以安排免費 Demo。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Tournament Registration Platform for Badminton Events
+
+Dear Hong Kong Badminton Association,
+
+I'm writing from the EventEasy.net team. With multiple major tournaments throughout the year, our platform can simplify player registration and event management.
+
+✅ Smart Registration
+- Multi-category, multi-division tournament management
+- Individual & team event independent setup
+- Multiple payment methods
+
+✅ Player Management
+- Bulk player management
+- Auto-generate draw numbers and QR codes
+- Affiliated club management
+
+✅ On-Site Check-in
+- QR code quick check-in
+- Multi-venue synchronization
+
+Flexible pricing: pay by module and by participant count.
+
+A free demo is available.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead10')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 11: UNICEF -->
+<div class="lead-card score-mid">
+  <div class="score-tag">⚡ 中優先 (預計 300+ 跑手)</div>
+  <h3>⛪ 聯合國兒童基金香港委員會 (UNICEF HK)</h3>
+  <p><strong>活動：</strong>UNICEF 慈善跑 2025/26 — HERO RUN 系列</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 2026年1月4日（下一屆籌備中）</span>
+    <span class="meta-item">📍 香港迪士尼樂園度假區 / 科學園</span>
+  </div>
+  <p>UNICEF HK 每年舉辦大型慈善跑，2025/26 年度以 HERO RUN 為主題，分「童您跑」及「超能跑」兩項活動。</p>
+  <div class="contact-box">✉️ 聯絡：info@unicef.org.hk | ☎️ 2833 6139</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://run.unicef.org.hk/" target="_blank">https://run.unicef.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead11')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead11')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead11">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於 UNICEF 慈善跑嘅網上報名及籌款系統建議
+
+UNICEF HK 團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。UNICEF 慈善跑係香港最具代表性嘅慈善體育活動之一，我哋嘅平台可以幫助簡化報名同籌款管理。
+
+EventEasy.net 點解適合 UNICEF 慈善跑？
+
+✅ 智能報名系統
+- 支援多組別（個人、家庭、企業團隊）
+- 自定義報名表單及捐款選項
+- 多種收款方式（報名費 + 捐款）
+
+✅ 參加者管理
+- 批量管理跑手資料
+- 自動生成選手包領取 QR Code
+- 捐款記錄自動追蹤
+
+✅ 現場簽到
+- 起點/終點 QR Code 掃描
+- 適合大型戶外活動
+
+✅ 互動遊戲（可選）
+- 12 款遊戲可於嘉年華區使用
+- 提升家庭參與者體驗
+
+對於慈善機構，我哋可提供特別優惠。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Registration & Fundraising Platform for UNICEF Charity Run
+
+Dear UNICEF HK Team,
+
+The UNICEF Charity Run is one of Hong Kong's most iconic charity sports events. Our platform can streamline registration and fundraising management.
+
+✅ Smart Registration
+- Multi-category support (individual, family, corporate)
+- Customizable forms with donation options
+- Multiple payment methods (registration + donation)
+
+✅ Participant Management
+- Bulk runner data management
+- Auto race pack collection QR codes
+- Automatic donation tracking
+
+✅ On-Site Check-in
+- QR code scanning at start/finish
+- Suitable for large outdoor events
+
+✅ Interactive Games (Optional)
+- 12 games for carnival zone
+- Enhanced family participant experience
+
+Special rates available for charity organizations.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead11')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 12: HKSSF -->
+<div class="lead-card score-mid">
+  <div class="score-tag">⚡ 中優先 (預計 200+ 學校參與)</div>
+  <h3>🏟️ 中國香港學界體育聯會 (HKSSF)</h3>
+  <p><strong>活動：</strong>各類學界體育比賽（田徑、游泳、籃球、足球等）</p>
+  <div class="meta-row">
+    <span class="meta-item">📅 全年多項賽事</span>
+    <span class="meta-item">📍 全港各區運動場</span>
+  </div>
+  <p>統籌全港中、小學學界體育比賽，涵蓋數十個運動項目，參與學校數百間。</p>
+  <div class="contact-box">✉️ 未搵到直接電郵 | 🌐 hkssf.org.hk</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://hkssf.org.hk/" target="_blank">https://hkssf.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead12')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead12')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead12">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於學界體育比賽嘅網上報名系統建議
+
+中國香港學界體育聯會你好，
+
+我係 EventEasy.net 嘅團隊成員。貴會每年統籌數十項學界體育比賽、數百間學校參與，一個統一嘅報名平台可以大大提升效率。
+
+EventEasy.net 點解適合學界體育聯會？
+
+✅ 智能報名系統
+- 支援多項賽事、多組別同時管理
+- 學校名義報名，自動收集參賽學生資料
+- 每項賽事獨立設定人數上限
+
+✅ 學校及選手管理
+- 批量匯入學校及選手名單
+- 自動生成選手編號及賽程
+
+✅ 現場簽到
+- QR Code 掃描快速檢錄
+- 支援多場地同步
+
+我哋嘅定價好彈性：按模塊、按人數付費。對學界機構提供優惠。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Registration Platform for Inter-School Sports Competitions
+
+Dear HKSSF Team,
+
+With dozens of inter-school competitions and hundreds of participating schools annually, a unified registration platform can significantly boost efficiency.
+
+✅ Smart Registration
+- Multi-event, multi-division simultaneous management
+- School-nominated registration with student data collection
+- Per-event capacity limits
+
+✅ School & Athlete Management
+- Batch import school and athlete rosters
+- Auto-generate athlete codes and schedules
+
+✅ On-Site Check-in
+- QR code quick check-in
+- Multi-venue synchronization
+
+Flexible pricing with special rates for educational institutions.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead12')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- ==================== 📝 低優先 ==================== -->
+<h2 class="section-title">📝 低優先 (<100 人 or 活動策劃公司)</h2>
+
+<!-- Lead 13: Double Tap -->
+<div class="lead-card score-low">
+  <div class="score-tag">📝 合作夥伴（活動策劃公司）</div>
+  <h3>🎪 Double Tap Production</h3>
+  <p><strong>業務：</strong>專業活動策劃及製作 — 會議、晚宴、產品發佈</p>
+  <p>10 年以上活動策劃經驗，一站式活動展覽服務。潛在合作夥伴：可推薦客戶使用 EventEasy.net 報名系統。</p>
+  <div class="contact-box">✉️ 聯絡：event@dtpltd.com</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.dtpltd.com/" target="_blank">https://www.dtpltd.com/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead13')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead13')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead13">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：合作機會：為你嘅客戶提供一站式網上報名方案
+
+Double Tap Production 你好，
+
+我係 EventEasy.net 嘅團隊成員。我哋係一站式活動管理平台，專為活動主辦方提供智能報名、嘉賓管理、QR Code 簽到、互動遊戲、座位安排及 AI 數據分析。
+
+我哋正尋找活動策劃公司作為合作夥伴：
+- 推薦客戶使用 EventEasy.net，你可獲得分潤（比例可商議）
+- 我哋嘅平台可補足你現有服務（策劃+執行+報名管理一條龍）
+- 我哋有合作用家夥伴計劃，提供專屬推薦碼及後台管理
+
+我哋嘅定價好彈性：按模塊、按人數付費，20 人以下活動完全免費。適合你嘅中小型客戶。
+
+如果有興趣傾合作，可以約個時間簡介。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Partnership Opportunity: All-in-One Registration Platform for Your Clients
+
+Dear Double Tap Production,
+
+I'm from the EventEasy.net team. We're an all-in-one event management platform offering smart registration, guest management, QR code check-in, interactive games, seat arrangement, and AI analytics.
+
+We're looking for event planning partners:
+- Refer clients to EventEasy.net and earn commission (negotiable rates)
+- Our platform complements your existing services (planning + execution + registration management)
+- We have an affiliate partner program with dedicated referral codes and backend management
+
+Flexible pricing: pay by module and by attendee count. Events under 20 are FREE — great for your SME clients.
+
+Let's connect if you're interested in exploring partnership.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead13')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 14: iProduction -->
+<div class="lead-card score-low">
+  <div class="score-tag">📝 合作夥伴（活動製作公司）</div>
+  <h3>🎪 iProduction International Limited</h3>
+  <p><strong>業務：</strong>活動製作、展覽攤位、場地佈置、舞台組裝</p>
+  <p>2015 年創立，提供全面活動製作服務。潛在合作夥伴。</p>
+  <div class="contact-box">✉️ 聯絡：info@iproduction-hk.com | ☎️ 3954 5635</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.iproduction-hk.com/" target="_blank">https://www.iproduction-hk.com/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead14')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead14')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead14">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：合作機會：活動製作 + 網上報名一條龍方案
+
+iProduction 團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。我哋提供一站式活動報名及管理平台，涵蓋智能報名、QR Code 簽到、互動遊戲、座位安排、AI 數據分析等。
+
+我哋正尋找活動製作公司合作：
+- 你嘅場地佈置 + 我哋嘅報名管理 = 一條龍服務
+- 推薦客戶可獲分潤（合作用家夥伴計劃）
+- 提升你對客戶嘅服務價值
+
+合作無成本，只需推薦客戶使用 EventEasy.net。
+
+有興趣可以約時間交流。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Partnership: Event Production + Online Registration Package
+
+Dear iProduction Team,
+
+We provide an all-in-one event registration platform covering smart registration, QR code check-in, interactive games, seat arrangement, and AI analytics.
+
+We're looking for event production partners:
+- Your venue setup + our registration management = one-stop service
+- Earn commission through our affiliate partner program
+- Enhance your service value to clients
+
+Zero cost to partner — just refer clients to EventEasy.net.
+
+Let's connect if interested.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead14')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 15: StagePro -->
+<div class="lead-card score-low">
+  <div class="score-tag">📝 合作夥伴（舞台製作公司）</div>
+  <h3>🎪 StagePro 活動策劃與舞台製作公司</h3>
+  <p><strong>業務：</strong>活動策劃、舞台製作、燈光音響</p>
+  <p>提供新穎高端活動創意及詳細活動方案。潛在合作夥伴。</p>
+  <div class="contact-box">✉️ 需經網站表單聯絡 | 🌐 stageprohk.com</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://www.stageprohk.com/" target="_blank">https://www.stageprohk.com/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead15')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead15')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead15">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：合作機會：舞台製作 + 數碼報名管理一條龍
+
+StagePro 團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。我哋嘅活動管理平台（智能報名、QR Code 簽到、互動遊戲、座位安排、AI 分析）可以同你嘅舞台製作服務相輔相成。
+
+合作模式：
+- 你提供舞台及製作，我哋提供報名及嘉賓管理
+- 推薦客戶使用 EventEasy.net，可獲分潤
+- 提升整體服務方案競爭力
+
+如果有興趣，可以約時間簡介我哋嘅平台。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Partnership: Stage Production + Digital Registration Package
+
+Dear StagePro Team,
+
+Our event management platform (smart registration, QR code check-in, interactive games, seat arrangement, AI analytics) can complement your stage production services.
+
+Partnership model:
+- You provide stage & production, we provide registration & guest management
+- Earn commission by referring clients
+- Enhance overall service competitiveness
+
+Let's connect for a platform briefing.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead15')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 16: HKParties -->
+<div class="lead-card score-low">
+  <div class="score-tag">📝 合作夥伴（派對策劃公司）</div>
+  <h3>🎪 HKParties</h3>
+  <p><strong>業務：</strong>一站式派對服務 — 機器租借、現場表演、攤位、充氣城堡</p>
+  <p>提供專業活動策劃服務，從公仔機租借到現場表演。</p>
+  <div class="contact-box">✉️ 需經網站表單聯絡 | 🌐 hkparties.com</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://hkparties.com/" target="_blank">https://hkparties.com/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead16')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead16')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead16">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：合作機會：派對服務 + 報名管理方案
+
+HKParties 團隊你好，
+
+我係 EventEasy.net 嘅團隊成員。你嘅派對服務加上我哋嘅報名管理平台，可以為客戶提供更全面嘅活動方案。
+
+EventEasy.net 提供：
+- 智能報名系統（自定義表單、多種收款）
+- QR Code 簽到
+- 12 款互動遊戲（抽獎、賓果、投票等）
+- 座位安排
+
+對派對客戶尤其適合！20 人以下活動完全免費。
+
+合作無成本，推薦客戶可獲分潤。有興趣可以傾傾。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Partnership: Party Services + Registration Platform
+
+Dear HKParties Team,
+
+Your party services combined with our registration platform can offer clients a more comprehensive event solution.
+
+EventEasy.net offers:
+- Smart registration (customizable forms, multi-payment)
+- QR code check-in
+- 12 interactive games (lucky draw, bingo, voting)
+- Seat arrangement
+
+Perfect for party clients! Under 20 attendees is FREE.
+
+Zero cost to partner, earn commission on referrals. Let's chat!
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead16')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 17: 救世軍 -->
+<div class="lead-card score-low">
+  <div class="score-tag">📝 低優先 (預計 50-200 人/活動)</div>
+  <h3>⛪ 救世軍港澳軍區</h3>
+  <p><strong>活動：</strong>慈善籌款活動、社區服務項目</p>
+  <p>救世軍經常舉辦各類籌款活動及社區服務項目，需要報名及義工管理。</p>
+  <div class="contact-box">✉️ 籌募部：ds@hkm.salvationarmy.org | 社會服務：ssdenq@hkm.salvationarmy.org</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://salvationarmy.org.hk/" target="_blank">https://salvationarmy.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead17')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead17')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead17">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於慈善活動嘅網上報名及管理系統建議
+
+救世軍籌募部你好，
+
+我係 EventEasy.net 嘅團隊成員。我哋嘅平台可以幫助慈善機構簡化活動報名同義工管理。
+
+EventEasy.net 點解適合救世軍？
+
+✅ 智能報名系統
+- 自定義報名表單
+- 支援捐款選項
+- 多種收款方式
+
+✅ 義工管理
+- 批量管理義工資料
+- 自動發送活動提醒
+- QR Code 簽到
+
+✅ AI 數據分析（可選）
+- 參與者統計、捐款趨勢
+
+對慈善機構提供特別優惠。20 人以下活動完全免費！
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Event Registration Platform for Charity Events
+
+Dear Salvation Army Fundraising Team,
+
+Our platform can help charity organizations streamline event registration and volunteer management.
+
+✅ Smart Registration
+- Customizable forms with donation options
+- Multiple payment methods
+
+✅ Volunteer Management
+- Bulk volunteer data management
+- Auto event reminders & QR code check-in
+
+Special rates for charity organizations. Under 20 attendees is FREE!
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead17')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<!-- Lead 18: SCAA 南華會 -->
+<div class="lead-card score-low">
+  <div class="score-tag">📝 低優先 (預計 50-300 人/活動)</div>
+  <h3>🏟️ 南華體育會 (SCAA)</h3>
+  <p><strong>活動：</strong>各類體育賽事、培訓班、年度晚宴</p>
+  <p>香港最具規模體育會之一，提供多元化康體設施及訓練班，組織運動隊伍參與本地及海外賽事。</p>
+  <div class="contact-box">✉️ 需經網站表單聯絡 | 🌐 scaa.org.hk</div>
+  <p style="font-size:12px;color:#6b7280;margin-top:6px;">🌐 <a href="https://scaa.org.hk/" target="_blank">https://scaa.org.hk/</a></p>
+  <div class="btn-row">
+    <button class="email-btn" onclick="showEmail('lead18')">📧 查看推廣電郵</button>
+    <button class="email-btn" style="background:#059669;" onclick="editEmail('lead18')">✏️ 編輯</button>
+  </div>
+  <div class="email-preview" id="email-lead18">
+    <h4>【繁體中文版本】</h4>
+    <pre data-email-zh>標題：關於體育活動及訓練班嘅網上報名系統建議
+
+南華體育會你好，
+
+我係 EventEasy.net 嘅團隊成員。貴會舉辦大量體育賽事及訓練班，我哋嘅平台可以幫助統一管理報名流程。
+
+EventEasy.net 點解適合南華會？
+
+✅ 智能報名系統
+- 支援多項活動/訓練班同時管理
+- 會員/非會員分開定價
+- 多種收款方式
+
+✅ 參加者管理
+- 批量管理會員及參加者
+- 自動發送確認及提醒
+- QR Code 簽到
+
+✅ AI 數據分析（可選）
+- 各類活動參與度趨勢
+
+我哋嘅定價好彈性：按模塊、按人數付費。
+
+EventEasy.net 團隊
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <h4>【English Version】</h4>
+    <pre data-email-en>Subject: Registration Platform for Sports Events & Training Courses
+
+Dear SCAA Team,
+
+Your club hosts numerous sports events and training courses. Our platform can unify your registration process.
+
+✅ Smart Registration
+- Multi-event/course simultaneous management
+- Member/non-member differential pricing
+- Multiple payment methods
+
+✅ Participant Management
+- Bulk member & participant management
+- Auto confirmations & reminders
+- QR code check-in
+
+Flexible pricing: pay by module and by participant count.
+
+The EventEasy.net Team
+📧 support@eventeasy.net
+🌐 https://eventeasy.net</pre>
+    <button class="copy-btn" onclick="copyEmail('lead18')">📋 複製雙語電郵</button>
+  </div>
+</div>
+
+<div class="footer">
+  <p>🎯 潛在客戶情報 — 2026年6月21日生成 | EventEasy.net | support@eventeasy.net</p>
+  <p>報告由 AI 自動生成，僅供內部參考。聯絡資訊來自公開資料。</p>
+</div>
+
+<script>
+function showEmail(id) {
+  var el = document.getElementById('email-' + id);
+  if (el) {
+    el.style.display = el.style.display === 'none' || el.style.display === '' ? 'block' : 'none';
+  }
+}
+
+function copyEmail(id) {
+  var zhEl = document.querySelector('#email-' + id + ' pre[data-email-zh]');
+  var enEl = document.querySelector('#email-' + id + ' pre[data-email-en]');
+  var zh = zhEl ? zhEl.textContent : '';
+  var en = enEl ? enEl.textContent : '';
+  var full = zh + '\n\n---\n\n' + en;
+  navigator.clipboard.writeText(full).then(function() {
+    alert('✅ 雙語電郵已複製到剪貼簿！');
+  }).catch(function() {
+    alert('❌ 複製失敗，請手動選擇文字複製。');
+  });
+}
+
+function editEmail(id) {
+  var container = document.getElementById('email-' + id);
+  if (!container) return;
+  // Show the email section first
+  container.style.display = 'block';
+  
+  // Find the pre elements and convert to textareas
+  var pres = container.querySelectorAll('pre');
+  pres.forEach(function(pre) {
+    var textarea = document.createElement('textarea');
+    textarea.value = pre.textContent;
+    textarea.style.cssText = 'width:100%; height:200px; font-size:13px; line-height:1.7; font-family: -apple-system, sans-serif; padding:12px; border:2px solid #f97316; border-radius:6px; resize:vertical; margin-bottom:10px;';
+    textarea.className = 'edit-textarea';
+    // Save the data attribute
+    if (pre.hasAttribute('data-email-zh')) textarea.setAttribute('data-email-zh', '');
+    if (pre.hasAttribute('data-email-en')) textarea.setAttribute('data-email-en', '');
+    pre.parentNode.replaceChild(textarea, pre);
+  });
+  
+  // Add save button
+  var existingSave = container.querySelector('.save-edit-btn');
+  if (!existingSave) {
+    var saveBtn = document.createElement('button');
+    saveBtn.textContent = '💾 儲存修改';
+    saveBtn.className = 'save-edit-btn';
+    saveBtn.style.cssText = 'background:#059669; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:600; margin-top:8px; margin-right:8px;';
+    saveBtn.onclick = function() { saveEdit(id); };
+    container.appendChild(saveBtn);
+  }
+}
+
+function saveEdit(id) {
+  var container = document.getElementById('email-' + id);
+  if (!container) return;
+  
+  // Gather edited content
+  var textareas = container.querySelectorAll('textarea.edit-textarea');
+  var zhContent = '', enContent = '';
+  textareas.forEach(function(ta) {
+    if (ta.hasAttribute('data-email-zh')) zhContent = ta.value;
+    if (ta.hasAttribute('data-email-en')) enContent = ta.value;
+  });
+  
+  // Get the body attributes
+  var body = document.body;
+  var driveFileId = body.getAttribute('data-drive-file-id') || '';
+  var githubPath = body.getAttribute('data-github-path') || '';
+  
+  // POST to GAS API to update
+  var payload = 'action=update_html&lead_id=' + encodeURIComponent(id) +
+    '&email_zh=' + encodeURIComponent(zhContent) +
+    '&email_en=' + encodeURIComponent(enContent) +
+    '&drive_file_id=' + encodeURIComponent(driveFileId) +
+    '&github_path=' + encodeURIComponent(githubPath);
+  
+  fetch('https://script.google.com/macros/s/AKfycbw_UeOLvsktIsdYEAHG2fJ2JxktsmdORGtnkEn4leyamj7fD602djoFexgrNNiCUDMv/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: payload
+  }).then(function(r) { return r.text(); })
+    .then(function(data) { alert('✅ 已儲存！\n' + data); })
+    .catch(function(err) { alert('❌ 儲存失敗：' + err.message); });
+  
+  // Also copy to clipboard as backup
+  navigator.clipboard.writeText('[已編輯版本]\n\n' + zhContent + '\n\n---\n\n' + enContent).then(function() {
+    console.log('Edited email copied to clipboard as backup');
+  }).catch(function() {});
+}
+
+function sendEmail(id) {
+  var zhEl = document.querySelector('#email-' + id + ' pre[data-email-zh]');
+  var zh = zhEl ? zhEl.textContent : '';
+  // Extract subject from first line
+  var lines = zh.split('\n');
+  var subject = '';
+  var body = zh;
+  if (lines[0] && lines[0].indexOf('標題：') === 0) {
+    subject = lines[0].replace('標題：', '').trim();
+  }
+  
+  var mailto = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  
+  // If URL too long, copy to clipboard
+  if (mailto.length > 2000) {
+    navigator.clipboard.writeText(zh).then(function() {
+      alert('📋 郵件內容已複製到剪貼簿（因內容過長無法直接開啟郵件客戶端），請手動貼上。');
+    });
+  } else {
+    window.open(mailto, '_blank');
+  }
+}
+</script>
+
+</body>
+</html>
